@@ -1,0 +1,10 @@
+{
+  "school": {
+    "name": "Ismon Koulu"
+  },
+  "encryptionKey": "NEVERSHARETHISVALUEANDMAKEITSTRONG",
+  "website": {
+    "port": 8080
+  },
+  "langFile": "./fi.json"
+}
