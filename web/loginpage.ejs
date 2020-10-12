@@ -6,9 +6,17 @@
     <%- include ('partials/head', {page: lang.login, id: "loginpage"}) -%>
   </head>
   <body>
-    <h1>
-      Ritta - <%- lang.login %>
-    </h1>
-    <a href="/account/process">log in</a>
+    <div class="login-page">
+
+      <div class="form">
+        <p id="error"><%- error %></p>
+        <form class="login-form" method="POST" action="/account/process">
+          <input type="text" name="username" placeholder="<%- lang.username %>"/>
+          <input type="password" name="password" placeholder="<%- lang.password %>"/>
+          <button><%- lang.login %></button>
+          <p class="message"><%- school.name %>, <%- school.city %></a></p>
+        </form>
+      </div>
+    </div>
   </body>
 </html>

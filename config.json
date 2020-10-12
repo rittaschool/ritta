@@ -1,10 +1,12 @@
 {
   "school": {
-    "name": "Ismon Koulu"
+    "name": "Ismon Koulu",
+    "city": "Sorsakylä"
   },
   "encryptionKey": "NEVERSHARETHISVALUEANDMAKEITSTRONG",
   "website": {
     "port": 8080
   },
-  "langFile": "./fi.json"
+  "langFile": "./fi.json",
+  "databaseType": "enmap"
 }

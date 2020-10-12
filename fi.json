@@ -1,3 +1,7 @@
 {
-  "login": "Kirjaudu"
+  "login": "Kirjaudu",
+  "username": "Käyttäjänimi",
+  "password": "Salasana",
+  "error_login": "Virheellinen käyttäjänimi tai salasana",
+  "loggedout": "Kirjauduit ulos"
 }

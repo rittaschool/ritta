@@ -2,10 +2,10 @@
 const express = require("express");
 const session = require("express-session")
 const fileStore = require("session-file-store")(session)
+const bodyParser = require("body-parser")
 
 // Local modules
-const database = require("./databaseManager.js")
-const utils = require("./utils.js")
+let database
 
 // Remove the useless part of argv
 process.argv = process.argv.slice(2);
@@ -59,6 +59,14 @@ try {
   console.log("Lang file not found. Check your config.")
   process.exit()
 }
+try {
+  database = require("./database/"+config.databaseType+".js")
+} catch(e) {
+
+  console.log("Database file not found. Check your config.")
+  process.exit()
+}
+const utils = require("./utils.js")
 
 /*
  *
@@ -85,28 +93,20 @@ app.use(function (req, res, next) {
   console.debug(`${req.originalUrl} pinged`)
   next()
 })
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static("assets"))
 
 app.get("/", (req, res) => {
-  if(req.session.account) {
-    if(database.isLoggedInByToken(req.session.account.token)) {
-      // Home page
-      res.send('logged in<br><a href="/account/logout">Log out</a>')
-      return;
-    } else {
-      utils.setAccount(req, undefined)
-    }
+  if(utils.isLoggedIn(req)) {
+    res.send('logged in<br><a href="/account/logout">Log out</a>')
+  } else {
+    redirect(res,"/account/login")
   }
-  redirect(res,"/account/login")
   //res.send("Redirect -> /login")
-})
-app.get("/check", (req,res)=>{
-  res.json(req.session)
 })
 app.get("/account/:action", (req,res)=>{
   switch(req.params.action.toLowerCase()) {
     case 'login':
-      console.debug("login page")
       if(req.session.account) {
         if(database.isLoggedInByToken(req.session.account.token)) {
           //res.send("is logged in <3")
@@ -117,7 +117,14 @@ app.get("/account/:action", (req,res)=>{
           utils.setAccount(req, undefined)
         }
       }
-      res.render(__dirname + "/web/loginpage.ejs", {lang: lang})
+      let error = "";
+      console.log(JSON.stringify(req.query))
+      if(req.query.hasOwnProperty("invalid")) {
+        error = lang.error_login;
+      } else if(req.query.hasOwnProperty("loggedout")){
+        error = lang.loggedout;
+      }
+      res.render(__dirname + "/web/loginpage.ejs", {lang: lang, school: config.school, error: error})
       break;
     case 'logout':
       console.debug("logout page")
@@ -125,13 +132,33 @@ app.get("/account/:action", (req,res)=>{
       console.debug("Log out succesfull, redirect")
       redirect(res,"/account/login?loggedout")
       break;
-    case 'process':
-      utils.setAccount(req, {token: "shit"})
-      //(res.send("Logged in")
-      redirect(res, "/")
+    case 'changepassword':
+      res.send({success: database.setPassword("raikas","salasaana","raikasonparas")})
+      break;
+    case 'create':
+      console.log(database.newAccount)
+      res.json(database.newAccount(req.query.username, req.query.password))
+      break;
+    case 'loggedin':
+      redirect(res, "../../")
       break;
     default:
-      res.status(404).send("Not found")
+      res.status(404).send("Not found GET /account/:action")
+      break;
+  }
+})
+app.post("/account/:action", (req,res)=>{
+  switch(req.params.action.toLowerCase()) {
+    case 'process':
+      if(database.validate(req.body.username, req.body.password)) {
+        utils.setAccount(req, {token: database.generateAccountToken(req.body.username, req.body.password)})
+        redirect(res, "/account/loggedin")
+      } else {
+        redirect(res, "/account/login?invalid")
+      }
+      break;
+    default:
+      res.status(404).send("Not found POST /account/:action")
       break;
   }
 })
