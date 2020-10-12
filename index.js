@@ -3,6 +3,9 @@ const express = require("express");
 const session = require("express-session")
 const fileStore = require("session-file-store")(session)
 const bodyParser = require("body-parser")
+const https = require("https")
+const fs = require("fs")
+const crypto = require("crypto")
 
 // Local modules
 let database
@@ -62,7 +65,7 @@ try {
 try {
   database = require("./database/"+config.databaseType+".js")
 } catch(e) {
-
+  console.debug(e)
   console.log("Database file not found. Check your config.")
   process.exit()
 }
@@ -162,6 +165,66 @@ app.post("/account/:action", (req,res)=>{
       break;
   }
 })
-const server = app.listen(config.website.port, function() {
-  console.log("Website is now running on port " + config.website.port)
+app.post("/api/:action", (req,res)=>{
+  switch(req.params.action.toLowerCase()) {
+    case 'process':
+      if(database.validate(req.body.username, req.body.password)) {
+        utils.setAccount(req, {token: database.generateAccountToken(req.body.username, req.body.password)})
+        redirect(res, "/account/loggedin")
+      } else {
+        redirect(res, "/account/login?invalid")
+      }
+      break;
+    default:
+      res.status(404).send("Not found POST /account/:action")
+      break;
+  }
 })
+app.get("/api/calendar/:userid", (req,res)=>{
+  let value = utils.createCalendar([{
+    title: 'Saksa',
+    start: [2020, 10, 12, 22, 15],
+    duration: { minutes: 45 }
+  },
+  {
+    title: 'Englanti',
+    start: [2020, 10, 12, 21, 15],
+    duration: { minutes: 45 }
+  }])
+  if(!value) {
+    res.send("Error")
+    return;
+  }
+  let id = crypto.randomBytes(20).toString('hex').substring(0, 4);
+  fs.writeFileSync(`${__dirname}/${id}.ics`, value)
+  res.sendFile(`${__dirname}/${id}.ics`, {}, function (err) {
+    if (err) {
+      next(err)
+    } else {
+      console.debug(`${id}.ics was sent`)
+      try {
+        fs.unlinkSync(`${__dirname}/${id}.ics`)
+        console.debug(`File ${id}.ics removed`)
+      } catch(err) {
+        console.debug(err)
+      }
+    }
+  })
+
+})
+let server;
+if(config.ssl.enabled) {
+  var privateKey = fs.readFileSync( config.ssl.key );
+  var certificate = fs.readFileSync( config.ssl.cert );
+
+  server = https.createServer({
+      key: privateKey,
+      cert: certificate
+  }, app).listen(config.website.port, function() {
+    console.log("Website is now running on port " + config.website.port)
+  });
+} else {
+  server = app.listen(config.website.port, function() {
+    console.log("Website is now running on port " + config.website.port)
+  })
+}

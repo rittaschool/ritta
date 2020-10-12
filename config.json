@@ -1,12 +1,17 @@
 {
   "school": {
-    "name": "Ismon Koulu",
-    "city": "Sorsakylä"
+    "name": "Demokoulu",
+    "city": "Demokaupunki"
   },
-  "encryptionKey": "NEVERSHARETHISVALUEANDMAKEITSTRONG",
+  "encryptionKey": "DontShareThis",
   "website": {
     "port": 8080
   },
   "langFile": "./fi.json",
-  "databaseType": "enmap"
+  "databaseType": "enmap",
+  "ssl": {
+    "enabled": false,
+    "key": "./ssl/key.pem",
+    "cert": "./ssl/cert.pem"
+  }
 }

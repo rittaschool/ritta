@@ -1,6 +1,6 @@
 const config = require("./config.json")
 const crypto = require('crypto');
-
+const ics = require("ics")
 exports.genUUID = function() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -35,4 +35,27 @@ exports.isLoggedIn = function(req) {
     }
   }
   return false;
+}
+
+exports.createCalendar = function(attributes) {
+  // Attributes example:
+  /*
+  [{
+    title: 'Lunch',
+    start: [2018, 1, 15, 12, 15],
+    duration: { minutes: 45 }
+  },
+  {
+    title: 'Dinner',
+    start: [2018, 1, 15, 12, 15],
+    duration: { hours: 1, minutes: 30 }
+  }]
+  */
+  const { error, value } = ics.createEvents(attributes)
+
+  if (error) {
+    console.log(error)
+    return;
+  }
+  return value;
 }
