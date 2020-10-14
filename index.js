@@ -6,6 +6,8 @@ const bodyParser = require("body-parser")
 const https = require("https")
 const fs = require("fs")
 const crypto = require("crypto")
+const rateLimit = require("express-rate-limit");
+
 
 // Local modules
 let database
@@ -87,11 +89,25 @@ app.use(session({
     return utils.genUUID()
   },
   secret: config.encryptionKey,
-  store: new fileStore({}),
+  store: new fileStore({logFn: function() {}}),
   resave: true,
   saveUninitialized: true,
   cookie: { maxAge: 3600000, secure: false, test:"true" }
 }))
+const rateLimitThese = [/\/api\/calendar\/(.+)/]
+const limiter = rateLimit({
+  windowMs: 15000,
+  max: 1,
+  handler: function (req, res, next) {
+    console.log(rateLimitThese.some((limit)=>{return req.originalUrl.match(rateLimitThese)}))
+    if(rateLimitThese.some((limit)=>{console.log(req.originalUrl.match(rateLimitThese)); return req.originalUrl.match(rateLimitThese)})) {
+      res.status(429).send("<h2>You are being rate limited.</h2><script>window.location.replace('/');</script>");
+      return;b
+    }
+    next();
+  },
+});
+app.use(limiter)
 app.use(function (req, res, next) {
   console.debug(`${req.originalUrl} pinged`)
   next()
@@ -181,6 +197,7 @@ app.post("/api/:action", (req,res)=>{
   }
 })
 app.get("/api/calendar/:userid", (req,res)=>{
+  req.rateLimitThis = true;
   let value = utils.createCalendar([{
     title: 'Saksa',
     start: [2020, 10, 12, 22, 15],

@@ -9,11 +9,15 @@
     <div class="login-page">
 
       <div class="form">
+        <h2>Ritta</h2>
+        <br>
         <p id="error"><%- error %></p>
         <form class="login-form" method="POST" action="/account/process">
-          <input type="text" name="username" placeholder="<%- lang.username %>"/>
-          <input type="password" name="password" placeholder="<%- lang.password %>"/>
+          <input required type="text" name="username" placeholder="<%- lang.username %>"/>
+          <input required type="password" name="password" placeholder="<%- lang.password %>"/>
           <button><%- lang.login %></button>
+          <p></p>
+          <!--<button><%- lang.login %> Opinsys</button>-->
           <p class="message"><%- school.name %>, <%- school.city %></a></p>
         </form>
       </div>

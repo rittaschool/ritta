@@ -8,6 +8,10 @@
     border: 2px solid red;
     padding: 7px;
 }
+.form h2 {
+  color: #007063;
+  font-size: 1.7em;
+}
 .form {
   position: relative;
   z-index: 1;
@@ -97,6 +101,6 @@ body {
 
 @media only screen and (max-width: 600px) {
   .form {
-    margin-top: 25vh;
+    margin-top: 18vh;
   }
 }
