@@ -1,4 +1,5 @@
-# ritta
+# rittaschool/ritta
+### Application
 Ritta is a system for schools to keep connection between home and school strong.
 
 ## Installation
