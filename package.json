@@ -1,6 +1,6 @@
 {
   "name": "ritta",
-  "version": "1.0.0",
+  "version": "0.7.0",
   "description": "Ritta is a new times system for school, to keep connections between home and school strong.",
   "main": "index.js",
   "scripts": {
