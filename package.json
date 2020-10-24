@@ -27,12 +27,19 @@
   "dependencies": {
     "better-sqlite3": "^7.1.1",
     "body-parser": "^1.19.0",
+    "chart.js": "^2.9.4",
+    "chocolat": "^1.0.3",
     "ejs": "^3.1.5",
     "enmap": "^5.8.0",
     "express": "^4.17.1",
     "express-rate-limit": "^5.1.3",
     "express-session": "^1.17.1",
     "ics": "^2.25.0",
-    "session-file-store": "^1.5.0"
+    "jquery-sparkline": "^2.4.0",
+    "jqvmap": "^1.5.1",
+    "jwt-decode": "^3.0.0",
+    "owl.carousel": "^2.3.4",
+    "session-file-store": "^1.5.0",
+    "summernote": "^0.8.18"
   }
 }

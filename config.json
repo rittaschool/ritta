@@ -5,7 +5,7 @@
   },
   "encryptionKey": "DontShareThis",
   "website": {
-    "port": 8080
+    "port": 80
   },
   "langFile": "./fi.json",
   "databaseType": "enmap",
@@ -13,5 +13,10 @@
     "enabled": false,
     "key": "./ssl/key.pem",
     "cert": "./ssl/cert.pem"
+  },
+  "opinsys": {
+    "enabled": true,
+    "organization": "demo.opinsys.fi",
+    "redirectURI": "http://localhost/account/opinsys"
   }
 }

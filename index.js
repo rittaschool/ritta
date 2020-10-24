@@ -1,13 +1,13 @@
 // NPMJS Modules
-const express = require("express");
-const session = require("express-session")
-const fileStore = require("session-file-store")(session)
-const bodyParser = require("body-parser")
-const https = require("https")
-const fs = require("fs")
-const crypto = require("crypto")
-const rateLimit = require("express-rate-limit");
-
+const express = require("express"),
+      session = require("express-session"),
+      fileStore = require("session-file-store")(session),
+      bodyParser = require("body-parser"),
+      https = require("https"),
+      fs = require("fs"),
+      crypto = require("crypto"),
+      rateLimit = require("express-rate-limit"),
+      jwt = require("jwt-decode");
 
 // Local modules
 let database
@@ -72,13 +72,18 @@ try {
   process.exit()
 }
 const utils = require("./utils.js")
+const packageJSON = require("./package.json")
+
+// Opinsys
+const opinsys = config.opinsys.enabled;
+const opinsys_organization = config.opinsys.organization;
+const opinsys_redirect = config.opinsys.redirectURI;
 
 /*
  *
  * WEB
  *
  */
-
 const app = express();
 
 app.set('trust proxy', 1)
@@ -99,10 +104,9 @@ const limiter = rateLimit({
   windowMs: 15000,
   max: 1,
   handler: function (req, res, next) {
-    console.log(rateLimitThese.some((limit)=>{return req.originalUrl.match(rateLimitThese)}))
     if(rateLimitThese.some((limit)=>{console.log(req.originalUrl.match(rateLimitThese)); return req.originalUrl.match(rateLimitThese)})) {
       res.status(429).send("<h2>You are being rate limited.</h2><script>window.location.replace('/');</script>");
-      return;b
+      return;
     }
     next();
   },
@@ -117,12 +121,13 @@ app.use(express.static("assets"))
 
 app.get("/", (req, res) => {
   if(utils.isLoggedIn(req)) {
-    res.send('logged in<br><a href="/account/logout">Log out</a>')
+    res.render(__dirname + "/web/homepage.ejs", {version: packageJSON.version, lang: lang, school: config.school, username: utils.usernameFromToken(req), user: database.getUserData(utils.usernameFromToken(req))})
   } else {
     redirect(res,"/account/login")
   }
   //res.send("Redirect -> /login")
 })
+
 app.get("/account/:action", (req,res)=>{
   switch(req.params.action.toLowerCase()) {
     case 'login':
@@ -136,14 +141,17 @@ app.get("/account/:action", (req,res)=>{
           utils.setAccount(req, undefined)
         }
       }
-      let error = "";
-      console.log(JSON.stringify(req.query))
+      let error;
       if(req.query.hasOwnProperty("invalid")) {
         error = lang.error_login;
       } else if(req.query.hasOwnProperty("loggedout")){
         error = lang.loggedout;
+      } else if(req.query.hasOwnProperty("opinsysaccountnone")){
+        error = lang.opinsys_account_none;
+      } else if(req.query.hasOwnProperty("opinsysinvalidorganization")){
+        error = lang.opinsys_organization_invalid;
       }
-      res.render(__dirname + "/web/loginpage.ejs", {lang: lang, school: config.school, error: error})
+      res.render(__dirname + "/web/loginpage.ejs", {lang: lang, school: config.school, opinsys: config.opinsys, error: error})
       break;
     case 'logout':
       console.debug("logout page")
@@ -155,11 +163,33 @@ app.get("/account/:action", (req,res)=>{
       res.send({success: database.setPassword("raikas","salasaana","raikasonparas")})
       break;
     case 'create':
-      console.log(database.newAccount)
       res.json(database.newAccount(req.query.username, req.query.password))
       break;
     case 'loggedin':
       redirect(res, "../../")
+      break;
+    case 'opinsys':
+      if(!req.query.jwt) {
+        redirect(res, "/account/login?opinsysaccountnone")
+        return;
+      }
+      const data = jwt(req.query.jwt);
+
+      if(!data.username) {
+        redirect(res, "/account/login?opinsysaccountnone")
+        return;
+      }
+      if(data.organisation_domain !== opinsys_organization) {
+        redirect(res, "/account/login?opinsysinvalidorganization")
+        return;
+      }
+      
+      if(!database.validateUsername(data.username)) {
+        redirect(res, "/account/login?opinsysaccountnone")
+        return;
+      }
+      utils.setAccount(req, {token: database.opinsysToken(data.username)})
+      redirect(res, "/account/loggedin") 
       break;
     default:
       res.status(404).send("Not found GET /account/:action")

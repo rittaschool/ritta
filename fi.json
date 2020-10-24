@@ -1,7 +1,15 @@
 {
   "login": "Kirjaudu",
+  "homepage": "Etusivu",
   "username": "Käyttäjänimi",
   "password": "Salasana",
+  "authenticate": "Tunnistaudu käyttäen",
   "error_login": "Virheellinen käyttäjänimi tai salasana",
-  "loggedout": "Kirjauduit ulos"
+  "error_fieldrequired": "Tämä kenttä täytyy täyttää.",
+  "loggedout": "Kirjauduit ulos",
+  "opinsys_account_none": "Käyttäjää ei löytynyt.",
+  "opinsys_organization_invalid": "Tämä organisaatio ei ole sallittu.",
+  "navbar": {
+    "home": "Etusivu"
+  }
 }

@@ -1,6 +1,16 @@
 const config = require("./config.json")
 const crypto = require('crypto');
 const ics = require("ics")
+
+let database;
+try {
+  database = require("./database/"+config.databaseType+".js")
+} catch(e) {
+  console.debug(e)
+  console.log("Database file not found. Check your config.")
+  process.exit()
+}
+
 exports.genUUID = function() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -31,8 +41,19 @@ exports.isLoggedIn = function(req) {
     if(database.isLoggedInByToken(req.session.account.token)) {
       return true;
     } else {
-      utils.setAccount(req, undefined)
+      exports.setAccount(req, undefined)
     }
+  }
+  return false;
+}
+
+exports.usernameFromToken = function(req) {
+  if(req.session.account) {
+    var token = exports.decrypt(req.session.account.token)
+    let split = token.split(":")
+    let username = split[0];
+    username = exports.decrypt(username);
+    return username;
   }
   return false;
 }

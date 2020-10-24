@@ -19,6 +19,10 @@ exports.validate = function(user, password) {
   return true;
 }
 
+exports.validateUsername = function(username) {
+  return users.has(username);
+}
+
 exports.generateAccountToken = function(user, password) {
   if(!users.has(user)) return null;
   let username = users.get(user, "username");
@@ -26,11 +30,25 @@ exports.generateAccountToken = function(user, password) {
   return token;
 }
 
+exports.opinsysToken = function(user) {
+  if(!users.has(user)) return null;
+  let username = users.get(user, "username");
+  const token = utils.encrypt(utils.encrypt(username) + ":"+utils.encrypt(users.get(username,"password"))+":"+Date.now())
+  return token;
+  
+}
+
 exports.setPassword = function(user, oldPassword, newPassword) {
     if(!users.has(user)) return false;
     if(users.get(user,"password") !== utils.encrypt(oldPassword)) return false;
     users.set(user,utils.encrypt(newPassword),"password")
     return true;
+}
+
+exports.getUserData = function(username) {
+  if(!users.has(username)) return;
+  users.ensure(username, {"firstname":"Etunimi","lastname":"Sukunimi"})
+  return users.get(username);
 }
 
 exports.isLoggedInByToken = function(token) {
