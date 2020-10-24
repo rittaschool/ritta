@@ -4525,3 +4525,6 @@ node_modules/yallist/package.json
 node_modules/yallist/README.md
 node_modules/yallist/yallist.js
 sessions/57d75b03-77a5-4678-b6a6-85df74ace294.json
+data/enmap.sqlite
+data/enmap.sqlite-shm
+data/enmap.sqlite-wal
