@@ -3,7 +3,7 @@
     "name": "Demokoulu",
     "city": "Demokaupunki"
   },
-  "encryptionKey": "DontShareThis",
+  "encryptionKey": "!!! NEVER SHARE THIS !!!",
   "website": {
     "port": 80
   },
@@ -15,8 +15,9 @@
     "cert": "./ssl/cert.pem"
   },
   "opinsys": {
-    "enabled": true,
+    "enabled": false,
     "organization": "demo.opinsys.fi",
-    "redirectURI": "http://localhost/account/opinsys"
+    "redirectURI": "http://localhost/account/opinsys",
+    "secret": "!!! NEVER SHARE THIS !!!"
   }
 }

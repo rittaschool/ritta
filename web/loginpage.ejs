@@ -62,7 +62,7 @@
                 </div>
                 <!--  -->
                 <% if (opinsys.enabled) { %>
-                    <button class="btn btn-primary btn-lg btn-block" tabindex="4" onclick="window.location='https://api.opinsys.fi/v3/sso?organisation=demo.opinsys.fi&return_to=http://localhost/account/opinsys';" >
+                    <button class="btn btn-primary btn-lg btn-block" tabindex="4" onclick="window.location='https://api.opinsys.fi/v3/sso?organisation=<%- opinsys.organization %>&return_to=<%- opinsys.redirectURI %>';" >
                       <img src="/images/opinsys.svg" height="30">
                     </button>
                  <% } %>

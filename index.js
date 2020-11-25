@@ -7,7 +7,7 @@ const express = require("express"),
       fs = require("fs"),
       crypto = require("crypto"),
       rateLimit = require("express-rate-limit"),
-      jwt = require("jwt-decode");
+      jwt = require("njwt");
 
 // Local modules
 let database
@@ -68,7 +68,7 @@ try {
   database = require("./database/"+config.databaseType+".js")
 } catch(e) {
   console.debug(e)
-  console.log("Database file not found. Check your config.")
+  console.log("Database file not found, or there was a error. Check your config.")
   process.exit()
 }
 const utils = require("./utils.js")
@@ -99,16 +99,13 @@ app.use(session({
   saveUninitialized: true,
   cookie: { maxAge: 3600000, secure: false, test:"true" }
 }))
-const rateLimitThese = [/\/api\/calendar\/(.+)/]
+
 const limiter = rateLimit({
-  windowMs: 15000,
-  max: 1,
+  windowMs: 1150,
+  max: 5,
   handler: function (req, res, next) {
-    if(rateLimitThese.some((limit)=>{console.log(req.originalUrl.match(rateLimitThese)); return req.originalUrl.match(rateLimitThese)})) {
-      res.status(429).send("<h2>You are being rate limited.</h2><script>window.location.replace('/');</script>");
-      return;
-    }
-    next();
+    if(req.path.endsWith(".css") || req.path.endsWith(".js") || req.path.endsWith(".png") || req.path.endsWith(".jpg") || req.path.endsWith(".jpeg") || req.path.endsWith(".svg")) { next(); return; }
+    res.status(429).send("Wait a bit... <script>setTimeout(()=>{window.location.replace('"+req.originalUrl+"')},1150)</script>");
   },
 });
 app.use(limiter)
@@ -122,6 +119,23 @@ app.use(express.static("assets"))
 app.get("/", (req, res) => {
   if(utils.isLoggedIn(req)) {
     res.render(__dirname + "/web/homepage.ejs", {version: packageJSON.version, lang: lang, school: config.school, username: utils.usernameFromToken(req), user: database.getUserData(utils.usernameFromToken(req))})
+  } else {
+    redirect(res,"/account/login")
+  }
+  //res.send("Redirect -> /login")
+})
+
+app.post("/messages/send", (req, res) => {
+  if(utils.isLoggedIn(req)) {
+    res.json({body: req.body, query: req.query})
+  } else {
+    redirect(res,"/account/login")
+  }
+})
+
+app.get("/messages/send", (req, res) => {
+  if(utils.isLoggedIn(req)) {
+    res.render(__dirname + "/web/sendmessage.ejs", {version: packageJSON.version, lang: lang, school: config.school, username: utils.usernameFromToken(req), user: database.getUserData(utils.usernameFromToken(req))})
   } else {
     redirect(res,"/account/login")
   }
@@ -154,16 +168,8 @@ app.get("/account/:action", (req,res)=>{
       res.render(__dirname + "/web/loginpage.ejs", {lang: lang, school: config.school, opinsys: config.opinsys, error: error})
       break;
     case 'logout':
-      console.debug("logout page")
       utils.setAccount(req, undefined)
-      console.debug("Log out succesfull, redirect")
       redirect(res,"/account/login?loggedout")
-      break;
-    case 'changepassword':
-      res.send({success: database.setPassword("raikas","salasaana","raikasonparas")})
-      break;
-    case 'create':
-      res.json(database.newAccount(req.query.username, req.query.password))
       break;
     case 'loggedin':
       redirect(res, "../../")
@@ -173,7 +179,17 @@ app.get("/account/:action", (req,res)=>{
         redirect(res, "/account/login?opinsysaccountnone")
         return;
       }
-      const data = jwt(req.query.jwt);
+      console.debug("Processing opinSYS Authentication JWT: \"" + req.query.jwt + "\"")
+      let data;
+      jwt.verify(token,signingKey,function(err,verifiedJwt){
+        if(err){
+          console.debug("opinSYS Authencation JWT was invalid! Rejecting request")
+          redirect(res, "/account/login?opinsysaccountnone")
+          return;
+        } else {
+          data = verifiedJwt;
+        }
+      });
 
       if(!data.username) {
         redirect(res, "/account/login?opinsysaccountnone")
