@@ -189,24 +189,23 @@ app.get("/account/:action", (req,res)=>{
           return;
         } else {
           data = verifiedJwt;
+          if(!data.username) {
+            redirect(res, "/account/login?opinsysaccountnone")
+            return;
+          }
+          if(data.organisation_domain !== opinsys_organization) {
+            redirect(res, "/account/login?opinsysinvalidorganization")
+            return;
+          }
+      
+          if(!database.validateUsername(data.username)) {
+            redirect(res, "/account/login?opinsysaccountnone")
+            return;
+          }
+          utils.setAccount(req, {token: database.opinsysToken(data.username)})
+          redirect(res, "/account/loggedin") 
         }
       });
-
-      if(!data.username) {
-        redirect(res, "/account/login?opinsysaccountnone")
-        return;
-      }
-      if(data.organisation_domain !== opinsys_organization) {
-        redirect(res, "/account/login?opinsysinvalidorganization")
-        return;
-      }
-      
-      if(!database.validateUsername(data.username)) {
-        redirect(res, "/account/login?opinsysaccountnone")
-        return;
-      }
-      utils.setAccount(req, {token: database.opinsysToken(data.username)})
-      redirect(res, "/account/loggedin") 
       break;
     default:
       res.status(404).send("Not found GET /account/:action")
