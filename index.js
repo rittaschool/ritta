@@ -78,6 +78,7 @@ const packageJSON = require("./package.json")
 const opinsys = config.opinsys.enabled;
 const opinsys_organization = config.opinsys.organization;
 const opinsys_redirect = config.opinsys.redirectURI;
+const opinsys_secret = config.opinsys.secret;
 
 /*
  *
@@ -181,7 +182,7 @@ app.get("/account/:action", (req,res)=>{
       }
       console.debug("Processing opinSYS Authentication JWT: \"" + req.query.jwt + "\"")
       let data;
-      jwt.verify(token,signingKey,function(err,verifiedJwt){
+      jwt.verify(req.query.jwt,opinsys_secret,function(err,verifiedJwt){
         if(err){
           console.debug("opinSYS Authencation JWT was invalid! Rejecting request")
           redirect(res, "/account/login?opinsysaccountnone")
