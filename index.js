@@ -79,6 +79,7 @@ const packageJSON = require("./package.json")
 const opinsys = config.opinsys.enabled;
 const opinsys_organization = config.opinsys.organization;
 const opinsys_redirect = config.opinsys.redirectURI;
+const opinsys_secret = config.opinsys.secret;
 
 /*
  *
@@ -186,8 +187,7 @@ app.get("/account/:action", (req,res)=>{
       let data;
       
       console.debug(req.query.jwt + "\" \" " + config.opinsys.secret)
-      jwt.verify(req.query.jwt,config.opinsys.secret,function(err,verifiedJwt){
-        console.debug(err + " "+verifiedJwt)
+      jwt.verify(req.query.jwt,opinsys_secret,function(err,verifiedJwt){
         if(err){
           console.debug("opinSYS Authencation JWT was invalid! Rejecting request")
           redirect(res, "/account/login?opinsysaccountnone")
@@ -202,7 +202,7 @@ app.get("/account/:action", (req,res)=>{
             redirect(res, "/account/login?opinsysinvalidorganization")
             return;
           }
-          
+      
           if(!database.validateUsername(data.username)) {
             redirect(res, "/account/login?opinsysaccountnone")
             return;
@@ -211,7 +211,6 @@ app.get("/account/:action", (req,res)=>{
           redirect(res, "/account/loggedin") 
         }
       });
-      
       break;
     default:
       res.status(404).send("Not found GET /account/:action")
