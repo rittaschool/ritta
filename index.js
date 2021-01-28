@@ -8,7 +8,8 @@ const express = require("express"),
       crypto = require("crypto"),
       rateLimit = require("express-rate-limit"),
       jwt = require("njwt"),
-      csrf = require("csurf");
+      csrf = require("csurf"),
+      cookieParser = require('cookie-parser');
 
 // Local modules
 let database
@@ -99,10 +100,9 @@ app.use(session({
   store: new fileStore({logFn: function() {}}),
   resave: true,
   saveUninitialized: true,
-  cookie: { maxAge: 3600000, secure: false, test:"true" }
+  cookie: { maxAge: 3600000, secure: true, signed: true}
 }))
-// Anti CSRF
-app.use(csrf({ cookie: true }));
+app.use(cookieParser())
 
 const limiter = rateLimit({
   windowMs: 1150,
@@ -119,7 +119,8 @@ app.use(function (req, res, next) {
 })
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static("assets"))
-
+// Anti CSRF
+app.use(csrf({ cookie: true }));
 app.get("/", (req, res) => {
   if(utils.isLoggedIn(req)) {
     res.render(__dirname + "/web/homepage.ejs", {version: packageJSON.version, lang: lang, school: config.school, username: utils.usernameFromToken(req), user: database.getUserData(utils.usernameFromToken(req))})
