@@ -7,7 +7,8 @@ const express = require("express"),
       fs = require("fs"),
       crypto = require("crypto"),
       rateLimit = require("express-rate-limit"),
-      jwt = require("njwt");
+      jwt = require("njwt"),
+      csrf = require("csurf");
 
 // Local modules
 let database
@@ -99,6 +100,8 @@ app.use(session({
   saveUninitialized: true,
   cookie: { maxAge: 3600000, secure: false, test:"true" }
 }))
+// Anti CSRF
+app.use(csrf({ cookie: true }));
 
 const limiter = rateLimit({
   windowMs: 1150,
@@ -181,31 +184,34 @@ app.get("/account/:action", (req,res)=>{
       }
       console.debug("Processing opinSYS Authentication JWT: \"" + req.query.jwt + "\"")
       let data;
-      jwt.verify(token,signingKey,function(err,verifiedJwt){
+      
+      console.debug(req.query.jwt + "\" \" " + config.opinsys.secret)
+      jwt.verify(req.query.jwt,config.opinsys.secret,function(err,verifiedJwt){
+        console.debug(err + " "+verifiedJwt)
         if(err){
           console.debug("opinSYS Authencation JWT was invalid! Rejecting request")
           redirect(res, "/account/login?opinsysaccountnone")
           return;
         } else {
-          data = verifiedJwt;
+          data = verifiedJwt.body;
+          if(!data.username) {
+            redirect(res, "/account/login?opinsysaccountnone")
+            return;
+          }
+          if(data.organisation_domain !== opinsys_organization) {
+            redirect(res, "/account/login?opinsysinvalidorganization")
+            return;
+          }
+          
+          if(!database.validateUsername(data.username)) {
+            redirect(res, "/account/login?opinsysaccountnone")
+            return;
+          }
+          utils.setAccount(req, {token: database.opinsysToken(data.username)})
+          redirect(res, "/account/loggedin") 
         }
       });
-
-      if(!data.username) {
-        redirect(res, "/account/login?opinsysaccountnone")
-        return;
-      }
-      if(data.organisation_domain !== opinsys_organization) {
-        redirect(res, "/account/login?opinsysinvalidorganization")
-        return;
-      }
       
-      if(!database.validateUsername(data.username)) {
-        redirect(res, "/account/login?opinsysaccountnone")
-        return;
-      }
-      utils.setAccount(req, {token: database.opinsysToken(data.username)})
-      redirect(res, "/account/loggedin") 
       break;
     default:
       res.status(404).send("Not found GET /account/:action")
