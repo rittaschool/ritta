@@ -73,6 +73,8 @@ try {
   console.log("Database file not found, or there was a error. Check your config.")
   process.exit()
 }
+database.connect(config.database)
+
 const utils = require("./utils.js")
 const packageJSON = require("./package.json")
 
@@ -100,7 +102,7 @@ app.use(session({
   store: new fileStore({logFn: function() {}}),
   resave: true,
   saveUninitialized: true,
-  cookie: { maxAge: 3600000, secure: true, signed: true}
+  cookie: { maxAge: 3600000, secure: false}
 }))
 app.use(cookieParser())
 
@@ -140,7 +142,7 @@ app.post("/messages/send", (req, res) => {
 
 app.get("/messages/send", (req, res) => {
   if(utils.isLoggedIn(req)) {
-    res.render(__dirname + "/web/sendmessage.ejs", {version: packageJSON.version, lang: lang, school: config.school, username: utils.usernameFromToken(req), user: database.getUserData(utils.usernameFromToken(req))})
+    res.render(__dirname + "/web/sendmessage.ejs", {version: packageJSON.version, lang: lang, school: config.school, username: utils.usernameFromToken(req), user: database.getUserData(utils.usernameFromToken(req)), csrfToken: req.csrfToken()})
   } else {
     redirect(res,"/account/login")
   }
@@ -170,7 +172,7 @@ app.get("/account/:action", (req,res)=>{
       } else if(req.query.hasOwnProperty("opinsysinvalidorganization")){
         error = lang.opinsys_organization_invalid;
       }
-      res.render(__dirname + "/web/loginpage.ejs", {lang: lang, school: config.school, opinsys: config.opinsys, error: error})
+      res.render(__dirname + "/web/loginpage.ejs", {lang: lang, school: config.school, opinsys: config.opinsys, error: error, csrfToken: req.csrfToken()})
       break;
     case 'logout':
       utils.setAccount(req, undefined)

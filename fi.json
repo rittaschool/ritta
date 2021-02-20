@@ -10,6 +10,7 @@
   "opinsys_account_none": "Käyttäjää ei löytynyt.",
   "opinsys_organization_invalid": "Tämä organisaatio ei ole sallittu.",
   "navbar": {
+    "common": "Yleinen",
     "home": "Etusivu",
     "markread": "Merkkaa luetuksi",
     "newmessage": "Uusi viesti",

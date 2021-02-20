@@ -34,6 +34,7 @@
                   <h6 style="color:black; margin-bottom: 15px; text-decoration: "><%- error %></h6>
                 <% } %>
                 <form method="POST" action="/account/process" class="needs-validation" novalidate="">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   <div class="form-group">
                     <label for="email"><%- lang.username %></label>
                     <input style="text-transform:lowercase;" id="username" onkeyup="return this.value=this.value.toLowerCase();" type="text" class="form-control" name="username" tabindex="1" required autofocus>
