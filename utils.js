@@ -1,15 +1,9 @@
-const config = require("./config.json")
+const config = require("./config.js")
 const crypto = require('crypto');
 const ics = require("ics")
+const IV_LENGTH = 16;
+const ENCRYPTION_KEY = crypto.createHash('sha256').update(String(config.encryptionKey)).digest('base64').substr(0, 16);
 
-let database;
-try {
-  database = require("./database/"+config.databaseType+".js")
-} catch(e) {
-  console.debug(e)
-  console.log("Database file not found. Check your config.")
-  process.exit()
-}
 
 exports.genUUID = function() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -17,45 +11,23 @@ exports.genUUID = function() {
     return v.toString(16);
   });
 }
-exports.setAccount = function(req, account) {
-  req.session.account = account;
-  req.session.save(function() {console.debug("Session saved")})
+
+exports.encrypt = function(text) {
+  let iv = crypto.randomBytes(IV_LENGTH);
+  let cipher = crypto.createCipheriv('aes-128-cbc', ENCRYPTION_KEY, iv);
+  let encrypted = cipher.update(text);
+  encrypted = Buffer.concat([encrypted, cipher.final()]);
+  return iv.toString('hex') + ':' + encrypted.toString('hex');
 }
 
-exports.encrypt = function(string) {
-  let key = crypto.createCipher('aes-128-cbc', config.encryptionKey);
-  let crypted = key.update(string, 'utf8', 'hex')
-  crypted += key.final('hex');
-  return crypted;
-}
-
-exports.decrypt = function(string) {
-  var key = crypto.createDecipher('aes-128-cbc', config.encryptionKey);
-  var string = key.update(string, 'hex', 'utf8')
-  string += key.final('utf8');
-  return string;
-}
-
-exports.isLoggedIn = function(req) {
-  if(req.session.account) {
-    if(database.isLoggedInByToken(req.session.account.token)) {
-      return true;
-    } else {
-      exports.setAccount(req, undefined)
-    }
-  }
-  return false;
-}
-
-exports.usernameFromToken = function(req) {
-  if(req.session.account) {
-    var token = exports.decrypt(req.session.account.token)
-    let split = token.split(":")
-    let username = split[0];
-    username = exports.decrypt(username);
-    return username;
-  }
-  return false;
+exports.decrypt = function(text) {
+  let textParts = text.split(':');
+  let iv = Buffer.from(textParts.shift(), 'hex');
+  let encryptedText = Buffer.from(textParts.join(':'), 'hex');
+  let decipher = crypto.createDecipheriv('aes-128-cbc', ENCRYPTION_KEY, iv);
+  let decrypted = decipher.update(encryptedText);
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+  return decrypted.toString();
 }
 
 exports.createCalendar = function(attributes) {

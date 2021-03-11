@@ -1,6 +1,7 @@
 // NPMJS Modules
 const express = require("express"),
       session = require("express-session"),
+      cors = require("cors"),
       fileStore = require("session-file-store")(session),
       bodyParser = require("body-parser"),
       https = require("https"),
@@ -9,30 +10,33 @@ const express = require("express"),
       rateLimit = require("express-rate-limit"),
       jwt = require("njwt"),
       csrf = require("csurf"),
-      cookieParser = require('cookie-parser');
+      cookieParser = require('cookie-parser'),
+      helmet = require("helmet"),
+      passport = require("passport"),
+      OpinsysStrategy = require("passport-opinsys"),
+      xss = require("xss"),
+      LocalStrategy = require("passport-local");
 
 // Local modules
-let database
+let database;
 
 // Remove the useless part of argv
 process.argv = process.argv.slice(2);
 
 
 // Debug mode
-const debugMode = process.argv.includes("debug")
+const debugMode = process.argv.includes("debug");
 
 // Custom console.log
-console.log = function(d = "") {
+console.log = (d = "") => {
   process.stdout.write("Ritta » " + d + '\n');
 }
-console.debug = function(d = "") {
+console.debug = (d = "") => {
   if(debugMode) process.stdout.write("Debug » " + d + '\n');
 }
 
 // Enabled message
-if(debugMode) {
-  console.debug("Debug mode enabled")
-}
+if(debugMode) console.debug("Debug mode enabled")
 
 // Events
 
@@ -46,17 +50,13 @@ process.on('SIGINT', function() {
     process.exit();
 });
 
-// Custom redirect using js, because the express one breaks things
-function redirect(res, url) {
-  res.send('<script>window.location.replace("'+url+'");</script>')
-}
 // Start
 
 let config;
 try {
-  config = require("./config.json")
+  config = require("./config.js")
 } catch(e) {
-  console.log("Config file not found. Rename config.json.example to config.json")
+  console.log("Config file not found. Rename config.js.example to config.js")
   process.exit()
 }
 let lang;
@@ -73,6 +73,8 @@ try {
   console.log("Database file not found, or there was a error. Check your config.")
   process.exit()
 }
+database.connect(config.database)
+
 const utils = require("./utils.js")
 const packageJSON = require("./package.json")
 
@@ -81,6 +83,59 @@ const opinsys = config.opinsys.enabled;
 const opinsys_organization = config.opinsys.organization;
 const opinsys_redirect = config.opinsys.redirectURI;
 const opinsys_secret = config.opinsys.secret;
+
+// Register passport strategies!
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    database.validate(username, password).then(isValid=>{
+      if(isValid) {
+        database.getUserData(username).then(user => {
+          done(null, user)
+        })
+      } else {
+        done(null, false, { message: "invalid" });
+      }
+    })
+      
+  }
+));
+
+if(opinsys) {
+  passport.use(new OpinsysStrategy (
+    {
+        redirectURI: opinsys_redirect,
+        secret: opinsys_secret,
+        organization: opinsys_organization
+    },
+    function(profile, done) {
+        if(profile.organisation_domain !== opinsys_organization) {
+          done(null, false, { message: "opinsysinvalidorganization" })
+          return;
+        }
+        database.validateUsername(profile.username).then((usernameValid)=>{
+          if(usernameValid) {
+            database.getUserData(profile.username).then(user => {
+              done(null, user)
+            })
+          } else {
+            done(null, false, { message: "opinsysaccountnone" });
+          }
+        })
+    }
+));
+}
+
+// Setup session
+
+passport.serializeUser(function(user, done) {
+  done(null, user.username);
+});
+ 
+passport.deserializeUser(function(id, done) {
+  database.getUserData(id).then(user=>{
+    done(false, user);
+  })
+});
 
 /*
  *
@@ -97,16 +152,16 @@ app.use(session({
     return utils.genUUID()
   },
   secret: config.encryptionKey,
-  store: new fileStore({logFn: function() {}}),
   resave: true,
   saveUninitialized: true,
-  cookie: { maxAge: 3600000, secure: true, signed: true}
+  cookie: { maxAge: 3600000, secure: true }
 }))
 app.use(cookieParser())
-
+app.use(cors());
+app.use(helmet());
 const limiter = rateLimit({
-  windowMs: 1150,
-  max: 5,
+  windowMs: 100,
+  max: 40,
   handler: function (req, res, next) {
     if(req.path.endsWith(".css") || req.path.endsWith(".js") || req.path.endsWith(".png") || req.path.endsWith(".jpg") || req.path.endsWith(".jpeg") || req.path.endsWith(".svg")) { next(); return; }
     res.status(429).send("Wait a bit... <script>setTimeout(()=>{window.location.replace('"+req.originalUrl+"')},1150)</script>");
@@ -119,46 +174,53 @@ app.use(function (req, res, next) {
 })
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static("assets"))
+app.use(passport.initialize());
+app.use(passport.session());
 // Anti CSRF
 app.use(csrf({ cookie: true }));
+
 app.get("/", (req, res) => {
-  if(utils.isLoggedIn(req)) {
-    res.render(__dirname + "/web/homepage.ejs", {version: packageJSON.version, lang: lang, school: config.school, username: utils.usernameFromToken(req), user: database.getUserData(utils.usernameFromToken(req))})
+  if(req.user) {
+    res.render(__dirname + "/web/homepage.ejs", {version: packageJSON.version, lang: lang, school: config.school, username: req.user.username, user: req.user})
   } else {
-    redirect(res,"/account/login")
+    res.redirect("/account/login")
   }
-  //res.send("Redirect -> /login")
 })
 
 app.post("/messages/send", (req, res) => {
-  if(utils.isLoggedIn(req)) {
+  if(req.user) {
     res.json({body: req.body, query: req.query})
   } else {
-    redirect(res,"/account/login")
+    res.redirect("/account/login")
   }
 })
 
 app.get("/messages/send", (req, res) => {
-  if(utils.isLoggedIn(req)) {
-    res.render(__dirname + "/web/sendmessage.ejs", {version: packageJSON.version, lang: lang, school: config.school, username: utils.usernameFromToken(req), user: database.getUserData(utils.usernameFromToken(req))})
+  if(req.user) {
+    res.render(__dirname + "/web/sendmessage.ejs", {version: packageJSON.version, lang: lang, school: config.school, username: req.user.username, user: req.user, csrfToken: req.csrfToken()})
   } else {
-    redirect(res,"/account/login")
+    res.redirect("/account/login")
   }
   //res.send("Redirect -> /login")
 })
 
+app.get("/account/opinsys", passport.authenticate("opinsys", {failureRedirect: "/account/login?opinsysaccountnone",successRedirect:"/"}))
+
+app.get("/logout", (req, res) => {
+  req.logout();
+  req.session.destroy(function (err) {});
+  setTimeout(()=>{res.redirect("/account/login?loggedout")},200)
+})
 app.get("/account/:action", (req,res)=>{
   switch(req.params.action.toLowerCase()) {
+    case 'createuser':
+      database.newAccount("opiskelija.ritta","deeb8Too")
+      res.redirect( "/")
+      return;
     case 'login':
-      if(req.session.account) {
-        if(database.isLoggedInByToken(req.session.account.token)) {
-          //res.send("is logged in <3")
-          console.debug("User is logged in, redirect")
-          redirect(res,"/")
-          return;
-        } else {
-          utils.setAccount(req, undefined)
-        }
+      if(req.user) {
+        res.redirect("/")
+        return;
       }
       let error;
       if(req.query.hasOwnProperty("invalid")) {
@@ -170,64 +232,21 @@ app.get("/account/:action", (req,res)=>{
       } else if(req.query.hasOwnProperty("opinsysinvalidorganization")){
         error = lang.opinsys_organization_invalid;
       }
-      res.render(__dirname + "/web/loginpage.ejs", {lang: lang, school: config.school, opinsys: config.opinsys, error: error})
-      break;
-    case 'logout':
-      utils.setAccount(req, undefined)
-      redirect(res,"/account/login?loggedout")
+      res.render(__dirname + "/web/loginpage.ejs", {lang: lang, school: config.school, opinsys: config.opinsys, error: error, csrfToken: req.csrfToken()})
       break;
     case 'loggedin':
-      redirect(res, "../../")
-      break;
-    case 'opinsys':
-      if(!req.query.jwt) {
-        redirect(res, "/account/login?opinsysaccountnone")
-        return;
-      }
-      console.debug("Processing opinSYS Authentication JWT: \"" + req.query.jwt + "\"")
-      let data;
-      
-      console.debug(req.query.jwt + "\" \" " + config.opinsys.secret)
-      jwt.verify(req.query.jwt,opinsys_secret,function(err,verifiedJwt){
-        if(err){
-          console.debug("opinSYS Authencation JWT was invalid! Rejecting request")
-          redirect(res, "/account/login?opinsysaccountnone")
-          return;
-        } else {
-          data = verifiedJwt.body;
-          if(!data.username) {
-            redirect(res, "/account/login?opinsysaccountnone")
-            return;
-          }
-          if(data.organisation_domain !== opinsys_organization) {
-            redirect(res, "/account/login?opinsysinvalidorganization")
-            return;
-          }
-      
-          if(!database.validateUsername(data.username)) {
-            redirect(res, "/account/login?opinsysaccountnone")
-            return;
-          }
-          utils.setAccount(req, {token: database.opinsysToken(data.username)})
-          redirect(res, "/account/loggedin") 
-        }
-      });
+      res.redirect( "/")
       break;
     default:
       res.status(404).send("Not found GET /account/:action")
       break;
   }
 })
+
+app.post("/account/process", passport.authenticate("local", { failureRedirect: '/account/login?invalid', successRedirect: "/" }))
+
 app.post("/account/:action", (req,res)=>{
   switch(req.params.action.toLowerCase()) {
-    case 'process':
-      if(database.validate(req.body.username, req.body.password)) {
-        utils.setAccount(req, {token: database.generateAccountToken(req.body.username, req.body.password)})
-        redirect(res, "/account/loggedin")
-      } else {
-        redirect(res, "/account/login?invalid")
-      }
-      break;
     default:
       res.status(404).send("Not found POST /account/:action")
       break;
@@ -235,14 +254,6 @@ app.post("/account/:action", (req,res)=>{
 })
 app.post("/api/:action", (req,res)=>{
   switch(req.params.action.toLowerCase()) {
-    case 'process':
-      if(database.validate(req.body.username, req.body.password)) {
-        utils.setAccount(req, {token: database.generateAccountToken(req.body.username, req.body.password)})
-        redirect(res, "/account/loggedin")
-      } else {
-        redirect(res, "/account/login?invalid")
-      }
-      break;
     default:
       res.status(404).send("Not found POST /account/:action")
       break;
@@ -285,7 +296,7 @@ let server;
 if(config.ssl.enabled) {
   var privateKey = fs.readFileSync( config.ssl.key );
   var certificate = fs.readFileSync( config.ssl.cert );
-
+  
   server = https.createServer({
       key: privateKey,
       cert: certificate
@@ -297,3 +308,20 @@ if(config.ssl.enabled) {
     console.log("Website is now running on port " + config.website.port)
   })
 }
+
+/**
+ * Load modules from modules/
+ */
+ fs.readdir('./modules/', (err, files) => {
+  if (err) console.error(err);
+  console.log(`Loading ${files.length} modules.`);
+  files.forEach(f => {
+    let module = require(`./modules/${f}`);
+    if(!module.conf.enabled) {
+      console.debug(`Module ${f} disabled, skipping...`);
+      continue;
+    }
+    console.debug(`Loading module: ${f}.`);
+    if(f.start) f.start(app, database);
+  });
+});

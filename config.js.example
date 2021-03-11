@@ -1,0 +1,29 @@
+/**
+ * CONFIGURATION FILE FOR RITTA
+ */
+module.exports = {
+  "school": {
+    "name": "Demokoulu", // Set this to "" to allow multiple schools to work with one instance.
+    "city": "Demokaupunki"
+  },
+  "encryptionKey": "!!! NEVER SHARE THIS !!!", // The key that is used to encrypt almost everything.
+  "website": {
+    "port": 80  // 80 = http, 443 = https
+  },
+  "langFile": "./fi.json", // Language json
+  "databaseType": "mongodb", // Database file from database/*.js
+  "database": { // Additional params given to databse on start
+    "connectionString": "" 
+  },
+  "ssl": { // SSL info
+    "enabled": false,
+    "key": "./ssl/key.pem",
+    "cert": "./ssl/cert.pem"
+  },
+  "opinsys": { // Opinsys
+    "enabled": false,
+    "organization": "demo.opinsys.fi",
+    "redirectURI": "http://localhost/account/opinsys",
+    "secret": ""
+  }
+}

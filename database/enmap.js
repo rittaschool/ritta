@@ -1,12 +1,26 @@
 /*
+Enmap/sqlite
+*/
+
+/*
+DEPRECATED AS OF UPDATE 30/1/2021
+
+PLEASE MOVE TO ANOTHER DATABASE TYPE
+*/
+
+/*
  * The database file must contain all the functions required.
- * The module.exports = function() will always be run on setup.
- * Required functions are found in example enmap.js.
+ * The exports.connect = function(data) will always be run on setup.
+ * Required functions are found in example.js.
  * You can copy it and edit to your needing.
  */
 const Enmap = require("enmap");
 const utils = require("../utils.js")
 const users = new Enmap({name: "users"});;
+
+exports.connect = function(data) {
+
+}
 
 exports.newAccount = function(username, password){
   users.set(username, {username: username, id: users.count, password: utils.encrypt(password)})
