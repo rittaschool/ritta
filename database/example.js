@@ -24,11 +24,14 @@ exports.validateUsername = function(username) {
 
 /* string : Generate a account token (based on password, username) and returning it.
 Default ritta databasetypes use following:
-encryptedUsername:encryptedEncryptedPassword:Date.now()*/
+encryptedUsername:encryptedEncryptedPassword:Date.now()
+Deprecated since update 21/2/2021
+*/
 exports.generateAccountToken = function(user, password) {
 }
 
-/* string: Generate a token for opinsys use and return it */
+/* string: Generate a token for opinsys use and return it 
+Deprecated since update 21/2/2021*/
 exports.opinsysToken = function(user) {
   
 }

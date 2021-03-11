@@ -18,7 +18,6 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
   username: String,
-  id: Number,
   password: String,
   created: {type: Date, default: Date.now},
   role: Number,
@@ -26,8 +25,6 @@ const UserSchema = new Schema({
   lastname: {type: String, default:"Sukunimi"}
 });
 const User = mongoose.model('User',UserSchema);
-
-
 
 exports.connect = async function(data) {
   // Connecting to the mongodb database
@@ -37,24 +34,37 @@ exports.connect = async function(data) {
     useFindAndModify: false,
     useCreateIndex: true
   });
-  /*var i = new User({ username: 'roni.aikas', id: 0, password: utils.encrypt("salasana"), role:0 });
-
-  // Save the new model instance, passing a callback
-  i.save(function (err) {
-    if (err) {  console.log(err); return; }
-    console.log("saved")
-  });*/
 }
 
 exports.newAccount = function(username, password){
-  return {username, id, password: utils.encrypt(password)}
+  var i = new User({ username, password: utils.encrypt(password), role: 0 });
+
+  // Save the new model instance, passing a callback
+  i.save(function (err) {
+    if (err) {  console.debug(err); return; }
+    console.debug("New account saved")
+  });
+  return {username, password: utils.encrypt(password)}
 }
 
-/* boolean : If username and password set is correct return true, otherwise false */
-exports.validate = function(user, password) {
+/* Promise(=>boolean) : If username and password set is correct return true, otherwise false */
+exports.validate = function(username, password) {
+  return new Promise((resolve, reject)=> {
+    exports.validateUsername(username).then((userValid)=>{
+      if(!userValid) {
+        resolve(false); 
+        return; 
+      }
+      exports.getUserData(username).then((user) => {
+        resolve(utils.decrypt(user.password) == password);
+        return;
+      })
+    })
+  })
+  
 }
 
-/* boolean : Does user exist */
+/* Promise(=>boolean) : Does user exist */
 exports.validateUsername = async function(username) {
   return new Promise((resolve, reject) => {
     User.findOne({username}, function(err, user) {
@@ -70,25 +80,39 @@ exports.validateUsername = async function(username) {
 
 /* string : Generate a account token (based on password, username) and returning it.
 Default ritta databasetypes use following:
-encryptedUsername:encryptedEncryptedPassword:Date.now()*/
+encryptedUsername:encryptedEncryptedPassword:Date.now()
+Deprecated since update 21/2/2021
+*/
 exports.generateAccountToken = function(user, password) {
 }
 
-/* string: Generate a token for opinsys use and return it */
+/* string: Generate a token for opinsys use and return it 
+Deprecated since update 21/2/2021*/
 exports.opinsysToken = function(user) {
   
 }
 
 /* boolean: Set user password, first verify with oldPassword, if oldPassword wrong, return false, if password change succesful, return true */
 exports.setPassword = function(user, oldPassword, newPassword) {
+  return false;
 }
 
-/* Object: Return user data by username */
+/* Promise(=>Object): Return user data by username */
 exports.getUserData = function(username) {
-  
+  return new Promise((resolve, reject) => {
+    User.findOne({username}, function(err, user) {
+      if(err) { resolve(false); return; }
+      if(user) {
+        resolve(user);
+      } else {
+        resolve(null);
+      }
+    });
+  })
 }
 
-/* boolean: Verify loggedintoken, if valid return true and if not return false */
+/* boolean: Verify loggedintoken, if valid return true and if not return false 
+Deprecated since 21/2/2021 */
 exports.isLoggedInByToken = function(token) {
   
 }

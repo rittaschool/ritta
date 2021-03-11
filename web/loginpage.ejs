@@ -36,7 +36,7 @@
                 <form method="POST" action="/account/process" class="needs-validation" novalidate="">
                   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   <div class="form-group">
-                    <label for="email"><%- lang.username %></label>
+                    <label for="username"><%- lang.username %></label>
                     <input style="text-transform:lowercase;" id="username" onkeyup="return this.value=this.value.toLowerCase();" type="text" class="form-control" name="username" tabindex="1" required autofocus>
                     <div class="invalid-feedback">
                       <%- lang.error_fieldrequired %>
@@ -63,15 +63,16 @@
                 </div>
                 <!--  -->
                 <% if (opinsys.enabled) { %>
-                    <button class="btn btn-primary btn-lg btn-block" tabindex="4" onclick="window.location='https://api.opinsys.fi/v3/sso?organisation=<%- opinsys.organization %>&return_to=<%- opinsys.redirectURI %>';" >
+                  
+                    <a class="btn btn-primary btn-lg btn-block" tabindex="4" href="https://api.opinsys.fi/v3/sso?organisation=<%- opinsys.organization %>&return_to=<%- opinsys.redirectURI %>" >
                       <img src="/images/opinsys.svg" height="30">
-                    </button>
+                    </a>
                  <% } %>
 
               </div>
             </div>
             <div class="simple-footer">
-              Copyright &copy; Ritta 2020
+              Copyright &copy; Ritta <%- 1900+new Date().getYear() %>
             </div>
           </div>
         </div>
@@ -80,12 +81,13 @@
   </div>
 
   <!-- General JS Scripts -->
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="/js/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="/js/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="/js/jquery.nicescroll.min.js"></script>
+  <script src="/js/moment.min.js"></script>
   <script src="/js/stisla.js"></script>
+  <script defer src="/js/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
 
   <!-- JS Libraies -->
 

@@ -1,4 +1,4 @@
 node_modules/*
 sessions/*
 data/*
-config.json
+config.js
