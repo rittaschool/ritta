@@ -13,7 +13,7 @@ module.exports = {
   "langFile": "./fi.json", // Language json
   "databaseType": "mongodb", // Database file from database/*.js
   "database": { // Additional params given to databse on start
-    "connectionString": "mongodb+srv://ritta:deeb8Too@rittadevelopment.ipcep.mongodb.net/ritta" 
+    "connectionString": "" 
   },
   "ssl": { // SSL info
     "enabled": false,

@@ -308,3 +308,20 @@ if(config.ssl.enabled) {
     console.log("Website is now running on port " + config.website.port)
   })
 }
+
+/**
+ * Load modules from modules/
+ */
+ fs.readdir('./modules/', (err, files) => {
+  if (err) console.error(err);
+  console.log(`Loading ${files.length} modules.`);
+  files.forEach(f => {
+    let module = require(`./modules/${f}`);
+    if(!module.conf.enabled) {
+      console.debug(`Module ${f} disabled, skipping...`);
+      continue;
+    }
+    console.debug(`Loading module: ${f}.`);
+    if(f.start) f.start(app, database);
+  });
+});
