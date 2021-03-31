@@ -3,5 +3,5 @@ exports.start = function(client, message, args) {
 }
 
 exports.conf = {
-    enabled: false
+    enabled: true // Mainly for WIP modules, and if you want to disable something
 };

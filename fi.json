@@ -12,8 +12,20 @@
   "navbar": {
     "common": "Yleinen",
     "home": "Etusivu",
+    "messages": "Viestit",
     "markread": "Merkkaa luetuksi",
     "newmessage": "Uusi viesti",
     "newnote": "Uusi tuntimerkintä"
-  }
+  },
+  "messages": "Viestit",
+  "days": [
+    "Sunnuntai",
+    "Maanantai",
+    "Tiistai",
+    "Keskiviikko",
+    "Torstai",
+    "Perjantai",
+    "Lauantai"
+  ],
+  "todayIs": "Tänään on"
 }

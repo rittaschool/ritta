@@ -4,7 +4,7 @@
   "description": "Ritta is a new times system for school, to keep connections between home and school strong.",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js debug",
+    "test": "nodemon index.js debug",
     "start": "npm test"
   },
   "repository": {
@@ -37,8 +37,10 @@
     "express-session": "^1.17.1",
     "helmet": "^4.4.1",
     "ics": "^2.25.0",
+    "joi": "^17.4.0",
     "jquery-sparkline": "^2.4.0",
     "lodash": "^4.17.20",
+    "moment": "^2.29.1",
     "mongoose": "^5.11.15",
     "njwt": "^1.0.0",
     "passport": "^0.4.1",
@@ -47,5 +49,14 @@
     "session-file-store": "^1.5.0",
     "summernote": "^0.8.18",
     "xss": "^1.0.8"
+  },
+  "devDependencies": {
+    "eslint": "^7.23.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1"
   }
 }
