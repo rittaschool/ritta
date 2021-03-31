@@ -9,110 +9,276 @@ MongoDB
  * You can copy it and edit to your needing.
  */
 
-const utils = require("../utils.js") 
+const mongoose = require('mongoose');
+const xss = require('xss');
+const utils = require('../utils.js');
 
-const mongoose = require("mongoose")
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 // Create schemas
 
 const UserSchema = new Schema({
   username: String,
   password: String,
-  created: {type: Date, default: Date.now},
+  created: { type: Number, default: Date.now },
   role: Number,
-  firstname: {type: String, default:"Etunimi"},
-  lastname: {type: String, default:"Sukunimi"}
+  firstname: { type: String, default: 'Etunimi' },
+  lastname: { type: String, default: 'Sukunimi' },
 });
-const User = mongoose.model('User',UserSchema);
+const User = mongoose.model('User', UserSchema);
 
-exports.connect = async function(data) {
+const MessageSchema = new Schema({
+  sender: Schema.Types.ObjectId, // Sender of this message,
+  created: { type: Number, default: Date.now },
+  content: String,
+});
+const Message = mongoose.model('Message', MessageSchema);
+
+const MessageThreadSchema = new Schema({
+  name: String,
+  sender: Schema.Types.ObjectId, // The original first sender of the thread
+  recipients: [{
+    userId: {
+      type: Schema.Types.ObjectId,
+    },
+    read: {
+      type: Boolean,
+      default: false,
+    },
+    archived: {
+      type: Boolean,
+      default: false,
+    },
+  }], // All recipients that have not deleted
+  messages: [Schema.Types.ObjectId], // All messages tied to this thread
+  created: { type: Number, default: Date.now },
+});
+const MessageThread = mongoose.model('MessageThread', MessageThreadSchema);
+
+exports.connect = async (data) => {
   // Connecting to the mongodb database
   mongoose.connect(data.connectionString, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
-    useCreateIndex: true
+    useCreateIndex: true,
+  }).then(() => console.log('MongoDB connection succesful')).catch((err) => {
+    console.log(`MongoDB connection failed. Exiting.\nError:\n${err}`);
+    process.exit();
   });
-}
+};
 
-exports.newAccount = function(username, password){
-  var i = new User({ username, password: utils.encrypt(password), role: 0 });
+exports.newMessage = (senderID, content, threadID) => new Promise((resolve) => {
+  if (!senderID || !content || !threadID) resolve(false);
+  const messageContent = xss(content);
+  const message = new Message(
+    { sender: senderID, content: utils.encrypt(messageContent), created: Date.now() },
+  );
+  MessageThread.findOne({ _id: threadID }, (err, thread) => {
+    if (err) { resolve(false); return; }
+    if (!thread) { resolve(false); return; }
+    thread.messages.push(message.id);
+    message.save((err1) => {
+      if (err1) { console.debug(err1); resolve(false); return; }
+      console.debug(`Message ${message.id} saved`);
+    });
+    thread.save((err2) => {
+      if (err2) { console.debug(err2); resolve(false); return; }
+      console.debug(`Thread ${thread.id} saved`);
+    });
+    resolve(thread.id);
+  });
+});
+
+exports.newThread = (senderID, title, content, recipients) => new Promise((resolve) => {
+  if (!senderID || !content || !recipients) resolve(false);
+  const messageContent = content; // Used to do XSS here
+  const message = new Message({ sender: senderID, content: utils.encrypt(messageContent) });
+  const newRecipients = [];
+  recipients.forEach((id) => {
+    if (id === senderID) return;
+    newRecipients.push({ userId: id, archived: false, read: false });
+  });
+  if (newRecipients.length === 0) {
+    resolve(false);
+    return;
+  }
+  const thread = new MessageThread({
+    name: title,
+    sender: senderID,
+    recipients: newRecipients,
+    messages: [message],
+    created: Date.now(),
+  });
+  message.save((err) => {
+    if (err) { console.debug(err); resolve(false); }
+    console.debug(`Message ${message.id} saved`);
+  });
+  thread.save((err) => {
+    if (err) { console.debug(err); resolve(false); }
+    console.debug(`Thread ${thread.id} saved`);
+  });
+  resolve(thread.id);
+});
+
+exports.getMessagesInbox = (username) => new Promise((resolve) => {
+  exports.getUserData(username).then((user) => {
+    if (!user) {
+      resolve([]);
+    }
+    MessageThread.find({}, (err, res) => {
+      const messages = [];
+      if (err || !res) {
+        resolve(messages);
+        return;
+      }
+      res.forEach((response) => {
+        const response2 = response.toObject();
+        const recipients = [];
+        response.recipients.forEach((recipient) => {
+          recipients.push(recipient.userId.toString());
+        });
+        if (!recipients.includes(user.id)) return;
+        response2.userRecipientData = response.recipients.find(
+          (r) => r.userId.toString() === user.id,
+        ).toObject();
+        messages.push(response2);
+      });
+      resolve(messages);
+    });
+  });
+});
+
+exports.getMessagesSent = (username) => new Promise((resolve) => {
+  exports.getUserData(username).then((user) => {
+    if (!user) {
+      resolve([]);
+    }
+    MessageThread.find({}, (err, res) => {
+      const messages = [];
+      if (err || !res) {
+        resolve(messages);
+        return;
+      }
+      res.forEach((response) => {
+        const response2 = response.toObject();
+        if (!response.sender === user.id) return;
+        messages.push(response2);
+      });
+      resolve(messages);
+    });
+  });
+});
+
+exports.getMessagesArchive = (username) => new Promise((resolve) => {
+  exports.getMessagesInbox(username).then((messages) => {
+    const archivedMessages = [];
+    messages.forEach((message) => {
+      if (message.userRecipientData.archived) {
+        archivedMessages.push(message);
+      }
+    });
+    resolve(archivedMessages);
+  });
+});
+
+exports.getThread = (id) => new Promise((resolve) => {
+  MessageThread.findById(id, (err, user) => {
+    if (err) {
+      resolve(false);
+    }
+    resolve(user);
+  });
+});
+
+exports.getMessage = (id) => new Promise((resolve) => {
+  Message.findById(id, (err, user) => {
+    if (err) {
+      resolve(false);
+    }
+    resolve(user);
+  });
+});
+
+exports.newAccount = (username, password) => {
+  const i = new User(
+    {
+      username, password: utils.encrypt(password), role: 0, created: Date.now(),
+    },
+  );
 
   // Save the new model instance, passing a callback
-  i.save(function (err) {
-    if (err) {  console.debug(err); return; }
-    console.debug("New account saved")
+  i.save((err) => {
+    if (err) { console.debug(err); return; }
+    console.debug('New account saved');
   });
-  return {username, password: utils.encrypt(password)}
-}
+  return { username, password: utils.encrypt(password) };
+};
 
 /* Promise(=>boolean) : If username and password set is correct return true, otherwise false */
-exports.validate = function(username, password) {
-  return new Promise((resolve, reject)=> {
-    exports.validateUsername(username).then((userValid)=>{
-      if(!userValid) {
-        resolve(false); 
-        return; 
-      }
-      exports.getUserData(username).then((user) => {
-        resolve(utils.decrypt(user.password) == password);
-        return;
-      })
-    })
-  })
-  
-}
+exports.validate = (username, password) => new Promise((resolve) => {
+  exports.validateUsername(username).then((userValid) => {
+    if (!userValid) {
+      resolve(false);
+      return;
+    }
+    exports.getUserData(username).then((user) => {
+      resolve(utils.decrypt(user.password) === password);
+    });
+  });
+});
 
 /* Promise(=>boolean) : Does user exist */
-exports.validateUsername = async function(username) {
-  return new Promise((resolve, reject) => {
-    User.findOne({username}, function(err, user) {
-      if(err) { resolve(false); return; }
-      if(user) {
-        resolve(true);
-      } else {
-        resolve(false);
-      }
-    });
+exports.validateUsername = async (username) => new Promise((resolve) => {
+  User.findOne({ username }, (err, user) => {
+    if (err) { resolve(false); return; }
+    if (user) {
+      resolve(true);
+    } else {
+      resolve(false);
+    }
+  });
 });
-}
 
-/* string : Generate a account token (based on password, username) and returning it.
-Default ritta databasetypes use following:
-encryptedUsername:encryptedEncryptedPassword:Date.now()
-Deprecated since update 21/2/2021
+/* boolean: Set user password, first verify with oldPassword,
+ * if oldPassword wrong, return false, if password change succesful, return true
 */
-exports.generateAccountToken = function(user, password) {
-}
-
-/* string: Generate a token for opinsys use and return it 
-Deprecated since update 21/2/2021*/
-exports.opinsysToken = function(user) {
-  
-}
-
-/* boolean: Set user password, first verify with oldPassword, if oldPassword wrong, return false, if password change succesful, return true */
-exports.setPassword = function(user, oldPassword, newPassword) {
-  return false;
-}
+exports.setPassword = (username, oldPassword, newPassword) => new Promise((resolve) => {
+  exports.validate(username, oldPassword).then((valid) => {
+    if (valid) {
+      User.replaceOne({ username }, { password: newPassword }, {}, (err) => {
+        if (err) {
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      });
+    } else {
+      resolve(false);
+    }
+  });
+});
 
 /* Promise(=>Object): Return user data by username */
-exports.getUserData = function(username) {
-  return new Promise((resolve, reject) => {
-    User.findOne({username}, function(err, user) {
-      if(err) { resolve(false); return; }
-      if(user) {
-        resolve(user);
-      } else {
-        resolve(null);
-      }
-    });
-  })
-}
+exports.getUserData = (username) => new Promise((resolve) => {
+  User.findOne({ username }, (err, user) => {
+    if (err) { resolve(false); return; }
+    if (user) {
+      resolve(user);
+    } else {
+      resolve(null);
+    }
+  });
+});
 
-/* boolean: Verify loggedintoken, if valid return true and if not return false 
-Deprecated since 21/2/2021 */
-exports.isLoggedInByToken = function(token) {
-  
-}
+/* Promise(=>Object): Return user data by id */
+exports.getUserDataById = (id) => new Promise((resolve) => {
+  User.findOne({ _id: id }, (err, user) => {
+    if (err) { resolve(false); return; }
+    if (user) {
+      resolve(user);
+    } else {
+      resolve(null);
+    }
+  });
+});

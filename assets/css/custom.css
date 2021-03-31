@@ -91,3 +91,13 @@ input[type=submit] {
   background-color: DodgerBlue !important;
   color: #ffffff;
 }
+
+@media only screen and (max-width: 1024px) {
+  .sidebar-brand a img {
+    filter: invert(100%);
+  }
+
+  .hide_on_mobile {
+    display: none;
+  }
+}

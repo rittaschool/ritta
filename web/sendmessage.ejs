@@ -27,16 +27,35 @@
                   <div class="section-header">
                      <h1>Ritta</h1>
                   </div>
-                  <form method="POST" action="/messages/send" autocomplete="off" autocapitalize="on">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                      <div class="autocomplete" style="width:300px;">
-                        <input type="text" id="vastaanottaja" name="vastaanottaja" required placeholder="Vastaanottaja">
+                  <div class="card-body">
+                    <form method="POST" action="/messages/send" autocomplete="off" autocapitalize="on">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Otsikko</label>
+                        <div class="col-sm-12 col-md-7">
+                          <input type="text" name="title" class="form-control" maxlength="32" autocomplete="off">
+                        </div>
                       </div>
-                      <div id="editor" style="height: 300px;background-color:white;color:black;">
+                      <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Vastaanottajat</label>
+                        <div class="col-sm-12 col-md-7">
+                          <input type="text" name="recipients" class="form-control" autocomplete="off">
+                        </div>
                       </div>
-                     <textarea style="display: none" id="message" name="message" readonly></textarea>
-                     <input type="submit" value="Lähetä viesti">
-                  </form>
+                      <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Viesti</label>
+                        <div class="col-sm-12 col-md-7">
+                          <textarea name="content" class="summernote" autocomplete="off"></textarea>
+                        </div>
+                      </div>
+                      <div class="form-group row mb-4">
+                        <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+                        <div class="col-sm-12 col-md-7">
+                          <button type="submit" class="btn btn-primary"><i class="far fa-paper-plane"></i> Lähetä</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
                </section>
             </div>
             <%- include("partials/footer", {version: version}) -%>
@@ -54,126 +73,14 @@
       <script src="/jquery-sparkline/jquery.sparkline.min.js"></script>
       <script src="/chart.js/dist/Chart.min.js"></script>
       <script src="/summernote/dist/summernote-bs4.js"></script>
+      <script src="/summernote/dist/lang/summernote-fi-FI.min.js"></script>
       <script src="/chocolat/dist/js/jquery.chocolat.min.js"></script>
-      <script src="/js/quill.js"></script>
-      <script src="/js/quilljs-markdown.js"></script>
-      <script src="/js/showdown.min.js"></script>
 
       <!-- Template JS File -->
       <script src="/js/scripts.js"></script>
       <script src="/js/custom.js"></script>
 
-      <script>
-         var autocomplete_users = ["opiskelija.ritta","opettaja.ritta","henkilokunta.ritta"];
-         autocomplete(document.getElementById("vastaanottaja"), autocomplete_users);
-         
-         
-         (function($){
-         let email = "";
-         
-         $.fn.email_multiple = function(options) {
-         
-             let defaults = {
-                 reset: false,
-                 fill: false,
-                 data: null
-             };
-         
-             let settings = $.extend(defaults, options);
-             
-         
-             return this.each(function()
-             {
-                 $(this).after("<span class=\"to-input\">Vastaanottajat:</span><br>\n" +
-                     "<div class=\"all-mail\"></div><br><br>\n" +
-                     "<input type=\"text\" name=\"email\" class=\"enter-mail-id no-submit\" placeholder=\"Syötä vastaanottaja\" id=\"vastaanottajainput\"/>");
-                  
-                 let $orig = $(this);
-                 let $element = $('.enter-mail-id');
-                 $element.keydown(function (e) {
-                     $element.css('border', '');
-                     if (e.keyCode === 13 || e.keyCode === 32) {
-                         let getValue = $element.val();
-                         if(getValue === "") return;
-                         $('.all-mail').append('<span class="email-ids">' + getValue + '<span class="cancel-email">x</span></span>');
-                         $element.val('');
-         
-                         email += getValue + ';'
-                     }
-         
-                     $orig.val(email.slice(0, -1))
-                 });
-         
-                 $(document).on('click','.cancel-email',function(){
-                     $(this).parent().remove();
-                 });
-         
-                 if(settings.data){
-                     $.each(settings.data, function (x, y) {
-                         if (/^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$/.test(y)){
-                             $('.all-mail').append('<span class="email-ids">' + y + '<span class="cancel-email">x</span></span>');
-                             $element.val('');
-         
-                             email += y + ';'
-                         } else {
-                             $element.css('border', '1px solid red')
-                         }
-                     })
-         
-                     $orig.val(email.slice(0, -1))
-                 }
-         
-                 if(settings.reset){
-                     $('.email-ids').remove()
-                 }
-         
-                 return $orig.hide()
-             });
-         };
-         
-         })(jQuery);
-         
-         $("form").submit(function() {
-         $(this).children('.no-submit').remove();
-         });
-         
-         $(document).ready(function($){
-         /*$(".multiemail").email_multiple({
-         });*/
-         });
-         
-         $(document).on("keypress", 'form', function (e) {
-         var code = e.keyCode || e.which;
-         if (code == 13) {
-             e.preventDefault();
-             return false;
-         }
-         });
-         
-         </script>
       <!-- Page Specific JS File -->
       <script src="/js/page/index.js"></script>
-      <script>
-         localStorage.setItem("software", "Ritta");
-         var quill = new Quill('#editor', {
-             modules: {
-                 toolbar: [
-                 ['bold', 'italic', 'underline', 'strike', 'clean'],
-                 ['image', 'blockquote', 'code-block'],
-                 [{ 'script': 'sub'}, { 'script': 'super' }],
-                 [{ 'indent': '-1'},{ 'align': [] },{ 'indent': '+1'}],
-                 [{ 'header': [1, 2, 3, 4, 5, 6, false] },{font: []}],
-                 [{ 'color': [] }, { 'background': [] }],
-                 [{ 'list': 'ordered'}, { 'list': 'bullet' }]
-                 ]
-             },
-             theme: 'snow'  // or 'bubble'
-         });
-         quill.on('text-change', function(delta, oldDelta, source) {
-            let v = quill.container.firstChild.innerHTML;
-            $('#message').val(v);
-         });
-         new QuillMarkdown(quill);
-      </script>
    </body>
 </html>

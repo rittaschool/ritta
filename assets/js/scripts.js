@@ -370,6 +370,7 @@ $(function() {
     $(".summernote").summernote({
        dialogsInBody: true,
       minHeight: 250,
+      lang: "fi-FI"
     });
     $(".summernote-simple").summernote({
        dialogsInBody: true,
