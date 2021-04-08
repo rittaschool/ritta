@@ -4,7 +4,7 @@ const ics = require('ics');
 const config = require('./config.js');
 
 const IV_LENGTH = 16;
-const ENCRYPTION_KEY = crypto.createHash('sha256').update(String(config.encryptionKey)).digest('base64').substr(0, 16);
+const ENCRYPTION_KEY = crypto.createHash('sha256').update(String(process.env.ENCRYPTION_KEY)).digest('base64');
 
 exports.genUUID = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
   const r = Math.random() * 16 | 0; const
@@ -15,7 +15,7 @@ exports.genUUID = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, 
 
 exports.encrypt = (text) => {
   const iv = crypto.randomBytes(IV_LENGTH);
-  const cipher = crypto.createCipheriv('aes-128-cbc', ENCRYPTION_KEY, iv);
+  const cipher = crypto.createCipheriv('aes-256-cbc', ENCRYPTION_KEY, iv);
   let encrypted = cipher.update(text);
   encrypted = Buffer.concat([encrypted, cipher.final()]);
   return `${iv.toString('hex')}:${encrypted.toString('hex')}`;
@@ -25,11 +25,13 @@ exports.decrypt = (text) => {
   const textParts = text.split(':');
   const iv = Buffer.from(textParts.shift(), 'hex');
   const encryptedText = Buffer.from(textParts.join(':'), 'hex');
-  const decipher = crypto.createDecipheriv('aes-128-cbc', ENCRYPTION_KEY, iv);
+  const decipher = crypto.createDecipheriv('aes-256-cbc', ENCRYPTION_KEY, iv);
   let decrypted = decipher.update(encryptedText);
   decrypted = Buffer.concat([decrypted, decipher.final()]);
   return decrypted.toString();
 };
+
+exports.hash = (text) => crypto.createHash('sha256').update(text).digest('hex');
 
 exports.createCalendar = (attributes) => {
   // Attributes example:

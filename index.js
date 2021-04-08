@@ -16,6 +16,8 @@ const OpinsysStrategy = require('passport-opinsys');
 const moment = require('moment');
 const LocalStrategy = require('passport-local');
 
+require('dotenv').config();
+
 // Local modules
 let config;
 let lang;
@@ -53,13 +55,19 @@ try {
   process.exit();
 }
 try {
-  database = require(`./database/${config.databaseType}.js`);
+  database = require('./database.js');
+  database.connect(config.database);
 } catch (e) {
   console.debug(e);
-  console.log('Database file not found, or there was a error. Check your config.');
+  console.log('Error loading database.');
   process.exit();
 }
-database.connect(config.database);
+
+// Setting encryption key if not set
+if (!process.env.ENCRYPTION_KEY || !process.env.SESSION_SECRET) {
+  console.log('ENV Configuration is missing the encryption key or the session secret! Set the ENCRYPTION_KEY and the SESSION_SECRET');
+  process.exit();
+}
 
 const utils = require('./utils.js');
 const packageJSON = require('./package.json');
@@ -137,7 +145,7 @@ app.use(session({
   genid() {
     return utils.genUUID();
   },
-  secret: config.encryptionKey,
+  secret: process.env.SESSION_SECRET,
   resave: true,
   saveUninitialized: true,
   cookie: { maxAge: 3600000, secure: true },
@@ -248,7 +256,7 @@ app.get('/messages/sent', isLoggedIn, (req, res) => {
             messages,
             moment,
             outbox: outbox.length,
-            archive: archive.length
+            archive: archive.length,
           });
         });
       });
