@@ -9,10 +9,10 @@ If you still want to test how's the prototypes going, download the sources and e
 Run following command in the folder to install `npm install`\
 And start with `npm test`
 
-You will need to create a .env file (or save them to environment directly) and use the following template:
-`MONGODB_CONNECTION_STRING=MongoDBConnectionStringHere
-ENCRYPTION_KEY=Random Encryption String. Never use something simple.
-SESSION_SECRET=Session secret, similar to encryption key but should be different.`
+You will need to create a .env file (or save them to environment directly) and supply the following values:
+`MONGODB_CONNECTION_STRING=MongoDBConnectionStringHere`\
+`ENCRYPTION_KEY=Random Encryption String. Never use something simple.`\
+`SESSION_SECRET=Session secret, similar to encryption key but should be different.`
 
 
 ## Credits
