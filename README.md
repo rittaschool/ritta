@@ -10,7 +10,7 @@ Also visit our [webpage!](https://ritta.pw)
 
 ## Branches
 
-> "release" - Mainly the current main code that seems to be somewhat stable
+> "release" - Mainly the current main code that seems to be somewhat stable \
 > "development" - WIP code by Raikas, usually pretty unstable
 
 ## Our goals
