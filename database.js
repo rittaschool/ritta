@@ -11,7 +11,7 @@ MongoDB
 
 const mongoose = require('mongoose');
 const xss = require('xss');
-const utils = require('../utils.js');
+const utils = require('./utils.js');
 
 const { Schema } = mongoose;
 
@@ -55,9 +55,9 @@ const MessageThreadSchema = new Schema({
 });
 const MessageThread = mongoose.model('MessageThread', MessageThreadSchema);
 
-exports.connect = async (data) => {
+exports.connect = async () => {
   // Connecting to the mongodb database
-  mongoose.connect(data.connectionString, {
+  mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
@@ -162,7 +162,7 @@ exports.getMessagesSent = (username) => new Promise((resolve) => {
       }
       res.forEach((response) => {
         const response2 = response.toObject();
-        if (!response.sender === user.id) return;
+        if (response.sender.toString() !== user.id) return;
         messages.push(response2);
       });
       resolve(messages);
@@ -203,7 +203,7 @@ exports.getMessage = (id) => new Promise((resolve) => {
 exports.newAccount = (username, password) => {
   const i = new User(
     {
-      username, password: utils.encrypt(password), role: 0, created: Date.now(),
+      username, password: utils.encrypt(utils.hash(password)), role: 0, created: Date.now(),
     },
   );
 
@@ -223,7 +223,7 @@ exports.validate = (username, password) => new Promise((resolve) => {
       return;
     }
     exports.getUserData(username).then((user) => {
-      resolve(utils.decrypt(user.password) === password);
+      resolve(utils.decrypt(user.password) === utils.hash(password));
     });
   });
 });

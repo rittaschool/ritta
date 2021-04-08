@@ -2,3 +2,6 @@ node_modules/*
 sessions/*
 data/*
 config.js
+config.js
+ssl/*
+.env
