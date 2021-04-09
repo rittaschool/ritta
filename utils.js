@@ -4,7 +4,7 @@ const ics = require('ics');
 const bcrypt = require('bcrypt');
 
 const IV_LENGTH = 16;
-const ENCRYPTION_KEY = crypto.createHash('sha256').update(String(process.env.ENCRYPTION_KEY)).digest('base64');
+const ENCRYPTION_KEY = crypto.createHash('sha256').update(String(process.env.ENCRYPTION_KEY)).digest('hex').substr(0, 32);
 
 exports.genUUID = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
   const r = Math.random() * 16 | 0; const
@@ -31,7 +31,7 @@ exports.decrypt = (text) => {
   return decrypted.toString();
 };
 
-exports.hash = (text) => bcrypt.hashSync(text);
+exports.hash = (text) => bcrypt.hashSync(text, process.env.HASH_SALT);
 
 exports.createCalendar = (attributes) => {
   // Attributes example:

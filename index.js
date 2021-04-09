@@ -64,8 +64,8 @@ try {
 }
 
 // Setting encryption key if not set
-if (!process.env.ENCRYPTION_KEY || !process.env.SESSION_SECRET) {
-  console.log('ENV Configuration is missing the encryption key or the session secret! Set the ENCRYPTION_KEY and the SESSION_SECRET');
+if (!process.env.ENCRYPTION_KEY || !process.env.SESSION_SECRET || !process.env.HASH_SALT) {
+  console.log('ENV Configuration is missing the encryption key, the hash salt or the session secret! Set the ENCRYPTION_KEY, HASH_SALT and the SESSION_SECRET ');
   process.exit();
 }
 
