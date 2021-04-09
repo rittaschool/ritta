@@ -1,7 +1,7 @@
 /* eslint-disable no-bitwise */
 const crypto = require('crypto');
 const ics = require('ics');
-const config = require('./config.js');
+const bcrypt = require('bcrypt');
 
 const IV_LENGTH = 16;
 const ENCRYPTION_KEY = crypto.createHash('sha256').update(String(process.env.ENCRYPTION_KEY)).digest('base64');
@@ -31,7 +31,7 @@ exports.decrypt = (text) => {
   return decrypted.toString();
 };
 
-exports.hash = (text) => crypto.createHash('sha256').update(text).digest('hex');
+exports.hash = (text) => bcrypt.hashSync(text);
 
 exports.createCalendar = (attributes) => {
   // Attributes example:
