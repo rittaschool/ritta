@@ -178,11 +178,7 @@ moment.locale('fi');
   <script defer src="/js/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
 
   <!-- JS Libraies -->
-  <script src="/jquery-sparkline/jquery.sparkline.min.js"></script>
-  <script src="/chart.js/dist/Chart.min.js"></script>
-  <script src="/summernote/dist/summernote-bs4.js"></script>
-  <script src="/chocolat/dist/js/jquery.chocolat.min.js"></script>
-  <script src="/fullcalendar/main.min.js"></script>
+  <%- include("partials/imports", {notificationID: notificationID}) -%>
 
   <!-- Template JS File -->
   <script src="/js/scripts.js"></script>

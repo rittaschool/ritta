@@ -8,10 +8,10 @@ module.exports = {
     city: 'Demokaupunki',
   },
   website: {
-    port: 80, /*  Base port, if SSL is enabled then 443 will also be listened to */
+    port: 80, /*  Base port, if SSL is enabled then 443 will also be listened should be used. */
   },
   langFile: './fi.json', // Language json
-  ssl: { // SSL info
+  ssl: { // SSL info, SHOULD BE ENABLED ALWAYS IN PRODUCTION!
     enabled: false,
     key: './ssl/key.pem',
     cert: './ssl/cert.pem',
