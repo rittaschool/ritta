@@ -3,7 +3,6 @@
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const https = require('https');
 const fs = require('fs');
 const crypto = require('crypto');
@@ -44,13 +43,13 @@ if (debugMode) console.debug('Debug mode enabled');
 
 // Start
 try {
-  config = require('./config.js');
+  config = require('../config.js');
 } catch (e) {
   console.log('Configuration file not found. Rename config.js.example => config.js');
   process.exit();
 }
 try {
-  lang = require(`./${config.langFile}`);
+  lang = require(`../lang/${config.lang}.json`);
 } catch (e) {
   console.log('Language file not found. Check your config');
   process.exit();
@@ -60,18 +59,18 @@ try {
   database.connect(config.database);
 } catch (e) {
   console.debug(e);
-  console.log('Error loading database.');
+  console.log('Error while loading the database file or connecting.');
   process.exit();
 }
 
-// Setting encryption key if not set
+// Checking encryption key if not set
 if (!process.env.ENCRYPTION_KEY || !process.env.SESSION_SECRET || !process.env.HASH_SALT) {
   console.log('ENV Configuration is missing the encryption key, the hash salt or the session secret! Set the ENCRYPTION_KEY, HASH_SALT and the SESSION_SECRET ');
   process.exit();
 }
 
 const utils = require('./utils.js');
-const packageJSON = require('./package.json');
+const packageJSON = require('../package.json');
 
 // Opinsys
 const opinsys = config.opinsys.enabled;
@@ -141,7 +140,7 @@ const userNotificationMap = {};
 
 wss.on('connection', (ws, request, client) => {
   ws.on('message', (message) => {
-    const json = JSON.parse(message);
+    // const json = JSON.parse(message);
     console.log(`youve got mail "${message}" from ${client}`);
   });
 
@@ -180,15 +179,12 @@ const limiter = rateLimit({
   },
 });
 app.use(limiter);
-app.use((req, _res, next) => {
-  console.debug(`/// ${req.originalUrl} pinged`);
-  next();
-});
-app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
-app.use(bodyParser.json({ limit: '200mb' }));
+app.use(express.urlencoded({ limit: '200mb', extended: true }));
+app.use(express.json({ limit: '200mb' }));
 app.use(express.static('assets'));
 app.use(passport.initialize());
 app.use(passport.session());
+
 // Anti CSRF
 app.use(csrf({ cookie: true }));
 
@@ -595,62 +591,63 @@ app.use((error, req, res, next) => {
     version: packageJSON.version,
   });
 });
+const privateKey = fs.readFileSync(`./ssl/${config.ssl.key}`);
+const certificate = fs.readFileSync(`./ssl/${config.ssl.cert}`);
 
-let server;
-if (config.ssl.enabled) {
-  const privateKey = fs.readFileSync(config.ssl.key);
-  const certificate = fs.readFileSync(config.ssl.cert);
-
-  server = https.createServer({
-    key: privateKey,
-    cert: certificate,
-  }, app).listen(config.website.port, () => {
-    console.log(`Website is now running on port ${config.website.port}`);
+const server = https.createServer({
+  key: privateKey,
+  cert: certificate,
+}, app).listen(443, () => {
+  console.log('Ritta\'s web interface is now running on port 443');
+  // 80 => 443
+  const httpsRedirect = express();
+  httpsRedirect.get('*', (req, res) => {
+    res.redirect(`https://${req.headers.host}${req.url}`);
   });
-  server.on('upgrade', (request, socket, head) => {
-    if (request.headers.upgrade !== 'websocket') {
-      return;
-    }
-    const query = request.url.slice(request.url.indexOf('?') + 1)
-      .split('&')
-      .reduce((a, c) => {
-        const [key, value] = c.split('=');
-        const b = a;
-        b[key] = value;
-        return b;
-      }, {});
-    if (!query.id) {
+  httpsRedirect.listen(80, () => {
+    console.log('HTTPS Redirect is now running on port 80.');
+  });
+});
+
+server.on('upgrade', (request, socket, head) => {
+  if (request.headers.upgrade !== 'websocket') {
+    return;
+  }
+  const query = request.url.slice(request.url.indexOf('?') + 1)
+    .split('&')
+    .reduce((a, c) => {
+      const [key, value] = c.split('=');
+      const b = a;
+      b[key] = value;
+      return b;
+    }, {});
+  if (!query.id) {
+    socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+    socket.destroy();
+    return;
+  }
+  // validate user
+  database.getUserDataById(utils.decrypt(query.id)).then((user) => {
+    if (user) {
+      wss.handleUpgrade(request, socket, head, (ws) => {
+        if (userNotificationMap[user.id]) {
+          userNotificationMap[user.id] = userNotificationMap[user.id].push(ws);
+        } else {
+          userNotificationMap[user.id] = [ws];
+        }
+        wss.emit('connection', ws, request, user);
+      });
+    } else {
       socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
       socket.destroy();
-      return;
     }
-    // validate user
-    database.getUserDataById(utils.decrypt(query.id)).then((user) => {
-      if (user) {
-        wss.handleUpgrade(request, socket, head, (ws) => {
-          if (userNotificationMap[user.id]) {
-            userNotificationMap[user.id] = userNotificationMap[user.id].push(ws);
-          } else {
-            userNotificationMap[user.id] = [ws];
-          }
-          wss.emit('connection', ws, request, user);
-        });
-      } else {
-        socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
-        socket.destroy();
-      }
-    });
   });
-} else {
-  server = app.listen(config.website.port, () => {
-    console.log(`Website is now running on port ${config.website.port}`);
-  });
-}
+});
 
 /**
  * Load modules from modules/
  */
-fs.readdir('./modules/', (err, files) => {
+fs.readdir('./src/modules/', (err, files) => {
   if (err) console.error(err);
   console.log(`Loading ${files.length} modules.`);
   files.forEach((f) => {

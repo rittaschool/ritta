@@ -1,20 +1,20 @@
 /**
  * CONFIGURATION FILE FOR RITTA
  */
+ 
+// Since 18.4.2021: SSL should always be used, so using HTTP has been disabled.
+// If you want you can get a free SSL license using Certbot or ZeroSSL.
+
 module.exports = {
   school: {
     multiSchool: false,
     name: 'Demokoulu', // This will be hidden if multiple schools work with one instance.
     city: 'Demokaupunki',
   },
-  website: {
-    port: 80, /*  Base port, if SSL is enabled then 443 will also be listened should be used. */
-  },
-  langFile: './fi.json', // Language json
-  ssl: { // SSL info, SHOULD BE ENABLED ALWAYS IN PRODUCTION!
-    enabled: false,
-    key: './ssl/key.pem',
-    cert: './ssl/cert.pem',
+  lang: 'fi', // Language
+  ssl: {
+    key: 'private.pem', // File in the ssl folder, PEM
+    cert: 'cert.pem', // File in the ssl folder, PEM
   },
   opinsys: { // Opinsys
     enabled: false,
