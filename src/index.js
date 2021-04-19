@@ -3,7 +3,6 @@
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const https = require('https');
 const fs = require('fs');
 const crypto = require('crypto');
@@ -15,6 +14,7 @@ const passport = require('passport');
 const OpinsysStrategy = require('passport-opinsys');
 const moment = require('moment');
 const LocalStrategy = require('passport-local');
+const WebSocket = require('ws');
 
 require('dotenv').config();
 
@@ -43,13 +43,13 @@ if (debugMode) console.debug('Debug mode enabled');
 
 // Start
 try {
-  config = require('./config.js');
+  config = require('../config.js');
 } catch (e) {
   console.log('Configuration file not found. Rename config.js.example => config.js');
   process.exit();
 }
 try {
-  lang = require(`./${config.langFile}`);
+  lang = require(`../lang/${config.lang}.json`);
 } catch (e) {
   console.log('Language file not found. Check your config');
   process.exit();
@@ -59,18 +59,18 @@ try {
   database.connect(config.database);
 } catch (e) {
   console.debug(e);
-  console.log('Error loading database.');
+  console.log('Error while loading the database file or connecting.');
   process.exit();
 }
 
-// Setting encryption key if not set
+// Checking encryption key if not set
 if (!process.env.ENCRYPTION_KEY || !process.env.SESSION_SECRET || !process.env.HASH_SALT) {
   console.log('ENV Configuration is missing the encryption key, the hash salt or the session secret! Set the ENCRYPTION_KEY, HASH_SALT and the SESSION_SECRET ');
   process.exit();
 }
 
 const utils = require('./utils.js');
-const packageJSON = require('./package.json');
+const packageJSON = require('../package.json');
 
 // Opinsys
 const opinsys = config.opinsys.enabled;
@@ -130,6 +130,23 @@ passport.deserializeUser((id, done) => {
   });
 });
 
+// Notification server.
+
+const wss = new WebSocket.Server({
+  noServer: true,
+});
+
+const userNotificationMap = {};
+
+wss.on('connection', (ws, request, client) => {
+  ws.on('message', (message) => {
+    // const json = JSON.parse(message);
+    console.log(`youve got mail "${message}" from ${client}`);
+  });
+
+  ws.send(JSON.stringify({ status: 1, message: 'Connected.' }));
+});
+
 /*
  *
  * WEB
@@ -162,15 +179,12 @@ const limiter = rateLimit({
   },
 });
 app.use(limiter);
-app.use((req, _res, next) => {
-  console.debug(`/// ${req.originalUrl} pinged`);
-  next();
-});
-app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
-app.use(bodyParser.json({ limit: '200mb' }));
+app.use(express.urlencoded({ limit: '200mb', extended: true }));
+app.use(express.json({ limit: '200mb' }));
 app.use(express.static('assets'));
 app.use(passport.initialize());
 app.use(passport.session());
+
 // Anti CSRF
 app.use(csrf({ cookie: true }));
 
@@ -189,6 +203,7 @@ app.get('/', isLoggedIn, (req, res) => {
     school: config.school,
     username: req.user.username,
     user: req.user,
+    notificationID: utils.encrypt(req.user.id),
   });
 });
 
@@ -221,6 +236,7 @@ app.get('/messages', isLoggedIn, (req, res) => {
             moment,
             sent: sent.length,
             archive: archive.length,
+            notificationID: utils.encrypt(req.user.id),
           });
         });
       });
@@ -257,6 +273,7 @@ app.get('/messages/sent', isLoggedIn, (req, res) => {
             moment,
             outbox: outbox.length,
             archive: archive.length,
+            notificationID: utils.encrypt(req.user.id),
           });
         });
       });
@@ -293,6 +310,7 @@ app.get('/messages/archive', isLoggedIn, (req, res) => {
             moment,
             outbox: outbox.length,
             sent: sent.length,
+            notificationID: utils.encrypt(req.user.id),
           });
         });
       });
@@ -308,6 +326,7 @@ app.get('/messages/send', isLoggedIn, (req, res) => {
     username: req.user.username,
     user: req.user,
     csrfToken: req.csrfToken(),
+    notificationID: utils.encrypt(req.user.id),
   });
 });
 
@@ -338,7 +357,7 @@ app.post('/messages/send', isLoggedIn, async (req, res, next) => {
     database.newThread(req.user.id, req.body.title, req.body.content, recipients).then((thread) => {
       if (!thread) {
         const error = new Error('Recipient list empty');
-        error.code = 403;
+        error.code = 400;
         next(error);
         return;
       }
@@ -357,7 +376,7 @@ app.get('/messages/:messageid', isLoggedIn, (req, res, next) => {
     }
     if (
       thread.sender === req.user.id
-      || thread.recipients.filter((r) => r.userId === req.user.id)
+      || thread.recipients.find((r) => r.userId === req.user.id)
     ) {
       const newThread = thread.toObject();
       database.getUserDataById(thread.sender).then((user) => {
@@ -399,6 +418,7 @@ app.get('/messages/:messageid', isLoggedIn, (req, res, next) => {
             decrypt: utils.decrypt,
             messages,
             csrfToken: req.csrfToken(),
+            notificationID: utils.encrypt(req.user.id),
           });
         });
       });
@@ -420,7 +440,7 @@ app.post('/messages/:messageid/reply', isLoggedIn, (req, res, next) => {
     }
     if (
       thread.sender === req.user.id
-      || thread.recipients.filter((r) => r.userId === req.user.id)
+      || thread.recipients.find((r) => r.userId === req.user.id)
     ) {
       if (!req.body.content) {
         const error = new Error('Content-parameter missing');
@@ -452,6 +472,7 @@ app.get('/logout', isLoggedIn, (req, res) => {
   req.session.destroy(() => {});
   setTimeout(() => { res.redirect('/account/login?loggedout=true'); }, 200);
 });
+
 app.get('/account/:action', (req, res) => {
   switch (req.params.action.toLowerCase()) {
     case 'createuser':
@@ -503,6 +524,20 @@ app.post('/api/:action', (req, res) => {
       break;
   }
 });
+app.get('/api/notification', (req, res) => {
+  if (req.query.user) {
+    if (!userNotificationMap[req.query.user]) {
+      res.send('lol222');
+      return;
+    }
+    userNotificationMap[req.query.user].forEach((ws) => {
+      ws.send(req.query.notification);
+    });
+    res.send('sent');
+  } else {
+    res.send('lol');
+  }
+});
 app.get('/api/calendar/:userid', (req, res) => {
   req.rateLimitThis = true;
   const value = utils.createCalendar([{
@@ -536,8 +571,11 @@ app.get('/api/calendar/:userid', (req, res) => {
   });
 });
 app.all('*', (req, res) => {
-  res.status(404).render(`${__dirname}/web/error/404.ejs`, {
+  const error = new Error('Not found');
+  error.code = 404;
+  res.status(404).render(`${__dirname}/web/error.ejs`, {
     lang,
+    error,
     school: config.school,
     version: packageJSON.version,
   });
@@ -546,35 +584,70 @@ app.all('*', (req, res) => {
 // eslint-disable-next-line no-unused-vars
 app.use((error, req, res, next) => {
   const status = error.code || 500;
-  res.status(status).render(`${__dirname}/web/error/500.ejs`, {
+  res.status(status).render(`${__dirname}/web/error.ejs`, {
     error,
     lang,
     school: config.school,
     version: packageJSON.version,
   });
 });
+const privateKey = fs.readFileSync(`./ssl/${config.ssl.key}`);
+const certificate = fs.readFileSync(`./ssl/${config.ssl.cert}`);
 
-let server;
-if (config.ssl.enabled) {
-  const privateKey = fs.readFileSync(config.ssl.key);
-  const certificate = fs.readFileSync(config.ssl.cert);
+const server = https.createServer({
+  key: privateKey,
+  cert: certificate,
+}, app).listen(443, () => {
+  console.log('Ritta\'s web interface is now running on port 443');
+  // 80 => 443
+  const httpsRedirect = express();
+  httpsRedirect.get('*', (req, res) => {
+    res.redirect(`https://${req.headers.host}${req.url}`);
+  });
+  httpsRedirect.listen(80, () => {
+    console.log('HTTPS Redirect is now running on port 80.');
+  });
+});
 
-  server = https.createServer({
-    key: privateKey,
-    cert: certificate,
-  }, app).listen(config.website.port, () => {
-    console.log(`Website is now running on port ${config.website.port}`);
+server.on('upgrade', (request, socket, head) => {
+  if (request.headers.upgrade !== 'websocket') {
+    return;
+  }
+  const query = request.url.slice(request.url.indexOf('?') + 1)
+    .split('&')
+    .reduce((a, c) => {
+      const [key, value] = c.split('=');
+      const b = a;
+      b[key] = value;
+      return b;
+    }, {});
+  if (!query.id) {
+    socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+    socket.destroy();
+    return;
+  }
+  // validate user
+  database.getUserDataById(utils.decrypt(query.id)).then((user) => {
+    if (user) {
+      wss.handleUpgrade(request, socket, head, (ws) => {
+        if (userNotificationMap[user.id]) {
+          userNotificationMap[user.id] = userNotificationMap[user.id].push(ws);
+        } else {
+          userNotificationMap[user.id] = [ws];
+        }
+        wss.emit('connection', ws, request, user);
+      });
+    } else {
+      socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+      socket.destroy();
+    }
   });
-} else {
-  server = app.listen(config.website.port, () => {
-    console.log(`Website is now running on port ${config.website.port}`);
-  });
-}
+});
 
 /**
  * Load modules from modules/
  */
-fs.readdir('./modules/', (err, files) => {
+fs.readdir('./src/modules/', (err, files) => {
   if (err) console.error(err);
   console.log(`Loading ${files.length} modules.`);
   files.forEach((f) => {

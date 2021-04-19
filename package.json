@@ -1,10 +1,10 @@
 {
   "name": "ritta",
-  "version": "0.0.2",
-  "description": "Ritta is a new times system for school, to keep connections between home and school strong.",
-  "main": "index.js",
+  "version": "0.0.3",
+  "description": "Ritta is a modern system for school, to keep connections between home and school strong.",
+  "main": "src/index.js",
   "scripts": {
-    "test": "nodemon index.js debug",
+    "test": "nodemon . debug",
     "start": "npm test"
   },
   "repository": {
@@ -26,7 +26,6 @@
   "homepage": "https://github.com/rittaschool/ritta#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
-    "body-parser": "^1.19.0",
     "chart.js": "^2.9.4",
     "chocolat": "^1.0.3",
     "cookie-parser": "^1.4.5",
@@ -50,6 +49,7 @@
     "passport-opinsys": "^1.0.0",
     "session-file-store": "^1.5.0",
     "summernote": "^0.8.18",
+    "ws": "^7.4.4",
     "xss": "^1.0.8"
   },
   "devDependencies": {

@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <%
 moment.locale('fi');
+
+const unreadMessageAmount = () => {
+  let amount = 0;
+  for(var i=0; i < messages.length; i++) {
+    let sender = messages[i].userRecipientData;
+    if(!sender.read) amount += 1;
+  }
+  return amount;
+}
 %>
 <html lang="fi">
 <head>
@@ -41,6 +50,9 @@ moment.locale('fi');
           </div>
           <div class="section-body">
             <h2 class="section-title"><%- lang.messages %></h2>
+            <p class="section-lead">
+              Sinulla on <%= unreadMessageAmount(); %> lukematonta viestiä.
+            </p>
 
             <div class="row">
               <div class="col-12">
@@ -48,10 +60,10 @@ moment.locale('fi');
                   <div class="card-body">
                     <ul class="nav nav-pills">
                       <li class="nav-item">
-                        <a class="nav-link" href="/messages">Saapuneet <span class="badge badge-primary"><%= outbox %></span></a>
+                        <a class="nav-link active" href="/messages">Saapuneet <span class="badge badge-white"><%= messages.length %></span></a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link active" href="/messages/sent">Lähetetyt <span class="badge badge-white"><%= messages.length %></span></a>
+                        <a class="nav-link" href="/messages/sent">Lähetetyt <span class="badge badge-primary"><%= sent %></span></a>
                       </li>
                       <li class="nav-item">
                         <a class="nav-link" href="/messages/archive">Arkisto <span class="badge badge-primary"><%= archive %></span></a>
@@ -96,7 +108,7 @@ moment.locale('fi');
                             </div>
                           </th>
                           <th>Aihe</th>
-                          <th>Vastaanottaja(t)</th>
+                          <th>Lähettäjä</th>
                           <th>Viestejä</th>
                           <th>Lähetetty</th>
                         </tr>
@@ -109,7 +121,7 @@ moment.locale('fi');
                                 <label for="checkbox-2" class="custom-control-label">&nbsp;</label>
                               </div>
                             </td>
-                            <td><a href="/messages/<%= messages[i]._id %>"><%= messages[i].name %></a>
+                            <td><a href="/messages/<%= messages[i]._id %>"><% if(!messages[i].userRecipientData.read) { %><span class="badge badge-info">Uusi!</span><% } %> <%= messages[i].name %></a>
                               <div class="table-links">
                                 <a href="/messages/<%= messages[i]._id %>">Avaa</a>
                                 <div class="bullet"></div>
@@ -178,11 +190,7 @@ moment.locale('fi');
   <script defer src="/js/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
 
   <!-- JS Libraies -->
-  <script src="/jquery-sparkline/jquery.sparkline.min.js"></script>
-  <script src="/chart.js/dist/Chart.min.js"></script>
-  <script src="/summernote/dist/summernote-bs4.js"></script>
-  <script src="/chocolat/dist/js/jquery.chocolat.min.js"></script>
-  <script src="/fullcalendar/main.min.js"></script>
+  <%- include("partials/imports", {notificationID: notificationID}) -%>
 
   <!-- Template JS File -->
   <script src="/js/scripts.js"></script>
