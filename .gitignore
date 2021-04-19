@@ -3,5 +3,5 @@ sessions/*
 data/*
 config.js
 config.js
-ssl/*
 .env
+*.pem
