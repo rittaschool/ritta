@@ -23,7 +23,7 @@
 <body class="layout-3">
   <div id="app">
     <div class="main-wrapper container">
-      <%- include ('partials/navbar', {hideItems: false, lang: lang, user: user, username: username, school: school, pageid: "homepage"}) -%>
+      <%- include ('partials/navbar', {hideItems: true, lang: lang, user: user, username: username, school: school, pageid: "homepage"}) -%>
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
@@ -40,15 +40,12 @@
             <p class="section-lead">Tervetuloa <%- user.firstName %> <%- user.lastName %>!</p>
             <div class="card hide_on_mobile">
               <div class="card-header">
-                <h4>Lukujärjestys</h4>
+                <h4>Ilmoitus</h4>
               </div>
               <div class="card-body">
                 <div class="fc-overflow">
-                  <div id="schedule"></div>
+                  Tälle tilille ei ole asetettu roolia. Ota yhteys oppilaitokseen.
                 </div>
-              </div>
-              <div class="card-footer bg-whitesmoke">
-                Sinulla on tänään ? oppituntia
               </div>
             </div>
           </div>

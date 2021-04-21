@@ -188,15 +188,34 @@ app.use(passport.session());
 // Anti CSRF
 app.use(csrf({ cookie: true }));
 
-const isLoggedIn = (req, res, next) => {
+const isAllowedToAccess = (req, res, next, roles) => {
+  if (!Array.isArray(roles)) {
+    next();
+  }
   if (!req.user) {
     res.redirect('/account/login');
     return;
   }
+  if (roles.length !== 0 && !roles.includes(req.user.role)) {
+    const error = new Error('Your role is not allowed to access this page.');
+    error.code = 403;
+    throw error;
+  }
   next();
 };
 
-app.get('/', isLoggedIn, (req, res) => {
+app.get('/', (req, res, next) => isAllowedToAccess(req, res, next, []), (req, res) => {
+  if (req.user.role === 0) {
+    res.render(`${__dirname}/web/guest.ejs`, {
+      version: packageJSON.version,
+      lang,
+      school: config.school,
+      username: req.user.username,
+      user: req.user,
+      notificationID: utils.encrypt(req.user.id),
+    });
+    return;
+  }
   res.render(`${__dirname}/web/homepage.ejs`, {
     version: packageJSON.version,
     lang,
@@ -207,7 +226,7 @@ app.get('/', isLoggedIn, (req, res) => {
   });
 });
 
-app.get('/messages', isLoggedIn, (req, res) => {
+app.get('/messages', (req, res, next) => isAllowedToAccess(req, res, next, [0]), (req, res) => {
   // We have to do a lot of the work here as the engine can't do everything
   database.getMessagesSent(req.user.username).then((sent) => {
     database.getMessagesArchive(req.user.username).then((archive) => {
@@ -244,7 +263,7 @@ app.get('/messages', isLoggedIn, (req, res) => {
   });
 });
 
-app.get('/messages/sent', isLoggedIn, (req, res) => {
+app.get('/messages/sent', (req, res, next) => isAllowedToAccess(req, res, next, [0]), (req, res) => {
   // We have to do a lot of the work here as the engine can't do everything
   database.getMessagesArchive(req.user.username).then((archive) => {
     database.getMessagesInbox(req.user.username).then((outbox) => {
@@ -281,7 +300,7 @@ app.get('/messages/sent', isLoggedIn, (req, res) => {
   });
 });
 
-app.get('/messages/archive', isLoggedIn, (req, res) => {
+app.get('/messages/archive', (req, res, next) => isAllowedToAccess(req, res, next, [0]), (req, res) => {
   // We have to do a lot of the work here as the engine can't do everything
   database.getMessagesSent(req.user.username).then((sent) => {
     database.getMessagesInbox(req.user.username).then((outbox) => {
@@ -318,7 +337,7 @@ app.get('/messages/archive', isLoggedIn, (req, res) => {
   });
 });
 
-app.get('/messages/send', isLoggedIn, (req, res) => {
+app.get('/messages/send', (req, res, next) => isAllowedToAccess(req, res, next, [0]), (req, res) => {
   res.render(`${__dirname}/web/sendmessage.ejs`, {
     version: packageJSON.version,
     lang,
@@ -330,7 +349,7 @@ app.get('/messages/send', isLoggedIn, (req, res) => {
   });
 });
 
-app.post('/messages/send', isLoggedIn, async (req, res, next) => {
+app.post('/messages/send', (req, res, next) => isAllowedToAccess(req, res, next, [0]), async (req, res, next) => {
   if (!req.body.content || !req.body.recipients || !req.body.title) {
     const error = new Error('Content-parameter missing');
     error.code = 400;
@@ -366,7 +385,7 @@ app.post('/messages/send', isLoggedIn, async (req, res, next) => {
   });
 });
 
-app.get('/messages/:messageid', isLoggedIn, (req, res, next) => {
+app.get('/messages/:messageid', (req, res, next) => isAllowedToAccess(req, res, next, [0]), (req, res, next) => {
   database.getThread(req.params.messageid).then((thread) => {
     if (!thread) {
       const error = new Error('Thread not found');
@@ -430,7 +449,7 @@ app.get('/messages/:messageid', isLoggedIn, (req, res, next) => {
   });
 });
 
-app.post('/messages/:messageid/reply', isLoggedIn, (req, res, next) => {
+app.post('/messages/:messageid/reply', (req, res, next) => isAllowedToAccess(req, res, next, [0]), (req, res, next) => {
   database.getThread(req.params.messageid).then((thread) => {
     if (!thread) {
       const error = new Error('Thread not found');
@@ -467,7 +486,7 @@ app.post('/messages/:messageid/reply', isLoggedIn, (req, res, next) => {
 
 app.get('/account/opinsys', passport.authenticate('opinsys', { failureRedirect: '/account/login?opinsysaccountnone=true', successRedirect: '/' }));
 
-app.get('/logout', isLoggedIn, (req, res) => {
+app.get('/logout', (req, res, next) => isAllowedToAccess(req, res, next, [0]), (req, res) => {
   req.logout();
   req.session.destroy(() => {});
   setTimeout(() => { res.redirect('/account/login?loggedout=true'); }, 200);
@@ -652,12 +671,12 @@ fs.readdir('./src/modules/', (err, files) => {
   console.log(`Loading ${files.length} modules.`);
   files.forEach((f) => {
     const module = require(`./modules/${f}`);
-    if (!module.conf.enabled) {
+    if (!module.conf.enabled || module.conf.executeOnRequest) {
       console.debug(`Module ${f} disabled, skipping...`);
       return;
     }
     console.debug(`Loading module: ${f}.`);
-    if (f.start) f.start(app, database);
+    if (module.start) module.start(app, database);
   });
 });
 

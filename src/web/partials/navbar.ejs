@@ -53,7 +53,7 @@
           </li>
           <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
             <img alt="image" src="/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-            <div class="d-sm-none d-lg-inline-block"><%- user.firstname %> <%- user.lastname %></div></a>
+            <div class="d-sm-none d-lg-inline-block"><%- user.firstName %> <%- user.lastName %></div></a>
             <div class="dropdown-menu dropdown-menu-right">
               <div class="dropdown-title"><%- user.username %></div>
               <a href="/account/settings" disabled class="dropdown-item has-icon">
@@ -71,42 +71,44 @@
       <nav class="navbar navbar-secondary navbar-expand-lg">
         <div class="container">
           <ul class="navbar-nav">
-            <li class="nav-item <%- pageid === 'homepage' ? 'active' : '' %>">
-              <a href="/" class="nav-link active"><i class="fas fa-home"></i><span><%- lang.homepage %></span></a>
-            </li>
-            <li class="nav-item <%- pageid === 'timetable' ? 'active' : '' %>">
-              <a href="/timetable" class="nav-link active"><i class="far fa-calendar"></i><span>Lukujärjestys</span></a>
-            </li>
-            <li class="nav-item <%- pageid === 'messages' ? 'active' : '' %>">
-              <a href="/messages" class="nav-link active"><i class="far fa-envelope"></i><span><%- lang.navbar.messages %></span></a>
-            </li>
-            <li class="nav-item <%- pageid === 'announcements' ? 'active' : '' %>">
-              <a href="/announcements" class="nav-link active"><i class="fas fa-bullhorn"></i>
-                <span>Tiedotteet</span></a>
-            </li>
-            <li class="nav-item <%- pageid === 'lessonnotes' ? 'active' : '' %>">
-              <a href="/lessonnotes" class="nav-link active"><i class="far fa-sticky-note"></i><span>Tuntimerkinnät</span></a>
-            </li>
-            <li class="nav-item <%- pageid === 'exams' ? 'active' : '' %>">
-              <a href="/exams" class="nav-link active"><i class="far fa-file-alt"></i><span>Kokeet</span></a>
-            </li>
-            <li class="nav-item <%- pageid === 'quizes' ? 'active' : '' %>">
-              <a href="/quizes" class="nav-link active"><i class="fas fa-file-signature"></i><span>Kyselyt</span></a>
-            </li>
-            <li class="nav-item dropdown">
-              <a href="#" data-toggle="dropdown" class="nav-link has-dropdown"><span><i class="fas fa-ellipsis-h"></i></span></a>
-              <ul class="dropdown-menu">
-                <li class="nav-item <%- pageid === 'rooms' ? 'active' : '' %>">
-                  <a href="/rooms" class="nav-link active"><i class="fas fa-door-open"></i> <span>Huoneet</span></a>
-                </li>
-                <li class="nav-item <%- pageid === 'teachers' ? 'active' : '' %>">
-                  <a href="/teachers" class="nav-link active"><i class="fas fa-chalkboard-teacher"></i> <span>Opettajat</span></a>
-                </li>
-                <li class="nav-item <%- pageid === 'studies' ? 'active' : '' %>">
-                  <a href="/studies" class="nav-link active"><i class="fas fa-graduation-cap"></i> <span>Opiskelut</span></a>
-                </li>
-              </ul>
-            </li>        
+            <% if (!hideItems) { %>
+              <li class="nav-item <%- pageid === 'homepage' ? 'active' : '' %>">
+                <a href="/" class="nav-link active"><i class="fas fa-home"></i><span><%- lang.homepage %></span></a>
+              </li>
+              <li class="nav-item <%- pageid === 'timetable' ? 'active' : '' %>">
+                <a href="/timetable" class="nav-link active"><i class="far fa-calendar"></i><span>Lukujärjestys</span></a>
+              </li>
+              <li class="nav-item <%- pageid === 'messages' ? 'active' : '' %>">
+                <a href="/messages" class="nav-link active"><i class="far fa-envelope"></i><span><%- lang.navbar.messages %></span></a>
+              </li>
+              <li class="nav-item <%- pageid === 'announcements' ? 'active' : '' %>">
+                <a href="/announcements" class="nav-link active"><i class="fas fa-bullhorn"></i>
+                  <span>Tiedotteet</span></a>
+              </li>
+              <li class="nav-item <%- pageid === 'lessonnotes' ? 'active' : '' %>">
+                <a href="/lessonnotes" class="nav-link active"><i class="far fa-sticky-note"></i><span>Tuntimerkinnät</span></a>
+              </li>
+              <li class="nav-item <%- pageid === 'exams' ? 'active' : '' %>">
+                <a href="/exams" class="nav-link active"><i class="far fa-file-alt"></i><span>Kokeet</span></a>
+              </li>
+              <li class="nav-item <%- pageid === 'quizes' ? 'active' : '' %>">
+                <a href="/quizes" class="nav-link active"><i class="fas fa-file-signature"></i><span>Kyselyt</span></a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" data-toggle="dropdown" class="nav-link has-dropdown"><span><i class="fas fa-ellipsis-h"></i></span></a>
+                <ul class="dropdown-menu">
+                  <li class="nav-item <%- pageid === 'rooms' ? 'active' : '' %>">
+                    <a href="/rooms" class="nav-link active"><i class="fas fa-door-open"></i> <span>Huoneet</span></a>
+                  </li>
+                  <li class="nav-item <%- pageid === 'teachers' ? 'active' : '' %>">
+                    <a href="/teachers" class="nav-link active"><i class="fas fa-chalkboard-teacher"></i> <span>Opettajat</span></a>
+                  </li>
+                  <li class="nav-item <%- pageid === 'studies' ? 'active' : '' %>">
+                    <a href="/studies" class="nav-link active"><i class="fas fa-graduation-cap"></i> <span>Opiskelut</span></a>
+                  </li>
+                </ul>
+              </li>   
+            <% } %>     
           </ul>
         </div>
       </nav>

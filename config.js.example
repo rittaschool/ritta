@@ -12,9 +12,9 @@ module.exports = {
     city: 'Demokaupunki',
   },
   lang: 'fi', // Language
-  ssl: {
+  ssl: { // Create folder 'ssl'
     key: 'private.pem', // File in the ssl folder, PEM
-    cert: 'cert.pem', // File in the ssl folder, PEM
+    cert: 'certificate.pem', // File in the ssl folder, PEM
   },
   opinsys: { // Opinsys
     enabled: false,

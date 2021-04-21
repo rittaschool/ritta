@@ -22,18 +22,14 @@ const UserSchema = new Schema({
   password: String,
   created: { type: Number, default: Date.now },
   role: Number,
-  firstname: { type: String, default: 'Etunimi' },
-  lastname: { type: String, default: 'Sukunimi' },
+  firstName: { type: String, default: 'Etunimi' },
+  lastName: { type: String, default: 'Sukunimi' },
 });
-const User = mongoose.model('User', UserSchema);
-
 const MessageSchema = new Schema({
   sender: Schema.Types.ObjectId, // Sender of this message,
   created: { type: Number, default: Date.now },
   content: String,
 });
-const Message = mongoose.model('Message', MessageSchema);
-
 const MessageThreadSchema = new Schema({
   name: String,
   sender: Schema.Types.ObjectId, // The original first sender of the thread
@@ -53,7 +49,16 @@ const MessageThreadSchema = new Schema({
   messages: [Schema.Types.ObjectId], // All messages tied to this thread
   created: { type: Number, default: Date.now },
 });
+// Models
+const User = mongoose.model('User', UserSchema);
+const Message = mongoose.model('Message', MessageSchema);
 const MessageThread = mongoose.model('MessageThread', MessageThreadSchema);
+
+exports.models = {
+  User,
+  Message,
+  MessageThread,
+};
 
 exports.connect = async () => {
   // Connecting to the mongodb database
@@ -200,10 +205,10 @@ exports.getMessage = (id) => new Promise((resolve) => {
   });
 });
 
-exports.newAccount = (username, password) => {
+exports.newAccount = (username, password, role = 0) => {
   const i = new User(
     {
-      username, password: utils.encrypt(utils.hash(password)), role: 0, created: Date.now(),
+      username, password: utils.encrypt(utils.hash(password)), role, created: Date.now(),
     },
   );
 
@@ -212,7 +217,7 @@ exports.newAccount = (username, password) => {
     if (err) { console.debug(err); return; }
     console.debug('New account saved');
   });
-  return { username, password: utils.encrypt(password) };
+  return { username };
 };
 
 /* Promise(=>boolean) : If username and password set is correct return true, otherwise false */
