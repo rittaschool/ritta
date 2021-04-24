@@ -26,7 +26,7 @@ moment.locale('fi');
 <body class="layout-3">
   <div id="app">
     <div class="main-wrapper container">
-      <%- include ('partials/navbar', {lang: lang, user: user, username: username, school: school, pageid: "messages"}) -%>
+      <%- include ('partials/navbar', {hideItems: false, lang: lang, user: user, username: username, school: school, pageid: "messages"}) -%>
       <!-- Main Content -->
       <div class="main-content" style="min-height: 844px;">
         <section class="section">
@@ -54,7 +54,7 @@ moment.locale('fi');
                               </div>
                               <div class="ticket-detail">
                                 <div class="ticket-title">
-                                  <h4><%= message.senderObject.firstname %> <%= message.senderObject.lastname %></h4>
+                                  <h4><%= message.senderObject.firstName %> <%= message.senderObject.lastName %></h4>
                                 </div>
                                 <div class="ticket-info">
                                   <div class="text-primary font-weight-600"><%= moment(message.created).calendar();%></div>

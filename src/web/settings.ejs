@@ -23,32 +23,30 @@
 <body class="layout-3">
   <div id="app">
     <div class="main-wrapper container">
-      <%- include ('partials/navbar', {hideItems: false, lang: lang, user: user, username: username, school: school, pageid: "homepage"}) -%>
+      <%- include ('partials/navbar', {hideItems: false, lang: lang, user: user, username: username, school: school, pageid: "messages"}) -%>
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>Ritta</h1>
             <div class="section-header-breadcrumb">
               <div class="breadcrumb-item active">Ritta</div>
-              <div class="breadcrumb-item"><a href="/">Etusivu</a></div>
+              <div class="breadcrumb-item"><a href="/account/settings">Asetukset</a></div>
             </div>
           </div>
-
           <div class="section-body">
-            <h2 class="section-title"><%- `${lang.todayIs} ${lang.days[new Date().getDay()]} ${new Date().getDate()}.${new Date().getMonth()+1}.${new Date().getFullYear()}` %></h2>
-            <p class="section-lead">Tervetuloa <%- user.firstName %> <%- user.lastName %>!</p>
-            <div class="card hide_on_mobile">
+            <h2 class="section-title"><%- lang.settings %></h2>
+            <p class="section-lead">
+              Olet kirjautuneena käyttäjällä <b><%- user.username %></b>
+            </p>
+
+            <div class="card">
               <div class="card-header">
-                <h4>Lukujärjestys</h4>
+                <h4>Vaihda salasana</h4>
               </div>
               <div class="card-body">
                 <div class="fc-overflow">
-                  <div id="schedule"></div>
+                  <p>Tekstiä.</p>
                 </div>
-              </div>
-              <div class="card-footer bg-whitesmoke">
-                Sinulla on tänään ? oppituntia
               </div>
             </div>
           </div>
@@ -63,13 +61,11 @@
   <script src="/js/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="/js/jquery.nicescroll.min.js"></script>
-  <script src="/js/moment.min.js"></script>
   <script src="/js/stisla.js"></script>
   <script defer src="/js/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
-  <script src="/js/notifications.js"></script>
 
   <!-- JS Libraies -->
-  <%- include("partials/imports", { notificationID }) -%>
+  <%- include("partials/imports", {notificationID: notificationID}) -%>
 
   <!-- Template JS File -->
   <script src="/js/scripts.js"></script>
@@ -77,6 +73,6 @@
 
   <!-- Page Specific JS File -->
   <script src="/js/page/index.js"></script>
-  <script src="/js/page/homepage.js"></script>
+  <script src="/js/page/features-posts.js"></script>
 </body>
 </html>
