@@ -5,8 +5,6 @@ const session = require('express-session');
 const cors = require('cors');
 const https = require('https');
 const fs = require('fs');
-const crypto = require('crypto');
-const rateLimit = require('express-rate-limit');
 const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
@@ -170,15 +168,6 @@ app.use(session({
 app.use(cookieParser());
 app.use(cors());
 app.use(helmet());
-const limiter = rateLimit({
-  windowMs: 100,
-  max: 40,
-  handler(req, res, next) {
-    if (req.path.endsWith('.css') || req.path.endsWith('.js') || req.path.endsWith('.png') || req.path.endsWith('.jpg') || req.path.endsWith('.jpeg') || req.path.endsWith('.svg')) { next(); return; }
-    res.status(429).send(`Wait a bit... <script>setTimeout(()=>{window.location.replace('${req.originalUrl}')},1150)</script>`);
-  },
-});
-app.use(limiter);
 app.use(express.urlencoded({ limit: '200mb', extended: true }));
 app.use(express.json({ limit: '200mb' }));
 app.use(express.static('assets'));
@@ -521,6 +510,20 @@ app.get('/account/:action', (req, res) => {
     case 'loggedin':
       res.redirect('/');
       break;
+    case 'settings':
+      if (!req.user) {
+        res.redirect('/');
+        return;
+      }
+      res.render(`${__dirname}/web/settings.ejs`, {
+        version: packageJSON.version,
+        lang,
+        school: config.school,
+        username: req.user.username,
+        user: req.user,
+        notificationID: utils.encrypt(req.user.id),
+      });
+      break;
     default:
       res.status(404).send('Not found GET /account/:action');
       break;
@@ -558,7 +561,6 @@ app.get('/api/notification', (req, res) => {
   }
 });
 app.get('/api/calendar/:userid', (req, res) => {
-  req.rateLimitThis = true;
   const value = utils.createCalendar([{
     title: 'Saksa',
     start: [2020, 10, 12, 22, 15],
@@ -573,21 +575,8 @@ app.get('/api/calendar/:userid', (req, res) => {
     res.send('Error');
     return;
   }
-  const id = crypto.randomBytes(20).toString('hex').substring(0, 4);
-  fs.writeFileSync(`${__dirname}/${id}.ics`, value);
-  res.sendFile(`${__dirname}/${id}.ics`, {}, (err) => {
-    if (err) {
-      console.debug(err);
-    } else {
-      console.debug(`${id}.ics was sent`);
-      try {
-        fs.unlinkSync(`${__dirname}/${id}.ics`);
-        console.debug(`File ${id}.ics removed`);
-      } catch (err2) {
-        console.debug(err2);
-      }
-    }
-  });
+  res.writeHead(200, { 'Content-Type': 'application/force-download', 'Content-disposition': 'attachment; filename=calendar.ics' });
+  res.end(value);
 });
 app.all('*', (req, res) => {
   const error = new Error('Not found');
