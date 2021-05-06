@@ -80,7 +80,7 @@ const config = {
 try {
   lang = require(`../lang/${config.lang}.json`);
 } catch (e) {
-  console.log('Language file not found. Check your config');
+  console.log(`Language file not found. Check your config ${e}`);
   process.exit();
 }
 try {
@@ -415,7 +415,7 @@ app.get('/messages/:messageid', (req, res, next) => isAllowedToAccess(req, res, 
     }
     if (
       thread.sender === req.user.id
-      || thread.recipients.find((r) => r.userId === req.user.id)
+      || thread.recipients.find(r => r.userId === req.user.id)
     ) {
       const newThread = thread.toObject();
       database.getUserDataById(thread.sender).then((user) => {
@@ -479,7 +479,7 @@ app.post('/messages/:messageid/reply', (req, res, next) => isAllowedToAccess(req
     }
     if (
       thread.sender === req.user.id
-      || thread.recipients.find((r) => r.userId === req.user.id)
+      || thread.recipients.find(r => r.userId === req.user.id)
     ) {
       if (!req.body.content) {
         const error = new Error('Content-parameter missing');
@@ -702,7 +702,7 @@ fs.readdir('./src/modules/', (err, files) => {
 
 // Events
 
-process.on('exit', (code) => console.log(`Ritta stopping with exit code ${code}`));
+process.on('exit', code => console.log(`Ritta stopping with exit code ${code}`));
 
 process.on('SIGINT', () => {
   console.log('Control-C detected. Stopping');
