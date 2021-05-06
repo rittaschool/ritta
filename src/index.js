@@ -17,7 +17,6 @@ const WebSocket = require('ws');
 require('dotenv').config();
 
 // Local modules
-let config;
 let lang;
 let database;
 
@@ -40,12 +39,44 @@ console.debug = (d = '') => {
 if (debugMode) console.debug('Debug mode enabled');
 
 // Start
-try {
-  config = require('../config.js');
-} catch (e) {
-  console.log('Configuration file not found. Rename config.js.example => config.js');
+
+// process.env => config
+
+if (
+  !process.env.SCHOOL_MULTISCHOOL
+  || !process.env.SCHOOL_NAME
+  || !process.env.SCHOOL_CITY
+  || !process.env.LANG
+  || !process.env.SSL_KEY
+  || !process.env.SSL_CERT
+  || !process.env.OPINSYS_ENABLED
+  || !process.env.OPINSYS_ORGANIZATION
+  || !process.env.OPINSYS_REDIRECTURI
+  || !process.env.OPINSYS_SECRET
+) {
+  console.log('Environment variables are missing values. Please consult the installation guide.');
   process.exit();
 }
+
+const config = {
+  school: {
+    multiSchool: process.env.SCHOOL_MULTISCHOOL,
+    name: process.env.SCHOOL_NAME,
+    city: process.env.SCHOOL_CITY,
+  },
+  lang: process.env.LANG,
+  ssl: {
+    key: process.env.SSL_KEY,
+    cert: process.env.SSL_CERT,
+  },
+  opinsys: { // Opinsys
+    enabled: process.env.OPINSYS_ENABLED,
+    organization: process.env.OPINSYS_ORGANIZATION,
+    redirectURI: process.env.OPINSYS_REDIRECTURI,
+    secret: process.env.OPINSYS_SECRET,
+  },
+};
+
 try {
   lang = require(`../lang/${config.lang}.json`);
 } catch (e) {
