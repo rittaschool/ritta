@@ -46,7 +46,7 @@ if (
   !process.env.SCHOOL_MULTISCHOOL
   || !process.env.SCHOOL_NAME
   || !process.env.SCHOOL_CITY
-  || !process.env.LANG
+  || !process.env.LANGUAGE
   || !process.env.SSL_KEY
   || !process.env.SSL_CERT
   || !process.env.OPINSYS_ENABLED
