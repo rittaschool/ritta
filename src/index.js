@@ -66,7 +66,6 @@ const config = {
   },
   lang: process.env.LANGUAGE,
   ssl: {
-    type: process.env.SSL_TYPE, // "file" or "string"
     key: process.env.SSL_KEY,
     cert: process.env.SSL_CERT,
   },
@@ -631,30 +630,27 @@ app.use((error, req, res, next) => {
     version: packageJSON.version,
   });
 });
-let privateKey;
-let certificate;
-if (config.ssl.type === 'string') {
-  privateKey = config.ssl.key;
-  certificate = config.ssl.cert;
+let server;
+if (process.env.HEROKU) {
+  server = https.createServer(app);
 } else {
-  privateKey = fs.readFileSync(`./ssl/${config.ssl.key}`);
-  certificate = fs.readFileSync(`./ssl/${config.ssl.cert}`);
+  server = https.createServer({
+    key: fs.readFileSync(`./ssl/${config.ssl.key}`),
+    cert: fs.readFileSync(`./ssl/${config.ssl.cert}`),
+  }, app);
 }
 
-
-const server = https.createServer({
-  key: privateKey,
-  cert: certificate,
-}, app).listen(443, () => {
-  console.log('Ritta\'s web interface is now running on port 443');
-  // 80 => 443
-  const httpsRedirect = express();
-  httpsRedirect.get('*', (req, res) => {
-    res.redirect(`https://${req.headers.host}${req.url}`);
-  });
-  httpsRedirect.listen(80, () => {
-    console.log('HTTPS Redirect is now running on port 80.');
-  });
+server.listen(process.env.HEROKU ? 80 : 443, () => {
+  console.log(`Ritta's web interface is now running on port ${process.env.HEROKU ? 80 : 443}`);
+  if (!process.env.HEROKU) {
+    const httpsRedirect = express();
+    httpsRedirect.get('*', (req, res) => {
+      res.redirect(`https://${req.headers.host}${req.url}`);
+    });
+    httpsRedirect.listen(80, () => {
+      console.log('HTTPS Redirect is now running on port 80.');
+    });
+  }
 });
 
 server.on('upgrade', (request, socket, head) => {
