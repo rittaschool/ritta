@@ -38,6 +38,7 @@
     "express-session": "^1.17.1",
     "faker": "^5.5.3",
     "helmet": "^4.4.1",
+    "hosted-git-info": "^3.0.8",
     "ics": "^2.25.0",
     "joi": "^17.4.0",
     "jquery-sparkline": "^2.4.0",
@@ -55,9 +56,9 @@
   },
   "devDependencies": {
     "eslint": "^7.23.0",
-    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-airbnb-base": "^11.2.0",
     "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-prettier": "^3.3.1",
     "nodemon": "^2.0.7",
     "prettier": "^2.2.1"
