@@ -3,6 +3,7 @@
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
+const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const csrf = require('csurf');
@@ -632,7 +633,7 @@ app.use((error, req, res, next) => {
 });
 let server;
 if (process.env.HEROKU) {
-  server = https.createServer(app);
+  server = http.createServer(app);
 } else {
   server = https.createServer({
     key: fs.readFileSync(`./ssl/${config.ssl.key}`),
