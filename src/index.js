@@ -640,8 +640,8 @@ if (process.env.HEROKU) {
   }, app);
 }
 
-server.listen(process.env.HEROKU ? 80 : 443, () => {
-  console.log(`Ritta's web interface is now running on port ${process.env.HEROKU ? 80 : 443}`);
+server.listen(process.env.HEROKU ? process.env.PORT : 443, () => {
+  console.log(`Ritta's web interface is now running on port ${process.env.HEROKU ? process.env.PORT : 443}`);
   if (!process.env.HEROKU) {
     const httpsRedirect = express();
     httpsRedirect.get('*', (req, res) => {
