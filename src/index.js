@@ -12,7 +12,7 @@ const helmet = require('helmet');
 const passport = require('passport');
 const OpinsysStrategy = require('passport-opinsys');
 const moment = require('moment');
-const { Strategy, GoogleAuthenticator } = require('passport-2fa-totp');
+const { Strategy, GoogleAuthenticator } = require('passport-2fa-totp-v2');
 const WebSocket = require('ws');
 
 require('dotenv').config();
@@ -122,12 +122,8 @@ passport.use(new Strategy(
     });
   }),
   (user, done) => {
-    if (!user.secret) {
-      done(new Error('Not using 2fa'));
-    } else {
-      const secret = GoogleAuthenticator.decodeSecret(user.secret);
-      done(null, secret, 30);
-    }
+    const secret = GoogleAuthenticator.decodeSecret(user.secret);
+    done(null, secret, 30);
   },
 ));
 
