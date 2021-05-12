@@ -1,6 +1,6 @@
 preserve_hierarchy: true
 files:
-  - translation: /lang/%two_letters_code%.json
-    ignore: []
+  - source: /lang/*.json
+    translation: /lang/%two_letters_code%.json
     dest: /fi.json
     type: json
