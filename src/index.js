@@ -570,7 +570,7 @@ app.get('/account/:action', (req, res) => {
   }
 });
 
-app.post('/account/process', passport.authenticate('local', { failureRedirect: '/account/login?invalid=true', successRedirect: '/' }));
+app.post('/account/process', passport.authenticate('2fa-totp', { failureRedirect: '/account/login?invalid=true', successRedirect: '/' }));
 
 app.post('/account/:action', (req, res) => {
   switch (req.params.action.toLowerCase()) {
