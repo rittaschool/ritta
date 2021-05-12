@@ -511,7 +511,7 @@ app.post('/messages/:messageid/reply', (req, res, next) => isAllowedToAccess(req
 
 app.get('/account/opinsys', passport.authenticate('opinsys', { failureRedirect: '/account/login?opinsysaccountnone=true', successRedirect: '/' }));
 
-app.get('/logout', (req, res, next) => isAllowedToAccess(req, res, next, [0]), (req, res) => {
+app.get('/logout', (req, res, next) => isAllowedToAccess(req, res, next, []), (req, res) => {
   req.logout();
   req.session.destroy(() => {});
   setTimeout(() => { res.redirect('/account/login?loggedout=true'); }, 200);
