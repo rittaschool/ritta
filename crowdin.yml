@@ -1,41 +1,6 @@
-# Choose file structure in crowdin
-# ex. true or false
-#
-"preserve_hierarchy": true
-
-#
-# Files configuration
-#
-files: [
- {
-  #
-  # ource files filter
-  # ex. "/resources/en/*.json"
-  #
-  "sources" : "/lang/*.json",
-
-  #
-  # where translations live
-  # ex. "/resources/%two_letters_code%/%original_file_name%"
-  #
-  "translation" : "/lang/%two_letters_code%.json",
-
-  #
-  # files or directories for ignore
-  # ex. ["/**/?.txt", "/**/[0-9].txt", "/**/*\?*.txt"]
-  #
-  "ignore" : [],
-
-  #
-  # The dest allows you to specify a file name on Crowdin
-  # ex. "/messages.json"
-  #
-  "dest" : "/fi.json",
-
-  #
-  # File type
-  # ex. "json"
-  #
-  "type" : "json"
- }
-]
+preserve_hierarchy: true
+files:
+  - translation: /lang/%two_letters_code%.json
+    ignore: []
+    dest: /fi.json
+    type: json
