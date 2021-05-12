@@ -511,6 +511,13 @@ app.post('/messages/:messageid/reply', (req, res, next) => isAllowedToAccess(req
 
 app.get('/account/opinsys', passport.authenticate('opinsys', { failureRedirect: '/account/login?opinsysaccountnone=true', successRedirect: '/' }));
 
+app.get('/mfatest', (req, res, next) => isAllowedToAccess(req, res, next, []), async (req, res) => {
+  const { secret, qr } = GoogleAuthenticator.register(req.user.username);
+  req.user.secret = secret;
+  await req.user.save();
+  qr.pipe(res);
+});
+
 app.get('/logout', (req, res, next) => isAllowedToAccess(req, res, next, []), (req, res) => {
   req.logout();
   req.session.destroy(() => {});
