@@ -12,7 +12,7 @@ const helmet = require('helmet');
 const passport = require('passport');
 const OpinsysStrategy = require('passport-opinsys');
 const moment = require('moment');
-const LocalStrategy = require('passport-local');
+const { Strategy, GoogleAuthenticator } = require('passport-2fa-totp');
 const WebSocket = require('ws');
 
 require('dotenv').config();
@@ -109,7 +109,7 @@ const opinsysRedirect = config.opinsys.redirectURI;
 const opinsysSecret = config.opinsys.secret;
 
 // Register passport strategies!
-passport.use(new LocalStrategy(
+passport.use(new Strategy(
   ((username, password, done) => {
     database.validate(username, password).then((isValid) => {
       if (isValid) {
@@ -121,6 +121,14 @@ passport.use(new LocalStrategy(
       }
     });
   }),
+  (user, done) => {
+    if (!user.secret) {
+      done(new Error('Not using 2fa'));
+    } else {
+      const secret = GoogleAuthenticator.decodeSecret(user.secret);
+      done(null, secret, 30);
+    }
+  },
 ));
 
 if (opinsys) {
