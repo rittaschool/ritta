@@ -79,7 +79,7 @@ const config = {
 };
 
 try {
-  lang = require(`../lang/${config.lang}.json`);
+  lang = require(`../lang/${config.lang}/lang.json`);
 } catch (e) {
   console.log('Language file not found. Check your config');
   process.exit();
