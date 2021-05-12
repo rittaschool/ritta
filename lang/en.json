@@ -1,0 +1,32 @@
+{
+  "login": "Kirjaudu",
+  "homepage": "Etusivu",
+  "username": "Käyttäjänimi",
+  "password": "Salasana",
+  "authenticate": "Tunnistaudu käyttäen",
+  "error_login": "Virheellinen käyttäjänimi tai salasana",
+  "error_fieldrequired": "Tämä kenttä täytyy täyttää.",
+  "loggedout": "Kirjauduit ulos",
+  "opinsys_account_none": "Käyttäjää ei löytynyt.",
+  "opinsys_organization_invalid": "Tämä organisaatio ei ole sallittu.",
+  "navbar": {
+    "common": "Yleinen",
+    "home": "Etusivu",
+    "messages": "Viestit",
+    "markread": "Merkkaa luetuksi",
+    "newmessage": "Uusi viesti",
+    "newnote": "Uusi tuntimerkintä"
+  },
+  "messages": "Viestit",
+  "settings": "Asetukset",
+  "days": [
+    "Sunnuntai",
+    "Maanantai",
+    "Tiistai",
+    "Keskiviikko",
+    "Torstai",
+    "Perjantai",
+    "Lauantai"
+  ],
+  "todayIs": "Tänään on"
+}
