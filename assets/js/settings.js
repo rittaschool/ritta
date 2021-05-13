@@ -13,7 +13,7 @@ function enableMFA() {
     disable.style.display = 'none';
     enable.style.display = '';
     enable_b.addEventListener('click', () => {
-        enable_b.classList.push('btn-progress');
+        enable_b.classList.add('btn-progress');
         axios.post('/account/mfa')
         .then((res) => {
             enable_b.style.display = 'none';
