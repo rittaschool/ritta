@@ -553,7 +553,7 @@ app.get('/account/:action', (req, res) => {
       } else if (req.query.invalid_mfa) {
         error = 'Virheellinen kaksivaiheisen tunnistautumisen koodi';
       }
-      error = req.session.messages || error;
+      error = req.session.messages[0] || error;
       res.render(`${__dirname}/web/loginpage.ejs`, {
         lang, school: config.school, opinsys: config.opinsys, error, csrfToken: req.csrfToken(),
       });
