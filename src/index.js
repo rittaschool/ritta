@@ -117,7 +117,7 @@ passport.use(new Strategy(
           done(null, user);
         });
       } else {
-        done(null, false, { message: 'invalid' });
+        done(null, false, { message: 'invalidi' });
       }
     });
   }),
