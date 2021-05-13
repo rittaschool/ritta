@@ -549,7 +549,14 @@ app.delete('/account/mfa', (req, res, next) => isAllowedToAccess(req, res, next,
       message: 'MFA code not supplied.',
     });
   }
-  const isValid = totp.verify(req.body.code, req.user.secret, {
+  const code = parseInt(req.body.code, 10);
+  if (isNaN(code)) {
+    return res.status(400).json({
+      message: 'MFA code not supplied.',
+    });
+  }
+  
+  const isValid = totp.verify(code, req.user.secret, {
     window: 6,
     time: 30,
   });
