@@ -38,8 +38,8 @@
                 <form method="POST" action="/account/process" class="needs-validation" novalidate="">
                   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   <div class="form-group">
-                    <label for="username"><%- lang.username %></label>
-                    <input style="text-transform:lowercase;" id="username" onkeyup="return this.value=this.value.toLowerCase();" type="text" class="form-control" name="username" tabindex="1" required autofocus>
+                    <label for="username"><%- lang.username %></label>onkeyup="return this.value=this.value.toLoweronkeyup="return this.value=this.value.toLowerCase();"Case();"
+                    <input id="username" type="text" class="form-control" name="username" tabindex="1" required autofocus>
                     <div class="invalid-feedback">
                       <%- lang.error_fieldrequired %>
                     </div>
@@ -54,6 +54,14 @@
                       <%- lang.error_fieldrequired %>
                     </div>
                   </div>
+
+                  <div class="form-group">
+                    <div class="d-block">
+                    	<label for="code" class="control-label">2FA-koodi</label>
+                    </div>
+                    <input id="code" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" class="form-control" name="code" tabindex="2">
+                  </div>
+                  
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
                       <%- lang.login %>
