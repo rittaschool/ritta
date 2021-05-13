@@ -117,7 +117,7 @@ passport.use(new Strategy(
           done(null, user);
         });
       } else {
-        done(null, false, { message: 'invalidi' });
+        done(null, false, { message: 'invalid' });
       }
     });
   }),
@@ -549,6 +549,8 @@ app.get('/account/:action', (req, res) => {
         error = lang.opinsys_account_none;
       } else if (req.query.opinsysinvalidorganization) {
         error = lang.opinsys_organization_invalid;
+      } else if (req.query.invalid_mfa) {
+        error = 'MFA Code missing';
       }
       res.render(`${__dirname}/web/loginpage.ejs`, {
         lang, school: config.school, opinsys: config.opinsys, error, csrfToken: req.csrfToken(),
@@ -578,7 +580,7 @@ app.get('/account/:action', (req, res) => {
   }
 });
 
-app.post('/account/process', passport.authenticate('2fa-totp', { failureRedirect: '/account/login?invalid=true', successRedirect: '/' }));
+app.post('/account/process', passport.authenticate('2fa-totp', { failureRedirect: '/account/login?invalid=true', successRedirect: '/', badRequestMessage: { message: 'invalid_mfa' } }));
 
 app.post('/account/:action', (req, res) => {
   switch (req.params.action.toLowerCase()) {
