@@ -521,6 +521,7 @@ app.get('/mfatest', (req, res, next) => isAllowedToAccess(req, res, next, []), a
   req.user.secret = secret;
   await req.user.save();
   res.setHeader('Content-type', 'image/svg+xml');
+  console.log(qr);
   qr.pipe(res);
 });
 
