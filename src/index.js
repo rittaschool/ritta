@@ -519,6 +519,7 @@ app.get('/mfatest', (req, res, next) => isAllowedToAccess(req, res, next, []), a
   const { secret, qr } = GoogleAuthenticator.register(req.user.username);
   req.user.secret = secret;
   await req.user.save();
+  res.setHeader('Content-type', 'image/svg+xml');
   qr.pipe(res);
 });
 
