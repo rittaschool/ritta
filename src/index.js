@@ -122,8 +122,12 @@ passport.use(new Strategy(
     });
   }),
   (user, done) => {
-    const secret = GoogleAuthenticator.decodeSecret(user.secret);
-    done(null, secret, 30);
+    if (!user.secret) {
+      done(null, null);
+    } else {
+      const secret = GoogleAuthenticator.decodeSecret(user.secret);
+      done(null, secret, 30);
+    }
   },
 ));
 
