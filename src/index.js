@@ -514,7 +514,7 @@ app.post('/messages/:messageid/reply', (req, res, next) => isAllowedToAccess(req
   });
 });
 
-app.get('/account/opinsys', passport.authenticate('opinsys', { failureRedirect: '/account/login?opinsysaccountnone=true', successRedirect: '/' }));
+app.get('/account/opinsys', passport.authenticate('opinsys', { failureRedirect: '/account/login', failureMessage: true, successRedirect: '/' }));
 
 app.get('/mfatest', (req, res, next) => isAllowedToAccess(req, res, next, []), async (req, res) => {
   const { secret, qr } = GoogleAuthenticator.register(req.user.username);
@@ -590,7 +590,7 @@ app.get('/account/:action', (req, res) => {
   }
 });
 
-app.post('/account/process', passport.authenticate('2fa-totp', { failureRedirect: '/account/login?invalid=true', successRedirect: '/', badRequestMessage: { message: 'invalid_mfa' }, failureMessage: true }));
+app.post('/account/process', passport.authenticate('2fa-totp', { failureRedirect: '/account/login', successRedirect: '/', badRequestMessage: { message: 'invalid_mfa' }, failureMessage: true }));
 
 app.post('/account/:action', (req, res) => {
   switch (req.params.action.toLowerCase()) {
