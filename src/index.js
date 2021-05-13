@@ -213,6 +213,7 @@ app.use(express.json({ limit: '200mb' }));
 app.use(express.static('assets'));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(require('flash')());
 
 // Anti CSRF
 app.use(csrf({ cookie: true }));
