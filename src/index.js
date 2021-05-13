@@ -372,6 +372,7 @@ app.get('/messages/send', (req, res, next) => isAllowedToAccess(req, res, next, 
     school: config.school,
     username: req.user.username,
     user: req.user,
+    csrfToken: '',
     notificationID: utils.encrypt(req.user.id),
   });
 });
@@ -463,6 +464,7 @@ app.get('/messages/:messageid', (req, res, next) => isAllowedToAccess(req, res, 
             moment,
             decrypt: utils.decrypt,
             messages,
+            csrfToken: '',
             notificationID: utils.encrypt(req.user.id),
           });
         });
@@ -607,7 +609,7 @@ app.get('/account/:action', (req, res) => {
         delete req.session.messages;
       }
       res.render(`${__dirname}/web/loginpage.ejs`, {
-        lang, school: config.school, opinsys: config.opinsys, error,
+        lang, school: config.school, opinsys: config.opinsys, error, csrfToken: '',
       });
       break;
     }
