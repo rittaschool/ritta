@@ -9,7 +9,7 @@ const info = document.getElementById('mfa_info');
 enable.style.display = 'none';
 disable.style.display = 'none';
 
-function enable() {
+function enableMFA() {
     disable.style.display = 'none';
     enable.style.display = '';
     enable_b.addEventListener('click', () => {
@@ -29,7 +29,7 @@ function enable() {
     })
 }
 
-function disable() {
+function disableMFA() {
     enable.style.display = 'none';
     disable.style.display = '';
     disable_b.addEventListener('click', () => {
@@ -52,9 +52,9 @@ axios.get('/account/mfa')
   .then(function (response) {
         loading.style.display = 'none';
         if (response.data.enabled) {
-            disable();
+            disableMFA();
         } else {
-            enable();
+            enableMFA();
         }
   })
   .catch(function (error) {
