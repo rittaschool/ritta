@@ -6,7 +6,6 @@ const cors = require('cors');
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
-const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const passport = require('passport');
@@ -216,8 +215,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(require('flash')());
 
-// Anti CSRF
-app.use(csrf({ cookie: true }));
 
 const isAllowedToAccess = (req, res, next, roles) => {
   if (!Array.isArray(roles)) {
@@ -375,7 +372,6 @@ app.get('/messages/send', (req, res, next) => isAllowedToAccess(req, res, next, 
     school: config.school,
     username: req.user.username,
     user: req.user,
-    csrfToken: req.csrfToken(),
     notificationID: utils.encrypt(req.user.id),
   });
 });
@@ -467,7 +463,6 @@ app.get('/messages/:messageid', (req, res, next) => isAllowedToAccess(req, res, 
             moment,
             decrypt: utils.decrypt,
             messages,
-            csrfToken: req.csrfToken(),
             notificationID: utils.encrypt(req.user.id),
           });
         });
@@ -555,7 +550,6 @@ app.delete('/account/mfa', (req, res, next) => isAllowedToAccess(req, res, next,
       message: 'MFA code not supplied.',
     });
   }
-  
   const isValid = totp.verify(code, req.user.secret, {
     window: 6,
     time: 30,
@@ -613,7 +607,7 @@ app.get('/account/:action', (req, res) => {
         delete req.session.messages;
       }
       res.render(`${__dirname}/web/loginpage.ejs`, {
-        lang, school: config.school, opinsys: config.opinsys, error, csrfToken: req.csrfToken(),
+        lang, school: config.school, opinsys: config.opinsys, error,
       });
       break;
     }
