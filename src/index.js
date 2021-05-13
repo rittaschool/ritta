@@ -555,7 +555,7 @@ app.delete('/account/mfa', (req, res, next) => isAllowedToAccess(req, res, next,
       message: 'Invalid MFA code',
     });
   }
-  delete req.user.secret;
+  req.user.secret = undefined;
   await req.user.save();
   return res.json({
     message: 'Disabled MFA',
