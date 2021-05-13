@@ -542,26 +542,28 @@ app.get('/account/:action', (req, res) => {
         return;
       }
       let error;
-      switch(req.session.messages[0]) {
-        case 'invalid':
-          error = lang.error_login;  
-          break;
-        case 'loggedout':
-          error = lang.loggedout;
-          break;
-        case 'opinsysaccoutnone':
-          error = lang.opinsys_account_none;
-          break;
-        case 'opinsysinvalidorganization':
-          error = lang.opinsys_organization_invalid;
-          break;
-        case 'invalid_mfa':
-          error = 'Virheellinen 2FA-koodi';
-          break;
-        default:
-          break;
+      if (req.session.messages) {
+        switch (req.session.messages[0] || req.session.messages) {
+          case 'invalid':
+            error = lang.error_login;
+            break;
+          case 'loggedout':
+            error = lang.loggedout;
+            break;
+          case 'opinsysaccoutnone':
+            error = lang.opinsys_account_none;
+            break;
+          case 'opinsysinvalidorganization':
+            error = lang.opinsys_organization_invalid;
+            break;
+          case 'invalid_mfa':
+            error = 'Virheellinen 2FA-koodi';
+            break;
+          default:
+            break;
+        }
+        delete req.session.messages;
       }
-      delete req.session.messages;
       res.render(`${__dirname}/web/loginpage.ejs`, {
         lang, school: config.school, opinsys: config.opinsys, error, csrfToken: req.csrfToken(),
       });
