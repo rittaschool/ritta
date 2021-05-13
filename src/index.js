@@ -14,7 +14,8 @@ const OpinsysStrategy = require('passport-opinsys');
 const moment = require('moment');
 const { Strategy, GoogleAuthenticator } = require('passport-2fa-totp-v2');
 const WebSocket = require('ws');
-
+const svg64 = require('svg64');
+const totp = require('notp').totp;
 require('dotenv').config();
 
 // Local modules
@@ -516,12 +517,52 @@ app.post('/messages/:messageid/reply', (req, res, next) => isAllowedToAccess(req
 
 app.get('/account/opinsys', passport.authenticate('opinsys', { failureRedirect: '/account/login', failureMessage: true, successRedirect: '/' }));
 
-app.get('/mfatest', (req, res, next) => isAllowedToAccess(req, res, next, []), async (req, res) => {
-  const { secret, qr } = GoogleAuthenticator.register(req.user.username);
+app.get('/account/mfa', (req, res, next) => isAllowedToAccess(req, res, next, []), async (req, res) => {
+  res.json({
+    enabled: !!req.user.secret,
+  });
+});
+
+app.post('/account/mfa', (req, res, next) => isAllowedToAccess(req, res, next, []), async (req, res) => {
+  if (req.user.secret) {
+    return res.status(400).json({
+      message: 'MFA already enabled.',
+    });
+  }
+
+  const { secret, qr } = GoogleAuthenticator.register(`Ritta - ${req.user.username}`);
   req.user.secret = secret;
   await req.user.save();
-  res.setHeader('Content-type', 'image/svg+xml');
-  res.send(qr);
+  return res.json({
+    qrCode: svg64(qr),
+  });
+});
+
+app.delete('/account/mfa', (req, res, next) => isAllowedToAccess(req, res, next, []), async (req, res) => {
+  if (!req.user.secret) {
+    return res.status(400).json({
+      message: 'MFA not enabled.',
+    });
+  }
+  if (!req.body.code) {
+    return res.status(400).json({
+      message: 'MFA code not supplied.',
+    });
+  }
+  const isValid = totp.verify(req.body.code, req.user.secret, {
+    window: 6,
+    time: 30,
+  });
+  if (!isValid) {
+    return res.status(400).json({
+      message: 'Invalid MFA code',
+    });
+  }
+  delete req.user.secret;
+  await req.user.save();
+  return res.json({
+    message: 'Disabled MFA',
+  });
 });
 
 app.get('/logout', (req, res, next) => isAllowedToAccess(req, res, next, []), (req, res) => {
