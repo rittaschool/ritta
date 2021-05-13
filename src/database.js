@@ -24,6 +24,7 @@ const UserSchema = new Schema({
   role: Number,
   firstName: { type: String, default: 'Etunimi' },
   lastName: { type: String, default: 'Sukunimi' },
+  secret: String,
 });
 const MessageSchema = new Schema({
   sender: Schema.Types.ObjectId, // Sender of this message,

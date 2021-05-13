@@ -3,17 +3,18 @@
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
+const http = require('http');
 const https = require('https');
 const fs = require('fs');
-const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const passport = require('passport');
 const OpinsysStrategy = require('passport-opinsys');
 const moment = require('moment');
-const LocalStrategy = require('passport-local');
+const { Strategy, GoogleAuthenticator } = require('passport-2fa-totp-v2');
 const WebSocket = require('ws');
-
+const svg64 = require('svg64');
+const totp = require('notp').totp;
 require('dotenv').config();
 
 // Local modules
@@ -46,7 +47,7 @@ if (
   !process.env.SCHOOL_MULTISCHOOL
   || !process.env.SCHOOL_NAME
   || !process.env.SCHOOL_CITY
-  || !process.env.LANG
+  || !process.env.LANGUAGE
   || !process.env.SSL_KEY
   || !process.env.SSL_CERT
   || !process.env.OPINSYS_ENABLED
@@ -64,7 +65,7 @@ const config = {
     name: process.env.SCHOOL_NAME,
     city: process.env.SCHOOL_CITY,
   },
-  lang: process.env.LANG,
+  lang: process.env.LANGUAGE,
   ssl: {
     key: process.env.SSL_KEY,
     cert: process.env.SSL_CERT,
@@ -78,7 +79,7 @@ const config = {
 };
 
 try {
-  lang = require(`../lang/${config.lang}.json`);
+  lang = require(`../lang/${config.lang}/lang.json`);
 } catch (e) {
   console.log('Language file not found. Check your config');
   process.exit();
@@ -108,7 +109,7 @@ const opinsysRedirect = config.opinsys.redirectURI;
 const opinsysSecret = config.opinsys.secret;
 
 // Register passport strategies!
-passport.use(new LocalStrategy(
+passport.use(new Strategy(
   ((username, password, done) => {
     database.validate(username, password).then((isValid) => {
       if (isValid) {
@@ -120,6 +121,14 @@ passport.use(new LocalStrategy(
       }
     });
   }),
+  (user, done) => {
+    if (!user.secret) {
+      done(null, null);
+    } else {
+      const secret = GoogleAuthenticator.decodeSecret(user.secret);
+      done(null, secret);
+    }
+  },
 ));
 
 if (opinsys) {
@@ -204,9 +213,8 @@ app.use(express.json({ limit: '200mb' }));
 app.use(express.static('assets'));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(require('flash')());
 
-// Anti CSRF
-app.use(csrf({ cookie: true }));
 
 const isAllowedToAccess = (req, res, next, roles) => {
   if (!Array.isArray(roles)) {
@@ -364,7 +372,7 @@ app.get('/messages/send', (req, res, next) => isAllowedToAccess(req, res, next, 
     school: config.school,
     username: req.user.username,
     user: req.user,
-    csrfToken: req.csrfToken(),
+    csrfToken: '',
     notificationID: utils.encrypt(req.user.id),
   });
 });
@@ -415,7 +423,7 @@ app.get('/messages/:messageid', (req, res, next) => isAllowedToAccess(req, res, 
     }
     if (
       thread.sender === req.user.id
-      || thread.recipients.find((r) => r.userId === req.user.id)
+      || thread.recipients.find(r => r.userId === req.user.id)
     ) {
       const newThread = thread.toObject();
       database.getUserDataById(thread.sender).then((user) => {
@@ -456,7 +464,7 @@ app.get('/messages/:messageid', (req, res, next) => isAllowedToAccess(req, res, 
             moment,
             decrypt: utils.decrypt,
             messages,
-            csrfToken: req.csrfToken(),
+            csrfToken: '',
             notificationID: utils.encrypt(req.user.id),
           });
         });
@@ -479,7 +487,7 @@ app.post('/messages/:messageid/reply', (req, res, next) => isAllowedToAccess(req
     }
     if (
       thread.sender === req.user.id
-      || thread.recipients.find((r) => r.userId === req.user.id)
+      || thread.recipients.find(r => r.userId === req.user.id)
     ) {
       if (!req.body.content) {
         const error = new Error('Content-parameter missing');
@@ -504,9 +512,57 @@ app.post('/messages/:messageid/reply', (req, res, next) => isAllowedToAccess(req
   });
 });
 
-app.get('/account/opinsys', passport.authenticate('opinsys', { failureRedirect: '/account/login?opinsysaccountnone=true', successRedirect: '/' }));
+app.get('/account/opinsys', passport.authenticate('opinsys', { failureRedirect: '/account/login', failureMessage: true, successRedirect: '/' }));
 
-app.get('/logout', (req, res, next) => isAllowedToAccess(req, res, next, [0]), (req, res) => {
+app.get('/account/mfa', (req, res, next) => isAllowedToAccess(req, res, next, []), async (req, res) => {
+  res.json({
+    enabled: !!req.user.secret,
+  });
+});
+
+app.post('/account/mfa', (req, res, next) => isAllowedToAccess(req, res, next, []), async (req, res) => {
+  if (req.user.secret) {
+    return res.status(400).json({
+      message: 'MFA already enabled.',
+    });
+  }
+
+  const { secret, qr } = GoogleAuthenticator.register(`Ritta - ${req.user.username}`);
+  req.user.secret = secret;
+  await req.user.save();
+  return res.json({
+    qrCode: svg64(qr),
+  });
+});
+
+app.delete('/account/mfa', (req, res, next) => isAllowedToAccess(req, res, next, []), async (req, res) => {
+  if (!req.user.secret) {
+    return res.status(400).json({
+      message: 'MFA not enabled.',
+    });
+  }
+  if (!req.body.code) {
+    return res.status(400).json({
+      message: 'MFA code not supplied.',
+    });
+  }
+  const isValid = totp.verify(req.body.code, GoogleAuthenticator.decodeSecret(req.user.secret), {
+    window: 6,
+    time: 30,
+  });
+  if (!isValid) {
+    return res.status(400).json({
+      message: 'Invalid MFA code',
+    });
+  }
+  req.user.secret = undefined;
+  await req.user.save();
+  return res.json({
+    message: 'Disabled MFA',
+  });
+});
+
+app.get('/logout', (req, res, next) => isAllowedToAccess(req, res, next, []), (req, res) => {
   req.logout();
   req.session.destroy(() => {});
   setTimeout(() => { res.redirect('/account/login?loggedout=true'); }, 200);
@@ -524,17 +580,30 @@ app.get('/account/:action', (req, res) => {
         return;
       }
       let error;
-      if (req.query.invalid) {
-        error = lang.error_login;
-      } else if (req.query.loggedout) {
-        error = lang.loggedout;
-      } else if (req.query.opinsysaccountnone) {
-        error = lang.opinsys_account_none;
-      } else if (req.query.opinsysinvalidorganization) {
-        error = lang.opinsys_organization_invalid;
+      if (req.session.messages) {
+        switch (req.session.messages[0] || req.session.messages) {
+          case 'invalid':
+            error = lang.error_login;
+            break;
+          case 'loggedout':
+            error = lang.loggedout;
+            break;
+          case 'opinsysaccoutnone':
+            error = lang.opinsys_account_none;
+            break;
+          case 'opinsysinvalidorganization':
+            error = lang.opinsys_organization_invalid;
+            break;
+          case 'invalid_mfa':
+            error = 'Virheellinen 2FA-koodi';
+            break;
+          default:
+            break;
+        }
+        delete req.session.messages;
       }
       res.render(`${__dirname}/web/loginpage.ejs`, {
-        lang, school: config.school, opinsys: config.opinsys, error, csrfToken: req.csrfToken(),
+        lang, school: config.school, opinsys: config.opinsys, error, csrfToken: '',
       });
       break;
     }
@@ -561,7 +630,7 @@ app.get('/account/:action', (req, res) => {
   }
 });
 
-app.post('/account/process', passport.authenticate('local', { failureRedirect: '/account/login?invalid=true', successRedirect: '/' }));
+app.post('/account/process', passport.authenticate('2fa-totp', { failureRedirect: '/account/login', successRedirect: '/', badRequestMessage: { message: 'invalid_mfa' }, failureMessage: true }));
 
 app.post('/account/:action', (req, res) => {
   switch (req.params.action.toLowerCase()) {
@@ -630,22 +699,27 @@ app.use((error, req, res, next) => {
     version: packageJSON.version,
   });
 });
-const privateKey = fs.readFileSync(`./ssl/${config.ssl.key}`);
-const certificate = fs.readFileSync(`./ssl/${config.ssl.cert}`);
+let server;
+if (process.env.HEROKU) {
+  server = http.createServer(app);
+} else {
+  server = https.createServer({
+    key: fs.readFileSync(`./ssl/${config.ssl.key}`),
+    cert: fs.readFileSync(`./ssl/${config.ssl.cert}`),
+  }, app);
+}
 
-const server = https.createServer({
-  key: privateKey,
-  cert: certificate,
-}, app).listen(443, () => {
-  console.log('Ritta\'s web interface is now running on port 443');
-  // 80 => 443
-  const httpsRedirect = express();
-  httpsRedirect.get('*', (req, res) => {
-    res.redirect(`https://${req.headers.host}${req.url}`);
-  });
-  httpsRedirect.listen(80, () => {
-    console.log('HTTPS Redirect is now running on port 80.');
-  });
+server.listen(process.env.HEROKU ? process.env.PORT : 443, () => {
+  console.log(`Ritta's web interface is now running on port ${process.env.HEROKU ? process.env.PORT : 443}`);
+  if (!process.env.HEROKU) {
+    const httpsRedirect = express();
+    httpsRedirect.get('*', (req, res) => {
+      res.redirect(`https://${req.headers.host}${req.url}`);
+    });
+    httpsRedirect.listen(80, () => {
+      console.log('HTTPS Redirect is now running on port 80.');
+    });
+  }
 });
 
 server.on('upgrade', (request, socket, head) => {
@@ -702,7 +776,7 @@ fs.readdir('./src/modules/', (err, files) => {
 
 // Events
 
-process.on('exit', (code) => console.log(`Ritta stopping with exit code ${code}`));
+process.on('exit', code => console.log(`Ritta stopping with exit code ${code}`));
 
 process.on('SIGINT', () => {
   console.log('Control-C detected. Stopping');

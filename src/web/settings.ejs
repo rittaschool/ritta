@@ -45,7 +45,29 @@
               </div>
               <div class="card-body">
                 <div class="fc-overflow">
-                  <p>Tekstiä.</p>
+                  <p>Placeholder</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h4>Kaksivaiheinen tunnistautuminen</h4>
+              </div>
+              <div class="card-body">
+                <div class="fc-overflow">
+                  <div id="mfa_loading">
+                    <a class="btn btn-primary btn-progress">Ladataan</a>
+                  </div>
+                  <div id="mfa_enable">
+                    <img id="mfa_qrcode" style="display:none;" style="width:150px;height:150px;">
+                    <p id="mfa_info" style="display: none;">Kaksivaiheinen tunnistautuminen on nyt aktivoitu. Skannaa QR-koodi 2FA-sovelluksessasi. Mikäli kadotat puhelimesi tai jokin muu estää pääsyn 2FA-koodeihin, ota yhteys ylläpitäjään.</p>
+                    <button id="mfa_b_enable" class="btn btn-primary">Aktivoi kaksivaiheinen tunnistautuminen.</button>
+                  </div>
+                  <div id="mfa_disable">
+                    <input type="text" id="mfa_disable_code" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" class="form-control">
+                    <button id="mfa_b_disable" class="btn btn-danger">Poista kaksivaiheinen tunnistautuminen.</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -62,6 +84,7 @@
   <script src="/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="/js/jquery.nicescroll.min.js"></script>
   <script src="/js/stisla.js"></script>
+  <script src="/js/axios.min.js"></script>
   <script defer src="/js/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
 
   <!-- JS Libraies -->
@@ -73,6 +96,6 @@
 
   <!-- Page Specific JS File -->
   <script src="/js/page/index.js"></script>
-  <script src="/js/page/features-posts.js"></script>
+  <script src="/js/settings.js"></script>
 </body>
 </html>
