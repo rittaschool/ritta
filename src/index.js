@@ -550,7 +550,7 @@ app.get('/account/:action', (req, res) => {
       } else if (req.query.opinsysinvalidorganization) {
         error = lang.opinsys_organization_invalid;
       } else if (req.query.invalid_mfa) {
-        error = 'MFA Code missing';
+        error = 'Virheellinen kaksivaiheisen tunnistautumisen koodi';
       }
       res.render(`${__dirname}/web/loginpage.ejs`, {
         lang, school: config.school, opinsys: config.opinsys, error, csrfToken: req.csrfToken(),
@@ -580,7 +580,7 @@ app.get('/account/:action', (req, res) => {
   }
 });
 
-app.post('/account/process', passport.authenticate('2fa-totp', { failureRedirect: '/account/login?invalid=true', successRedirect: '/', badRequestMessage: { message: 'invalid_mfa' } }));
+app.post('/account/process', passport.authenticate('2fa-totp', { failureRedirect: '/account/login?invalid=true', successRedirect: '/', badRequestMessage: { message: 'invalid_mfa' }, failureFlash: true }));
 
 app.post('/account/:action', (req, res) => {
   switch (req.params.action.toLowerCase()) {
