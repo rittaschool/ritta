@@ -35,7 +35,7 @@ function disableMFA() {
     disable_b.addEventListener('click', () => {
         axios.delete('/account/mfa', {
             data: {
-                code: disable_code.innerText
+                code: disable_code.value
             }
         })
         .then((res) => {
