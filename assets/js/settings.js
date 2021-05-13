@@ -19,7 +19,7 @@ function enableMFA() {
             enable_b.style.display = 'none';
             info.style.display = '';
             qrcode.src = res.data.qrCode;
-            qrcode.style.display = '';
+            qrcode.style.display = 'width:150px;height:150px;';
         })
         .catch((err) => {
             enable_b.classList.remove('btn-progress');
