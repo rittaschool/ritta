@@ -253,8 +253,7 @@ app.get('/', (req, res, next) => isAllowedToAccess(req, res, next, []), (req, re
     notificationID: utils.encrypt(req.user.id),
   });
 });
-
-app.get('/messages', (req, res, next) => isAllowedToAccess(req, res, next, [0]), (req, res) => {
+app.get('/messages', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res) => {
   // We have to do a lot of the work here as the engine can't do everything
   database.getMessagesSent(req.user.username).then((sent) => {
     database.getMessagesArchive(req.user.username).then((archive) => {
@@ -291,7 +290,7 @@ app.get('/messages', (req, res, next) => isAllowedToAccess(req, res, next, [0]),
   });
 });
 
-app.get('/messages/sent', (req, res, next) => isAllowedToAccess(req, res, next, [0]), (req, res) => {
+app.get('/messages/sent', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res) => {
   // We have to do a lot of the work here as the engine can't do everything
   database.getMessagesArchive(req.user.username).then((archive) => {
     database.getMessagesInbox(req.user.username).then((outbox) => {
@@ -328,7 +327,7 @@ app.get('/messages/sent', (req, res, next) => isAllowedToAccess(req, res, next, 
   });
 });
 
-app.get('/messages/archive', (req, res, next) => isAllowedToAccess(req, res, next, [0]), (req, res) => {
+app.get('/messages/archive', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res) => {
   // We have to do a lot of the work here as the engine can't do everything
   database.getMessagesSent(req.user.username).then((sent) => {
     database.getMessagesInbox(req.user.username).then((outbox) => {
@@ -365,7 +364,7 @@ app.get('/messages/archive', (req, res, next) => isAllowedToAccess(req, res, nex
   });
 });
 
-app.get('/messages/send', (req, res, next) => isAllowedToAccess(req, res, next, [0]), (req, res) => {
+app.get('/messages/send', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res) => {
   res.render(`${__dirname}/web/sendmessage.ejs`, {
     version: packageJSON.version,
     lang,
@@ -377,7 +376,7 @@ app.get('/messages/send', (req, res, next) => isAllowedToAccess(req, res, next, 
   });
 });
 
-app.post('/messages/send', (req, res, next) => isAllowedToAccess(req, res, next, [0]), async (req, res, next) => {
+app.post('/messages/send', (req, res, next) => isAllowedToAccess(req, res, next, [1]), async (req, res, next) => {
   if (!req.body.content || !req.body.recipients || !req.body.title) {
     const error = new Error('Content-parameter missing');
     error.code = 400;
@@ -413,7 +412,7 @@ app.post('/messages/send', (req, res, next) => isAllowedToAccess(req, res, next,
   });
 });
 
-app.get('/messages/:messageid', (req, res, next) => isAllowedToAccess(req, res, next, [0]), (req, res, next) => {
+app.get('/messages/:messageid', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res, next) => {
   database.getThread(req.params.messageid).then((thread) => {
     if (!thread) {
       const error = new Error('Thread not found');
@@ -477,7 +476,7 @@ app.get('/messages/:messageid', (req, res, next) => isAllowedToAccess(req, res, 
   });
 });
 
-app.post('/messages/:messageid/reply', (req, res, next) => isAllowedToAccess(req, res, next, [0]), (req, res, next) => {
+app.post('/messages/:messageid/reply', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res, next) => {
   database.getThread(req.params.messageid).then((thread) => {
     if (!thread) {
       const error = new Error('Thread not found');
