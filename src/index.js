@@ -418,8 +418,8 @@ app.get('/messages/:messageid', (req, res, next) => isAllowedToAccess(req, res, 
       next(error);
       return;
     }
-    console.log(thread.sender);
-    console.log(req.user.id);
+    console.log(typeof thread.sender);
+    console.log(typeof req.user.id);
     console.log(thread.sender === req.user.id);
     console.log(thread.recipients.find(r => r.userId === req.user.id));
     if (
