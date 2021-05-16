@@ -420,11 +420,11 @@ app.get('/messages/:messageid', (req, res, next) => isAllowedToAccess(req, res, 
     }
     console.log(typeof thread.sender);
     console.log(typeof req.user.id);
-    console.log(thread.sender === req.user.id);
-    console.log(thread.recipients.find(r => r.userId === req.user.id));
+    console.log(thread.sender.toString() === req.user.id);
+    console.log(thread.recipients.find(r => r.userId.toString() === req.user.id));
     if (
-      thread.sender === req.user.id
-      || thread.recipients.find(r => r.userId === req.user.id)
+      thread.sender.toString() === req.user.id
+      || thread.recipients.find(r => r.userId.toString() === req.user.id)
     ) {
       const newThread = thread.toObject();
       database.getUserDataById(thread.sender).then((user) => {
