@@ -213,8 +213,6 @@ app.use(express.json({ limit: '200mb' }));
 app.use(express.static('assets'));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(require('flash')());
-
 
 const isAllowedToAccess = (req, res, next, roles) => {
   if (!Array.isArray(roles)) {
@@ -420,6 +418,8 @@ app.get('/messages/:messageid', (req, res, next) => isAllowedToAccess(req, res, 
       next(error);
       return;
     }
+    console.log(thread.sender === req.user.id);
+    console.log(thread.recipients.find(r => r.userId === req.user.id));
     if (
       thread.sender === req.user.id
       || thread.recipients.find(r => r.userId === req.user.id)
