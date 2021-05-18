@@ -581,8 +581,6 @@ server.on('upgrade', (request, socket, head) => {
   });
 });
 
-const exports = {};
-
 exports.start = () => {
   if (process.env.HEROKU) {
     server = http.createServer(app);
