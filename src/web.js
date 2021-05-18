@@ -11,6 +11,8 @@ const svg64 = require('svg64');
 const totp = require('notp').totp;
 const moment = require('moment');
 const passport = require('passport');
+const csrf = require('csurf');
+
 const database = require('./database');
 const packageJSON = require('../package.json');
 
@@ -40,6 +42,7 @@ app.use(express.json({ limit: '200mb' }));
 app.use(express.static('assets'));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(csrf({ cookie: true }));
 
 const isAllowedToAccess = (req, res, next, roles) => {
   if (!Array.isArray(roles)) {
@@ -60,6 +63,7 @@ const isAllowedToAccess = (req, res, next, roles) => {
 app.get('/', (req, res, next) => isAllowedToAccess(req, res, next, []), (req, res) => {
   if (req.user.role === 0) {
     res.render(`${__dirname}/web/guest.ejs`, {
+      csrfToken: req,
       version: packageJSON.version,
       lang,
       school: config.school,
@@ -70,6 +74,7 @@ app.get('/', (req, res, next) => isAllowedToAccess(req, res, next, []), (req, re
     return;
   }
   res.render(`${__dirname}/web/homepage.ejs`, {
+    csrfToken: req,
     version: packageJSON.version,
     lang,
     school: config.school,
@@ -98,6 +103,7 @@ app.get('/messages', (req, res, next) => isAllowedToAccess(req, res, next, [1]),
           });
         }).then((messages) => {
           res.render(`${__dirname}/web/messages.ejs`, {
+            csrfToken: req,
             version: packageJSON.version,
             lang,
             school: config.school,
@@ -135,6 +141,7 @@ app.get('/messages/sent', (req, res, next) => isAllowedToAccess(req, res, next, 
           });
         }).then((messages) => {
           res.render(`${__dirname}/web/messagesSent.ejs`, {
+            csrfToken: req,
             version: packageJSON.version,
             lang,
             school: config.school,
@@ -172,6 +179,7 @@ app.get('/messages/archive', (req, res, next) => isAllowedToAccess(req, res, nex
           });
         }).then((messages) => {
           res.render(`${__dirname}/web/messagesArchive.ejs`, {
+            csrfToken: req,
             version: packageJSON.version,
             lang,
             school: config.school,
@@ -191,12 +199,12 @@ app.get('/messages/archive', (req, res, next) => isAllowedToAccess(req, res, nex
 
 app.get('/messages/send', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res) => {
   res.render(`${__dirname}/web/sendmessage.ejs`, {
+    csrfToken: req,
     version: packageJSON.version,
     lang,
     school: config.school,
     username: req.user.username,
     user: req.user,
-    csrfToken: '',
     notificationID: utils.encrypt(req.user.id),
   });
 });
@@ -283,6 +291,7 @@ app.get('/messages/:messageid', (req, res, next) => isAllowedToAccess(req, res, 
           });
         }).then((messages) => {
           res.render(`${__dirname}/web/message.ejs`, {
+            csrfToken: req,
             version: packageJSON.version,
             lang,
             school: config.school,
@@ -292,7 +301,6 @@ app.get('/messages/:messageid', (req, res, next) => isAllowedToAccess(req, res, 
             moment,
             decrypt: utils.decrypt,
             messages,
-            csrfToken: '',
             notificationID: utils.encrypt(req.user.id),
           });
         });
@@ -431,7 +439,11 @@ app.get('/account/:action', (req, res) => {
         delete req.session.messages;
       }
       res.render(`${__dirname}/web/loginpage.ejs`, {
-        lang, school: config.school, opinsys: config.opinsys, error, csrfToken: '',
+        csrfToken: req,
+        lang,
+        school: config.school,
+        opinsys: config.opinsys,
+        error,
       });
       break;
     }
@@ -444,6 +456,7 @@ app.get('/account/:action', (req, res) => {
         return;
       }
       res.render(`${__dirname}/web/settings.ejs`, {
+        csrfToken: req,
         version: packageJSON.version,
         lang,
         school: config.school,
@@ -512,6 +525,7 @@ app.all('*', (req, res) => {
   const error = new Error('Not found');
   error.code = 404;
   res.status(404).render(`${__dirname}/web/error.ejs`, {
+    csrfToken: req,
     lang,
     error,
     school: config.school,
@@ -521,8 +535,14 @@ app.all('*', (req, res) => {
 
 // eslint-disable-next-line no-unused-vars
 app.use((error, req, res, next) => {
-  const status = error.code || 500;
+  let status = error.code || 500;
+  if (status === 'EBADCSRFTOKEN') {
+    status = 403;
+    error.code = 403;
+    error.message = 'CSRF Token invalid.';
+  }
   res.status(status).render(`${__dirname}/web/error.ejs`, {
+    csrfToken: req,
     error,
     lang,
     school: config.school,
@@ -607,7 +627,7 @@ exports.start = () => {
 };
 
 exports.close = () => {
-
+  server.close();
 };
 
 exports.app = app;
