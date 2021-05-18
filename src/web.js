@@ -610,8 +610,6 @@ exports.close = () => {
 
 };
 
-exports.app = {
-
-};
+exports.app = app;
 
 module.exports = exports;

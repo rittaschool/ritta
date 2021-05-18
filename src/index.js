@@ -1,3 +1,5 @@
+/* eslint-disable import/no-dynamic-require */
+
 // NPMJS Modules
 const fs = require('fs');
 const passport = require('passport');
@@ -147,7 +149,7 @@ fs.readdir('./src/modules/', (err, files) => {
       return;
     }
     console.debug(`Loading module: ${f}.`);
-    if (module.start) module.start(app, database);
+    if (module.start) module.start(web.app, database);
   });
 });
 
