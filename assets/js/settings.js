@@ -14,7 +14,12 @@ function enableMFA() {
     enable.style.display = '';
     enable_b.addEventListener('click', () => {
         enable_b.classList.add('btn-progress');
-        axios.post('/account/mfa')
+        axios.post({ 
+            withCredentials: true, 
+            headers: {
+                'CSRF-Token': document.getElementById('csrf-token').getAttribute('content') // <-- is the csrf token as a header
+            }
+        })
         .then((res) => {
             enable_b.style.display = 'none';
             info.style.display = '';
@@ -38,6 +43,10 @@ function disableMFA() {
         axios.delete('/account/mfa', {
             data: {
                 code: disable_code.value
+            },
+            withCredentials: true, 
+            headers: {
+                'CSRF-Token': document.getElementById('csrf-token').getAttribute('content') // <-- is the csrf token as a header
             }
         })
         .then((res) => {
