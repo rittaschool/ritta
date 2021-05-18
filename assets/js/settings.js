@@ -14,7 +14,6 @@ function enableMFA() {
     enable.style.display = '';
     enable_b.addEventListener('click', () => {
         enable_b.classList.add('btn-progress');
-        console.log(document.getElementById('csrf-token').getAttribute('content'));
         axios.post('/account/mfa', { 
             _csrf: document.getElementById('csrf-token').getAttribute('content')
         }, { 
@@ -45,7 +44,8 @@ function disableMFA() {
     disable_b.addEventListener('click', () => {
         axios.delete('/account/mfa', {
             data: {
-                code: disable_code.value
+                code: disable_code.value,
+                _csrf: document.getElementById('csrf-token').getAttribute('content')
             },
             withCredentials: true, 
             headers: {
