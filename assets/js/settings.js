@@ -14,7 +14,10 @@ function enableMFA() {
     enable.style.display = '';
     enable_b.addEventListener('click', () => {
         enable_b.classList.add('btn-progress');
+        console.log(document.getElementById('csrf-token').getAttribute('content'));
         axios.post('/account/mfa', { 
+            _csrf: document.getElementById('csrf-token').getAttribute('content')
+        }, { 
             withCredentials: true, 
             headers: {
                 'CSRF-Token': document.getElementById('csrf-token').getAttribute('content') // <-- is the csrf token as a header
