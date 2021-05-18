@@ -63,7 +63,7 @@ const isAllowedToAccess = (req, res, next, roles) => {
 app.get('/', (req, res, next) => isAllowedToAccess(req, res, next, []), (req, res) => {
   if (req.user.role === 0) {
     res.render(`${__dirname}/web/guest.ejs`, {
-      csrfToken: req,
+      csrfToken: req.csrfToken(),
       version: packageJSON.version,
       lang,
       school: config.school,
@@ -74,7 +74,7 @@ app.get('/', (req, res, next) => isAllowedToAccess(req, res, next, []), (req, re
     return;
   }
   res.render(`${__dirname}/web/homepage.ejs`, {
-    csrfToken: req,
+    csrfToken: req.csrfToken(),
     version: packageJSON.version,
     lang,
     school: config.school,
@@ -103,7 +103,7 @@ app.get('/messages', (req, res, next) => isAllowedToAccess(req, res, next, [1]),
           });
         }).then((messages) => {
           res.render(`${__dirname}/web/messages.ejs`, {
-            csrfToken: req,
+            csrfToken: req.csrfToken(),
             version: packageJSON.version,
             lang,
             school: config.school,
@@ -141,7 +141,7 @@ app.get('/messages/sent', (req, res, next) => isAllowedToAccess(req, res, next, 
           });
         }).then((messages) => {
           res.render(`${__dirname}/web/messagesSent.ejs`, {
-            csrfToken: req,
+            csrfToken: req.csrfToken(),
             version: packageJSON.version,
             lang,
             school: config.school,
@@ -179,7 +179,7 @@ app.get('/messages/archive', (req, res, next) => isAllowedToAccess(req, res, nex
           });
         }).then((messages) => {
           res.render(`${__dirname}/web/messagesArchive.ejs`, {
-            csrfToken: req,
+            csrfToken: req.csrfToken(),
             version: packageJSON.version,
             lang,
             school: config.school,
@@ -199,7 +199,7 @@ app.get('/messages/archive', (req, res, next) => isAllowedToAccess(req, res, nex
 
 app.get('/messages/send', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res) => {
   res.render(`${__dirname}/web/sendmessage.ejs`, {
-    csrfToken: req,
+    csrfToken: req.csrfToken(),
     version: packageJSON.version,
     lang,
     school: config.school,
@@ -291,7 +291,7 @@ app.get('/messages/:messageid', (req, res, next) => isAllowedToAccess(req, res, 
           });
         }).then((messages) => {
           res.render(`${__dirname}/web/message.ejs`, {
-            csrfToken: req,
+            csrfToken: req.csrfToken(),
             version: packageJSON.version,
             lang,
             school: config.school,
@@ -439,7 +439,7 @@ app.get('/account/:action', (req, res) => {
         delete req.session.messages;
       }
       res.render(`${__dirname}/web/loginpage.ejs`, {
-        csrfToken: req,
+        csrfToken: req.csrfToken(),
         lang,
         school: config.school,
         opinsys: config.opinsys,
@@ -456,7 +456,7 @@ app.get('/account/:action', (req, res) => {
         return;
       }
       res.render(`${__dirname}/web/settings.ejs`, {
-        csrfToken: req,
+        csrfToken: req.csrfToken(),
         version: packageJSON.version,
         lang,
         school: config.school,
@@ -503,29 +503,12 @@ app.get('/api/notification', (req, res) => {
     res.send('lol');
   }
 });
-app.get('/api/calendar/:userid', (req, res) => {
-  const value = utils.createCalendar([{
-    title: 'Saksa',
-    start: [2020, 10, 12, 22, 15],
-    duration: { minutes: 45 },
-  },
-  {
-    title: 'Englanti',
-    start: [2020, 10, 12, 21, 15],
-    duration: { minutes: 45 },
-  }]);
-  if (!value) {
-    res.send('Error');
-    return;
-  }
-  res.writeHead(200, { 'Content-Type': 'application/force-download', 'Content-disposition': 'attachment; filename=calendar.ics' });
-  res.end(value);
-});
+
 app.all('*', (req, res) => {
   const error = new Error('Not found');
   error.code = 404;
   res.status(404).render(`${__dirname}/web/error.ejs`, {
-    csrfToken: req,
+    csrfToken: req.csrfToken(),
     lang,
     error,
     school: config.school,
@@ -542,7 +525,7 @@ app.use((error, req, res, next) => {
     error.message = 'CSRF Token invalid.';
   }
   res.status(status).render(`${__dirname}/web/error.ejs`, {
-    csrfToken: req,
+    csrfToken: req.csrfToken(),
     error,
     lang,
     school: config.school,
@@ -558,8 +541,7 @@ const wss = new WebSocket.Server({
 
 wss.on('connection', (ws, request, client) => {
   ws.on('message', (message) => {
-    // const json = JSON.parse(message);
-    console.log(`youve got mail "${message}" from ${client}`);
+    console.log(`Message: "${message}" from ${client}`);
   });
 
   ws.send(JSON.stringify({ status: 1, message: 'Connected.' }));
