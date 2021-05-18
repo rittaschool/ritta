@@ -546,40 +546,6 @@ wss.on('connection', (ws, request, client) => {
 });
 
 let server;
-server.on('upgrade', (request, socket, head) => {
-  if (request.headers.upgrade !== 'websocket') {
-    return;
-  }
-  const query = request.url.slice(request.url.indexOf('?') + 1)
-    .split('&')
-    .reduce((a, c) => {
-      const [key, value] = c.split('=');
-      const b = a;
-      b[key] = value;
-      return b;
-    }, {});
-  if (!query.id) {
-    socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
-    socket.destroy();
-    return;
-  }
-  // validate user
-  database.getUserDataById(utils.decrypt(query.id)).then((user) => {
-    if (user) {
-      wss.handleUpgrade(request, socket, head, (ws) => {
-        if (userNotificationMap[user.id]) {
-          userNotificationMap[user.id] = userNotificationMap[user.id].push(ws);
-        } else {
-          userNotificationMap[user.id] = [ws];
-        }
-        wss.emit('connection', ws, request, user);
-      });
-    } else {
-      socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
-      socket.destroy();
-    }
-  });
-});
 
 exports.start = () => {
   if (process.env.HEROKU) {
@@ -601,6 +567,42 @@ exports.start = () => {
         console.log('HTTPS Redirect is now running on port 80.');
       });
     }
+  });
+
+  // Authenticate WS
+  server.on('upgrade', (request, socket, head) => {
+    if (request.headers.upgrade !== 'websocket') {
+      return;
+    }
+    const query = request.url.slice(request.url.indexOf('?') + 1)
+      .split('&')
+      .reduce((a, c) => {
+        const [key, value] = c.split('=');
+        const b = a;
+        b[key] = value;
+        return b;
+      }, {});
+    if (!query.id) {
+      socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+      socket.destroy();
+      return;
+    }
+    // validate user
+    database.getUserDataById(utils.decrypt(query.id)).then((user) => {
+      if (user) {
+        wss.handleUpgrade(request, socket, head, (ws) => {
+          if (userNotificationMap[user.id]) {
+            userNotificationMap[user.id] = userNotificationMap[user.id].push(ws);
+          } else {
+            userNotificationMap[user.id] = [ws];
+          }
+          wss.emit('connection', ws, request, user);
+        });
+      } else {
+        socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+        socket.destroy();
+      }
+    });
   });
 };
 
