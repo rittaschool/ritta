@@ -1,4 +1,4 @@
-<img src="https://ritta.pw/assets/img/logo.svg" alt="Ritta Logo" height="100">
+<img src="https://github.com/rittaschool/rittaschool.github.io/blob/main/static/media/logo.4fc81726.svg" alt="Ritta Logo" height="100">
 
 Ritta is a system for schools to keep connection between home and school strong.
 
