@@ -328,6 +328,11 @@ exports.close = () => {
 
 // Features
 
+fs.readdirSync('./features').forEach((feature) => {
+  // eslint-disable-next-line import/no-dynamic-require
+  require(`./${feature}`);
+});
+
 require('./features/messages');
 
 // Error and 404 handling
