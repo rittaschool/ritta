@@ -67,7 +67,8 @@ moment.locale('fi');
                           <div class="ticket-divider"></div>
                         <% } %>
                         <div class="ticket-form">
-                          <form action="/messages/<%= thread._id %>/reply" method="POST" autocomplete="off" autocapitalize="on">
+                          <form action="/api/v1/messages/reply" method="POST" autocomplete="off" autocapitalize="on">
+                            <input type="hidden" name="messageId" value="<%= thread._id %>">
                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <div class="form-group">
                               <textarea name="content" class="summernote"></textarea>
