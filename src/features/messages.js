@@ -12,6 +12,9 @@ const utils = require('../utils');
 const webRouter = new express.Router();
 const apiRouter = new express.Router();
 
+app.use('/messages', webRouter);
+api.add('/messages', apiRouter);
+
 webRouter.get('/', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res) => {
   // We have to do a lot of the work here as the engine can't do everything
   database.getMessagesSent(req.user.username).then((sent) => {
@@ -281,9 +284,4 @@ apiRouter.post('/reply', (req, res, next) => isAllowedToAccess(req, res, next, [
     }
   });
 });
-
-module.exports = () => {
-  app.use('/messages', webRouter);
-  api.add('/messages', apiRouter);
-};
 

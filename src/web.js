@@ -268,10 +268,6 @@ app.use((error, req, res, next) => {
   });
 });
 
-// Loading features
-
-require('./features/messages')();
-
 // Notification server.
 
 const wss = new WebSocket.Server({
@@ -354,3 +350,7 @@ exports.close = () => {
 exports.app = app;
 
 exports.isAllowedToAccess = isAllowedToAccess;
+
+// Loading features
+
+require('./features/messages')();
