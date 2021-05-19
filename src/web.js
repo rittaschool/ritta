@@ -330,7 +330,7 @@ exports.close = () => {
 
 fs.readdirSync(`${__dirname}/features/`).forEach((feature) => {
   // eslint-disable-next-line import/no-dynamic-require
-  require(`./${feature}`);
+  require(`${__dirname}/features/${feature}`);
 });
 
 require('./features/messages');
