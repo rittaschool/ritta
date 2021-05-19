@@ -12,6 +12,8 @@ const utils = require('../utils');
 const webRouter = new express.Router();
 const apiRouter = new express.Router();
 
+apiRouter.get('/', (_, res) => res.send('yes'));
+
 webRouter.get('/', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res) => {
   // We have to do a lot of the work here as the engine can't do everything
   database.getMessagesSent(req.user.username).then((sent) => {
