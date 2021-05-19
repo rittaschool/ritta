@@ -354,3 +354,7 @@ exports.isAllowedToAccess = isAllowedToAccess;
 // Loading features
 
 require('./features/messages');
+
+setInterval(() => {
+  console.log(require('express-list-routes')(app));
+});
