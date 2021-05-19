@@ -60,8 +60,17 @@ const isAllowedToAccess = (req, res, next, roles) => {
   next();
 };
 
+exports.app = app;
+
+exports.isAllowedToAccess = isAllowedToAccess;
+
 app.use('/api', apiRoute);
 
+// Loading features
+
+app.use('/messages', require('./features/messages'));
+
+// Other code
 app.get('/', (req, res, next) => isAllowedToAccess(req, res, next, []), (req, res) => {
   if (req.user.role === 0) {
     res.render(`${__dirname}/web/guest.ejs`, {
@@ -349,14 +358,6 @@ exports.start = () => {
 exports.close = () => {
   server.close();
 };
-
-exports.app = app;
-
-exports.isAllowedToAccess = isAllowedToAccess;
-
-// Loading features
-
-require('./features/messages');
 
 setInterval(() => {
   console.log(require('express-list-routes')(app));

@@ -2,7 +2,7 @@ const express = require('express');
 const moment = require('moment');
 
 const api = require('../api');
-const { isAllowedToAccess, app } = require('../web');
+const { isAllowedToAccess } = require('../web');
 const database = require('../database');
 const packageJSON = require('../../package.json');
 const lang = require('../lang').get();
@@ -282,5 +282,6 @@ apiRouter.post('/reply', (req, res, next) => isAllowedToAccess(req, res, next, [
   });
 });
 
-app.use('/messages', webRouter);
 api.add('/messages', apiRouter);
+
+module.exports = webRouter;
