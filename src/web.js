@@ -353,4 +353,4 @@ exports.isAllowedToAccess = isAllowedToAccess;
 
 // Loading features
 
-require('./features/messages')();
+require('./features/messages');
