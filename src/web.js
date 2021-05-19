@@ -328,7 +328,7 @@ exports.close = () => {
 
 // Features
 
-fs.readdirSync('./features/').forEach((feature) => {
+fs.readdirSync(`${__dirname}/features/`).forEach((feature) => {
   // eslint-disable-next-line import/no-dynamic-require
   require(`./${feature}`);
 });
