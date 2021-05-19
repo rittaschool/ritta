@@ -66,10 +66,6 @@ exports.isAllowedToAccess = isAllowedToAccess;
 
 app.use('/api', apiRoute);
 
-// Loading features
-
-app.use('/messages', require('./features/messages'));
-
 // Other code
 app.get('/', (req, res, next) => isAllowedToAccess(req, res, next, []), (req, res) => {
   if (req.user.role === 0) {
@@ -251,35 +247,6 @@ app.get('/api/notification', (req, res) => {
   }
 });
 
-app.all('*', (req, res) => {
-  const error = new Error('Not found');
-  error.code = 404;
-  res.status(404).render(`${__dirname}/web/error.ejs`, {
-    csrfToken: req.csrfToken(),
-    lang,
-    error,
-    school: config.school,
-    version: packageJSON.version,
-  });
-});
-
-// eslint-disable-next-line no-unused-vars
-app.use((error, req, res, next) => {
-  let status = error.code || 500;
-  if (status === 'EBADCSRFTOKEN') {
-    status = 403;
-    error.code = 403;
-    error.message = 'CSRF Token invalid.';
-  }
-  res.status(status).render(`${__dirname}/web/error.ejs`, {
-    csrfToken: req.csrfToken(),
-    error,
-    lang,
-    school: config.school,
-    version: packageJSON.version,
-  });
-});
-
 // Notification server.
 
 const wss = new WebSocket.Server({
@@ -358,3 +325,38 @@ exports.start = () => {
 exports.close = () => {
   server.close();
 };
+
+// Features
+
+require('./features/messages');
+
+// Error and 404 handling
+
+app.all('*', (req, res) => {
+  const error = new Error('Not found');
+  error.code = 404;
+  res.status(404).render(`${__dirname}/web/error.ejs`, {
+    csrfToken: req.csrfToken(),
+    lang,
+    error,
+    school: config.school,
+    version: packageJSON.version,
+  });
+});
+
+// eslint-disable-next-line no-unused-vars
+app.use((error, req, res, next) => {
+  let status = error.code || 500;
+  if (status === 'EBADCSRFTOKEN') {
+    status = 403;
+    error.code = 403;
+    error.message = 'CSRF Token invalid.';
+  }
+  res.status(status).render(`${__dirname}/web/error.ejs`, {
+    csrfToken: req.csrfToken(),
+    error,
+    lang,
+    school: config.school,
+    version: packageJSON.version,
+  });
+});
