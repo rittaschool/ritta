@@ -21,4 +21,5 @@ module.exports = {
     }
     module.exports.apiVersions[version].use(path, router);
   },
+  apiRoute: api,
 };

@@ -18,6 +18,7 @@ const packageJSON = require('../package.json');
 const lang = require('./lang').get();
 const utils = require('./utils');
 const config = require('./config');
+const { apiRoute } = require('./api');
 const { GoogleAuthenticator } = require('passport-2fa-totp-v2');
 
 const app = express();
@@ -58,6 +59,8 @@ const isAllowedToAccess = (req, res, next, roles) => {
   }
   next();
 };
+
+app.use('/api', apiRoute);
 
 app.get('/', (req, res, next) => isAllowedToAccess(req, res, next, []), (req, res) => {
   if (req.user.role === 0) {
@@ -357,4 +360,4 @@ require('./features/messages');
 
 setInterval(() => {
   console.log(require('express-list-routes')(app));
-},15000);
+}, 15000);
