@@ -31,7 +31,7 @@ webRouter.get('/', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (
             });
           });
         }).then((messages) => {
-          res.render(`${__dirname}/web/messages.ejs`, {
+          res.render('../web/messages.ejs', {
             csrfToken: req.csrfToken(),
             version: packageJSON.version,
             lang,
@@ -69,7 +69,7 @@ webRouter.get('/sent', (req, res, next) => isAllowedToAccess(req, res, next, [1]
             });
           });
         }).then((messages) => {
-          res.render(`${__dirname}/web/messagesSent.ejs`, {
+          res.render('../web/messagesSent.ejs', {
             csrfToken: req.csrfToken(),
             version: packageJSON.version,
             lang,
@@ -107,7 +107,7 @@ webRouter.get('/archive', (req, res, next) => isAllowedToAccess(req, res, next, 
             });
           });
         }).then((messages) => {
-          res.render(`${__dirname}/web/messagesArchive.ejs`, {
+          res.render('../web/messagesArchive.ejs', {
             csrfToken: req.csrfToken(),
             version: packageJSON.version,
             lang,
@@ -127,7 +127,7 @@ webRouter.get('/archive', (req, res, next) => isAllowedToAccess(req, res, next, 
 });
 
 webRouter.get('/send', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res) => {
-  res.render(`${__dirname}/web/sendmessage.ejs`, {
+  res.render('../web/sendmessage.ejs', {
     csrfToken: req.csrfToken(),
     version: packageJSON.version,
     lang,
@@ -183,7 +183,7 @@ webRouter.get('/:messageid', (req, res, next) => isAllowedToAccess(req, res, nex
             });
           });
         }).then((messages) => {
-          res.render(`${__dirname}/web/message.ejs`, {
+          res.render('../web/message.ejs', {
             csrfToken: req.csrfToken(),
             version: packageJSON.version,
             lang,

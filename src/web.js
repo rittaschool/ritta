@@ -358,7 +358,3 @@ exports.start = () => {
 exports.close = () => {
   server.close();
 };
-
-setInterval(() => {
-  console.log(require('express-list-routes')(app));
-}, 15000);
