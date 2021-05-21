@@ -333,8 +333,6 @@ fs.readdirSync(`${__dirname}/features/`).forEach((feature) => {
   require(`${__dirname}/features/${feature}`);
 });
 
-require('./features/messages');
-
 // Error and 404 handling
 
 app.all('*', (req, res) => {
@@ -350,7 +348,7 @@ app.all('*', (req, res) => {
 });
 
 // eslint-disable-next-line no-unused-vars
-app.use((error, req, res, next) => {
+app.use((error, req, res) => {
   let status = error.code || 500;
   if (status === 'EBADCSRFTOKEN') {
     status = 403;

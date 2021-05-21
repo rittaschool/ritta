@@ -50,15 +50,21 @@ const MessageThreadSchema = new Schema({
   messages: [Schema.Types.ObjectId], // All messages tied to this thread
   created: { type: Number, default: Date.now },
 });
+const ExternalLinkSchema = new Schema({
+  text: String,
+  link: { type: String, default: '#' },
+});
 // Models
 const User = mongoose.model('User', UserSchema);
 const Message = mongoose.model('Message', MessageSchema);
 const MessageThread = mongoose.model('MessageThread', MessageThreadSchema);
+const ExternalLink = mongoose.model('ExternalLink', ExternalLinkSchema);
 
 exports.models = {
   User,
   Message,
   MessageThread,
+  ExternalLink,
 };
 
 exports.connect = async () => {
@@ -286,5 +292,13 @@ exports.getUserDataById = id => new Promise((resolve) => {
     } else {
       resolve(null);
     }
+  });
+});
+
+exports.addExternalLink = (text, link) => new Promise((resolve) => {
+  const externalLink = ExternalLink({ text, link });
+  externalLink.save((err) => {
+    if (err) { console.debug(err); resolve(false); return; }
+    resolve(true);
   });
 });
