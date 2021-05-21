@@ -348,7 +348,7 @@ app.all('*', (req, res) => {
 });
 
 // eslint-disable-next-line no-unused-vars
-app.use((error, req, res) => {
+app.use((error, req, res, _next) => {
   let status = error.code || 500;
   if (status === 'EBADCSRFTOKEN') {
     status = 403;

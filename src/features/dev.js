@@ -15,7 +15,7 @@ router.post('/eval', (req, res, next) => isAllowedToAccess(req, res, next, [100]
   }
   try {
     // eslint-disable-next-line no-eval
-    res.json({ response: eval(req.body.command), error: false });
+    return res.json({ response: eval(req.body.command), error: false });
   } catch (e) {
     return res.status(500).json({ response: e, error: true });
   }
