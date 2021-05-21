@@ -12,7 +12,7 @@ const utils = require('../utils');
 const webRouter = new express.Router();
 const apiRouter = new express.Router();
 
-webRouter.get('/', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res) => {
+webRouter.get('/', (req, res, next) => isAllowedToAccess(req, res, next, 1, 100), (req, res) => {
   // We have to do a lot of the work here as the engine can't do everything
   database.getMessagesSent(req.user.username).then((sent) => {
     database.getMessagesArchive(req.user.username).then((archive) => {
@@ -50,7 +50,7 @@ webRouter.get('/', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (
   });
 });
 
-webRouter.get('/sent', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res) => {
+webRouter.get('/sent', (req, res, next) => isAllowedToAccess(req, res, next, 1, 100), (req, res) => {
   // We have to do a lot of the work here as the engine can't do everything
   database.getMessagesArchive(req.user.username).then((archive) => {
     database.getMessagesInbox(req.user.username).then((outbox) => {
@@ -88,7 +88,7 @@ webRouter.get('/sent', (req, res, next) => isAllowedToAccess(req, res, next, [1]
   });
 });
 
-webRouter.get('/archive', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res) => {
+webRouter.get('/archive', (req, res, next) => isAllowedToAccess(req, res, next, 1, 100), (req, res) => {
   // We have to do a lot of the work here as the engine can't do everything
   database.getMessagesSent(req.user.username).then((sent) => {
     database.getMessagesInbox(req.user.username).then((outbox) => {
@@ -126,7 +126,7 @@ webRouter.get('/archive', (req, res, next) => isAllowedToAccess(req, res, next, 
   });
 });
 
-webRouter.get('/send', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res) => {
+webRouter.get('/send', (req, res, next) => isAllowedToAccess(req, res, next, 1, 100), (req, res) => {
   res.render(`${__dirname}/../web/sendmessage.ejs`, {
     csrfToken: req.csrfToken(),
     version: packageJSON.version,
@@ -138,7 +138,7 @@ webRouter.get('/send', (req, res, next) => isAllowedToAccess(req, res, next, [1]
   });
 });
 
-webRouter.get('/:messageid', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res, next) => {
+webRouter.get('/:messageid', (req, res, next) => isAllowedToAccess(req, res, next, 1, 100), (req, res, next) => {
   database.getThread(req.params.messageid).then((thread) => {
     if (!thread) {
       const error = new Error('Thread not found');
@@ -206,7 +206,7 @@ webRouter.get('/:messageid', (req, res, next) => isAllowedToAccess(req, res, nex
   });
 });
 
-apiRouter.post('/send', (req, res, next) => isAllowedToAccess(req, res, next, [1]), async (req, res, next) => {
+apiRouter.post('/send', (req, res, next) => isAllowedToAccess(req, res, next, 1, 100), async (req, res, next) => {
   if (!req.body.content || !req.body.recipients || !req.body.title) {
     const error = new Error('Content-parameter missing');
     error.code = 400;
@@ -242,7 +242,7 @@ apiRouter.post('/send', (req, res, next) => isAllowedToAccess(req, res, next, [1
   });
 });
 
-apiRouter.post('/reply', (req, res, next) => isAllowedToAccess(req, res, next, [1]), (req, res, next) => {
+apiRouter.post('/reply', (req, res, next) => isAllowedToAccess(req, res, next, 1, 100), (req, res, next) => {
   if (!req.body.messageId) {
     const error = new Error('MessageID missing');
     error.code = 400;

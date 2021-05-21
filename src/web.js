@@ -44,18 +44,28 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(csrf({ cookie: true }));
 
-const isAllowedToAccess = (req, res, next, roles) => {
-  if (!Array.isArray(roles)) {
-    next();
-  }
-  if (!req.user) {
-    res.redirect('/account/login');
-    return;
-  }
-  if (roles.length !== 0 && !roles.includes(req.user.role)) {
-    const error = new Error('Your role is not allowed to access this page.');
-    error.code = 403;
-    throw error;
+const isAllowedToAccess = (req, res, next, roles, max) => {
+  if (typeof roles === 'number' && typeof max === 'number') {
+    if (!req.user) {
+      res.redirect('/account/login');
+      return;
+    }
+    const min = roles;
+    if (min > req.user.role || max < req.user.role) {
+      const error = new Error('Your role is not allowed to access this page.');
+      error.code = 403;
+      throw error;
+    }
+  } else {
+    if (!req.user) {
+      res.redirect('/account/login');
+      return;
+    }
+    if (roles.length !== 0 && !roles.includes(req.user.role)) {
+      const error = new Error('Your role is not allowed to access this page.');
+      error.code = 403;
+      throw error;
+    }
   }
   next();
 };
