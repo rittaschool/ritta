@@ -296,9 +296,14 @@ exports.getUserDataById = id => new Promise((resolve) => {
 });
 
 exports.addExternalLink = (text, link) => new Promise((resolve) => {
-  const externalLink = ExternalLink({ text, link });
+  const externalLink = new ExternalLink({ text, link });
   externalLink.save((err) => {
     if (err) { console.debug(err); resolve(false); return; }
     resolve(true);
   });
+});
+
+exports.getExternalLinks = () => new Promise(async (resolve) => {
+  const links = await ExternalLink.find();
+  resolve(links);
 });
