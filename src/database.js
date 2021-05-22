@@ -50,15 +50,21 @@ const MessageThreadSchema = new Schema({
   messages: [Schema.Types.ObjectId], // All messages tied to this thread
   created: { type: Number, default: Date.now },
 });
+const ExternalLinkSchema = new Schema({
+  text: String,
+  link: { type: String, default: '#' },
+});
 // Models
 const User = mongoose.model('User', UserSchema);
 const Message = mongoose.model('Message', MessageSchema);
 const MessageThread = mongoose.model('MessageThread', MessageThreadSchema);
+const ExternalLink = mongoose.model('ExternalLink', ExternalLinkSchema);
 
 exports.models = {
   User,
   Message,
   MessageThread,
+  ExternalLink,
 };
 
 exports.connect = async () => {
@@ -127,7 +133,7 @@ exports.newThread = (senderID, title, content, recipients) => new Promise((resol
   resolve(thread.id);
 });
 
-exports.getMessagesInbox = (username) => new Promise((resolve) => {
+exports.getMessagesInbox = username => new Promise((resolve) => {
   exports.getUserData(username).then((user) => {
     if (!user) {
       resolve([]);
@@ -146,7 +152,7 @@ exports.getMessagesInbox = (username) => new Promise((resolve) => {
         });
         if (!recipients.includes(user.id)) return;
         response2.userRecipientData = response.recipients.find(
-          (r) => r.userId.toString() === user.id,
+          r => r.userId.toString() === user.id,
         ).toObject();
         messages.push(response2);
       });
@@ -155,7 +161,7 @@ exports.getMessagesInbox = (username) => new Promise((resolve) => {
   });
 });
 
-exports.getMessagesSent = (username) => new Promise((resolve) => {
+exports.getMessagesSent = username => new Promise((resolve) => {
   exports.getUserData(username).then((user) => {
     if (!user) {
       resolve([]);
@@ -176,7 +182,7 @@ exports.getMessagesSent = (username) => new Promise((resolve) => {
   });
 });
 
-exports.getMessagesArchive = (username) => new Promise((resolve) => {
+exports.getMessagesArchive = username => new Promise((resolve) => {
   exports.getMessagesInbox(username).then((messages) => {
     const archivedMessages = [];
     messages.forEach((message) => {
@@ -188,7 +194,7 @@ exports.getMessagesArchive = (username) => new Promise((resolve) => {
   });
 });
 
-exports.getThread = (id) => new Promise((resolve) => {
+exports.getThread = id => new Promise((resolve) => {
   MessageThread.findById(id, (err, user) => {
     if (err) {
       resolve(false);
@@ -197,7 +203,7 @@ exports.getThread = (id) => new Promise((resolve) => {
   });
 });
 
-exports.getMessage = (id) => new Promise((resolve) => {
+exports.getMessage = id => new Promise((resolve) => {
   Message.findById(id, (err, user) => {
     if (err) {
       resolve(false);
@@ -235,7 +241,7 @@ exports.validate = (username, password) => new Promise((resolve) => {
 });
 
 /* Promise(=>boolean) : Does user exist */
-exports.validateUsername = async (username) => new Promise((resolve) => {
+exports.validateUsername = async username => new Promise((resolve) => {
   User.findOne({ username }, (err, user) => {
     if (err) { resolve(false); return; }
     if (user) {
@@ -266,7 +272,7 @@ exports.setPassword = (username, oldPassword, newPassword) => new Promise((resol
 });
 
 /* Promise(=>Object): Return user data by username */
-exports.getUserData = (username) => new Promise((resolve) => {
+exports.getUserData = username => new Promise((resolve) => {
   User.findOne({ username }, (err, user) => {
     if (err) { resolve(false); return; }
     if (user) {
@@ -278,7 +284,7 @@ exports.getUserData = (username) => new Promise((resolve) => {
 });
 
 /* Promise(=>Object): Return user data by id */
-exports.getUserDataById = (id) => new Promise((resolve) => {
+exports.getUserDataById = id => new Promise((resolve) => {
   User.findOne({ _id: id }, (err, user) => {
     if (err) { resolve(false); return; }
     if (user) {
@@ -287,4 +293,17 @@ exports.getUserDataById = (id) => new Promise((resolve) => {
       resolve(null);
     }
   });
+});
+
+exports.addExternalLink = (text, link) => new Promise((resolve) => {
+  const externalLink = new ExternalLink({ text, link });
+  externalLink.save((err) => {
+    if (err) { console.debug(err); resolve(false); return; }
+    resolve(true);
+  });
+});
+
+exports.getExternalLinks = () => new Promise(async (resolve) => {
+  const links = await ExternalLink.find();
+  resolve(links);
 });

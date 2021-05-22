@@ -1,7 +1,5 @@
 node_modules/*
 sessions/*
 data/*
-config.js
-config.js
 .env
 *.pem

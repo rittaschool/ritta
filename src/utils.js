@@ -31,7 +31,8 @@ exports.decrypt = (text) => {
   return decrypted.toString();
 };
 
-exports.hash = (text) => bcrypt.hashSync(text, process.env.HASH_SALT);
+// TODO: async
+exports.hash = text => bcrypt.hashSync(text, process.env.HASH_SALT);
 
 exports.createCalendar = (attributes) => {
   // Attributes example:

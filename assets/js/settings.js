@@ -14,7 +14,14 @@ function enableMFA() {
     enable.style.display = '';
     enable_b.addEventListener('click', () => {
         enable_b.classList.add('btn-progress');
-        axios.post('/account/mfa')
+        axios.post('/account/mfa', { 
+            _csrf: document.getElementById('csrf-token').getAttribute('content')
+        }, { 
+            withCredentials: true, 
+            headers: {
+                'CSRF-Token': document.getElementById('csrf-token').getAttribute('content') // <-- is the csrf token as a header
+            }
+        })
         .then((res) => {
             enable_b.style.display = 'none';
             info.style.display = '';
@@ -37,7 +44,12 @@ function disableMFA() {
     disable_b.addEventListener('click', () => {
         axios.delete('/account/mfa', {
             data: {
-                code: disable_code.value
+                code: disable_code.value,
+                _csrf: document.getElementById('csrf-token').getAttribute('content')
+            },
+            withCredentials: true, 
+            headers: {
+                'CSRF-Token': document.getElementById('csrf-token').getAttribute('content') // <-- is the csrf token as a header
             }
         })
         .then((res) => {
