@@ -8,6 +8,6 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 1. Ensure that the following are not in the branch:
   * node_modules 
-  * config.js
+  * .env
 2. List your changes in the pull request comments
 3. Create the pull request and wait! A head developer will review your pull request soon, and if it gets approved it will be merged soon after that.
