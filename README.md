@@ -8,6 +8,9 @@ Ritta is a system for schools to keep connection between home and school strong.
 [![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/) \
 Also visit our [webpage!](https://ritta.pw)
 
+## ! Notice !
+Ritta is currently going through a almost full refactoring. We are updating the frontend to React and making the backend just the API.
+
 ## Branches
 
 > "release" - Mainly the current main code that seems to be somewhat stable \
