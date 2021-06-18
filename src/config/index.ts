@@ -1,6 +1,8 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
 
-module.exports = {
+dotenv.config();
+
+export default {
   school: {
     multiSchool: process.env.SCHOOL_MULTISCHOOL,
     name: process.env.SCHOOL_NAME,

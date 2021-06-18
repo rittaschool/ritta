@@ -1,0 +1,21 @@
+
+{
+  "compilerOptions": {
+    "incremental": true,
+    "target": "es2020",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "lib": [
+      "esnext",
+      "DOM"
+    ],
+    "strict": true,
+    "outDir": "./build",
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "inlineSourceMap": true
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
