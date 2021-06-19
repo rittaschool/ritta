@@ -4,6 +4,8 @@ dotenv.config();
 
 export default {
   databaseURI: process.env.MONGODB_URI,
+  jwtSecret: process.env.JWT_SECRET,
+  encryptionKey: process.env.ENCRYPTION_KEY,
   school: {
     multiSchool: process.env.SCHOOL_MULTISCHOOL,
     name: process.env.SCHOOL_NAME,

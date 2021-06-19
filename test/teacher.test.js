@@ -10,7 +10,6 @@ beforeAll(async () => {
   pekkaLahti = await UserService.createTeacher('Pekka', 'Lahti', ['Liikunnanopettaja']);
   piaJaakkola = await UserService.createTeacher('Pia', 'Jaakkola', ['Kotitalous']);
 })
-// Tests regarding users (user, account, teacher, student)
 
 describe('Abbrevation', function () {
   // Test

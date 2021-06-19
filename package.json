@@ -50,7 +50,9 @@
     "mongoose": "^5.12.14",
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0",
+    "notp": "^2.0.3",
     "pino": "^6.11.3",
+    "thirty-two": "^1.0.2",
     "ws": "^7.4.6",
     "xss": "^1.0.8"
   },
@@ -60,6 +62,7 @@
     "@types/cookie-parser": "^1.4.2",
     "@types/express": "^4.17.12",
     "@types/node": "^15.12.3",
+    "@types/notp": "^2.0.0",
     "@types/pino": "^6.3.8",
     "axios": "^0.21.1",
     "commitlint": "^12.1.4",

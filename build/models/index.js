@@ -1,6 +1,0 @@
-import AccountModel from './account';
-import StudentModel from './student';
-import TeacherModel from './teacher';
-import UserModel from './user';
-export { AccountModel, StudentModel, TeacherModel, UserModel };
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvbW9kZWxzL2luZGV4LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sWUFBWSxNQUFNLFdBQVcsQ0FBQztBQUNyQyxPQUFPLFlBQVksTUFBTSxXQUFXLENBQUM7QUFDckMsT0FBTyxZQUFZLE1BQU0sV0FBVyxDQUFDO0FBQ3JDLE9BQU8sU0FBUyxNQUFNLFFBQVEsQ0FBQztBQUUvQixPQUFPLEVBQ0wsWUFBWSxFQUNaLFlBQVksRUFDWixZQUFZLEVBQ1osU0FBUyxFQUNWLENBQUMifQ==

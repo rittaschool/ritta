@@ -7,22 +7,28 @@ import uniqueValidator from 'mongoose-unique-validator';
 interface User extends mongoose.Document {
   username: string;
   password: string;
+  secret?: string;
   firstName: string;
   lastName: string;
   accounts: [mongoose.ObjectId];
   latestLogin: number;
+  lastestPasswordChange: number;
+  passwordChangeRequired: boolean;
 }
 
 const user = new mongoose.Schema<User>({
     username: {
-        type: String,
-        required: true,
-        unique: true,
+      type: String,
+      required: true,
+      unique: true,
     },
     password: {
-        type: String,
-        required: true,
-        unique: true,
+      type: String,
+      required: true,
+      unique: true,
+    },
+    secret: {
+      type: String,
     },
     firstName: {
       type: String,
@@ -42,6 +48,14 @@ const user = new mongoose.Schema<User>({
     latestLogin: {
       type: Date,
       default: Date.now
+    },
+    lastestPasswordChange: {
+      type: Date,
+      default: Date.now
+    },
+    passwordChangeRequired: {
+      type: Boolean,
+      default: true
     }
 });
 

@@ -2,12 +2,15 @@ import loaders from './loaders';
 import express from 'express';
 import http from 'http';
 import logger from './logger';
+import api from './api';
 
 logger.info('Starting Ritta Server')
 
 const app = express();
 
 await loaders({ expressApp: app });
+
+app.use('/api', api);
 
 app.all('*', (_, res: express.Response) => {
   res

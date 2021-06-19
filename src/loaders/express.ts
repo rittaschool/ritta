@@ -13,6 +13,7 @@ export default async ({ app }: { app: express.Application }): Promise<express.Ap
   app.use(helmet());
   app.use(cookieParser());
   app.use(morgan(process.env.NODE_ENV === 'PRODUCTION' ? 'tiny' : 'dev'));
+  app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
 
   // Return the express app

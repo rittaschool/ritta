@@ -16,7 +16,8 @@ export default class UserService {
       username: userRecord.username,
       firstName: userRecord.firstName,
       lastName: userRecord.lastName,
-      accounts: userRecord.accounts
+      accounts: userRecord.accounts,
+      passwordChangeRequired: userRecord.passwordChangeRequired
     }
   }
 
