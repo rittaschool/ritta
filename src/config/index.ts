@@ -1,8 +1,9 @@
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 
 export default {
+  databaseURI: process.env.MONGODB_URI,
   school: {
     multiSchool: process.env.SCHOOL_MULTISCHOOL,
     name: process.env.SCHOOL_NAME,

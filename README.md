@@ -31,7 +31,7 @@ src                 = Source code
 └───models          = Database models
 └───services        = All the business logic
 └───subscribers     = Event handlers for async tasks
-ssl                 = SSL licenses
+└───types           # Type declaration files (d.ts) for Typescript
 
 ## Contributing
 

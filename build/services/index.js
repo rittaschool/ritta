@@ -1,0 +1,3 @@
+import UserService from './user';
+export { UserService };
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvc2VydmljZXMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxXQUFXLE1BQU0sUUFBUSxDQUFDO0FBRWpDLE9BQU8sRUFDTCxXQUFXLEVBQ1osQ0FBQSJ9

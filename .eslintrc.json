@@ -13,12 +13,5 @@
     },
     "parserOptions": {
       "ecmaVersion": 2018
-    },
-    "rules": {
-      "no-console": "off",
-			"linebreak-style": "off",
-			"global-require": "off",
-      "no-param-reassign": "off"
-    },
-    "ignorePatterns": ["assets/js/*"]
-  }
+    }
+}
