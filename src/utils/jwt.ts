@@ -15,7 +15,12 @@ export const generateJWT = (data, expiration: any = undefined) => {
 
 export const validateJWT = (token) => {
   try {
-    return jwt.verify(token, config.jwtSecret);
+    const body = jwt.verify(token, config.jwtSecret);
+    return {
+      iat: jwt.iat,
+      exp: jwt.exp,
+      ...body.data,
+    }
   } catch(e) {
     throw e;
   }

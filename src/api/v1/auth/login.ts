@@ -24,10 +24,20 @@ router.post('/', async (req, res) => {
       .status(200)
       .json(data)
   } catch(err)  {
+    let errorMessage = err.message;
+    switch(err.name) {
+      case 'TokenExpiredError':
+        errorMessage = 'The JWT has expired';
+        break;
+      case 'NotBeforeError':
+      case 'JsonWebTokenError':
+        errorMessage = 'The JWT is invalid'
+        break;
+    }
     return res
       .status(400)
       .json({
-        messsage: err.message
+        messsage: errorMessage
       })
   }
 });
