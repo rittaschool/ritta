@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export default {
+  frontUrl: process.env.FRONT_URL,
   databaseURI: process.env.MONGODB_URI,
   jwtSecret: process.env.JWT_SECRET,
   encryptionKey: process.env.ENCRYPTION_KEY,

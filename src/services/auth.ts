@@ -1,6 +1,6 @@
 import argon2 from 'argon2';
 import { UserModel } from '../models';
-import { decrypt, encrypt, generateJWT, validateJWT } from '../utils';
+import { decrypt, encrypt, generateJWT, validateJWT, validateOpinsysJWT } from '../utils';
 import { authenticator } from 'otplib';
 import base32 from 'thirty-two';
 import util from 'util';
@@ -19,6 +19,46 @@ export default class AuthService {
       }
     }
 
+    try {
+      if (userRecord.secret) {
+        // User uses MFA, add second layer.
+        const mfaToken = generateJWT({
+          type: 'mfa_required',
+          id: userRecord._id,
+        }, '1h');
+        return {
+          mfaToken
+        }
+      }
+      const accessToken = generateJWT({
+        type: 'access',
+        id: userRecord._id,
+        username: userRecord.username,
+        firstName: userRecord.firstName,
+        lastName: userRecord.lastName,
+        accounts: userRecord.accounts,
+      }, '1h');
+
+      const refreshToken = generateJWT({
+        type: 'refresh',
+        id: userRecord._id
+      });
+
+      return {
+        accessToken,
+        refreshToken
+      }
+    } catch(err) {
+      throw err;
+    }
+  }
+
+  public static async opinsysAuth(token) {
+    const data = validateOpinsysJWT(token);
+    const userRecord = await UserModel.findOne({ puavoId: data.puavo_id });
+    if (!userRecord) {
+      throw new Error('No user found')
+    }
     try {
       if (userRecord.secret) {
         // User uses MFA, add second layer.

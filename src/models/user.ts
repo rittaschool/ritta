@@ -8,6 +8,7 @@ interface User extends mongoose.Document {
   username: string;
   password: string;
   secret?: string;
+  puavoId?: number;
   firstName: string;
   lastName: string;
   accounts: [mongoose.ObjectId];
@@ -27,6 +28,9 @@ const user = new mongoose.Schema<User>({
     },
     secret: {
       type: String,
+    },
+    puavoId: {
+      type: Number,
     },
     firstName: {
       type: String,

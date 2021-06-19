@@ -25,3 +25,11 @@ export const validateJWT = (token) => {
     throw e;
   }
 }
+
+export const validateOpinsysJWT = (token) => {
+  try {
+    return jwt.verify(token, config.opinsys.secret);
+  } catch(e) {
+    throw e;
+  }
+}
