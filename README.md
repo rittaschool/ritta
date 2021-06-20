@@ -23,15 +23,13 @@ Later, a mobile app (probably will be made with [Flutter](https://flutter.dev)) 
 
 # Folder structure
 
-src                 = Source code
-│   app.js          = App entry point
-└───api             = Express route controllers for all the endpoints of the app
-└───config          = Environment variables and configuration related stuff
-└───loaders         = Startup process modules
-└───models          = Database models
-└───services        = All the business logic
-└───subscribers     = Event handlers for async tasks
-└───types           # Type declaration files (d.ts) for Typescript
+src                 = Source code \
+│   app.js          = App entry point \
+└───api             = Express route controllers for all the endpoints of the app \
+└───config          = Environment variables and configuration related stuff \
+└───loaders         = Startup process modules \
+└───models          = Database models \
+└───services        = All the business logic \
 
 ## Contributing
 
