@@ -3,6 +3,8 @@ import StudentModel from './user/student';
 import TeacherModel from './user/teacher';
 import UserModel from './user/user';
 
+import NotificationDeviceModel from './misc/notificationDevice';
+
 import MessageModel from './message/message';
 import MessageThreadModel from './message/messagethread';
 
@@ -13,4 +15,5 @@ export {
   UserModel,
   MessageModel,
   MessageThreadModel,
+  NotificationDeviceModel,
 };

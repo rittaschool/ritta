@@ -7,6 +7,10 @@ export default {
   databaseURI: process.env.MONGODB_URI,
   jwtSecret: process.env.JWT_SECRET,
   encryptionKey: process.env.ENCRYPTION_KEY,
+  fcm: {
+    enabled: process.env.FCM_ENABLED,
+    serverKey: process.env.FCM_SERVER_KEY,
+  },
   school: {
     multiSchool: process.env.SCHOOL_MULTISCHOOL,
     name: process.env.SCHOOL_NAME,
