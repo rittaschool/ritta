@@ -26,5 +26,7 @@ jobs:
         ref: development
     - name: Install modules
       run: npm install
+    - name: Build TSC
+      run: npm run build
     - name: Run tests
       run: npm test
