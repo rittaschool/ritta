@@ -9,14 +9,14 @@ interface Student extends mongoose.Document {
 }
 
 const student = new mongoose.Schema<Student>({
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
-      type: String,
-      required: true,
-    }
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
 });
 
 student.plugin(uniqueValidator);

@@ -6,30 +6,18 @@ export const generateJWT = (data, expiration: any = undefined) => {
   if (expiration === undefined) {
     delete settings.expiresIn;
   }
-  try {
-    return jwt.sign({ data, }, config.jwtSecret, settings);
-  } catch(e) {
-    throw e;
-  }
-}
+  return jwt.sign({ data }, config.jwtSecret, settings);
+};
 
 export const validateJWT = (token) => {
-  try {
-    const body = jwt.verify(token, config.jwtSecret);
-    return {
-      iat: body.iat,
-      exp: body.exp,
-      ...body.data,
-    }
-  } catch(e) {
-    throw e;
-  }
-}
+  const body = jwt.verify(token, config.jwtSecret);
+  return {
+    iat: body.iat,
+    exp: body.exp,
+    ...body.data,
+  };
+};
 
 export const validateOpinsysJWT = (token) => {
-  try {
-    return jwt.verify(token, config.opinsys.secret);
-  } catch(e) {
-    throw e;
-  }
-}
+  return jwt.verify(token, config.opinsys.secret);
+};

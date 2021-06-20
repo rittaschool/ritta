@@ -11,24 +11,26 @@ const message = new mongoose.Schema<Message>({
   sender: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'Account'
-  }, 
-  created: { 
-    type: Number, 
-    default: Date.now
+    ref: 'Account',
   },
-  content: { 
+  created: {
+    type: Number,
+    default: Date.now,
+  },
+  content: {
     type: String,
-    required: true
+    required: true,
   },
   seenBy: {
-    type: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Account',
-      required: true,
-    }],
-    default: []
-  }
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Account',
+        required: true,
+      },
+    ],
+    default: [],
+  },
 });
 
 message.plugin(uniqueValidator);

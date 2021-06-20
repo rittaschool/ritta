@@ -6,10 +6,17 @@ let pekkaLahti = null;
 let piaJaakkola = null;
 
 beforeAll(async () => {
-  await mongoose.connect(global.__MONGO_URI__, { useNewUrlParser: true, useUnifiedTopology: true });
-  pekkaLahti = await UserService.createTeacher('Pekka', 'Lahti', ['Liikunnanopettaja']);
-  piaJaakkola = await UserService.createTeacher('Pia', 'Jaakkola', ['Kotitalous']);
-})
+  await mongoose.connect(global.__MONGO_URI__, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  pekkaLahti = await UserService.createTeacher('Pekka', 'Lahti', [
+    'Liikunnanopettaja',
+  ]);
+  piaJaakkola = await UserService.createTeacher('Pia', 'Jaakkola', [
+    'Kotitalous',
+  ]);
+});
 
 describe('Abbrevation', function () {
   // Test

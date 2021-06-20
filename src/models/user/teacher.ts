@@ -3,9 +3,10 @@
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
-const generateAbbrevation = function () { // Function because () => {} resets this!
-  return this.lastName.substring(0,3) + this.firstName.substring(0,3) 
-}
+const generateAbbrevation = function () {
+  // Function because () => {} resets this!
+  return this.lastName.substring(0, 3) + this.firstName.substring(0, 3);
+};
 
 interface Teacher extends mongoose.Document {
   firstName: string;
@@ -15,25 +16,27 @@ interface Teacher extends mongoose.Document {
 }
 
 const teacher = new mongoose.Schema<Teacher>({
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
-      type: String,
-      required: true,
-    },
-    titles: {
-      type: [{
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  titles: {
+    type: [
+      {
         type: String,
         required: true,
-      }],
-      default: []
-    },
-    abbrevation: {
-      type: String,
-      default: generateAbbrevation
-    }
+      },
+    ],
+    default: [],
+  },
+  abbrevation: {
+    type: String,
+    default: generateAbbrevation,
+  },
 });
 
 teacher.plugin(uniqueValidator);

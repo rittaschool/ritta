@@ -3,9 +3,14 @@ import StudentModel from './user/student';
 import TeacherModel from './user/teacher';
 import UserModel from './user/user';
 
-export { 
+import MessageModel from './message/message';
+import MessageThreadModel from './message/messagethread';
+
+export {
   AccountModel,
   StudentModel,
   TeacherModel,
-  UserModel 
+  UserModel,
+  MessageModel,
+  MessageThreadModel,
 };

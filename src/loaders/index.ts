@@ -11,5 +11,5 @@ export default async ({ expressApp }): Promise<any> => {
 
   return {
     mongoConnection,
-  }
-}
+  };
+};

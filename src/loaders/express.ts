@@ -2,13 +2,18 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import helmet from 'helmet';
-import cookieParser from 'cookie-parser';
-import jwt from 'express-jwt';
-import config from '../config';
 
-export default async ({ app }: { app: express.Application }): Promise<express.Application> => {
-  app.get('/status', (req, res) => { res.status(200).end(); });
-  app.head('/status', (req, res) => { res.status(200).end(); });
+export default async ({
+  app,
+}: {
+  app: express.Application;
+}): Promise<express.Application> => {
+  app.get('/status', (req, res) => {
+    res.status(200).end();
+  });
+  app.head('/status', (req, res) => {
+    res.status(200).end();
+  });
   app.enable('trust proxy');
 
   app.use(cors());

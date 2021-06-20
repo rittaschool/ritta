@@ -18,48 +18,50 @@ interface User extends mongoose.Document {
 }
 
 const user = new mongoose.Schema<User>({
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    created: {
-      type: Date,
-      default: Date.now
-    },
-    secret: {
-      type: String,
-    },
-    puavoId: {
-      type: Number,
-    },
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
-      type: String,
-      required: true,
-    },
-    accounts: {
-      type: [{
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  created: {
+    type: Date,
+    default: Date.now,
+  },
+  secret: {
+    type: String,
+  },
+  puavoId: {
+    type: Number,
+  },
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  accounts: {
+    type: [
+      {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Account',
-      }],
-      default: []
-    },
-    latestLogin: {
-      type: Date,
-      default: Date.now
-    },
-    lastestPasswordChange: {
-      type: Date,
-      default: Date.now
-    }
+      },
+    ],
+    default: [],
+  },
+  latestLogin: {
+    type: Date,
+    default: Date.now,
+  },
+  lastestPasswordChange: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 user.plugin(uniqueValidator);

@@ -5,7 +5,7 @@ import logger from './logger';
 import api from './api';
 import config from './config';
 
-logger.info('Starting Ritta Server')
+logger.info('Starting Ritta Server');
 
 const app = express();
 
@@ -15,22 +15,18 @@ app.use('/api', api);
 
 app.all('/', (_, res) => {
   res.redirect(config.frontUrl);
-})
+});
 
 app.all('*', (_, res: express.Response) => {
-  res
-    .status(404)
-    .json(
-      {
-        message: 'Not found'
-      }
-    )
-})
+  res.status(404).json({
+    message: 'Not found',
+  });
+});
 
 app.use((err, _req, res, _next) => {
   logger.error(err);
-  res.status(500).send('Error occurred!')
-})
+  res.status(500).send('Error occurred!');
+});
 
 const server = http.createServer(app);
 

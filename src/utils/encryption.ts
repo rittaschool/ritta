@@ -2,7 +2,11 @@ import crypto from 'crypto';
 import config from '../config';
 
 const IV_LENGTH = 16;
-const ENCRYPTION_KEY = crypto.createHash('sha256').update(config.encryptionKey).digest('hex').substr(0, 32);
+const ENCRYPTION_KEY = crypto
+  .createHash('sha256')
+  .update(config.encryptionKey)
+  .digest('hex')
+  .substr(0, 32);
 
 export const encrypt = (text) => {
   const iv = crypto.randomBytes(IV_LENGTH);

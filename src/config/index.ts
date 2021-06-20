@@ -17,7 +17,8 @@ export default {
     key: process.env.SSL_KEY,
     cert: process.env.SSL_CERT,
   },
-  opinsys: { // Opinsys
+  opinsys: {
+    // Opinsys
     enabled: process.env.OPINSYS_ENABLED,
     organization: process.env.OPINSYS_ORGANIZATION,
     redirectURI: process.env.OPINSYS_REDIRECTURI,
