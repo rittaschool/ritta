@@ -10,7 +10,7 @@ on:
     branches: [development]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [master]
+    branches: [development]
   schedule:
     - cron: '0 0 * * *'
 
@@ -35,6 +35,7 @@ jobs:
         # We must fetch at least the immediate parents so that if this is
         # a pull request then we can checkout the head.
         fetch-depth: 2
+        ref: development
 
     # If this run was triggered by a pull request event, then checkout
     # the head of the pull request instead of the merge commit.
