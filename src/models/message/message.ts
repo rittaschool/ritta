@@ -5,6 +5,9 @@ import uniqueValidator from 'mongoose-unique-validator';
 
 interface Message extends mongoose.Document {
   sender: string;
+  created: number;
+  content: string;
+  seenBy: string[];
 }
 
 const message = new mongoose.Schema<Message>({

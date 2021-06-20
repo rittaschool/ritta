@@ -5,14 +5,15 @@ import uniqueValidator from 'mongoose-unique-validator';
 
 interface MessageThread extends mongoose.Document {
   name: string;
-  sender: string;
-  recipients: [
-    {
-      userId: string;
-      archived: boolean;
-    }
-  ];
-  messages: [string];
+  sender: {
+    userId: string;
+    archived: boolean;
+  };
+  recipients: {
+    userId: string;
+    archived: boolean;
+  }[];
+  messages: string[];
   created: number;
 }
 
@@ -22,8 +23,22 @@ const messageThread = new mongoose.Schema<MessageThread>({
     required: true,
   },
   sender: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: {
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Account',
+      },
+      archived: {
+        type: Boolean,
+        default: false,
+      },
+    },
     required: true,
+  },
+  draft: {
+    type: Boolean,
+    default: false,
   },
   recipients: [
     {

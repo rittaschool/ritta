@@ -1,7 +1,6 @@
 import argon2 from 'argon2';
-import logger from '../logger';
 import { UserModel, AccountModel, TeacherModel, StudentModel } from '../models';
-import { decrypt, encrypt, validateJWT } from '../utils';
+import { decrypt, encrypt, validateAuthJWT } from '../utils';
 
 export default class UserService {
   public static async createUser(
@@ -28,18 +27,8 @@ export default class UserService {
   }
 
   public static async changePassword(token, oldPassword, newPassword) {
-    const data = validateJWT(token);
-    if (data.type !== 'access') {
-      throw new Error('Token is not a access token.');
-    }
+    const data = await validateAuthJWT(token);
     const userRecord = await UserModel.findById(data.id);
-    if (!userRecord) {
-      throw new Error('Token user not found.');
-    }
-    if (data.iat < userRecord.lastestPasswordChange / 1000) {
-      throw new Error('The JWT is expired');
-    }
-
     const passwordCorrect = await argon2.verify(
       decrypt(userRecord.password),
       oldPassword
@@ -76,15 +65,13 @@ export default class UserService {
   public static async createTeacher(
     firstName: string,
     lastName: string,
-    titles?: [string]
+    titles?: string[]
   ): Promise<any> {
-    const start = Date.now();
     const userRecord = await TeacherModel.create({
       firstName,
       lastName,
       titles,
     });
-    console.log(`Created teacher took ${Date.now() - start}`);
     return {
       // MAKE SURE TO NEVER SEND BACK THE PASSWORD!!!!
       firstName: userRecord.firstName,

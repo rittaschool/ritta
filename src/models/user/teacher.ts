@@ -11,7 +11,7 @@ const generateAbbrevation = function () {
 interface Teacher extends mongoose.Document {
   firstName: string;
   lastName: string;
-  titles: [string];
+  titles: string[];
   abbrevation: string;
 }
 

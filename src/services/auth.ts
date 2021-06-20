@@ -4,8 +4,8 @@ import {
   decrypt,
   encrypt,
   generateJWT,
-  validateJWT,
   validateOpinsysJWT,
+  validateAuthJWT,
 } from '../utils';
 import { authenticator } from 'otplib';
 import base32 from 'thirty-two';
@@ -108,20 +108,8 @@ export default class AuthService {
   }
 
   public static async verifyMFA(token, code) {
-    const data = validateJWT(token);
-    if (data.type !== 'mfa_required') {
-      throw new Error('Token is not a mfa_required token.');
-    }
+    const data = await validateAuthJWT(token);
     const userRecord = await UserModel.findById(data.id);
-    if (!userRecord) {
-      throw new Error('Token user not found.');
-    }
-    if (!userRecord.secret) {
-      throw new Error('Token user does not use MFA');
-    }
-    if (data.iat < userRecord.lastestPasswordChange / 1000) {
-      throw new Error('The JWT is expired');
-    }
     const totpSecret = decrypt(userRecord.secret);
 
     if (!authenticator.check(code, totpSecret)) {
@@ -158,20 +146,8 @@ export default class AuthService {
   }
 
   public static async generateMFA(token) {
-    const data = validateJWT(token);
-    if (data.type !== 'access') {
-      throw new Error('Token is not a access token.');
-    }
+    const data = await validateAuthJWT(token);
     const userRecord = await UserModel.findById(data.id);
-    if (!userRecord) {
-      throw new Error('Token user not found.');
-    }
-    if (userRecord.secret) {
-      throw new Error('Token user has MFA already enabled.');
-    }
-    if (data.iat < userRecord.lastestPasswordChange / 1000) {
-      throw new Error('The JWT is expired');
-    }
     const secret = base32
       .encode(authenticator.generateSecret())
       .toString()
@@ -187,20 +163,8 @@ export default class AuthService {
   }
 
   public static async enableMFA(token, secret, code) {
-    const data = validateJWT(token);
-    if (data.type !== 'access') {
-      throw new Error('Token is not a access token.');
-    }
+    const data = await validateAuthJWT(token);
     const userRecord = await UserModel.findById(data.id);
-    if (!userRecord) {
-      throw new Error('Token user not found.');
-    }
-    if (userRecord.secret) {
-      throw new Error('Token user has MFA already enabled.');
-    }
-    if (data.iat < userRecord.lastestPasswordChange / 1000) {
-      throw new Error('The JWT is expired');
-    }
     logger.info(code + ' s ' + secret);
     if (!authenticator.check(code, secret)) {
       throw new Error('MFA Code invalid');
@@ -216,17 +180,8 @@ export default class AuthService {
   }
 
   public static async refreshToken(token) {
-    const data = validateJWT(token);
-    if (data.type !== 'refresh') {
-      throw new Error('Token is not a refresh token.');
-    }
+    const data = await validateAuthJWT(token, 'refresh');
     const userRecord = await UserModel.findById(data.id);
-    if (!userRecord) {
-      throw new Error('Token user not found.');
-    }
-    if (data.iat < userRecord.lastestPasswordChange / 1000) {
-      throw new Error('The JWT is expired');
-    }
     userRecord.latestLogin = Date.now();
     await userRecord.save();
     const accessToken = generateJWT(
