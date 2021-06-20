@@ -20,6 +20,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      ENCRYPTION_KEY: testkey
     steps:
     - uses: actions/checkout@v2
       with:
