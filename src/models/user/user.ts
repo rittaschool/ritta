@@ -12,7 +12,7 @@ interface User extends mongoose.Document {
   puavoId?: number;
   firstName: string;
   lastName: string;
-  accounts: [mongoose.ObjectId];
+  accounts: [string];
   latestLogin: number;
   lastestPasswordChange: number;
 }
