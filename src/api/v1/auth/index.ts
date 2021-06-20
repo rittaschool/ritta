@@ -9,5 +9,6 @@ const router = Router();
 router.use('/refresh', refresh);
 router.use('/login', login);
 router.use('/mfa', mfa);
-router.use('/opinsys', opinsys)
+router.use('/opinsys', opinsys);
+
 export default router;

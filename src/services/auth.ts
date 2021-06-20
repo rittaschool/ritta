@@ -70,6 +70,8 @@ export default class AuthService {
           mfaToken
         }
       }
+      userRecord.latestLogin = Date.now();
+      await userRecord.save();
       const accessToken = generateJWT({
         type: 'access',
         id: userRecord._id,
@@ -115,6 +117,9 @@ export default class AuthService {
         throw new Error('MFA Code invalid')
       }
       
+      userRecord.latestLogin = Date.now();
+      await userRecord.save();
+
       const accessToken = generateJWT({
         type: 'access',
         id: userRecord._id,
@@ -210,6 +215,8 @@ export default class AuthService {
       if (data.iat < (userRecord.lastestPasswordChange / 1000)) {
         throw new Error('The JWT is expired')
       }
+      userRecord.latestLogin = Date.now();
+      await userRecord.save();
       const accessToken = generateJWT({
         type: 'access',
         id: userRecord._id,

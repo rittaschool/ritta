@@ -1,10 +1,11 @@
 import argon2 from 'argon2';
+import logger from '../logger';
 import { UserModel, AccountModel, TeacherModel, StudentModel } from '../models';
-import { decrypt, generateJWT, validateJWT } from '../utils';
+import { decrypt, encrypt, validateJWT } from '../utils';
 
 export default class UserService {
   public static async createUser(username: string, firstName: string, lastName: string, password: string): Promise<any> {
-    const passwordHashed = await argon2.hash(password);
+    const passwordHashed = encrypt(await argon2.hash(password));
 
     const userRecord = await UserModel.create({
       password: passwordHashed,
@@ -39,26 +40,12 @@ export default class UserService {
       if (!passwordCorrect) {
         throw new Error('Incorrect password')
       }
-      userRecord.password = await argon2.hash(newPassword);
+      userRecord.password = encrypt(await argon2.hash(newPassword));
+      userRecord.lastestPasswordChange = Date.now();
       await userRecord.save();
-      
-      const accessToken = generateJWT({
-        type: 'access',
-        id: userRecord._id,
-        username: userRecord.username,
-        firstName: userRecord.firstName,
-        lastName: userRecord.lastName,
-        accounts: userRecord.accounts,
-      }, '1h');
-
-      const refreshToken = generateJWT({
-        type: 'refresh',
-        id: userRecord._id
-      }, '90d');
 
       return {
-        accessToken,
-        refreshToken
+        success: true
       }
     } catch (err) {
       throw err;

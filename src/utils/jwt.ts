@@ -17,8 +17,8 @@ export const validateJWT = (token) => {
   try {
     const body = jwt.verify(token, config.jwtSecret);
     return {
-      iat: jwt.iat,
-      exp: jwt.exp,
+      iat: body.iat,
+      exp: body.exp,
       ...body.data,
     }
   } catch(e) {
