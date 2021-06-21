@@ -164,8 +164,8 @@ export default class MessageService {
   public static async sendReplyToThread(
     token: string,
     accountId: string,
-    content: string,
-    threadId: string
+    threadId: string,
+    content: string
   ): Promise<any> {
     const data = await validateAuthJWT(token);
     const userRecord = await UserModel.findById(data.id);
