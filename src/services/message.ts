@@ -5,6 +5,7 @@ import {
   AccountModel,
   TeacherModel,
 } from '../models';
+import mongoose from 'mongoose';
 import { decrypt, encrypt, validateAuthJWT } from '../utils';
 
 export default class MessageService {
@@ -214,19 +215,19 @@ export default class MessageService {
     switch (folder) {
       case 'sent':
         threads = await MessageThreadModel.find({
-          'sender.userId': accountId,
+          'sender.userId': mongoose.Types.ObjectId(accountId),
           draft: false,
         });
         break;
       case 'draft':
         threads = await MessageThreadModel.find({
-          'sender.userId': accountId,
+          'sender.userId': mongoose.Types.ObjectId(accountId),
           draft: true,
         });
         break;
       case 'archive':
         threads = await MessageThreadModel.find({
-          'recipients.userId': accountId,
+          'recipients.userId': mongoose.Types.ObjectId(accountId),
           'recipients.archived': true,
         });
         break;
@@ -239,19 +240,21 @@ export default class MessageService {
     }
     // Fetch senders
     const sendersCache = {};
-    threads.forEach(async (thread) => {
-      const account = await AccountModel.findById(thread.sender.userId);
-      sendersCache[thread.sender.userId] = {
-        firstName: account.firstName,
-        lastName: account.lastName,
-      };
-      if (account.userType === 3) {
-        // Teacher
-        sendersCache[thread.sender.userId].abbrevation = (
-          await TeacherModel.findById(account.teacher)
-        ).abbrevation;
-      }
-    });
+    await Promise.all(
+      threads.map(async (thread) => {
+        const account = await AccountModel.findById(thread.sender.userId);
+        sendersCache[thread.sender.userId] = {
+          firstName: account.firstName,
+          lastName: account.lastName,
+        };
+        if (account.userType === 3) {
+          // Teacher
+          sendersCache[thread.sender.userId].abbrevation = (
+            await TeacherModel.findById(account.teacher)
+          ).abbrevation;
+        }
+      })
+    );
     return threads.map(async (thread) => {
       let newMessages = false;
       const messages = await MessageModel.find({
@@ -351,19 +354,21 @@ export default class MessageService {
       _id: { $in: messageThread.messages },
     });
     const sendersCache = {};
-    messages.forEach(async (message) => {
-      const account = await AccountModel.findById(message.sender);
-      sendersCache[message.sender] = {
-        firstName: account.firstName,
-        lastName: account.lastName,
-      };
-      if (account.userType === 3) {
-        // Teacher
-        sendersCache[message.sender].abbrevation = (
-          await TeacherModel.findById(account.teacher)
-        ).abbrevation;
-      }
-    });
+    await Promise.all(
+      messages.map(async (message) => {
+        const account = await AccountModel.findById(message.sender);
+        sendersCache[message.sender] = {
+          firstName: account.firstName,
+          lastName: account.lastName,
+        };
+        if (account.userType === 3) {
+          // Teacher
+          sendersCache[message.sender].abbrevation = (
+            await TeacherModel.findById(account.teacher)
+          ).abbrevation;
+        }
+      })
+    );
     return {
       name: decrypt(messageThread.name),
       sender: sendersCache[messageThread.sender.userId], // First message is author, is set
