@@ -19,7 +19,7 @@ export default class MessageService {
       throw new Error('User does not own account');
     }
     const accounts = (await AccountModel.find({})).filter(async (account) => {
-      const user = await UserModel.findOne({ account: account.id });
+      const user = await UserModel.findOne({ accounts: account.id });
       const teacher = await TeacherModel.findById(account.teacher);
       return (
         user &&
