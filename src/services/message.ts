@@ -303,6 +303,7 @@ export default class MessageService {
       messages.map(async (message) => {
         const account = await AccountModel.findById(message.sender);
         sendersCache[message.sender] = {
+          id: account.id,
           firstName: account.firstName,
           lastName: account.lastName,
         };
