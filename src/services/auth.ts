@@ -108,7 +108,7 @@ export default class AuthService {
   }
 
   public static async verifyMFA(token, code) {
-    const data = await validateAuthJWT(token);
+    const data = await validateAuthJWT(token, 'mfa_required');
     const userRecord = await UserModel.findById(data.id);
     const totpSecret = decrypt(userRecord.secret);
 

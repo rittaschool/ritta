@@ -20,7 +20,6 @@ export const validateJWT = (token) => {
 };
 
 export const validateAuthJWT = async (token, type = 'access') => {
-  const body = jwt.verify(token, config.jwtSecret);
   const data = validateJWT(token);
   if (data.type !== type) {
     throw new Error(`Token is not a ${type} token.`);
@@ -32,7 +31,7 @@ export const validateAuthJWT = async (token, type = 'access') => {
   if (data.iat < userRecord.lastestPasswordChange / 1000) {
     throw new Error('The JWT is expired');
   }
-  return body;
+  return data;
 };
 
 export const validateOpinsysJWT = (token) => {

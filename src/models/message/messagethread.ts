@@ -9,6 +9,7 @@ interface MessageThread extends mongoose.Document {
     userId: string;
     archived: boolean;
   };
+  draft: boolean;
   recipients: {
     userId: string;
     archived: boolean;

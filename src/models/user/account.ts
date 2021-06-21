@@ -8,8 +8,8 @@ interface Account extends mongoose.Document {
   firstName: string;
   lastName: string;
   userType: number;
-  student?: mongoose.ObjectId;
-  teacher?: mongoose.ObjectId;
+  student?: string;
+  teacher?: string;
 }
 
 const account = new mongoose.Schema<Account>({

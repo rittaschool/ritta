@@ -5,6 +5,8 @@ import {
   validateAuthJWT,
 } from './jwt';
 import { encrypt, decrypt } from './encryption';
+import { checkJWT } from './jwtHeader';
+
 export {
   generateJWT,
   validateJWT,
@@ -12,4 +14,5 @@ export {
   validateAuthJWT,
   encrypt,
   decrypt,
+  checkJWT,
 };

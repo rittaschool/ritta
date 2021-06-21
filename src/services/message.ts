@@ -8,6 +8,41 @@ import {
 import { decrypt, encrypt, validateAuthJWT } from '../utils';
 
 export default class MessageService {
+  public static async searchRecipients(
+    token: string,
+    accountId: string,
+    query: string
+  ) {
+    const data = await validateAuthJWT(token);
+    const userRecord = await UserModel.findById(data.id);
+    if (!userRecord.accounts.includes(accountId)) {
+      throw new Error('User does not own account');
+    }
+    const accounts = (await AccountModel.find({})).filter(async (account) => {
+      const teacher = await TeacherModel.findById(account.teacher);
+      return (
+        account.id !== accountId &&
+        (account.firstName.startsWith(query) ||
+          account.lastName.startsWith(query) ||
+          (teacher && teacher.abbrevation.startsWith(query)) ||
+          (teacher && teacher.titles.find((title) => title.startsWith(query))))
+      );
+    });
+    return await Promise.all(
+      accounts.map(async (account) => {
+        const teacher = await TeacherModel.findById(account.teacher);
+        return {
+          id: account._id,
+          userType: account.userType,
+          firstName: account.firstName,
+          lastName: account.lastName,
+          abbrevation: teacher?.abbrevation,
+          titles: teacher?.titles,
+        };
+      })
+    );
+  }
+
   public static async startThread(
     token: string,
     accountId: string,
@@ -25,7 +60,7 @@ export default class MessageService {
     const recipientsSet = new Set(recipients);
     recipientsSet.delete(accountId);
 
-    if (recipientsSet.size == 0) {
+    if (recipientsSet.size == 0 && !draft) {
       throw new Error('Recipients cannot be empty.');
     }
     // Create thread
@@ -60,6 +95,65 @@ export default class MessageService {
     };
   }
 
+  public static async editDraft(
+    token: string,
+    accountId: string,
+    threadId: string,
+    content: string
+  ) {
+    const data = await validateAuthJWT(token);
+    const userRecord = await UserModel.findById(data.id);
+    if (!userRecord.accounts.includes(accountId)) {
+      throw new Error('User does not own account');
+    }
+    const messageThread = await MessageThreadModel.findById(threadId);
+    if (!messageThread) {
+      throw new Error('Thread not found');
+    }
+    if (messageThread.sender.userId !== accountId) {
+      throw new Error('Thread not found');
+    }
+    if (!messageThread.draft) {
+      throw new Error('Thread is not a draft');
+    }
+    const message = await MessageModel.findById(messageThread.messages[0]);
+    message.content = encrypt(content);
+    await message.save();
+    return {
+      success: true,
+    };
+  }
+
+  public static async publishDraft(
+    token: string,
+    accountId: string,
+    threadId: string
+  ) {
+    const data = await validateAuthJWT(token);
+    const userRecord = await UserModel.findById(data.id);
+    if (!userRecord.accounts.includes(accountId)) {
+      throw new Error('User does not own account');
+    }
+    const messageThread = await MessageThreadModel.findById(threadId);
+    if (!messageThread) {
+      throw new Error('Thread not found');
+    }
+    if (messageThread.sender.userId !== accountId) {
+      throw new Error('Thread not found');
+    }
+    if (!messageThread.draft) {
+      throw new Error('Thread is not a draft');
+    }
+    if (messageThread.recipients.length == 0) {
+      throw new Error('Recipients cannot be empty.');
+    }
+    messageThread.draft = false;
+    await messageThread.save();
+    return {
+      success: true,
+    };
+  }
+
   public static async sendReplyToThread(
     token: string,
     accountId: string,
@@ -79,7 +173,7 @@ export default class MessageService {
       !messageThread.recipients.find(
         (recipient) => recipient.userId === accountId
       ) ||
-      messageThread.sender.userId === accountId
+      messageThread.sender.userId !== accountId
     ) {
       throw new Error('Thread not found');
     }
@@ -100,7 +194,7 @@ export default class MessageService {
   }
 
   // Gives list of available messages.
-  public static async getMessages(
+  public static async getThreads(
     token: string,
     accountId: string,
     folder = 'inbox'
@@ -164,7 +258,7 @@ export default class MessageService {
         }
       });
       return {
-        name: thread.name,
+        name: decrypt(thread.name),
         sender: sendersCache[thread.sender.userId],
         created: thread.created,
         newMessages,
@@ -183,14 +277,15 @@ export default class MessageService {
       throw new Error('User does not own account');
     }
     const messageThread = await MessageThreadModel.findById(threadId);
-    if (!messageThread) {
+    if (!messageThread || messageThread.draft) {
+      // Drafts can be fetched with getDraft
       throw new Error('Thread not found');
     }
     if (
       !messageThread.recipients.find(
         (recipient) => recipient.userId === accountId
       ) ||
-      messageThread.sender.userId === accountId
+      messageThread.sender.userId !== accountId
     ) {
       throw new Error('Thread not found');
     }
@@ -212,7 +307,56 @@ export default class MessageService {
       }
     });
     return {
-      name: messageThread.name,
+      name: decrypt(messageThread.name),
+      sender: sendersCache[messageThread.sender.userId], // First message is author, is set
+      messages: messages.map((message) => {
+        return {
+          sender: sendersCache[message.sender],
+          created: message.created,
+          content: decrypt(message.content),
+        };
+      }),
+      created: messageThread.created,
+    };
+  }
+
+  public static async getDraft(
+    token: string,
+    accountId: string,
+    threadId: string
+  ) {
+    const data = await validateAuthJWT(token);
+    const userRecord = await UserModel.findById(data.id);
+    if (!userRecord.accounts.includes(accountId)) {
+      throw new Error('User does not own account');
+    }
+    const messageThread = await MessageThreadModel.findById(threadId);
+    if (!messageThread || !messageThread.draft) {
+      // Non-drafts can be fetched with getThread
+      throw new Error('Thread not found');
+    }
+    if (messageThread.sender.userId !== accountId) {
+      throw new Error('Thread not found');
+    }
+    const messages = await MessageModel.find({
+      _id: { $in: messageThread.messages },
+    });
+    const sendersCache = {};
+    messages.forEach(async (message) => {
+      const account = await AccountModel.findById(message.sender);
+      sendersCache[message.sender] = {
+        firstName: account.firstName,
+        lastName: account.lastName,
+      };
+      if (account.userType === 3) {
+        // Teacher
+        sendersCache[message.sender].abbrevation = (
+          await TeacherModel.findById(account.teacher)
+        ).abbrevation;
+      }
+    });
+    return {
+      name: decrypt(messageThread.name),
       sender: sendersCache[messageThread.sender.userId], // First message is author, is set
       messages: messages.map((message) => {
         return {
@@ -243,7 +387,7 @@ export default class MessageService {
       !messageThread.recipients.find(
         (recipient) => recipient.userId === accountId
       ) ||
-      messageThread.sender.userId === accountId
+      messageThread.sender.userId !== accountId
     ) {
       throw new Error('Thread not found');
     }
@@ -285,7 +429,7 @@ export default class MessageService {
       !messageThread.recipients.find(
         (recipient) => recipient.userId === accountId
       ) ||
-      messageThread.sender.userId === accountId
+      messageThread.sender.userId !== accountId
     ) {
       throw new Error('Thread not found');
     }
@@ -326,7 +470,7 @@ export default class MessageService {
     const recipient = messageThread.recipients.find(
       (recipient) => recipient.userId === accountId
     );
-    if (!recipient && messageThread.sender.userId !== accountId) {
+    if (!recipient && messageThread.sender.userId === accountId) {
       // Sender archive
       if (messageThread.sender.archived) {
         throw new Error('Thread already archived');
