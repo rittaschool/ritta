@@ -290,7 +290,7 @@ export default class MessageService {
     if (
       !messageThread.recipients.find(
         (recipient) => recipient.userId.toString() === accountId
-      ) ||
+      ) &&
       messageThread.sender.userId.toString() !== accountId
     ) {
       throw new Error('Thread not found');
