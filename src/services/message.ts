@@ -19,9 +19,11 @@ export default class MessageService {
       throw new Error('User does not own account');
     }
     const accounts = (await AccountModel.find({})).filter(async (account) => {
+      console.log(account.id);
       const user = await UserModel.findOne({ account: account.id });
       const teacher = await TeacherModel.findById(account.teacher);
       return (
+        user &&
         !user.accounts.includes(account.id) &&
         (account.firstName.startsWith(query) ||
           account.lastName.startsWith(query) ||
