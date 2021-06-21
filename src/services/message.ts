@@ -117,7 +117,7 @@ export default class MessageService {
     if (!messageThread) {
       throw new Error('Thread not found');
     }
-    if (messageThread.sender.userId !== accountId) {
+    if (messageThread.sender.userId.toString() !== accountId) {
       throw new Error('Thread not found');
     }
     if (!messageThread.draft) {
@@ -145,7 +145,7 @@ export default class MessageService {
     if (!messageThread) {
       throw new Error('Thread not found');
     }
-    if (messageThread.sender.userId !== accountId) {
+    if (messageThread.sender.userId.toString() !== accountId) {
       throw new Error('Thread not found');
     }
     if (!messageThread.draft) {
@@ -349,7 +349,7 @@ export default class MessageService {
       // Non-drafts can be fetched with getThread
       throw new Error('Thread not found');
     }
-    if (messageThread.sender.userId !== accountId) {
+    if (messageThread.sender.userId.toString() !== accountId) {
       throw new Error('Thread not found');
     }
     const messages = await MessageModel.find({
@@ -401,9 +401,9 @@ export default class MessageService {
     }
     if (
       !messageThread.recipients.find(
-        (recipient) => recipient.userId === accountId
+        (recipient) => recipient.userId.toString() === accountId
       ) ||
-      messageThread.sender.userId !== accountId
+      messageThread.sender.userId.toString() !== accountId
     ) {
       throw new Error('Thread not found');
     }
@@ -443,9 +443,9 @@ export default class MessageService {
     }
     if (
       !messageThread.recipients.find(
-        (recipient) => recipient.userId === accountId
+        (recipient) => recipient.userId.toString() === accountId
       ) ||
-      messageThread.sender.userId !== accountId
+      messageThread.sender.userId.toString() !== accountId
     ) {
       throw new Error('Thread not found');
     }
@@ -484,9 +484,9 @@ export default class MessageService {
       throw new Error('Thread not found');
     }
     const recipient = messageThread.recipients.find(
-      (recipient) => recipient.userId === accountId
+      (recipient) => recipient.userId.toString() === accountId
     );
-    if (!recipient && messageThread.sender.userId === accountId) {
+    if (!recipient && messageThread.sender.userId.toString() === accountId) {
       // Sender archive
       if (messageThread.sender.archived) {
         throw new Error('Thread already archived');
@@ -527,9 +527,9 @@ export default class MessageService {
       throw new Error('Thread not found');
     }
     const recipient = messageThread.recipients.find(
-      (recipient) => recipient.userId === accountId
+      (recipient) => recipient.userId.toString() === accountId
     );
-    if (!recipient && messageThread.sender.userId !== accountId) {
+    if (!recipient && messageThread.sender.userId.toString() !== accountId) {
       // Sender archive
       if (!messageThread.sender.archived) {
         throw new Error('Thread is not archived');
