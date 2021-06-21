@@ -18,27 +18,22 @@ export default class MessageService {
     if (!userRecord.accounts.includes(accountId)) {
       throw new Error('User does not own account');
     }
-    const accounts = (
-      await Promise.all(
-        (
-          await AccountModel.find({})
-        ).map(async (account) => {
-          const teacher = await TeacherModel.findById(account.id);
-          if (
-            !userRecord.accounts.includes(account.id) &&
-            (account.firstName.startsWith(query) ||
-              account.lastName.startsWith(query) ||
-              (teacher && teacher.abbrevation.startsWith(query)) ||
-              (teacher &&
-                teacher.titles.find((title) => title.startsWith(query))))
-          ) {
-            return account;
-          } else {
-            return {};
-          }
-        })
-      )
-    ).filter((obj) => Object.keys(obj).length !== 0);
+    const accountsList = await AccountModel.find({});
+    const teachers = Promise.all(
+      accountsList.map(async (account) => {
+        return await TeacherModel.findById(account.teacher);
+      })
+    );
+    const accounts = accountsList.filter(async (account, index) => {
+      const teacher = teachers[index];
+      return (
+        !userRecord.accounts.includes(account.id) &&
+        (account.firstName.startsWith(query) ||
+          account.lastName.startsWith(query) ||
+          (teacher && teacher.abbrevation.startsWith(query)) ||
+          (teacher && teacher.titles.find((title) => title.startsWith(query))))
+      );
+    });
     return await Promise.all(
       accounts.map(async (account) => {
         const teacher = await TeacherModel.findById(account.teacher);
