@@ -24,7 +24,7 @@ export default class MessageService {
         return await TeacherModel.findById(account.teacher);
       })
     );
-    const accounts = accountsList.filter(async (account, index) => {
+    const accounts = accountsList.filter((account, index) => {
       const teacher = teachers[index];
       return (
         !userRecord.accounts.includes(account.id) &&
