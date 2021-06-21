@@ -255,24 +255,26 @@ export default class MessageService {
         }
       })
     );
-    return threads.map(async (thread) => {
-      let newMessages = false;
-      const messages = await MessageModel.find({
-        _id: { $in: thread.messages },
-      });
-      messages.forEach((message) => {
-        if (!message.seenBy.includes(accountId)) {
-          newMessages = true;
-          return;
-        }
-      });
-      return {
-        name: decrypt(thread.name),
-        sender: sendersCache[thread.sender.userId],
-        created: thread.created,
-        newMessages,
-      };
-    });
+    return await Promise.all(
+      threads.map(async (thread) => {
+        let newMessages = false;
+        const messages = await MessageModel.find({
+          _id: { $in: thread.messages },
+        });
+        messages.forEach((message) => {
+          if (!message.seenBy.includes(accountId)) {
+            newMessages = true;
+            return;
+          }
+        });
+        return {
+          name: decrypt(thread.name),
+          sender: sendersCache[thread.sender.userId],
+          created: thread.created,
+          newMessages,
+        };
+      })
+    );
   }
 
   public static async getThread(
