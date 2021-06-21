@@ -492,6 +492,7 @@ export default class MessageService {
         throw new Error('Thread already archived');
       }
       messageThread.sender.archived = true;
+      messageThread.markModified('sender.archived');
       await messageThread.save();
       return {
         success: true,
@@ -535,6 +536,7 @@ export default class MessageService {
         throw new Error('Thread is not archived');
       }
       messageThread.sender.archived = false;
+      messageThread.markModified('sender.archived');
       await messageThread.save();
       return {
         success: true,
