@@ -299,19 +299,21 @@ export default class MessageService {
       _id: { $in: messageThread.messages },
     });
     const sendersCache = {};
-    messages.forEach(async (message) => {
-      const account = await AccountModel.findById(message.sender);
-      sendersCache[message.sender] = {
-        firstName: account.firstName,
-        lastName: account.lastName,
-      };
-      if (account.userType === 3) {
-        // Teacher
-        sendersCache[message.sender].abbrevation = (
-          await TeacherModel.findById(account.teacher)
-        ).abbrevation;
-      }
-    });
+    await Promise.all(
+      messages.map(async (message) => {
+        const account = await AccountModel.findById(message.sender);
+        sendersCache[message.sender] = {
+          firstName: account.firstName,
+          lastName: account.lastName,
+        };
+        if (account.userType === 3) {
+          // Teacher
+          sendersCache[message.sender].abbrevation = (
+            await TeacherModel.findById(account.teacher)
+          ).abbrevation;
+        }
+      })
+    );
     return {
       name: decrypt(messageThread.name),
       sender: sendersCache[messageThread.sender.userId], // First message is author, is set
