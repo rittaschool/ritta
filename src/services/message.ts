@@ -129,10 +129,6 @@ export default class MessageService {
     await message.save();
     const recipientsSet = new Set(recipients);
     recipientsSet.delete(accountId);
-
-    if (recipientsSet.size == 0) {
-      throw new Error('Recipients cannot be empty.');
-    }
     messageThread.recipients = [...recipientsSet].map((userId) => {
       return {
         userId,
