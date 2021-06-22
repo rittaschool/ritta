@@ -465,9 +465,11 @@ export default class MessageService {
 
     await Promise.all(
       messages.map(async (message) => {
-        const seenBy = new Set(message.seenBy);
-        seenBy.delete(accountId);
-        message.seenBy = [...seenBy];
+        const index = message.seenBy.indexOf(accountId);
+        if (index === -1) {
+          return;
+        }
+        message.seenBy.splice(index, 1);
         await message.save();
       })
     );
