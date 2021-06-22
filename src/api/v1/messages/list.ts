@@ -4,7 +4,7 @@ import { checkJWT } from '../../../utils';
 
 const router = Router();
 
-router.post('/list', checkJWT, async (req, res, next) => {
+router.post('/', checkJWT, async (req, res, next) => {
   try {
     if (!req.body.account_id) {
       return res.status(400).json({
