@@ -48,7 +48,8 @@ router.post('/edit', checkJWT, async (req, res, next) => {
       req.body.jwt,
       req.body.account_id,
       req.body.thread_id,
-      req.body.content
+      req.body.content,
+      req.body.recipients
     );
     res.status(200).json(response);
   } catch (e) {
