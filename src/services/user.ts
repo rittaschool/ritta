@@ -48,7 +48,7 @@ export default class UserService {
   public static async listAccounts(token: string) {
     const data = await validateAuthJWT(token);
     const userRecord = await UserModel.findById(data.id);
-    return await Promise.all(
+    const accounts = await Promise.all(
       userRecord.accounts.map(async (accountId) => {
         const accountInfo = await AccountModel.findById(accountId);
         return {
@@ -59,6 +59,7 @@ export default class UserService {
         };
       })
     );
+    return accounts;
   }
 
   public static async createAccount(
