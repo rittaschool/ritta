@@ -102,7 +102,7 @@ router.post('/unarchive', checkJWT, async (req, res, next) => {
   }
 });
 
-router.post('/markRead', checkJWT, async (req, res, next) => {
+router.post('/markread', checkJWT, async (req, res, next) => {
   try {
     if (!req.body.account_id) {
       return res.status(400).json({
@@ -125,7 +125,7 @@ router.post('/markRead', checkJWT, async (req, res, next) => {
   }
 });
 
-router.post('/markUnread', checkJWT, async (req, res, next) => {
+router.post('/markunread', checkJWT, async (req, res, next) => {
   try {
     if (!req.body.account_id) {
       return res.status(400).json({
