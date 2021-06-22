@@ -44,6 +44,23 @@ export default class UserService {
       success: true,
     };
   }
+
+  public static async listAccounts(token: string) {
+    const data = await validateAuthJWT(token);
+    const userRecord = await UserModel.findById(data.id);
+    return await Promise.all(
+      userRecord.accounts.map(async (accountId) => {
+        const accountInfo = await AccountModel.findById(accountId);
+        return {
+          id: accountId,
+          firstName: accountInfo.firstName,
+          lastName: accountInfo.lastName,
+          userType: accountInfo.userType,
+        };
+      })
+    );
+  }
+
   public static async createAccount(
     firstName: string,
     lastName: string,
