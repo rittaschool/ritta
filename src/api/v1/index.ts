@@ -3,11 +3,14 @@ import { Router } from 'express';
 import auth from './auth';
 import user from './user';
 import message from './messages';
+import info from './info';
+
 const router = Router();
 
 router.use('/user', user);
 router.use('/auth', auth);
 router.use('/messages', message);
+router.use('/info', info);
 
 router.use((err: Error, _req, res, _next) => {
   let errorMessage = err.message;
