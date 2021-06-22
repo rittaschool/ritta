@@ -278,6 +278,7 @@ export default class MessageService {
           }
         });
         return {
+          id: thread.id,
           name: decrypt(thread.name),
           sender: sendersCache[thread.sender.userId],
           created: thread.created,
