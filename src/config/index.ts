@@ -8,7 +8,7 @@ export default {
   jwtSecret: process.env.JWT_SECRET,
   encryptionKey: process.env.ENCRYPTION_KEY,
   fcm: {
-    enabled: process.env.FCM_ENABLED,
+    enabled: process.env.FCM_ENABLED === 'true',
     serverKey: process.env.FCM_SERVER_KEY,
   },
   school: {
@@ -17,13 +17,9 @@ export default {
     city: process.env.SCHOOL_CITY,
   },
   lang: process.env.LANGUAGE,
-  ssl: {
-    key: process.env.SSL_KEY,
-    cert: process.env.SSL_CERT,
-  },
   opinsys: {
     // Opinsys
-    enabled: process.env.OPINSYS_ENABLED,
+    enabled: process.env.OPINSYS_ENABLED === 'true',
     organization: process.env.OPINSYS_ORGANIZATION,
     redirectURI: process.env.OPINSYS_REDIRECTURI,
     secret: process.env.OPINSYS_SECRET,
