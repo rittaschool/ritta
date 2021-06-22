@@ -422,15 +422,14 @@ export default class MessageService {
       _id: { $in: messageThread.messages },
     });
 
-    messages.forEach(async (message) => {
-      const seenBy = new Set(message.seenBy);
-      seenBy.add(accountId);
-      if (message.seenBy.length != seenBy.size) {
-        // Only save if difference
+    await Promise.all(
+      messages.map(async (message) => {
+        const seenBy = new Set(message.seenBy);
+        seenBy.add(accountId);
         message.seenBy = [...seenBy];
         await message.save();
-      }
-    });
+      })
+    );
 
     return {
       success: true,
@@ -464,13 +463,14 @@ export default class MessageService {
       _id: { $in: messageThread.messages },
     });
 
-    messages.forEach(async (message) => {
-      const seenBy = new Set(message.seenBy);
-      seenBy.delete(mongoose.Types.ObjectId(accountId));
-      // Only save if difference
-      message.seenBy = [...seenBy];
-      await message.save();
-    });
+    await Promise.all(
+      messages.map(async (message) => {
+        const seenBy = new Set(message.seenBy);
+        seenBy.delete(accountId);
+        message.seenBy = [...seenBy];
+        await message.save();
+      })
+    );
 
     return {
       success: true,
