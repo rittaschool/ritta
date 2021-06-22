@@ -27,24 +27,6 @@ router.post('/', checkJWT, async (req, res, next) => {
   }
 });
 
-router.post('/list', checkJWT, async (req, res, next) => {
-  try {
-    if (!req.body.account_id) {
-      return res.status(400).json({
-        message: 'account_id missing',
-      });
-    }
-    const response = await MessageService.getThreads(
-      req.body.jwt,
-      req.body.account_id,
-      req.body.folder
-    );
-    res.status(200).json(response);
-  } catch (e) {
-    next(e);
-  }
-});
-
 router.post('/reply', checkJWT, async (req, res, next) => {
   try {
     if (!req.body.account_id) {
