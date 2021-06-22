@@ -21,7 +21,7 @@ router.use((err: Error, _req, res, _next) => {
       break;
   }
   return res.status(400).json({
-    messsage: errorMessage,
+    message: errorMessage,
   });
 });
 export default router;
