@@ -34,7 +34,7 @@ export default class AuthService {
           type: 'mfa_required',
           id: userRecord._id,
         },
-        '1h'
+        600
       );
       return {
         mfaToken,
@@ -76,7 +76,7 @@ export default class AuthService {
           type: 'mfa_required',
           id: userRecord._id,
         },
-        '1h'
+        600
       );
       return {
         mfaToken,
