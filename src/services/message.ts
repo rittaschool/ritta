@@ -467,11 +467,9 @@ export default class MessageService {
     messages.forEach(async (message) => {
       const seenBy = new Set(message.seenBy);
       seenBy.delete(accountId);
-      if (message.seenBy.length != seenBy.size) {
-        // Only save if difference
-        message.seenBy = [...seenBy];
-        await message.save();
-      }
+      // Only save if difference
+      message.seenBy = [...seenBy];
+      await message.save();
     });
 
     return {
