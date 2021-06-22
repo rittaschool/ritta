@@ -5,7 +5,7 @@ import config from '../../config';
 
 const router = Router();
 
-router.get('/info', (req, res) => {
+router.get('/', (req, res) => {
   res.json({
     school: {
       name: config.school.name,
