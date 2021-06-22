@@ -466,7 +466,7 @@ export default class MessageService {
 
     messages.forEach(async (message) => {
       const seenBy = new Set(message.seenBy);
-      seenBy.delete(accountId);
+      seenBy.delete(mongoose.Types.ObjectId(accountId));
       // Only save if difference
       message.seenBy = [...seenBy];
       await message.save();
