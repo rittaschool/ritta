@@ -21,24 +21,19 @@ Ritta is currently going through a almost full refactoring. We are updating the 
 We want to create a modern solution for nowday's standards. About 50% of **all** traffic is from mobile devices, and when talking about students, more and more do not have a access to a desktop computer. So, making a fast, secure, responsive and a modern solution for schools to strengthen the connection between home and school.
 Later, a mobile app (probably will be made with [Flutter](https://flutter.dev)) will be also coded after the API and core features are done.
 
+# Folder structure
+
+src                 = Source code \
+│   app.js          = App entry point \
+└───api             = Express route controllers for all the endpoints of the app \
+└───config          = Environment variables and configuration related stuff \
+└───loaders         = Startup process modules \
+└───models          = Database models \
+└───services        = All the business logic \
+
 ## Contributing
 
-If you want to contribute, please contact project leader Raikas on Twitter (@raikasdev), Discord (Raikas#0178) or email [roni@raikas.xyz](mailto:roni@raikas.xyz).
-
-## Installation
-
-Ritta is currently in a very early stage, and installing is **NOT** recommended.
-If you still want to test how's the prototypes going, download the sources and extract them.
-
-Run following command in the folder to install `npm install`\
-And start with `npm test`
-
-You will need to create a .env file (or save them to environment directly) and use the following template:
-`MONGODB_CONNECTION_STRING=MongoDBConnectionStringHere`\
-`ENCRYPTION_KEY=Random Encryption String. Never use something simple.`\
-`SESSION_SECRET=Session secret, similar to encryption key but should be different.`\
-`HASH_SALT=Bcrypt salt`
-
+If you want to contribute, please contact project leader Raikas first on Twitter (@raikasdev), Discord (Raikas#0178) or email [roni@raikas.xyz](mailto:roni@raikas.xyz).
 
 ## Credits
 
