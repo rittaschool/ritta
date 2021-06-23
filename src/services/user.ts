@@ -45,6 +45,16 @@ export default class UserService {
     };
   }
 
+  public static async getUser(token: string) {
+    const data = await validateAuthJWT(token);
+    const userRecord = await UserModel.findById(data.id);
+    return {
+      username: userRecord.username,
+      firstName: userRecord.firstName,
+      lastName: userRecord.lastName,
+    };
+  }
+
   public static async listAccounts(token: string) {
     const data = await validateAuthJWT(token);
     const userRecord = await UserModel.findById(data.id);

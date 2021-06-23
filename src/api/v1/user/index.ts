@@ -1,11 +1,11 @@
 import { Router } from 'express';
 
 import password from './password';
-import accounts from './accounts';
+import info from './info';
 
 const router = Router();
 
 router.use('/password', password);
-router.use('/accounts', accounts);
+router.use('/info', info);
 
 export default router;
