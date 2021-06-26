@@ -8,7 +8,8 @@
     "test": "node --experimental-vm-modules node_modules/.bin/jest --forceExit",
     "dev": "node --experimental-specifier-resolution=node . | pino-pretty",
     "start": "node --experimental-specifier-resolution=node .",
-    "build": "tsc"
+    "build": "tsc",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",

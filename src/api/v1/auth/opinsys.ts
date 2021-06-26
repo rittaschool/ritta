@@ -16,7 +16,7 @@ router.post('/', async (req, res, next) => {
     });
   }
   try {
-    const data = await AuthService.opinsysAuth(req.query.jwt);
+    const data = await AuthService.opinsysAuth(req.body.jwt);
     return res.status(200).json(data);
   } catch (e) {
     next(e);
