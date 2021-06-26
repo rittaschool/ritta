@@ -21,7 +21,6 @@ export default {
     // Opinsys
     enabled: process.env.OPINSYS_ENABLED === 'true',
     organization: process.env.OPINSYS_ORGANIZATION,
-    redirectURI: process.env.OPINSYS_REDIRECTURI,
     secret: process.env.OPINSYS_SECRET,
   },
 };

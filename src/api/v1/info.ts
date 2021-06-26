@@ -11,6 +11,7 @@ router.get('/', (req, res) => {
       name: config.school.name,
       city: config.school.city,
       opinsysEnabled: config.opinsys.enabled,
+      opinsysOrganization: config.opinsys.organization,
     },
   });
 });
