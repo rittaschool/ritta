@@ -4,13 +4,13 @@ import config from '../../../config';
 
 const router = Router();
 
-router.get('/', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
   if (!config.opinsys.enabled) {
     return res.status(403).json({
       message: 'Opinsys not enabled',
     });
   }
-  if (!req.query.jwt) {
+  if (!req.body.jwt) {
     return res.status(400).json({
       message: 'jwt missing',
     });
