@@ -4,19 +4,24 @@ import { checkJWT } from '../../../utils';
 
 const router = Router();
 
-router.post('/verify', checkJWT, async (req, res, next) => {
-  try {
-    if (!req.body.mfa_code) {
-      return res.status(400).json({
-        message: 'mfa_code missing',
-      });
+router.post(
+  '/verify',
+  (global as any).rateLimit,
+  checkJWT,
+  async (req, res, next) => {
+    try {
+      if (!req.body.mfa_code) {
+        return res.status(400).json({
+          message: 'mfa_code missing',
+        });
+      }
+      const data = await AuthService.verifyMFA(req.body.jwt, req.body.mfa_code);
+      return res.status(200).json(data);
+    } catch (e) {
+      next(e);
     }
-    const data = await AuthService.verifyMFA(req.body.jwt, req.body.mfa_code);
-    return res.status(200).json(data);
-  } catch (e) {
-    next(e);
   }
-});
+);
 
 /*
  * Generate a MFA code if user does not have MFA enabled

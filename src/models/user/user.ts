@@ -9,6 +9,7 @@ interface User extends mongoose.Document {
   password: string;
   created: number;
   secret?: string;
+  mfaBackup?: string;
   puavoId?: number;
   firstName: string;
   lastName: string;
@@ -32,6 +33,9 @@ const user = new mongoose.Schema<User>({
     default: Date.now,
   },
   secret: {
+    type: String,
+  },
+  mfaBackup: {
     type: String,
   },
   puavoId: {

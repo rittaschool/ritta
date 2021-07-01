@@ -10,7 +10,7 @@ import {
 import { authenticator } from 'otplib';
 import base32 from 'thirty-two';
 import util from 'util';
-import logger from '../logger';
+import crypto from 'crypto';
 
 export default class AuthService {
   public static async login(username, password): Promise<any> {
@@ -112,7 +112,10 @@ export default class AuthService {
     const userRecord = await UserModel.findById(data.id);
     const totpSecret = decrypt(userRecord.secret);
 
-    if (!authenticator.check(code, totpSecret)) {
+    if (
+      !authenticator.check(code, totpSecret) ||
+      code !== userRecord.mfaBackup
+    ) {
       throw new Error('MFA Code invalid');
     }
 
@@ -148,10 +151,16 @@ export default class AuthService {
   public static async generateMFA(token) {
     const data = await validateAuthJWT(token);
     const userRecord = await UserModel.findById(data.id);
+    if (userRecord.secret) {
+      throw new Error('MFA already enabled');
+    }
     const secret = base32
       .encode(authenticator.generateSecret())
       .toString()
       .replace(/=/g, '');
+    const backupCode = crypto.randomBytes(4).toString('hex');
+    userRecord.mfaBackup = backupCode;
+    await userRecord.save();
     return {
       secret,
       googleAuthenticator: util.format(
@@ -159,19 +168,42 @@ export default class AuthService {
         `Ritta - ${userRecord.username}`,
         secret
       ),
+      backupCode,
     };
   }
 
   public static async enableMFA(token, secret, code) {
     const data = await validateAuthJWT(token);
     const userRecord = await UserModel.findById(data.id);
-    logger.info(code + ' s ' + secret);
+    if (userRecord.secret) {
+      throw new Error('MFA already enabled');
+    }
     if (!authenticator.check(code, secret)) {
       throw new Error('MFA Code invalid');
     }
 
     userRecord.secret = encrypt(secret);
+    userRecord.lastestPasswordChange = Date.now();
+    await userRecord.save();
 
+    return {
+      success: true,
+    };
+  }
+
+  public static async disableMFA(token, secret, code) {
+    const data = await validateAuthJWT(token);
+    const userRecord = await UserModel.findById(data.id);
+    if (!userRecord.secret) {
+      throw new Error('MFA not enabled');
+    }
+    if (!authenticator.check(code, secret) || code !== userRecord.mfaBackup) {
+      throw new Error('MFA Code invalid');
+    }
+
+    userRecord.secret = undefined;
+    userRecord.mfaBackup = undefined;
+    userRecord.lastestPasswordChange = Date.now();
     await userRecord.save();
 
     return {

@@ -4,7 +4,7 @@ import config from '../../../config';
 
 const router = Router();
 
-router.post('/', async (req, res, next) => {
+router.post('/', (global as any).rateLimit, async (req, res, next) => {
   if (!config.opinsys.enabled) {
     return res.status(403).json({
       message: 'Opinsys not enabled',

@@ -3,7 +3,7 @@ import { AuthService } from '../../../services';
 
 const router = Router();
 
-router.post('/', async (req, res, next) => {
+router.post('/', (global as any).rateLimit, async (req, res, next) => {
   try {
     if (!req.body.username) {
       return res.status(400).json({
