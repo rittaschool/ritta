@@ -85,9 +85,6 @@ export default (router, _opts, done) => {
     {
       preHandler: checkJWT,
     },
-    {
-      preHandler: checkJWT,
-    },
     async (req, res) => {
       if (!req.body.account_id) {
         return res.status(400).json({
