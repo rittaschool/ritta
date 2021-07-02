@@ -29,7 +29,7 @@ export default class AuthService {
 
     if (userRecord.secret) {
       // User uses MFA, add second layer.
-      const mfaToken = generateJWT(
+      const mfaToken = await generateJWT(
         {
           type: 'mfa_required',
           id: userRecord._id,
@@ -40,7 +40,7 @@ export default class AuthService {
         mfaToken,
       };
     }
-    const accessToken = generateJWT(
+    const accessToken = await generateJWT(
       {
         type: 'access',
         id: userRecord._id,
@@ -52,7 +52,7 @@ export default class AuthService {
       '1h'
     );
 
-    const refreshToken = generateJWT({
+    const refreshToken = await generateJWT({
       type: 'refresh',
       id: userRecord._id,
     });
@@ -71,7 +71,7 @@ export default class AuthService {
     }
     if (userRecord.secret) {
       // User uses MFA, add second layer.
-      const mfaToken = generateJWT(
+      const mfaToken = await generateJWT(
         {
           type: 'mfa_required',
           id: userRecord._id,
@@ -84,7 +84,7 @@ export default class AuthService {
     }
     userRecord.latestLogin = Date.now();
     await userRecord.save();
-    const accessToken = generateJWT(
+    const accessToken = await generateJWT(
       {
         type: 'access',
         id: userRecord._id,
@@ -96,7 +96,7 @@ export default class AuthService {
       '1h'
     );
 
-    const refreshToken = generateJWT({
+    const refreshToken = await generateJWT({
       type: 'refresh',
       id: userRecord._id,
     });
@@ -122,7 +122,7 @@ export default class AuthService {
     userRecord.latestLogin = Date.now();
     await userRecord.save();
 
-    const accessToken = generateJWT(
+    const accessToken = await generateJWT(
       {
         type: 'access',
         id: userRecord._id,
@@ -134,7 +134,7 @@ export default class AuthService {
       '1h'
     );
 
-    const refreshToken = generateJWT(
+    const refreshToken = await generateJWT(
       {
         type: 'refresh',
         id: userRecord._id,
@@ -216,7 +216,7 @@ export default class AuthService {
     const userRecord = await UserModel.findById(data.id);
     userRecord.latestLogin = Date.now();
     await userRecord.save();
-    const accessToken = generateJWT(
+    const accessToken = await generateJWT(
       {
         type: 'access',
         id: userRecord._id,
@@ -228,7 +228,7 @@ export default class AuthService {
       '1h'
     );
 
-    const refreshToken = generateJWT(
+    const refreshToken = await generateJWT(
       {
         type: 'refresh',
         id: userRecord._id,
