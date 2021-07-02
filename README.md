@@ -2,19 +2,19 @@
 
 Ritta is a system for schools to keep connection between home and school strong.
 
-[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GitHub last commit](https://img.shields.io/github/last-commit/rittaschool/ritta.svg?style=flat)]()
 [![Twitter Follow](https://img.shields.io/twitter/follow/rittaschool.svg?style=social)](https://twitter.com/rittaschool)
 [![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/) \
 Also visit our [webpage!](https://ritta.pw)
 
-## ! Notice !
-Ritta is currently going through a almost full refactoring. We are updating the frontend to React and making the backend just the API.
+## ritta-react
+Looking for our React frontend? It's located in [ritta-react](https://github.com/rittaschool/ritta-react)
 
 ## Branches
 
-> "release" - Mainly the current main code that seems to be somewhat stable \
-> "development" - WIP code by Raikas, usually pretty unstable
+> "release" - Mainly the current main code that has been proven to be pretty stable \
+> "development" - Development branch of @raikasdev, latest indev code.
 
 ## Our goals
 
@@ -34,8 +34,3 @@ src                 = Source code \
 ## Contributing
 
 If you want to contribute, please contact project leader Raikas first on Twitter (@raikasdev), Discord (Raikas#0178) or email [roni@raikas.xyz](mailto:roni@raikas.xyz).
-
-## Credits
-
-Ritta's web interface is currently based on [Stisla](https://getstisla.com) template, to make the development easier as [I](https://github.com/raikasdev) am not a great front-end developer. Their credits can be found [here](https://demo.getstisla.com/credits.html) if you want to watch.
-
