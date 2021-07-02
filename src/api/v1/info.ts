@@ -3,7 +3,7 @@
 import config from '../../config';
 
 export default (router, _opts, done) => {
-  router.get('/', (req, res) => {
+  router.get('/', {}, (req, res) => {
     res.json({
       school: {
         name: config.school.name,

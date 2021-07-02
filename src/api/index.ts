@@ -2,7 +2,7 @@
 import v1 from './v1';
 
 export default (app, _opts, done) => {
-  app.get('/', (_, res) => {
+  app.get('/', {}, (_, res) => {
     res.status(200).json({
       message: 'API is running',
       apiVersions: {

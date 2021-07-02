@@ -12,7 +12,7 @@ await loaders({ fastifyApp: app });
 
 app.register(api, { prefix: '/api' });
 
-app.all('/', (_, res) => {
+app.all('/', {}, (_, res) => {
   res.redirect(config.frontUrl);
 });
 

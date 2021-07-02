@@ -11,10 +11,10 @@ export default async ({
 }): Promise<
   fastify.FastifyInstance<Server, IncomingMessage, ServerResponse>
 > => {
-  app.get('/status', (req, res) => {
+  app.get('/status', {}, (req, res) => {
     res.status(204);
   });
-  app.head('/status', (req, res) => {
+  app.head('/status', {}, (req, res) => {
     res.status(204);
   });
 
