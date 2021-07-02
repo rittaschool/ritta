@@ -113,7 +113,7 @@ export default class AuthService {
     const totpSecret = decrypt(userRecord.secret);
 
     if (
-      !authenticator.check(code, totpSecret) ||
+      !authenticator.check(code, totpSecret) &&
       code !== userRecord.mfaBackup
     ) {
       throw new Error('MFA Code invalid');
@@ -197,7 +197,7 @@ export default class AuthService {
     if (!userRecord.secret) {
       throw new Error('MFA not enabled');
     }
-    if (!authenticator.check(code, secret) || code !== userRecord.mfaBackup) {
+    if (!authenticator.check(code, secret) && code !== userRecord.mfaBackup) {
       throw new Error('MFA Code invalid');
     }
 
