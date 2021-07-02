@@ -5,10 +5,10 @@ import draft from './draft';
 import list from './list';
 
 export default (router, _opts, done) => {
-  router.use(search, { prefix: '/search' });
-  router.use(send, { prefix: '/send' });
-  router.use(thread, { prefix: '/thread' });
-  router.use(draft, { prefix: '/draft' });
-  router.use(list, { prefix: '/list' });
+  router.register(search, { prefix: '/search' });
+  router.register(send, { prefix: '/send' });
+  router.register(thread, { prefix: '/thread' });
+  router.register(draft, { prefix: '/draft' });
+  router.register(list, { prefix: '/list' });
   done();
 };
