@@ -1,10 +1,19 @@
-import { Router } from 'express';
-import { AuthService } from '../../../services';
 import config from '../../../config';
+import express, { Router } from 'express';
+import { AuthService } from '../../../services';
+import RateLimit from 'express-rate-limit';
 
 const router = Router();
 
-router.post('/', (global as any).rateLimit, async (req, res, next) => {
+const rateLimit = RateLimit({
+  max: 3,
+  windowMs: 30 * 1000,
+  handler: (_req: express.Request, res: express.Response) => {
+    res.status(429).json({ message: 'You are being rate limited' });
+  },
+});
+
+router.post('/', rateLimit, async (req, res, next) => {
   if (!config.opinsys.enabled) {
     return res.status(403).json({
       message: 'Opinsys not enabled',
