@@ -1,27 +1,31 @@
-import { Router } from 'express';
+import express, { Router } from 'express';
 import { AuthService } from '../../../services';
 import { checkJWT } from '../../../utils';
+import RateLimit from 'express-rate-limit';
 
 const router = Router();
 
-router.post(
-  '/verify',
-  (global as any).rateLimit,
-  checkJWT,
-  async (req, res, next) => {
-    try {
-      if (!req.body.mfa_code) {
-        return res.status(400).json({
-          message: 'mfa_code missing',
-        });
-      }
-      const data = await AuthService.verifyMFA(req.body.jwt, req.body.mfa_code);
-      return res.status(200).json(data);
-    } catch (e) {
-      next(e);
+const rateLimit = RateLimit({
+  max: 3,
+  windowMs: 30 * 1000,
+  handler: (_req: express.Request, res: express.Response) => {
+    res.status(429).json({ message: 'You are being rate limited' });
+  },
+});
+
+router.post('/verify', rateLimit, checkJWT, async (req, res, next) => {
+  try {
+    if (!req.body.mfa_code) {
+      return res.status(400).json({
+        message: 'mfa_code missing',
+      });
     }
+    const data = await AuthService.verifyMFA(req.body.jwt, req.body.mfa_code);
+    return res.status(200).json(data);
+  } catch (e) {
+    next(e);
   }
-);
+});
 
 /*
  * Generate a MFA code if user does not have MFA enabled
