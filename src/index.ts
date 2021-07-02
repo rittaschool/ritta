@@ -6,7 +6,7 @@ import config from './config';
 
 logger.info('Starting Ritta Server');
 
-const app = fastify({ trustProxy: true });
+const app = fastify({ trustProxy: true, logger: true, pluginTimeout: 20000 });
 
 await loaders({ fastifyApp: app });
 
