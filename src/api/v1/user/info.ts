@@ -9,7 +9,7 @@ export default (router, _opts, done) => {
     },
     async (req, res) => {
       const user = await UserService.getUser(req.body.jwt);
-      res.status(200).json({
+      res.status(200).send({
         user,
         accounts: await UserService.listAccounts(req.body.jwt),
       });

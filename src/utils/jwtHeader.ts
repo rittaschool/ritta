@@ -6,7 +6,7 @@ export const checkJWT = (req, reply, done) => {
     req.body.jwt = req.headers.authorization.split(' ')[1];
     done();
   } else {
-    return reply.status(401).json({
+    return reply.status(401).send({
       message: 'Not logged in',
     });
   }

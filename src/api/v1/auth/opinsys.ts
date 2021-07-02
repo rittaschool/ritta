@@ -9,17 +9,17 @@ export default (router, _opts, done) => {
     },
     async (req, res) => {
       if (!config.opinsys.enabled) {
-        return res.status(403).json({
+        return res.status(403).send({
           message: 'Opinsys not enabled',
         });
       }
       if (!req.body.jwt) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: 'jwt missing',
         });
       }
       const data = await AuthService.opinsysAuth(req.body.jwt);
-      return res.status(200).json(data);
+      return res.status(200).send(data);
     }
   );
   done();

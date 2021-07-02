@@ -20,7 +20,7 @@ export default (app, _opts, done) => {
         errorMessage = 'The JWT is invalid';
         break;
     }
-    return res.status(400).json({
+    return res.status(400).send({
       message: errorMessage,
     });
   });

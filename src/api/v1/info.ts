@@ -4,7 +4,7 @@ import config from '../../config';
 
 export default (router, _opts, done) => {
   router.get('/', {}, (req, res) => {
-    res.json({
+    res.send({
       school: {
         name: config.school.name,
         city: config.school.city,

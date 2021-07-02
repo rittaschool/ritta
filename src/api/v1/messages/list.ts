@@ -9,7 +9,7 @@ export default (router, _opts, done) => {
     },
     async (req, res) => {
       if (!req.body.account_id) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: 'account_id missing',
         });
       }
@@ -18,7 +18,7 @@ export default (router, _opts, done) => {
         req.body.account_id,
         req.body.folder
       );
-      res.status(200).json(response);
+      res.status(200).send(response);
     }
   );
   done();

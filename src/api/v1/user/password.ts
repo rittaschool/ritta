@@ -9,12 +9,12 @@ export default (router, _opts, done) => {
     },
     async (req, res) => {
       if (!req.body.old_password) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: 'old_password missing',
         });
       }
       if (!req.body.new_password) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: 'new_password missing',
         });
       }
@@ -23,7 +23,7 @@ export default (router, _opts, done) => {
         req.body.old_password,
         req.body.new_password
       );
-      return res.status(200).json(data);
+      return res.status(200).send(data);
     }
   );
   done();

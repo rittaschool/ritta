@@ -8,12 +8,12 @@ export default async (router, _opts, done) => {
     },
     async (req, res) => {
       if (!req.body.username) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: 'username missing',
         });
       }
       if (!req.body.password) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: 'password missing',
         });
       }
@@ -21,7 +21,7 @@ export default async (router, _opts, done) => {
         req.body.username,
         req.body.password
       );
-      return res.status(200).json(data);
+      return res.status(200).send(data);
     }
   );
   done();

@@ -9,12 +9,12 @@ export default (router, _opts, done) => {
     },
     async (req, res) => {
       if (!req.body.mfa_code) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: 'mfa_code missing',
         });
       }
       const data = await AuthService.verifyMFA(req.body.jwt, req.body.mfa_code);
-      return res.status(200).json(data);
+      return res.status(200).send(data);
     }
   );
   /*
@@ -27,7 +27,7 @@ export default (router, _opts, done) => {
     },
     async (req, res) => {
       const data = await AuthService.generateMFA(req.body.jwt);
-      return res.status(200).json(data);
+      return res.status(200).send(data);
     }
   );
   /*
@@ -40,12 +40,12 @@ export default (router, _opts, done) => {
     },
     async (req, res) => {
       if (!req.body.mfa_secret) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: 'mfa_secret missing',
         });
       }
       if (!req.body.mfa_code) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: 'mfa_code missing',
         });
       }
@@ -54,7 +54,7 @@ export default (router, _opts, done) => {
         req.body.mfa_secret,
         req.body.mfa_code
       );
-      return res.status(200).json(data);
+      return res.status(200).send(data);
     }
   );
   done();

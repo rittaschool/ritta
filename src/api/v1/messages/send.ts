@@ -9,27 +9,27 @@ export default (router, _opts, done) => {
     },
     async (req, res) => {
       if (!req.body.account_id) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: 'account_id missing',
         });
       }
       if (!req.body.content) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: 'recipients missing',
         });
       }
       if (!req.body.name) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: 'name missing',
         });
       }
       if (!req.body.recipients) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: 'recipients missing',
         });
       }
       if (!Array.isArray(req.body.recipients)) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: 'recipients not array',
         });
       }
@@ -41,7 +41,7 @@ export default (router, _opts, done) => {
         req.body.recipients,
         req.body.draft || false
       );
-      res.status(200).json(response);
+      res.status(200).send(response);
     }
   );
   done();

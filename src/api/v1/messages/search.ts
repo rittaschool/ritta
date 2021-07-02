@@ -9,12 +9,12 @@ export default (router, _opts, done) => {
     },
     async (req, res) => {
       if (!req.body.account_id) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: 'account_id missing',
         });
       }
       if (!req.body.query) {
-        return res.status(400).json({
+        return res.status(400).send({
           message: 'query missing',
         });
       }
@@ -23,7 +23,7 @@ export default (router, _opts, done) => {
         req.body.account_id,
         req.body.query
       );
-      res.status(200).json(recipients);
+      res.status(200).send(recipients);
     }
   );
   done();
