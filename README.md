@@ -25,7 +25,7 @@ Later, a mobile app (probably will be made with [Flutter](https://flutter.dev)) 
 
 src                 = Source code \
 │   app.js          = App entry point \
-└───api             = Express route controllers for all the endpoints of the app \
+└───api             = Fastify route plugins for all the endpoints of the app \
 └───config          = Environment variables and configuration related stuff \
 └───loaders         = Startup process modules \
 └───models          = Database models \
