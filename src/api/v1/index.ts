@@ -3,7 +3,7 @@ import user from './user';
 import message from './messages';
 import info from './info';
 
-export default (app) => {
+export default (app, _opts, done) => {
   app.register(user, { prefix: '/user' });
   app.register(auth, { prefix: '/auth' });
   app.register(message, { prefix: '/messages' });
@@ -24,4 +24,5 @@ export default (app) => {
       message: errorMessage,
     });
   });
+  done();
 };
