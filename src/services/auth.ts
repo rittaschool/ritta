@@ -64,7 +64,7 @@ export default class AuthService {
   }
 
   public static async opinsysAuth(token) {
-    const data = validateOpinsysJWT(token);
+    const data = await validateOpinsysJWT(token);
     const userRecord = await UserModel.findOne({ puavoId: data.puavo_id });
     if (!userRecord) {
       throw new Error('No user found');
