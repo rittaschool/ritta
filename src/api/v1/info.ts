@@ -2,7 +2,7 @@
 
 import config from '../../config';
 
-export default (router) => {
+export default (router, _opts, done) => {
   router.get('/', (req, res) => {
     res.json({
       school: {
@@ -13,4 +13,5 @@ export default (router) => {
       },
     });
   });
+  done();
 };

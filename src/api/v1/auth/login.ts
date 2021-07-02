@@ -1,6 +1,6 @@
 import { AuthService } from '../../../services';
 
-export default async (router) => {
+export default async (router, _opts, done) => {
   router.post(
     '/',
     {
@@ -24,4 +24,5 @@ export default async (router) => {
       return res.status(200).json(data);
     }
   );
+  done();
 };

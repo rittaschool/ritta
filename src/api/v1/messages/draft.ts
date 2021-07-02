@@ -1,7 +1,7 @@
 import { MessageService } from '../../../services';
 import { checkJWT } from '../../../utils';
 
-export default (router) => {
+export default (router, _opts, done) => {
   router.post(
     '/',
     {
@@ -81,4 +81,5 @@ export default (router) => {
       res.status(200).json(response);
     }
   );
+  done();
 };

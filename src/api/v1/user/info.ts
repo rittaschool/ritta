@@ -1,7 +1,7 @@
 import { UserService } from '../../../services';
 import { checkJWT } from '../../../utils';
 
-export default (router) => {
+export default (router, _opts, done) => {
   router.post(
     '/',
     {
@@ -15,4 +15,5 @@ export default (router) => {
       });
     }
   );
+  done();
 };

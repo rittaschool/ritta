@@ -1,7 +1,7 @@
 import { UserService } from '../../../services';
 import { checkJWT } from '../../../utils';
 
-export default (router) => {
+export default (router, _opts, done) => {
   router.post(
     '/change',
     {
@@ -26,4 +26,5 @@ export default (router) => {
       return res.status(200).json(data);
     }
   );
+  done();
 };

@@ -1,7 +1,7 @@
 import config from '../../../config';
 import { AuthService } from '../../../services';
 
-export default (router) => {
+export default (router, _opts, done) => {
   router.post(
     '/',
     {
@@ -22,4 +22,5 @@ export default (router) => {
       return res.status(200).json(data);
     }
   );
+  done();
 };

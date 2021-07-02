@@ -1,6 +1,6 @@
 import { AuthService } from '../../../services';
 
-export default (router) => {
+export default (router, _opts, done) => {
   router.post('/', async (req, res) => {
     if (!req.body.refresh_token) {
       return res.status(400).json({
@@ -10,4 +10,5 @@ export default (router) => {
     const data = await AuthService.refreshToken(req.body.refresh_token);
     return res.status(200).json(data);
   });
+  done();
 };

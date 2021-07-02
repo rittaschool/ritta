@@ -3,9 +3,10 @@ import login from './login';
 import mfa from './mfa';
 import opinsys from './opinsys';
 
-export default (router) => {
+export default (router, _opts, done) => {
   router.use(refresh, { prefix: '/refresh' });
   router.use(login, { prefix: '/login' });
   router.use(mfa, { prefix: '/mfa' });
   router.use(opinsys, { prefix: '/opinsys' });
+  done();
 };

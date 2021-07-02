@@ -1,7 +1,7 @@
 import { AuthService } from '../../../services';
 import { checkJWT } from '../../../utils';
 
-export default (router) => {
+export default (router, _opts, done) => {
   router.post(
     '/verify',
     {
@@ -57,4 +57,5 @@ export default (router) => {
       return res.status(200).json(data);
     }
   );
+  done();
 };
