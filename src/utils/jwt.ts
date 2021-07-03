@@ -35,9 +35,12 @@ export const validateJWT = (token): Promise<any> =>
     });
   });
 
-export const validateAuthJWT = async (token, type = 'access') => {
+export const validateAuthJWT = async (
+  token,
+  type: string | string[] = 'access'
+) => {
   const data = await validateJWT(token);
-  if (data.type !== type) {
+  if (Array.isArray(type) ? !type.includes(data.type) : data.type !== type) {
     throw new Error(`Token is not a ${type} token.`);
   }
   const userRecord = await UserModel.findById(data.id);

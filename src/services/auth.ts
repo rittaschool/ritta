@@ -40,6 +40,23 @@ export default class AuthService {
         mfaToken,
       };
     }
+
+    userRecord.latestLogin = Date.now();
+    await userRecord.save();
+
+    if (userRecord.passwordChangeRequired) {
+      const passwordChangeToken = await generateJWT(
+        {
+          type: 'passwordchange_required',
+          id: userRecord._id,
+        },
+        '1h'
+      );
+      return {
+        passwordChangeToken,
+      };
+    }
+
     const accessToken = await generateJWT(
       {
         type: 'access',
@@ -82,8 +99,23 @@ export default class AuthService {
         mfaToken,
       };
     }
+
     userRecord.latestLogin = Date.now();
     await userRecord.save();
+
+    if (userRecord.passwordChangeRequired) {
+      const passwordChangeToken = await generateJWT(
+        {
+          type: 'passwordchange_required',
+          id: userRecord._id,
+        },
+        '1h'
+      );
+      return {
+        passwordChangeToken,
+      };
+    }
+
     const accessToken = await generateJWT(
       {
         type: 'access',
@@ -121,6 +153,19 @@ export default class AuthService {
 
     userRecord.latestLogin = Date.now();
     await userRecord.save();
+
+    if (userRecord.passwordChangeRequired) {
+      const passwordChangeToken = await generateJWT(
+        {
+          type: 'passwordchange_required',
+          id: userRecord._id,
+        },
+        '1h'
+      );
+      return {
+        passwordChangeToken,
+      };
+    }
 
     const accessToken = await generateJWT(
       {

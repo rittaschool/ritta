@@ -16,6 +16,7 @@ interface User extends mongoose.Document {
   accounts: string[];
   latestLogin: number;
   lastestPasswordChange: number;
+  passwordChangeRequired: boolean;
 }
 
 const user = new mongoose.Schema<User>({
@@ -65,6 +66,10 @@ const user = new mongoose.Schema<User>({
   lastestPasswordChange: {
     type: Date,
     default: Date.now,
+  },
+  passwordChangeRequired: {
+    type: Boolean,
+    default: true,
   },
 });
 
