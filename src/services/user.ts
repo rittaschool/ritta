@@ -27,7 +27,10 @@ export default class UserService {
   }
 
   public static async changePassword(token, oldPassword, newPassword) {
-    const data = await validateAuthJWT(token);
+    const data = await validateAuthJWT(token, [
+      'access',
+      'passwordchange_required',
+    ]);
     const userRecord = await UserModel.findById(data.id);
     const passwordCorrect = await argon2.verify(
       decrypt(userRecord.password),
@@ -36,6 +39,7 @@ export default class UserService {
     if (!passwordCorrect) {
       throw new Error('Incorrect password');
     }
+    userRecord.passwordChangeRequired = false;
     userRecord.password = encrypt(await argon2.hash(newPassword));
     userRecord.lastestPasswordChange = Date.now();
     await userRecord.save();
