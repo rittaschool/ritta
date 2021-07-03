@@ -23,9 +23,11 @@ Later, a mobile app (probably will be made with [Flutter](https://flutter.dev)) 
 
 # Stargazers and forkers
 
-[![Stargazers repo roster for @rittaschool/ritta-server](https://reporoster.com/stars/rittaschool/ritta-server)](https://github.com/rittaschool/ritta-server/stargazers)
+### Stargazers
+[![Stargazers repo roster for @rittaschool/ritta-server](https://reporoster.com/stars/dark/notext/rittaschool/ritta-server)](https://github.com/rittaschool/ritta-server/stargazers)
 
-[![Forkers repo roster for @rittaschool/ritta-server](https://reporoster.com/forks/rittaschool/ritta-server)](https://github.com/rittaschool/ritta-server/network/members)
+### Forkers
+[![Forkers repo roster for @rittaschool/ritta-server](https://reporoster.com/forks/dark/notext/rittaschool/ritta-server)](https://github.com/rittaschool/ritta-server/network/members)
 # Folder structure
 
 src                 = Source code \
