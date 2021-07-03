@@ -31,6 +31,9 @@ export default class UserService {
       'access',
       'passwordchange_required',
     ]);
+    if (!oldPassword && data.type !== 'passwordchange_required') {
+      throw new Error('old_password missing');
+    }
     const userRecord = await UserModel.findById(data.id);
     const passwordCorrect = await argon2.verify(
       decrypt(userRecord.password),

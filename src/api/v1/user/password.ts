@@ -8,11 +8,6 @@ export default (router, _opts, done) => {
       preHandler: checkJWT,
     },
     async (req, res) => {
-      if (!req.body.old_password) {
-        return res.status(400).send({
-          message: 'old_password missing',
-        });
-      }
       if (!req.body.new_password) {
         return res.status(400).send({
           message: 'new_password missing',
