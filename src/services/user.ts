@@ -39,6 +39,9 @@ export default class UserService {
     if (!passwordCorrect) {
       throw new Error('Incorrect password');
     }
+    if (oldPassword === newPassword) {
+      throw new Error("New password can't be equal to old one");
+    }
     userRecord.passwordChangeRequired = false;
     userRecord.password = encrypt(await argon2.hash(newPassword));
     userRecord.lastestPasswordChange = Date.now();
