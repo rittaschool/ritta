@@ -26,7 +26,7 @@ export default class UserService {
     };
   }
 
-  public static async changePassword(token, oldPassword, newPassword) {
+  public static async changePassword(token, oldPassword = '', newPassword) {
     const data = await validateAuthJWT(token, [
       'access',
       'passwordchange_required',
