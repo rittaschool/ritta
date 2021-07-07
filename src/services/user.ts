@@ -39,7 +39,7 @@ export default class UserService {
       decrypt(userRecord.password),
       oldPassword
     );
-    if (!passwordCorrect) {
+    if (!passwordCorrect && data.type !== 'passwordchange_required') {
       throw new Error('Incorrect password');
     }
     if (oldPassword === newPassword) {
