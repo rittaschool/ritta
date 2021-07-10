@@ -3,7 +3,7 @@
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
-interface Student extends mongoose.Document {
+interface Parent extends mongoose.Document {
   firstName: string;
   lastName: string;
   alias: string;
@@ -11,15 +11,16 @@ interface Student extends mongoose.Document {
     address: string;
     postal: string;
   };
-  phoneNumber?: string;
-  email?: string;
+  phoneNumber: string;
+  workNumber?: string;
+  email: string;
 }
 
 function defaultAlias() {
   return this.firstName;
 }
 
-const student = new mongoose.Schema<Student>({
+const parent = new mongoose.Schema<Parent>({
   firstName: {
     type: String,
     required: true,
@@ -45,12 +46,17 @@ const student = new mongoose.Schema<Student>({
   },
   phoneNumber: {
     type: String,
+    required: true,
+  },
+  workNumber: {
+    type: String,
   },
   email: {
     type: String,
+    required: true,
   },
 });
 
-student.plugin(uniqueValidator);
+parent.plugin(uniqueValidator);
 
-export default mongoose.model<Student>('Student', student);
+export default mongoose.model<Parent>('Parent', parent);

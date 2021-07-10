@@ -3,6 +3,7 @@ export const checkJWT = (req, reply, done) => {
     req.headers.authorization &&
     req.headers.authorization.split(' ')[0] === 'Bearer'
   ) {
+    if (!req.body) req.body = {};
     req.body.jwt = req.headers.authorization.split(' ')[1];
     done();
   } else {
