@@ -22,10 +22,8 @@ const announcement = new mongoose.Schema<Announcement>({
     required: true,
   },
   sender: {
-    type: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Account',
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Account',
     required: true,
   },
   content: {
