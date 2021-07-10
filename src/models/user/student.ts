@@ -33,13 +33,15 @@ const student = new mongoose.Schema<Student>({
     default: defaultAlias,
   },
   home: {
-    address: {
-      type: String,
-      required: true,
-    },
-    postal: {
-      type: String,
-      required: true,
+    type: {
+      address: {
+        type: String,
+        required: true,
+      },
+      postal: {
+        type: String,
+        required: true,
+      },
     },
     required: true,
   },
