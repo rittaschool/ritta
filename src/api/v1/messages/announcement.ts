@@ -59,12 +59,12 @@ export default (router, _opts, done) => {
       }
       if (!req.body.name) {
         return res.status(400).send({
-          message: 'account_id missing',
+          message: 'name missing',
         });
       }
       if (!req.body.content) {
         return res.status(400).send({
-          message: 'account_id missing',
+          message: 'content missing',
         });
       }
       const response = await MessageService.newAnnouncement(

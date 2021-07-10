@@ -606,7 +606,7 @@ export default class MessageService {
       name,
       sender: accountId,
       content,
-      isPublic,
+      public: isPublic,
       forStaff,
       forStudents,
       forTeachers,
