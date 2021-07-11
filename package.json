@@ -1,6 +1,6 @@
 {
   "name": "ritta",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Ritta is a modern system for school, to keep connections between home and school strong.",
   "main": "build/index.js",
   "type": "module",
