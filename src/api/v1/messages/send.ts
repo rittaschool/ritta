@@ -2,7 +2,7 @@ import { MessageService } from '../../../services';
 import { checkJWT } from '../../../utils';
 
 export default (router, _opts, done) => {
-  router.post(
+  router.put(
     '/',
     {
       preHandler: checkJWT,

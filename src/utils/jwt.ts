@@ -60,10 +60,6 @@ export const validateOpinsysJWT = (token): Promise<any> =>
         reject(err);
         return;
       }
-      resolve({
-        iat: body.iat,
-        exp: body.exp,
-        ...body.data,
-      });
+      resolve(body);
     });
   });
