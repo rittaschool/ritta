@@ -57,10 +57,8 @@ const announcement = new mongoose.Schema<Announcement>({
   },
   school: {
     // If this announcement is restricted to a certain school.
-    type: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'School',
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'School',
   },
   created: { type: Number, default: Date.now },
 });
