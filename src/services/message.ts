@@ -742,8 +742,8 @@ export default class MessageService {
       forStudents: announcement.forStudents,
       forParents: announcement.forParents,
       school: {
-        name: school.name,
-        id: school.id,
+        name: school?.name,
+        id: school?.id,
       },
       created: announcement.created,
     };
