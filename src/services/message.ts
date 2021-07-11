@@ -589,6 +589,18 @@ export default class MessageService {
     if (!userRecord.accounts.includes(accountId)) {
       throw new Error('User does not own account');
     }
+    const account = await AccountModel.findById(data.id);
+    if (!account) {
+      throw new Error('Account not found');
+    }
+    // Check if can send announcement
+    if (
+      account.userType !== 100 &&
+      account.userType > 2 &&
+      account.userType < 8
+    ) {
+      throw new Error('User cannot send announcements');
+    }
     if (isPublic) {
       forTeachers = false;
       forStudents = false;
