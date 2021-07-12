@@ -1,5 +1,7 @@
 # Security Policy
 
+Here at Ritta we take cybersecurity very seriously. We try to make the software as secure we can by a daily basis, and fix security issues as fast as possible.
+
 ## Supported Versions
 
 | Version | Supported          |
