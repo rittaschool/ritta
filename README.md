@@ -41,3 +41,8 @@ src                 = Source code \
 ## Contributing
 
 If you want to contribute, please contact project leader Raikas first on Twitter (@raikasdev), Discord (Raikas#0178) or email [roni@raikas.xyz](mailto:roni@raikas.xyz).
+
+# On the right side?
+
+You can report security vulnerabilities on **huntr.dev**
+[![huntr](https://cdn.huntr.dev/huntr_security_badge_mono.svg)](https://huntr.dev)
