@@ -1,5 +1,7 @@
 # Security Policy
 
+Here at Ritta we take cybersecurity very seriously. We try to make the software as secure we can by a daily basis, and fix security issues as fast as possible.
+
 ## Supported Versions
 
 | Version | Supported          |
@@ -9,4 +11,5 @@
 
 ## Reporting a Vulnerability
 
-Use our repository's [Issues page](https://github.com/rittaschool/ritta/issues) can be used to report bugs and vulnerabilities.
+For smaller bugs, you can use our repository's [Issues page](https://github.com/rittaschool/ritta-server/issues).
+For more big security vulnerabilities, please send us an email: **tuki@ritta.fi**

@@ -1,12 +1,13 @@
-export const checkJWT = (req, res, next) => {
+export const checkJWT = (req, reply, done) => {
   if (
     req.headers.authorization &&
     req.headers.authorization.split(' ')[0] === 'Bearer'
   ) {
+    if (!req.body) req.body = {};
     req.body.jwt = req.headers.authorization.split(' ')[1];
-    next();
+    done();
   } else {
-    return res.status(401).json({
+    return reply.status(401).send({
       message: 'Not logged in',
     });
   }

@@ -4,6 +4,8 @@ import {
   UserModel,
   AccountModel,
   TeacherModel,
+  AnnouncementModel,
+  SchoolModel,
 } from '../models';
 import mongoose from 'mongoose';
 import { decrypt, encrypt, validateAuthJWT } from '../utils';
@@ -565,6 +567,197 @@ export default class MessageService {
     return {
       success: true,
       threadId: messageThread.id,
+    };
+  }
+
+  // Announcements
+
+  public static async newAnnouncement(
+    token: string,
+    accountId: string,
+    name: string,
+    content: string,
+    isPublic: boolean,
+    forTeachers: boolean,
+    forStaff: boolean,
+    forStudents: boolean,
+    forParents: boolean,
+    schoolId?: string
+  ) {
+    const data = await validateAuthJWT(token);
+    const userRecord = await UserModel.findById(data.id);
+    if (!userRecord.accounts.includes(accountId)) {
+      throw new Error('User does not own account');
+    }
+    const account = await AccountModel.findById(data.id);
+    if (!account) {
+      throw new Error('Account not found');
+    }
+    // Check if can send announcement
+    if (
+      account.userType !== 100 &&
+      account.userType > 2 &&
+      account.userType < 8
+    ) {
+      throw new Error('User cannot send announcements');
+    }
+    if (isPublic) {
+      forTeachers = false;
+      forStudents = false;
+      forParents = false;
+      forStaff = false;
+    }
+    if (
+      !isPublic &&
+      (!forTeachers || !forStudents || !forParents || !forStaff)
+    ) {
+      throw new Error('No recipients selected');
+    }
+    const school = await SchoolModel.findById(schoolId);
+    const announcement = await AnnouncementModel.create({
+      name,
+      sender: accountId,
+      content,
+      public: isPublic,
+      forStaff,
+      forStudents,
+      forTeachers,
+      forParents,
+      school: school?.id,
+    });
+
+    await announcement.save();
+
+    return {
+      success: true,
+      announcementId: announcement.id,
+    };
+  }
+
+  public static async getAnnouncements(
+    token: string,
+    accountId: string
+  ): Promise<any> {
+    const data = await validateAuthJWT(token);
+    const userRecord = await UserModel.findById(data.id);
+    if (!userRecord.accounts.includes(accountId)) {
+      throw new Error('User does not own account');
+    }
+    const account = await AccountModel.findById(accountId);
+    if (!account) {
+      throw new Error('Account not found');
+    }
+    const announcements = await AnnouncementModel.find({});
+    return await Promise.all(
+      announcements
+        .filter((announcement) => {
+          if (announcement.public) return true;
+          if (
+            announcement.school &&
+            account.school &&
+            announcement.school !== account.school
+          )
+            return false;
+          switch (account.userType) {
+            case 1:
+              if (!announcement.forStudents) return false;
+              break;
+            case 2:
+              if (!announcement.forParents) return false;
+              break;
+            case 3:
+              if (!announcement.forTeachers) return false;
+              break;
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+              if (!announcement.forStaff) return false;
+              break;
+            default:
+              return true;
+          }
+        })
+        .map(async (announcement) => {
+          const sender = await AccountModel.findById(announcement.sender);
+          return {
+            id: announcement.id,
+            name: announcement.name,
+            content: announcement.content,
+            sender:
+              sender.userType === 100
+                ? 'Ylläpitäjä'
+                : `${sender.firstName} ${sender.lastName}`,
+          };
+        })
+    );
+  }
+
+  public static async getAnnouncement(
+    token: string,
+    accountId: string,
+    announcementId: string
+  ): Promise<any> {
+    const data = await validateAuthJWT(token);
+    const userRecord = await UserModel.findById(data.id);
+    if (!userRecord.accounts.includes(accountId)) {
+      throw new Error('User does not own account');
+    }
+    const announcement = await AnnouncementModel.findById(announcementId);
+    if (!announcement) {
+      throw new Error('Announcement not found');
+    }
+    const account = await AccountModel.findById(accountId);
+    if (!account) {
+      throw new Error('Account not found');
+    }
+    if (!announcement.public) {
+      // Check if user is a recipient.
+      if (announcement.school && announcement.school !== account.school) {
+        throw new Error('Announcement not found');
+      }
+      switch (account.userType) {
+        case 1:
+          if (!announcement.forStudents)
+            throw new Error('Announcement not found');
+          break;
+        case 2:
+          if (!announcement.forParents)
+            throw new Error('Announcement not found');
+          break;
+        case 3:
+          if (!announcement.forTeachers)
+            throw new Error('Announcement not found');
+          break;
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+          if (!announcement.forStaff) throw new Error('Announcement not found');
+          break;
+        default:
+          break;
+      }
+    }
+    const sender = await AccountModel.findById(announcement.sender);
+    const school = await SchoolModel.findById(announcement.school);
+    return {
+      name: announcement.name,
+      sender:
+        sender.userType === 100
+          ? 'Ylläpitäjä'
+          : `${sender.firstName} ${sender.lastName}`,
+      content: announcement.content,
+      public: announcement.public,
+      forTeachers: announcement.forTeachers,
+      forStaff: announcement.forStaff,
+      forStudents: announcement.forStudents,
+      forParents: announcement.forParents,
+      school: {
+        name: school?.name,
+        id: school?.id,
+      },
+      created: announcement.created,
     };
   }
 }

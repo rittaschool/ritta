@@ -1,26 +1,26 @@
-import { Router } from 'express';
-import { AuthService } from '../../../services';
 import config from '../../../config';
+import { AuthService } from '../../../services';
 
-const router = Router();
-
-router.get('/', async (req, res, next) => {
-  if (!config.opinsys.enabled) {
-    return res.status(403).json({
-      message: 'Opinsys not enabled',
-    });
-  }
-  if (!req.query.jwt) {
-    return res.status(400).json({
-      message: 'jwt missing',
-    });
-  }
-  try {
-    const data = await AuthService.opinsysAuth(req.query.jwt);
-    return res.status(200).json(data);
-  } catch (e) {
-    next(e);
-  }
-});
-
-export default router;
+export default (router, _opts, done) => {
+  router.post(
+    '/',
+    {
+      preValidation: [router.rateLimit()],
+    },
+    async (req, res) => {
+      if (!config.opinsys.enabled) {
+        return res.status(403).send({
+          message: 'Opinsys not enabled',
+        });
+      }
+      if (!req.body.jwt) {
+        return res.status(400).send({
+          message: 'jwt missing',
+        });
+      }
+      const data = await AuthService.opinsysAuth(req.body.jwt);
+      return res.status(200).send(data);
+    }
+  );
+  done();
+};

@@ -1,0 +1,28 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Announce releases
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the release branch
+  release:
+    types: [published]
+
+jobs:
+  # This workflow contains a single job called "build"
+  tweet:
+    runs-on: ubuntu-latest
+    steps:
+      - id: version
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          owner: rittaschool
+          repo: ritta-server
+          excludes: prerelease, draft
+      - uses: ethomson/send-tweet-action@v1
+        with:
+          status: "Uusi versio on julkaistu. \nRitta-server ${{ steps.version.outputs.release }}\nhttps://github.com/rittaschool/ritta-server/releases/tag/${{ steps.version.outputs.release }}"
+          consumer-key: ${{ secrets.TWITTER_CONSUMER_API_KEY }}
+          consumer-secret: ${{ secrets.TWITTER_CONSUMER_API_SECRET }}
+          access-token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          access-token-secret: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}

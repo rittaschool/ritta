@@ -7,6 +7,10 @@ import NotificationDeviceModel from './misc/notificationDevice';
 
 import MessageModel from './message/message';
 import MessageThreadModel from './message/messagethread';
+import AnnouncementModel from './message/announcement';
+
+import SchoolModel from './school/school';
+import RoomModel from './school/room';
 
 export {
   AccountModel,
@@ -16,4 +20,7 @@ export {
   MessageModel,
   MessageThreadModel,
   NotificationDeviceModel,
+  AnnouncementModel,
+  SchoolModel,
+  RoomModel,
 };

@@ -1,17 +1,16 @@
-import { Router } from 'express';
-
 import search from './search';
 import send from './send';
 import thread from './thread';
 import draft from './draft';
 import list from './list';
+import announcement from './announcement';
 
-const router = Router();
-
-router.use('/search', search);
-router.use('/send', send);
-router.use('/thread', thread);
-router.use('/draft', draft);
-router.use('/list', list);
-
-export default router;
+export default (router, _opts, done) => {
+  router.register(search, { prefix: '/search' });
+  router.register(send, { prefix: '/send' });
+  router.register(thread, { prefix: '/thread' });
+  router.register(draft, { prefix: '/draft' });
+  router.register(list, { prefix: '/list' });
+  router.register(announcement, { prefix: '/announcement' });
+  done();
+};

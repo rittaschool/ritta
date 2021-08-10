@@ -1,4 +1,4 @@
-<img src="https://github.com/rittaschool/rittaschool.github.io/blob/main/static/media/logo.4fc81726.svg" alt="Ritta Logo" height="100">
+<img src="https://ritta.pw/_next/static/images/logo-a972f604000f07609a06d7c9d77bb00c.svg" alt="Ritta Logo" height="100">
 
 Ritta is a system for schools to keep connection between home and school strong.
 
@@ -21,11 +21,18 @@ Looking for our React frontend? It's located in [ritta-react](https://github.com
 We want to create a modern solution for nowday's standards. About 50% of **all** traffic is from mobile devices, and when talking about students, more and more do not have a access to a desktop computer. So, making a fast, secure, responsive and a modern solution for schools to strengthen the connection between home and school.
 Later, a mobile app (probably will be made with [Flutter](https://flutter.dev)) will be also coded after the API and core features are done.
 
+# Stargazers and forkers
+
+### Stargazers
+[![Stargazers repo roster for @rittaschool/ritta-server](https://reporoster.com/stars/dark/notext/rittaschool/ritta-server)](https://github.com/rittaschool/ritta-server/stargazers)
+
+### Forkers
+[![Forkers repo roster for @rittaschool/ritta-server](https://reporoster.com/forks/dark/notext/rittaschool/ritta-server)](https://github.com/rittaschool/ritta-server/network/members)
 # Folder structure
 
 src                 = Source code \
 │   app.js          = App entry point \
-└───api             = Express route controllers for all the endpoints of the app \
+└───api             = Fastify route plugins for all the endpoints of the app \
 └───config          = Environment variables and configuration related stuff \
 └───loaders         = Startup process modules \
 └───models          = Database models \
@@ -34,3 +41,8 @@ src                 = Source code \
 ## Contributing
 
 If you want to contribute, please contact project leader Raikas first on Twitter (@raikasdev), Discord (Raikas#0178) or email [roni@raikas.xyz](mailto:roni@raikas.xyz).
+
+# On the right side?
+
+You can report security vulnerabilities on **huntr.dev**
+[![huntr](https://cdn.huntr.dev/huntr_security_badge_mono.svg)](https://huntr.dev)
