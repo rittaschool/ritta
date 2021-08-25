@@ -4,18 +4,18 @@
 import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
-interface User extends mongoose.Document {
+export interface User extends mongoose.Document {
   username: string;
   password: string;
   created: number;
   secret?: string;
-  mfaBackup?: string;
+  mfaBackup?: string[];
   puavoId?: number;
   firstName: string;
   lastName: string;
   accounts: string[];
   latestLogin: number;
-  lastestPasswordChange: number;
+  latestPasswordChange: number;
   passwordChangeRequired: boolean;
 }
 
@@ -37,7 +37,7 @@ const user = new mongoose.Schema<User>({
     type: String,
   },
   mfaBackup: {
-    type: String,
+    type: [String],
   },
   puavoId: {
     type: Number,
@@ -63,7 +63,7 @@ const user = new mongoose.Schema<User>({
     type: Date,
     default: Date.now,
   },
-  lastestPasswordChange: {
+  latestPasswordChange: {
     type: Date,
     default: Date.now,
   },

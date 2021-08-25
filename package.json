@@ -5,7 +5,7 @@
   "main": "build/index.js",
   "type": "module",
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/.bin/jest --forceExit",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest --forceExit --verbose",
     "dev": "node --experimental-specifier-resolution=node . | pino-pretty",
     "start": "node --experimental-specifier-resolution=node .",
     "build": "tsc",
@@ -25,7 +25,7 @@
   "contributors": [
     {
       "name": "Roni Äikäs",
-      "email": "roni@raikas.xyz",
+      "email": "roni@ritta.fi",
       "url": "http://raikas.xyz/"
     }
   ],

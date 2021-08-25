@@ -4,3 +4,4 @@ data/*
 build/*
 .env
 *.pem
+globalConfig.json

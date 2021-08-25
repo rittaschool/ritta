@@ -1,3 +1,6 @@
+/*
+Ritta Test: Teachers
+*/
 import { beforeAll } from '@jest/globals';
 import mongoose from 'mongoose';
 import { UserService } from '../build/services';

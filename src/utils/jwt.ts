@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import config from '../config';
 import { UserModel } from '../models';
+import crypto from 'crypto';
 
 export const generateJWT = (
   data,
@@ -11,13 +12,18 @@ export const generateJWT = (
     if (expiration === undefined) {
       delete settings.expiresIn;
     }
-    return jwt.sign({ data }, config.jwtSecret, settings, (err, signedJwt) => {
-      if (err) {
-        reject(err);
-        return;
+    return jwt.sign(
+      { data, randomId: crypto.randomBytes(6).toString('hex') },
+      config.jwtSecret,
+      settings,
+      (err, signedJwt) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(signedJwt);
       }
-      resolve(signedJwt);
-    });
+    );
   });
 
 export const validateJWT = (token): Promise<any> =>
@@ -47,7 +53,7 @@ export const validateAuthJWT = async (
   if (!userRecord) {
     throw new Error('Token user not found.');
   }
-  if (data.iat < userRecord.lastestPasswordChange / 1000) {
+  if (data.iat < Math.floor(userRecord.latestPasswordChange / 1000)) {
     throw new Error('The JWT is expired');
   }
   return data;

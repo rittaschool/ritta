@@ -146,9 +146,25 @@ export default class AuthService {
 
     if (
       !authenticator.check(code, totpSecret) &&
-      code !== userRecord.mfaBackup
+      !userRecord.mfaBackup.includes(code)
     ) {
       throw new Error('MFA Code invalid');
+    }
+
+    if (userRecord.mfaBackup.includes(code)) {
+      userRecord.mfaBackup = userRecord.mfaBackup.filter(
+        (backupCode) => backupCode !== code
+      );
+      if (userRecord.mfaBackup.length === 0) {
+        userRecord.mfaBackup = [
+          crypto.randomBytes(6).toString('hex'),
+          crypto.randomBytes(6).toString('hex'),
+          crypto.randomBytes(6).toString('hex'),
+          crypto.randomBytes(6).toString('hex'),
+          crypto.randomBytes(6).toString('hex'),
+          crypto.randomBytes(6).toString('hex'),
+        ];
+      }
     }
 
     userRecord.latestLogin = Date.now();
@@ -203,8 +219,15 @@ export default class AuthService {
       .encode(authenticator.generateSecret())
       .toString()
       .replace(/=/g, '');
-    const backupCode = crypto.randomBytes(4).toString('hex');
-    userRecord.mfaBackup = backupCode;
+    const backupCodes = [
+      crypto.randomBytes(6).toString('hex'),
+      crypto.randomBytes(6).toString('hex'),
+      crypto.randomBytes(6).toString('hex'),
+      crypto.randomBytes(6).toString('hex'),
+      crypto.randomBytes(6).toString('hex'),
+      crypto.randomBytes(6).toString('hex'),
+    ];
+    userRecord.mfaBackup = backupCodes;
     await userRecord.save();
     return {
       secret,
@@ -213,7 +236,7 @@ export default class AuthService {
         `Ritta - ${userRecord.username}`,
         secret
       ),
-      backupCode,
+      backupCodes,
     };
   }
 
@@ -228,7 +251,7 @@ export default class AuthService {
     }
 
     userRecord.secret = encrypt(secret);
-    userRecord.lastestPasswordChange = Date.now();
+    userRecord.latestPasswordChange = Date.now();
     await userRecord.save();
 
     return {
@@ -242,13 +265,16 @@ export default class AuthService {
     if (!userRecord.secret) {
       throw new Error('MFA not enabled');
     }
-    if (!authenticator.check(code, secret) && code !== userRecord.mfaBackup) {
+    if (
+      !authenticator.check(code, secret) &&
+      !userRecord.mfaBackup.includes(code)
+    ) {
       throw new Error('MFA Code invalid');
     }
 
     userRecord.secret = undefined;
     userRecord.mfaBackup = undefined;
-    userRecord.lastestPasswordChange = Date.now();
+    userRecord.latestPasswordChange = Date.now();
     await userRecord.save();
 
     return {

@@ -1,5 +1,6 @@
 import argon2 from 'argon2';
 import { UserModel, AccountModel, TeacherModel, StudentModel } from '../models';
+import { User } from '../models/user/user';
 import { decrypt, encrypt, validateAuthJWT } from '../utils';
 
 export default class UserService {
@@ -7,8 +8,17 @@ export default class UserService {
     username: string,
     firstName: string,
     lastName: string,
-    password: string
-  ): Promise<any> {
+    password: string,
+    returnRecord = false
+  ): Promise<
+    | {
+        username: string;
+        firstName: string;
+        lastName: string;
+        accounts: any[];
+      }
+    | User
+  > {
     const passwordHashed = encrypt(await argon2.hash(password));
 
     const userRecord = await UserModel.create({
@@ -17,7 +27,7 @@ export default class UserService {
       firstName,
       lastName,
     });
-
+    if (returnRecord) return userRecord;
     return {
       username: userRecord.username,
       firstName: userRecord.firstName,
@@ -42,12 +52,17 @@ export default class UserService {
     if (!passwordCorrect && data.type !== 'passwordchange_required') {
       throw new Error('Incorrect password');
     }
-    if (oldPassword === newPassword) {
+    const passwordHashed = await argon2.hash(newPassword);
+    const newPasswordSame = await argon2.verify(
+      decrypt(userRecord.password),
+      newPassword
+    );
+    if (newPasswordSame) {
       throw new Error("New password can't be equal to old one");
     }
     userRecord.passwordChangeRequired = false;
-    userRecord.password = encrypt(await argon2.hash(newPassword));
-    userRecord.lastestPasswordChange = Date.now();
+    userRecord.password = encrypt(passwordHashed);
+    userRecord.latestPasswordChange = Date.now();
     await userRecord.save();
 
     return {
