@@ -638,13 +638,15 @@ export default class MessageService {
     token: string,
     accountId: string
   ): Promise<any> {
-    const data = await validateAuthJWT(token);
-    const userRecord = await UserModel.findById(data.id);
-    if (!userRecord.accounts.includes(accountId)) {
-      throw new Error('User does not own account');
+    if (accountId) {
+      const data = await validateAuthJWT(token);
+      const userRecord = await UserModel.findById(data.id);
+      if (!userRecord.accounts.includes(accountId)) {
+        throw new Error('User does not own account');
+      }
     }
     const account = await AccountModel.findById(accountId);
-    if (!account) {
+    if (!account && accountId) {
       throw new Error('Account not found');
     }
     const announcements = await AnnouncementModel.find({});
@@ -652,6 +654,7 @@ export default class MessageService {
       announcements
         .filter((announcement) => {
           if (announcement.public) return true;
+          if (!account) return false;
           if (
             announcement.school &&
             account.school &&
@@ -698,20 +701,23 @@ export default class MessageService {
     accountId: string,
     announcementId: string
   ): Promise<any> {
-    const data = await validateAuthJWT(token);
-    const userRecord = await UserModel.findById(data.id);
-    if (!userRecord.accounts.includes(accountId)) {
-      throw new Error('User does not own account');
+    if (accountId) {
+      const data = await validateAuthJWT(token);
+      const userRecord = await UserModel.findById(data.id);
+      if (!userRecord.accounts.includes(accountId)) {
+        throw new Error('User does not own account');
+      }
+    }
+    const account = await AccountModel.findById(accountId);
+    if (!account && accountId) {
+      throw new Error('Account not found');
     }
     const announcement = await AnnouncementModel.findById(announcementId);
     if (!announcement) {
       throw new Error('Announcement not found');
     }
-    const account = await AccountModel.findById(accountId);
-    if (!account) {
-      throw new Error('Account not found');
-    }
     if (!announcement.public) {
+      if (!account) throw new Error('Announcement not found');
       // Check if user is a recipient.
       if (announcement.school && announcement.school !== account.school) {
         throw new Error('Announcement not found');

@@ -5,7 +5,7 @@ export default (router, _opts, done) => {
   router.post(
     '/',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(),
     },
     async (req, res) => {
       const user = await UserService.getUser(req.body.jwt);

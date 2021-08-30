@@ -5,7 +5,7 @@ export default (router, _opts, done) => {
   router.put(
     '/',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(),
     },
     async (req, res) => {
       if (!req.body.account_id) {

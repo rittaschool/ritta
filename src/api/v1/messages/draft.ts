@@ -5,7 +5,7 @@ export default (router, _opts, done) => {
   router.post(
     '/',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(),
     },
     async (req, res) => {
       if (!req.body.account_id) {
@@ -29,7 +29,7 @@ export default (router, _opts, done) => {
   router.post(
     '/edit',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(),
     },
     async (req, res) => {
       if (!req.body.account_id) {
@@ -60,7 +60,7 @@ export default (router, _opts, done) => {
   router.post(
     '/publish',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(),
     },
     async (req, res) => {
       if (!req.body.account_id) {
