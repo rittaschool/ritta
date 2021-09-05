@@ -64,7 +64,6 @@
     "@types/pino": "^6.3.8",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
-    "axios": "^0.21.1",
     "commitlint": "^12.1.4",
     "core-js": "^3.14.0",
     "eslint": "^7.29.0",
