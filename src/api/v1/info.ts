@@ -5,11 +5,14 @@ import config from '../../config';
 export default (router, _opts, done) => {
   router.get('/', {}, (req, res) => {
     res.send({
-      school: {
-        name: config.school.name,
-        city: config.school.city,
-        opinsysEnabled: config.opinsys.enabled,
-        opinsysOrganization: config.opinsys.organization,
+      name: config.name,
+      frontUrl: config.frontUrl,
+      opinsys: {
+        enabled: config.opinsys.enabled,
+        organization: config.opinsys.organization,
+      },
+      yubikey: {
+        enabled: config.yubikey.enabled,
       },
     });
   });

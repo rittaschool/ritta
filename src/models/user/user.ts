@@ -11,6 +11,8 @@ export interface User extends mongoose.Document {
   secret?: string;
   mfaBackup?: string[];
   puavoId?: number;
+  yubikeyId?: string;
+  yubiPIN?: string;
   firstName: string;
   lastName: string;
   accounts: string[];
@@ -41,6 +43,12 @@ const user = new mongoose.Schema<User>({
   },
   puavoId: {
     type: Number,
+  },
+  yubikeyId: {
+    type: String,
+  },
+  yubiPIN: {
+    type: String,
   },
   firstName: {
     type: String,

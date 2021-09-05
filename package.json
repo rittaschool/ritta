@@ -52,7 +52,8 @@
     "pino": "^6.11.3",
     "thirty-two": "^1.0.2",
     "ws": "^7.4.6",
-    "xss": "^1.0.8"
+    "xss": "^1.0.8",
+    "yubikey-client": "^0.2.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",

@@ -25,6 +25,10 @@ export default async ({
     max: 3,
     timeWindow: '1 minute',
   });
+  app.addHook('preValidation', (request, reply, done) => {
+    if (!request.body) request.body = {};
+    done();
+  });
   // Return the fastify app
   return app;
 };
