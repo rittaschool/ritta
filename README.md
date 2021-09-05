@@ -1,5 +1,5 @@
 <!-- Hello! Welcome to the sources of the Ritta readme, woo! -->
-<img src="https://ritta.pw/_next/static/images/logo-a972f604000f07609a06d7c9d77bb00c.svg" alt="Ritta Logo" height="100">
+<img src="https://github.com/rittaschool/info/raw/master/Ritta.png" alt="Ritta Logo" height="100">
 
 Ritta is a modern system for schools to keep connection between home and school strong.
 

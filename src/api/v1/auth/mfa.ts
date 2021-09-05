@@ -23,7 +23,7 @@ export default (router, _opts, done) => {
   router.post(
     '/generate',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(),
     },
     async (req, res) => {
       const data = await AuthService.generateMFA(req.body.jwt);
@@ -36,7 +36,7 @@ export default (router, _opts, done) => {
   router.post(
     '/enable',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(),
     },
     async (req, res) => {
       if (!req.body.mfa_secret) {

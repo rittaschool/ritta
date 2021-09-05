@@ -5,14 +5,9 @@ export default (router, _opts, done) => {
   router.post(
     '/',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(true),
     },
     async (req, res) => {
-      if (!req.body.account_id) {
-        return res.status(400).send({
-          message: 'account_id missing',
-        });
-      }
       if (!req.body.announcement_id) {
         return res.status(400).send({
           message: 'announcement_id missing',
@@ -30,14 +25,9 @@ export default (router, _opts, done) => {
   router.post(
     '/list',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(true),
     },
     async (req, res) => {
-      if (!req.body.account_id) {
-        return res.status(400).send({
-          message: 'account_id missing',
-        });
-      }
       const response = await MessageService.getAnnouncements(
         req.body.jwt,
         req.body.account_id
@@ -49,7 +39,7 @@ export default (router, _opts, done) => {
   router.put(
     '/',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(),
     },
     async (req, res) => {
       if (!req.body.account_id) {

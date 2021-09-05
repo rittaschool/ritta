@@ -18,10 +18,11 @@ on:
         # Input has to be provided for the workflow to run
         required: true
 jobs:
-  build:
+  jest:
     runs-on: ubuntu-latest
     env:
       ENCRYPTION_KEY: testkey
+      JWT_SECRET: testkey
     steps:
     - uses: actions/checkout@v2
       with:

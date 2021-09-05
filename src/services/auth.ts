@@ -11,7 +11,7 @@ import { authenticator } from 'otplib';
 import base32 from 'thirty-two';
 import util from 'util';
 import crypto from 'crypto';
-
+import parseyub from '../utils/parseyub';
 export default class AuthService {
   public static async login(username, password): Promise<any> {
     const userRecord = await UserModel.findOne({ username });
@@ -99,6 +99,62 @@ export default class AuthService {
         mfaToken,
       };
     }
+
+    userRecord.latestLogin = Date.now();
+    await userRecord.save();
+
+    if (userRecord.passwordChangeRequired) {
+      const passwordChangeToken = await generateJWT(
+        {
+          type: 'passwordchange_required',
+          id: userRecord._id,
+        },
+        '1h'
+      );
+      return {
+        passwordChangeToken,
+      };
+    }
+
+    const accessToken = await generateJWT(
+      {
+        type: 'access',
+        id: userRecord._id,
+        username: userRecord.username,
+        firstName: userRecord.firstName,
+        lastName: userRecord.lastName,
+        accounts: userRecord.accounts,
+      },
+      '1h'
+    );
+
+    const refreshToken = await generateJWT({
+      type: 'refresh',
+      id: userRecord._id,
+    });
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  public static async yubiAuth(otp, pin) {
+    const data = await parseyub(otp);
+    if (!data.valid) {
+      throw new Error('The OTP is not valid');
+    }
+    if (!data.identity) {
+      throw new Error('Identity missing');
+    }
+    const userRecord = await UserModel.findOne({ yubikeyId: data.identity });
+    if (!userRecord) {
+      throw new Error('No user found');
+    }
+    if (!userRecord.yubiPIN || userRecord.yubiPIN !== pin) {
+      throw new Error('PIN is incorrect');
+    }
+    // Yubikey can skip MFA, as it with a PIN is pretty secure.
 
     userRecord.latestLogin = Date.now();
     await userRecord.save();

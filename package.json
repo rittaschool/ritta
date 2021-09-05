@@ -52,7 +52,8 @@
     "pino": "^6.11.3",
     "thirty-two": "^1.0.2",
     "ws": "^7.4.6",
-    "xss": "^1.0.8"
+    "xss": "^1.0.8",
+    "yubikey-client": "^0.2.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
@@ -63,7 +64,6 @@
     "@types/pino": "^6.3.8",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
-    "axios": "^0.21.1",
     "commitlint": "^12.1.4",
     "core-js": "^3.14.0",
     "eslint": "^7.29.0",

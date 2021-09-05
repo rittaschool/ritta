@@ -5,7 +5,7 @@ export default (router, _opts, done) => {
   router.post(
     '/change',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(),
     },
     async (req, res) => {
       if (!req.body.new_password) {

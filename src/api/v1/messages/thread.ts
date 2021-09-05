@@ -5,7 +5,7 @@ export default (router, _opts, done) => {
   router.post(
     '/',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(),
     },
     async (req, res) => {
       if (!req.body.account_id) {
@@ -29,7 +29,7 @@ export default (router, _opts, done) => {
   router.post(
     '/reply',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(),
     },
     async (req, res) => {
       if (!req.body.account_id) {
@@ -59,7 +59,7 @@ export default (router, _opts, done) => {
   router.post(
     '/archive',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(),
     },
     async (req, res) => {
       if (!req.body.account_id) {
@@ -83,7 +83,7 @@ export default (router, _opts, done) => {
   router.post(
     '/unarchive',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(),
     },
     async (req, res) => {
       if (!req.body.account_id) {
@@ -107,7 +107,7 @@ export default (router, _opts, done) => {
   router.post(
     '/markread',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(),
     },
     async (req, res) => {
       if (!req.body.account_id) {
@@ -131,7 +131,7 @@ export default (router, _opts, done) => {
   router.post(
     '/markunread',
     {
-      preHandler: checkJWT,
+      preHandler: checkJWT(),
     },
     async (req, res) => {
       if (!req.body.account_id) {
