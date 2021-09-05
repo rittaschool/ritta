@@ -1,8 +1,6 @@
 import yub from 'yubikey-client';
 import config from '../config';
 
-yub.init(config.yubikey.id, config.yubikey.secret);
-
 type YubiResponse = {
   t: string;
   otp: string;
@@ -16,10 +14,13 @@ type YubiResponse = {
   valid: boolean;
 };
 
-export default (otp): Promise<YubiResponse> =>
-  new Promise((resolve, reject) => {
+export default (otp): Promise<YubiResponse> => {
+  yub.init(config.yubikey.id, config.yubikey.secret);
+
+  return new Promise((resolve, reject) => {
     yub.verify(otp, (err, data) => {
       if (err) reject(err);
       resolve(data);
     });
   });
+};
