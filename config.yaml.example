@@ -1,0 +1,2 @@
+database:
+    uri: "mongodb://<insert here a mongoose uri>"
