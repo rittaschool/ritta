@@ -20,25 +20,26 @@ Also visit our [webpage!](https://ritta.fi/jarjestelma)
 We want to create a modern solution for nowday's standards. About 50% of **all** traffic is from mobile devices, and when talking about students, more and more do not have a access to a desktop computer. So, making a fast, secure, responsive and a modern solution for schools to strengthen the connection between home and school.
 Later, a mobile app (probably will be made with [Flutter](https://flutter.dev)) will be also coded after the API and core features are done.
 
-# Stargazers 
+# Stargazers
 
 [![Stargazers repo roster for @rittaschool/ritta-server](https://reporoster.com/stars/dark/notext/rittaschool/ritta-server)](https://github.com/rittaschool/ritta-server/stargazers)
 
 # Folder structure
 
-src                 = Source code \
-│   app.js          = App entry point \
-└───api             = Fastify route plugins for all the endpoints of the app \
-└───config          = Environment variables and configuration related stuff \
-└───loaders         = Startup process modules \
-└───models          = Database models \
-└───services        = All the business logic \
+src = Source code \
+│ app.js = App entry point \
+└───api = Fastify route plugins for all the endpoints of the app \
+└───config = Environment variables and configuration related stuff \
+└───loaders = Startup process modules \
+└───models = Database models \
+└───services = All the business logic \
 
 ## What/how?
 
 We use TypeScript for programming, NodeJS for the runtime, MongoDB (with mongoose) as the database and Fastify as the web server. We are planning to add GraphQL support soon.
 We also do testing using Jest, as it has some level of support for ES6 TypeScript.
 We highly recommend to using nginx or other something else on top of Ritta as a reverse proxy.
+
 ## Contributing
 
 If you want to contribute, please contact project leader Raikas first on Twitter (@raikasdev), Discord (Raikas#0178) or email [roni@raikas.xyz](mailto:roni@raikas.xyz).
