@@ -1,8 +1,14 @@
 {
   "name": "ritta-server",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Ritta is a system for schools to keep connection between home and school strong.",
+  "contributors": [
+    {
+      "email": "me@midka.dev",
+      "name": "Midka",
+      "url": "https://midka.dev"
+    }
+  ],
   "private": true,
   "license": "Apache License 2.0",
   "scripts": {
