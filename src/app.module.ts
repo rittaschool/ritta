@@ -10,13 +10,13 @@ import configuration from './config/configuration';
   imports: [
     ConfigModule.forRoot({
       load: [configuration],
+      isGlobal: true,
     }),
     MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        uri: configService.get('database.uri'),
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('database.uri'),
       }),
+      inject: [ConfigService],
     }),
     UsersModule,
   ],
