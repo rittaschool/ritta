@@ -1,12 +1,12 @@
 import * as argon2 from 'argon2';
 import { Injectable } from '@nestjs/common';
-import { Cryptor } from 'src/utils/encryption';
+import { Cryptor } from '../utils/encryption';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserDocument } from './schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { RandomString } from 'src/utils/randomString';
+import { RandomString } from '../utils/randomString';
 
 export type FilteredUser = Omit<
   User,
