@@ -1,2 +1,6 @@
 database:
     uri: "mongodb://<insert here a mongoose uri>"
+
+security:
+    # KEEP THE ENCRYPTION SECRET A LONG STRING AND DIFFERENT THAN ANY OTHER SECRET YOU MAY HAVE
+    encryption_secret: "<insert here a secret>"

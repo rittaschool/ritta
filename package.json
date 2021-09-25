@@ -33,6 +33,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/mongoose": "^8.0.1",
     "@nestjs/platform-express": "^8.0.0",
+    "argon2": "^0.28.2",
     "js-yaml": "^4.1.0",
     "mongoose": "^6.0.7",
     "reflect-metadata": "^0.1.13",
