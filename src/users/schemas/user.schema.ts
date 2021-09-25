@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import * as mongoose from 'mongoose';
 
 export type UserDocument = User & Document;
 
@@ -32,7 +33,11 @@ export class User {
   @Prop()
   yubiPIN?: string;
 
-  @Prop({ required: true, default: [], type: [String] })
+  @Prop({
+    required: true,
+    default: [],
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Account' }],
+  })
   accounts: string[];
 
   @Prop()
