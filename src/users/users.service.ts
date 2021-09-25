@@ -81,11 +81,11 @@ export class UsersService {
     return filteredUser;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     return `This action removes a #${id} user`;
   }
 
