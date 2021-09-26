@@ -4,10 +4,15 @@ import { Document } from 'mongoose';
 export type AccountDocument = Account & Document;
 
 export enum AccountType {
-  STUDENT,
-  TEACHER,
-  PARENT,
-  ADMIN,
+  GUEST = 0,
+  STUDENT = 1,
+  PARENT = 2,
+  TEACHER = 3,
+  PRINCIPAL = 4,
+  SCHOOL_SECRETARY = 5,
+  STUDY_INSTRUCTOR = 6,
+  STAFF = 7,
+  ADMIN = 100,
 }
 
 @Schema()
