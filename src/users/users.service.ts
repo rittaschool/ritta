@@ -27,7 +27,7 @@ export class UsersService {
     firstName,
     lastName,
   }: CreateUserDto): Promise<FilteredUser> {
-    const hashed = this.cryptor.encrypt(await argon2.hash(password));
+    const hashed = this.cryptor.encrypt(await argon2.hash(password || ''));
 
     const record = await this.userModel.create({
       password: hashed,
