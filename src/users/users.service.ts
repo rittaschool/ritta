@@ -23,7 +23,6 @@ export class UsersService {
 
   async create({
     password,
-    username,
     firstName,
     lastName,
   }: CreateUserDto): Promise<FilteredUser> {
@@ -32,7 +31,7 @@ export class UsersService {
     const record = await this.userModel.create({
       password: hashed,
       secret: this.randomString.generate(),
-      username,
+      username: firstName.toLowerCase() + '.' + lastName.toLowerCase(),
       firstName,
       lastName,
     });
@@ -62,21 +61,8 @@ export class UsersService {
 
   async findOne(id: string, filter = true) {
     const user = await this.userModel.findById(id).exec();
-    const filteredUser = user.toObject();
 
-    if (filter) {
-      delete filteredUser.password;
-      delete filteredUser.secret;
-      delete filteredUser.mfaBackup;
-      delete filteredUser.mfaSecret;
-      delete filteredUser.yubiPIN;
-      delete filteredUser.yubikeyId;
-      delete filteredUser.__v;
-
-      filteredUser['id'] = filteredUser['_id'];
-
-      delete filteredUser._id;
-    }
+    const filteredUser = await this.filterUser(user);
 
     return filteredUser;
   }
