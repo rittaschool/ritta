@@ -26,7 +26,7 @@ export class UsersService {
     username,
     firstName,
     lastName,
-  }: CreateUserDto): Promise<User> {
+  }: CreateUserDto): Promise<FilteredUser> {
     const hashed = this.cryptor.encrypt(await argon2.hash(password));
 
     const record = await this.userModel.create({
@@ -37,9 +37,9 @@ export class UsersService {
       lastName,
     });
 
-    record['password'] = 'REDACTED';
+    const user = await this.filterUser(record);
 
-    return record;
+    return user;
   }
 
   async findAll(filter = true): Promise<FilteredUser[] | User[]> {

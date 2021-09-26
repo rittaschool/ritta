@@ -18,7 +18,7 @@ export class Account {
   @Prop({ required: true })
   lastName: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, enum: AccountType })
   type: AccountType;
 
   @Prop()
