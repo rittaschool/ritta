@@ -4,6 +4,11 @@
   "description": "Ritta is a system for schools to keep connection between home and school strong.",
   "contributors": [
     {
+      "email": "roni@ritta.fi",
+      "name": "Roni",
+      "url": "https://github.com/raikasdev"
+    },
+    {
       "email": "me@midka.dev",
       "name": "Midka",
       "url": "https://midka.dev"

@@ -8,8 +8,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const PORT = 3000;
-
+  const PORT = process.env.PORT || 3000;
+  const IP = process.env.RITTA_IP || '0.0.0.0';
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
@@ -33,7 +33,7 @@ async function bootstrap() {
   });
 
   // Start the app
-  await app.listen(PORT, '0.0.0.0', () => {
+  await app.listen(PORT, IP, () => {
     console.log(`Listening on http://${'localhost'}:${PORT}`);
   });
 }
