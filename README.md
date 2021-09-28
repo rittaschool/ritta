@@ -4,16 +4,16 @@
 Ritta is a modern system for schools to keep connection between home and school strong.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![GitHub last commit](https://img.shields.io/github/last-commit/rittaschool/ritta.svg?style=flat)]()
-[![Twitter Follow](https://img.shields.io/twitter/follow/rittasoft.svg?style=social)](https://twitter.com/rittasoft)
+[![GitHub last commit](https://img.shields.io/github/last-commit/rittaschool/ritta-server.svg?style=flat)]()
+[![Twitter Follow](https://img.shields.io/twitter/follow/rittaschool.svg?style=social)](https://twitter.com/rittasoft)
 [![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/) \
 Also visit our [webpage!](https://ritta.fi/jarjestelma)
 
 ## Branches
 
 > "release" - Mainly the current main code that has been proven to be pretty stable \
-> "development" - Development branch of @raikasdev, latest indev code.
-> "v2" - Abandoned protype for a version 2
+> "development" - Development branch of @raikasdev, latest indev code. \
+> "nest" - Current development branch, converting all code into NestJS. Midka & Roni
 
 ## Our goals
 
