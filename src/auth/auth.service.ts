@@ -5,7 +5,7 @@ import { UsersService } from 'src/users/users.service';
 import { User } from '../users/schemas/user.schema';
 import { LoginUserInput } from './dto/login-input.dto';
 import { TokenPayload, TokenResponse, Tokens } from './types';
-import * as argon2 from "argon2"
+import * as argon2 from 'argon2';
 
 @Injectable()
 export class AuthService {
@@ -15,14 +15,15 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validate({username, password}: LoginUserInput): Promise<User> {
-    const user = await this.usersService.findOne(username, false) as User
+  async validate({ username, password }: LoginUserInput): Promise<User> {
+    const user = (await this.usersService.findOne(username, false)) as User;
 
-    if (!user) throw new UnauthorizedException('Invalid credentials')
+    if (!user) throw new UnauthorizedException('Invalid credentials');
 
-    if (!(await argon2.verify(user.password, password || ''))) throw new UnauthorizedException('Invalid credentials')
+    if (!(await argon2.verify(user.password, password || '')))
+      throw new UnauthorizedException('Invalid credentials');
 
-    return user
+    return user;
   }
 
   async login(user: User): Promise<TokenResponse> {

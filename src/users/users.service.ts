@@ -8,9 +8,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { RandomString } from '../utils/randomString';
 
-export interface FilteredUser extends Omit<User,
-'password' | 'secret' | 'mfaBackup' | 'mfaSecret' | 'yubiPIN' | 'yubikeyId'> {
-  id: string
+export interface FilteredUser
+  extends Omit<
+    User,
+    'password' | 'secret' | 'mfaBackup' | 'mfaSecret' | 'yubiPIN' | 'yubikeyId'
+  > {
+  id: string;
 }
 
 @Injectable()
@@ -26,7 +29,9 @@ export class UsersService {
     firstName,
     lastName,
   }: CreateUserDto): Promise<FilteredUser> {
-    const hashed = this.cryptor.encrypt(await argon2.hash(password || '', {hashLength: 20}));
+    const hashed = this.cryptor.encrypt(
+      await argon2.hash(password || '', { hashLength: 20 }),
+    );
 
     const record = await this.userModel.create({
       password: hashed,
@@ -59,22 +64,25 @@ export class UsersService {
     return userDocs.map((user) => user.toObject());
   }
 
-  async findOne(identifier: string, filter = true): Promise<User | FilteredUser> {
+  async findOne(
+    identifier: string,
+    filter = true,
+  ): Promise<User | FilteredUser> {
     let user = await this.userModel.findOne({
-        $or: [
-          {
-            _id: identifier,
-          },
-          {
-            username: identifier,
-          }
-        ]
-    })
+      $or: [
+        {
+          _id: identifier,
+        },
+        {
+          username: identifier,
+        },
+      ],
+    });
 
     if (filter) {
       return await this.filterUser(user);
     } else {
-      return user.toObject() as User
+      return user.toObject() as User;
     }
   }
 
@@ -102,6 +110,6 @@ export class UsersService {
 
     delete filteredUser._id;
 
-    return filteredUser as unknown as Promise<FilteredUser> & {id: string};
+    return filteredUser as unknown as Promise<FilteredUser> & { id: string };
   }
 }

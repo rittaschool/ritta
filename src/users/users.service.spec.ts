@@ -52,8 +52,8 @@ describe('UsersService', () => {
               return {
                 exec: (id: string) => {
                   return {
-                    toObject: () => users.filter((user) => user._id === id)[0]
-                  }
+                    toObject: () => users.filter((user) => user._id === id)[0],
+                  };
                 },
               };
             },
@@ -118,14 +118,17 @@ describe('UsersService', () => {
       passwordChangeRequired: true,
       secret: '123v33',
       username: 'midka.developer',
-      id: '122'
-    }
+      id: '122',
+    };
 
-    const filteredUser = await service.filterUser(({...user, toObject: () => user} as any)) as unknown as User
+    const filteredUser = (await service.filterUser({
+      ...user,
+      toObject: () => user,
+    } as any)) as unknown as User;
 
-    expect(filteredUser.password).toBe(undefined)
-    expect(filteredUser.secret).toBe(undefined)
-    expect(filteredUser.mfaBackup).toBe(undefined)
-    expect(filteredUser.mfaSecret).toBe(undefined)
-  })
+    expect(filteredUser.password).toBe(undefined);
+    expect(filteredUser.secret).toBe(undefined);
+    expect(filteredUser.mfaBackup).toBe(undefined);
+    expect(filteredUser.mfaSecret).toBe(undefined);
+  });
 });

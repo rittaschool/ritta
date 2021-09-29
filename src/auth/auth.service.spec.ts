@@ -39,11 +39,11 @@ describe('AuthService', () => {
         {
           provide: JwtService,
           useValue: {
-            signAsync: async(payload: any, options: JwtSignOptions) => {
-              return `signed||${payload}||${options.secret}||${options.expiresIn}`
-            }
-          }
-        }
+            signAsync: async (payload: any, options: JwtSignOptions) => {
+              return `signed||${payload}||${options.secret}||${options.expiresIn}`;
+            },
+          },
+        },
       ],
     }).compile();
 
@@ -55,7 +55,8 @@ describe('AuthService', () => {
       latestPasswordChange: new Date(-10000),
       passwordChangeRequired: false,
       username: 'Midka',
-      password: '$argon2i$v=19$m=16,t=2,p=1$elpoYTZtbms5VlREaUZzTw$Pz+UVfrFcvchYr/EM2gO+LQrBWc',
+      password:
+        '$argon2i$v=19$m=16,t=2,p=1$elpoYTZtbms5VlREaUZzTw$Pz+UVfrFcvchYr/EM2gO+LQrBWc',
       secret: '12r4jig0pe',
       id: '122fn',
     };
@@ -73,10 +74,13 @@ describe('AuthService', () => {
   });
 
   it('should validate the user', async () => {
-    const validatedUser = await service.validate({username: 'midka.developer', password: 'hellowhowsitgoinglolthisishashedbyargon2'});
+    const validatedUser = await service.validate({
+      username: 'midka.developer',
+      password: 'hellowhowsitgoinglolthisishashedbyargon2',
+    });
 
-    expect(validatedUser.username).toEqual(mockUser.username)
-  })
+    expect(validatedUser.username).toEqual(mockUser.username);
+  });
 });
 
-const jwtRegex = /signed\|\|.*?\|\|.*?\|\|.*/
+const jwtRegex = /signed\|\|.*?\|\|.*?\|\|.*/;

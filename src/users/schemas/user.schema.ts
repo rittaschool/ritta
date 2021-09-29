@@ -1,14 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
-import { v4 } from "uuid"
+import { v4 } from 'uuid';
 
 export type UserDocument = User & Document;
 
 @Schema({ timestamps: true })
 export class User {
-  @Prop({required: true, default: v4(), unique: true})
-  id: string
+  @Prop({ required: true, default: v4(), unique: true })
+  id: string;
 
   @Prop({ required: true })
   firstName: string;
