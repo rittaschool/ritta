@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import * as mongoose from 'mongoose';
 
 export type AccountDocument = Account & Document;
 
@@ -26,7 +27,9 @@ export class Account {
   @Prop({ required: true, enum: AccountType })
   type: AccountType;
 
-  @Prop()
+  @Prop({
+    type: { type: mongoose.Schema.Types.ObjectId, ref: 'School' },
+  })
   school?: string;
 }
 

@@ -1,16 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import crypto from 'crypto';
 
 @Injectable()
 export class RandomString {
   generate(length = 32): string {
-    let result = '';
-    const characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-
-    return result;
+    return length % 2 === 0
+      ? crypto.randomBytes(length / 2).toString('hex')
+      : crypto
+          .randomBytes(Math.floor(length / 2) + 1)
+          .toString('hex')
+          .slice(0, -1);
   }
 }
