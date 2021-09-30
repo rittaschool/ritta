@@ -1,5 +1,5 @@
 import * as argon2 from 'argon2';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Cryptor } from '../utils/encryption';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -8,6 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { RandomString } from '../utils/randomString';
 
+// Omit removes some properties from User interface
 export interface FilteredUser
   extends Omit<
     User,
@@ -18,6 +19,7 @@ export interface FilteredUser
 
 @Injectable()
 export class UsersService {
+  // Inject our depedencies
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     private cryptor: Cryptor,
@@ -28,11 +30,21 @@ export class UsersService {
     password,
     firstName,
     lastName,
-  }: CreateUserDto): Promise<FilteredUser> {
+  }: CreateUserDto): Promise<User> {
+    // try-catch makes sure that it doesnt throw error for not finding user
+    let possibleUser: User;
+    try {
+      possibleUser = await this.findOne(`${firstName}.${lastName}`.toLowerCase())
+    } catch (error) {}
+    
+    if (possibleUser) throw new BadRequestException('User already exists!')
+
+    // Hash and encryp tthe password
     const hashed = this.cryptor.encrypt(
       await argon2.hash(password || '', { hashLength: 20 }),
     );
 
+    // Save user in database
     const record = await this.userModel.create({
       password: hashed,
       secret: this.randomString.generate(),
@@ -41,57 +53,47 @@ export class UsersService {
       lastName,
     });
 
-    const user = await this.filterUser(record);
-
-    return user;
+    // Return the object of the user
+    return record.toObject();
   }
 
-  async findAll(filter = true): Promise<FilteredUser[] | User[]> {
+  async findAll(): Promise<User[]> {
     const userDocs = await this.userModel.find().exec();
-
-    if (filter) {
-      const users: FilteredUser[] = [];
-
-      userDocs.map(async (user) => {
-        const filUser = await this.filterUser(user);
-
-        users.push(filUser);
-      });
-
-      return users;
-    }
 
     return userDocs.map((user) => user.toObject());
   }
 
   async findOne(
     identifier: string,
-    filter = true,
-  ): Promise<User | FilteredUser> {
-    let user = await this.userModel.findOne({
-      $or: [
-        {
-          _id: identifier,
-        },
-        {
-          username: identifier,
-        },
-      ],
-    });
+  ): Promise<User> {
+    try {
+      const user = await this.userModel.findOne({
+        $or: [
+          {
+            username: identifier,
+          },
+          {
+            id: identifier,
+          }
+        ],
+      })
 
-    if (filter) {
-      return await this.filterUser(user);
-    } else {
-      return user.toObject() as User;
+      return user.toObject()
+    } catch (error) {
+      throw new Error('User not found!')
     }
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const updatedUser = await this.userModel.findOneAndUpdate({id}, updateUserDto)
+    
+    return updatedUser
   }
 
-  async remove(id: string) {
-    return `This action removes a #${id} user`;
+  async remove(id: string): Promise<User> {
+    const removedUser = await this.userModel.remove({ id })
+
+    return removedUser
   }
 
   async filterUser(user: UserDocument): Promise<FilteredUser> {
@@ -110,6 +112,6 @@ export class UsersService {
 
     delete filteredUser._id;
 
-    return filteredUser as unknown as Promise<FilteredUser> & { id: string };
+    return filteredUser as unknown as Promise<FilteredUser>
   }
 }

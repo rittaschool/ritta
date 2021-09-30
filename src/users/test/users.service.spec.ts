@@ -1,9 +1,11 @@
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import { RandomString } from '../utils/randomString';
-import { Cryptor } from '../utils/encryption';
-import { User, UserDocument } from './schemas/user.schema';
-import { FilteredUser, UsersService } from './users.service';
+import { RandomString } from '../../utils/randomString';
+import { Cryptor } from '../../utils/encryption';
+import { User, UserDocument } from '../schemas/user.schema';
+import { FilteredUser, UsersService } from '../users.service';
+import { userStub } from './stubs/user.stub';
+import { userDocStub } from './stubs/user-document.stub';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -19,17 +21,9 @@ describe('UsersService', () => {
           useValue: {
             create: (options: Partial<User>) => {
               const newUser: Partial<UserDocument> = {
-                accounts: [],
-                latestPasswordChange: new Date(),
-                firstName: '',
-                lastName: '',
-                password: '',
-                passwordChangeRequired: true,
-                secret: '',
-                username: '',
-                _id: 'jdpoFW+3JFOMN',
-                __v: '0',
                 ...options,
+                ...userStub(),
+                latestLogin: new Date(-10000)
               };
 
               users.push(newUser);
@@ -57,6 +51,7 @@ describe('UsersService', () => {
                 },
               };
             },
+            findOne: jest.fn().mockResolvedValue(userDocStub()),
           },
         },
         {
@@ -71,7 +66,7 @@ describe('UsersService', () => {
         {
           provide: RandomString,
           useValue: {
-            generate: (_length: number) => 'heresareallylongandrandomstring',
+            generate: jest.fn().mockReturnValue(userStub().secret)
           },
         },
       ],
@@ -86,14 +81,13 @@ describe('UsersService', () => {
 
   it('should create an user', async () => {
     const user = await service.create({
-      password: '12345678',
-      firstName: 'Midka',
-      lastName: 'Developer',
+      password: 'test1234567890',
+      firstName: 'Test',
+      lastName: 'Testing',
     });
 
     expect(user).toBeDefined();
-    expect(user.username).toBe('midka.developer');
-    expect((user as any).password).toBe(undefined);
+    expect(user).toEqual(userStub())
   });
 
   it('should list all users', async () => {
@@ -103,9 +97,9 @@ describe('UsersService', () => {
   });
 
   it('should return my user with id', async () => {
-    const user = await service.findOne((users[0] as any)._id);
+    const user = await service.findOne(userStub().id);
 
-    expect(user).toEqual(users[0]);
+    expect(user).toEqual(userStub());
   });
 
   it('should filter the user', async () => {
@@ -113,7 +107,7 @@ describe('UsersService', () => {
       accounts: [],
       firstName: 'Midka',
       lastName: 'Developer',
-      latestPasswordChange: new Date(),
+      latestPasswordChange: new Date(-10000),
       password: '12',
       passwordChangeRequired: true,
       secret: '123v33',

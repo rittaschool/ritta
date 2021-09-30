@@ -1,4 +1,4 @@
-import { VersioningType } from '@nestjs/common';
+import { VersioningType, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -31,6 +31,9 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, swaggerDocument, {
     customSiteTitle: 'Ritta API - Documentation',
   });
+
+  // Validation
+  app.useGlobalPipes(new ValidationPipe())
 
   // Start the app
   await app.listen(PORT, IP, () => {

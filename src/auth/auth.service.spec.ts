@@ -4,14 +4,34 @@ import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { User } from '../users/schemas/user.schema';
 import { AuthService } from './auth.service';
 import { Tokens } from './types';
+import { UsersService } from '../users/users.service';
 
 describe('AuthService', () => {
   let service: AuthService;
   let mockUser: User;
 
   beforeEach(async () => {
+    mockUser = {
+      accounts: [],
+      firstName: 'Midka',
+      lastName: 'Developer',
+      latestPasswordChange: new Date(-10000),
+      passwordChangeRequired: false,
+      username: 'Midka',
+      password:
+        '$argon2i$v=19$m=16,t=2,p=1$elpoYTZtbms5VlREaUZzTw$Pz+UVfrFcvchYr/EM2gO+LQrBWc',
+      secret: '12r4jig0pe',
+      id: '122fn',
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
+        {
+          provide: UsersService,
+          useValue: {
+            findOne: jest.fn().mockReturnValue(mockUser)
+          }
+        },
         AuthService,
         {
           provide: ConfigService,
@@ -39,27 +59,13 @@ describe('AuthService', () => {
         {
           provide: JwtService,
           useValue: {
-            signAsync: async (payload: any, options: JwtSignOptions) => {
-              return `signed||${payload}||${options.secret}||${options.expiresIn}`;
-            },
+            signAsync: jest.fn().mockReturnValue('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
           },
         },
       ],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
-    mockUser = {
-      accounts: [],
-      firstName: 'Midka',
-      lastName: 'Developer',
-      latestPasswordChange: new Date(-10000),
-      passwordChangeRequired: false,
-      username: 'Midka',
-      password:
-        '$argon2i$v=19$m=16,t=2,p=1$elpoYTZtbms5VlREaUZzTw$Pz+UVfrFcvchYr/EM2gO+LQrBWc',
-      secret: '12r4jig0pe',
-      id: '122fn',
-    };
   });
 
   it('should be defined', () => {
@@ -83,4 +89,4 @@ describe('AuthService', () => {
   });
 });
 
-const jwtRegex = /signed\|\|.*?\|\|.*?\|\|.*/;
+const jwtRegex = /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/;
