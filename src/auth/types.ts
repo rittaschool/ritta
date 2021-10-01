@@ -1,3 +1,5 @@
+import { OpinsysOauth } from "./oauth2/opinsys.provider";
+
 export interface TokenResponse {
   accessToken: string;
   refreshToken: string;
@@ -17,4 +19,16 @@ export interface Tokens {
     secret: string;
     expiresIn: string;
   };
+}
+
+export interface SocialUser {
+  firstName: string,
+  lastName: string,
+  id: string,
+  provider: Provider
+}
+
+// Here "puavoId" because thats the field opinsys is going to be using
+export enum Provider {
+  OPINSYS = "puavoId"
 }
