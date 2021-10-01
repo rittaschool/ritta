@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { FilteredUser, UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -21,8 +21,14 @@ export class UsersController {
   }
 
   @Get()
-  async findAll() {
-    return this.usersService.findAll();
+  async findAll(): Promise<FilteredUser[]> {
+    const filteredUsers: FilteredUser[] = [];
+
+    (await this.usersService.findAll()).forEach(async (user) => {
+      filteredUsers.push(await this.usersService.filterUser(user))
+    });
+
+    return filteredUsers;
   }
 
   @Get(':id')

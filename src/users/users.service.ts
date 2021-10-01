@@ -96,8 +96,8 @@ export class UsersService {
     return removedUser
   }
 
-  async filterUser(user: UserDocument): Promise<FilteredUser> {
-    const filteredUser = user.toObject();
+  async filterUser(user: User): Promise<FilteredUser> {
+    const filteredUser = user
 
     delete filteredUser.password;
     delete filteredUser.secret;
@@ -105,12 +105,11 @@ export class UsersService {
     delete filteredUser.mfaSecret;
     delete filteredUser.yubiPIN;
     delete filteredUser.yubikeyId;
-    delete filteredUser.__v;
     delete filteredUser.id;
+    delete (filteredUser as any)._id;
+    delete (filteredUser as any).__v;
 
     filteredUser['id'] = filteredUser['_id'];
-
-    delete filteredUser._id;
 
     return filteredUser as unknown as Promise<FilteredUser>
   }

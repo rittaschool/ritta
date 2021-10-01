@@ -53,8 +53,12 @@ export class User {
   @Prop({ required: true, default: Date.now() })
   latestPasswordChange: Date;
 
+  @Prop({required: true, default: true})
+  firstLogin: boolean
+
   @Prop({ required: true, default: true })
   passwordChangeRequired: boolean;
+
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
