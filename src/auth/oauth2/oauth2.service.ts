@@ -12,7 +12,7 @@ export class Oauth2Service {
                 return this.opinsysOauth.getAuthorizationUri();
             }
             default: 
-                throw new Error('Something went wrong')
+                throw new Error('Social Provider not found!')
         }
     }
 
