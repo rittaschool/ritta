@@ -16,12 +16,12 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async createUser(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.filterUser(await this.usersService.create(createUserDto));
   }
 
   @Get()
-  async findAll(): Promise<FilteredUser[]> {
+  async getUsers(): Promise<FilteredUser[]> {
     const filteredUsers: FilteredUser[] = [];
 
     (await this.usersService.findAll()).forEach(async (user) => {
@@ -32,8 +32,8 @@ export class UsersController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+  async getUser(@Param('id') id: string) {
+    return this.usersService.filterUser(await this.usersService.findOne(id));
   }
 
   @Patch(':id')

@@ -1,7 +1,8 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { v4 } from 'uuid';
+import { Account } from "./account.schema"
 
 export type UserDocument = User & Document;
 
@@ -16,8 +17,8 @@ export class User {
   @Prop({ required: true })
   lastName: string;
 
-  @Prop({ required: true, unique: true, index: true })
-  username: string;
+  @Prop({ required: false, unique: true, index: true })
+  username?: string;
 
   @Prop({ required: true })
   password: string;
@@ -25,27 +26,24 @@ export class User {
   @Prop({ required: true })
   secret: string;
 
-  @Prop()
-  mfaSecret?: string;
+  @Prop(raw({
+    backupCodes: { type: [String] },
+    secret: { type: String }
+  }))
+  mfa?: Record<string, any>
 
-  @Prop([String])
-  mfaBackup?: string[];
-
-  @Prop()
-  puavoId?: string;
-
-  @Prop()
-  yubikeyId?: string;
-
-  @Prop()
-  yubiPIN?: string;
+  @Prop(raw({
+    id: { type: String },
+    pin: { type: String } 
+  }))
+  yubikey: Record<string, any>
 
   @Prop({
     required: true,
     default: [],
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Account' }],
   })
-  accounts: string[];
+  accounts: Account[];
 
   @Prop()
   latestLogin?: Date;
@@ -54,11 +52,10 @@ export class User {
   latestPasswordChange: Date;
 
   @Prop({required: true, default: true})
-  firstLogin: boolean
+  isFirstLogin: boolean
 
   @Prop({ required: true, default: true })
   passwordChangeRequired: boolean;
-
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

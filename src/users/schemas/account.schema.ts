@@ -1,6 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
+import { School } from '../../schools/schemas/school.schema';
+import { Student } from './student.schema';
+import { Teacher } from './teacher.schema';
+import { Parent } from './parent.schema';
 
 export type AccountDocument = Account & Document;
 
@@ -18,19 +22,28 @@ export enum AccountType {
 
 @Schema()
 export class Account {
-  @Prop({ required: true })
-  firstName: string;
-
-  @Prop({ required: true })
-  lastName: string;
-
   @Prop({ required: true, enum: AccountType })
   type: AccountType;
 
   @Prop({
     type: { type: mongoose.Schema.Types.ObjectId, ref: 'School' },
   })
-  school?: string;
+  school?: School;
+
+  @Prop({
+    type: { type: mongoose.Schema.Types.ObjectId, ref: 'Student' }
+  })
+  student?: Student
+
+  @Prop({
+    type: { type: mongoose.Schema.Types.ObjectId, ref: 'Teacher' }
+  })
+  teacher?: Teacher
+
+  @Prop({
+    type: { type: mongoose.Schema.Types.ObjectId, ref: 'Parent' }
+  })
+  parent?: Parent
 }
 
 export const AccountSchema = SchemaFactory.createForClass(Account);

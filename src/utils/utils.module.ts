@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { Cryptor } from './encryption';
+import { Cryptor } from './encryption.service';
 import { RandomString } from './randomString';
 
 @Module({

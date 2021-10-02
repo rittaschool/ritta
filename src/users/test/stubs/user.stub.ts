@@ -27,7 +27,7 @@ export const filteredUserStub = (): FilteredUser => {
     latestPasswordChange: new Date(-100000),
     passwordChangeRequired: true,
     username: 'test.testing',
-    latestLogin: new Date(),
-    firstLogin: true
+    latestLogin: new Date(-10000),
+    firstLogin: false
   }
 }

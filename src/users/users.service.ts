@@ -1,6 +1,6 @@
 import * as argon2 from 'argon2';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Cryptor } from '../utils/encryption';
+import { Cryptor } from '../utils/encryption.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserDocument } from './schemas/user.schema';
@@ -105,11 +105,13 @@ export class UsersService {
     delete filteredUser.mfaSecret;
     delete filteredUser.yubiPIN;
     delete filteredUser.yubikeyId;
-    delete filteredUser.id;
-    delete (filteredUser as any)._id;
     delete (filteredUser as any).__v;
-
-    filteredUser['id'] = filteredUser['_id'];
+    
+    if (filteredUser['_id']) {
+      delete filteredUser.id;
+      filteredUser['id'] = filteredUser['_id']
+      delete (filteredUser as any)._id;
+    } 
 
     return filteredUser as unknown as Promise<FilteredUser>
   }

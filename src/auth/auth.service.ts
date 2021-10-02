@@ -6,6 +6,7 @@ import { User } from '../users/schemas/user.schema';
 import { LoginUserInput } from './dto/login-input.dto';
 import { TokenPayload, TokenResponse, Tokens } from './types';
 import * as argon2 from 'argon2';
+import { Cryptor } from '../utils/encryption.service';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +14,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
+    private readonly cryptor: Cryptor,
   ) {}
 
   async validate({ username, password }: LoginUserInput): Promise<User> {
@@ -20,7 +22,9 @@ export class AuthService {
 
     if (!user) throw new UnauthorizedException('Invalid credentials');
 
-    if (!(await argon2.verify(user.password, password || '')))
+    const userPassword = this.cryptor.decrypt(user.password)
+
+    if (!(await argon2.verify(userPassword, password || '')))
       throw new UnauthorizedException('Invalid credentials');
 
     return user;
