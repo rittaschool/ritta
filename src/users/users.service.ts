@@ -8,6 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { RandomString } from '../utils/randomString';
 import { Provider } from '../auth/types';
+import { UsersRepository } from './users.repository';
 
 // Omit removes some properties from User interface
 export interface FilteredUser
@@ -22,7 +23,7 @@ export interface FilteredUser
 export class UsersService {
   // Inject our depedencies
   constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
+    private readonly usersRepository: UsersRepository,
     private cryptor: Cryptor,
     private randomString: RandomString,
   ) {}
@@ -47,7 +48,7 @@ export class UsersService {
     );
 
     // Save user in database
-    const record = await this.userModel.create({
+    const record = await this.usersRepository.create({
       password: hashed,
       secret: this.randomString.generate(),
       username,
@@ -66,7 +67,9 @@ export class UsersService {
     const property = {};
     property[provider] = id;
 
-    const user = await this.userModel.findOne({ oauth2Identifiers: property });
+    const user = await this.usersRepository.findOne({
+      oauth2Identifiers: property,
+    });
 
     console.log(user, property);
 
@@ -74,14 +77,14 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    const userDocs = await this.userModel.find().exec();
+    const userDocs = await this.usersRepository.find({});
 
     return userDocs.map((user) => user.toObject());
   }
 
   async findOne(identifier: string): Promise<User> {
     try {
-      const user = await this.userModel.findOne({
+      const user = await this.usersRepository.findOne({
         $or: [
           {
             username: identifier,
@@ -99,7 +102,7 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const updatedUser = await this.userModel.findOneAndUpdate(
+    const updatedUser = await this.usersRepository.findOneAndUpdate(
       { id },
       updateUserDto,
     );
@@ -108,7 +111,7 @@ export class UsersService {
   }
 
   async remove(id: string): Promise<User> {
-    const removedUser = await this.userModel.findByIdAndDelete(id);
+    const removedUser = await this.usersRepository.findByIdAndDelete(id);
 
     return removedUser;
   }
