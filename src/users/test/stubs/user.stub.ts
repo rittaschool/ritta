@@ -14,7 +14,7 @@ export const userStub = (): User => {
     secret: 'oni2309u09fn0934jf98j23',
     username: 'test.testing',
     latestLogin: new Date(-10000),
-    firstLogin: false
+    isFirstLogin: false
   };
 };
 
@@ -28,6 +28,6 @@ export const filteredUserStub = (): FilteredUser => {
     passwordChangeRequired: true,
     username: 'test.testing',
     latestLogin: new Date(-10000),
-    firstLogin: false
+    isFirstLogin: false
   }
 }

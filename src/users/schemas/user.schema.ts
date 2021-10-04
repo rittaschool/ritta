@@ -36,7 +36,12 @@ export class User {
     id: { type: String },
     pin: { type: String } 
   }))
-  yubikey: Record<string, any>
+  yubikey?: Record<string, any>
+
+  @Prop(raw({
+    opinsys: { type: String }
+  }))
+  oauth2Identifiers?: Record<string, any>
 
   @Prop({
     required: true,

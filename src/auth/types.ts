@@ -28,7 +28,7 @@ export interface SocialUser {
   provider: Provider
 }
 
-// Here "puavoId" because thats the field opinsys is going to be using
+// Here "opinsys" because thats the field opinsys is going to be using
 export enum Provider {
-  OPINSYS = "puavoId"
+  OPINSYS = "opinsys"
 }

@@ -7,6 +7,7 @@ import { User, UserDocument } from './schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { RandomString } from '../utils/randomString';
+import { Provider } from '../auth/types';
 
 // Omit removes some properties from User interface
 export interface FilteredUser
@@ -30,14 +31,15 @@ export class UsersService {
     password,
     firstName,
     lastName,
+    username,
   }: CreateUserDto): Promise<User> {
     // try-catch makes sure that it doesnt throw error for not finding user
     let possibleUser: User;
     try {
-      possibleUser = await this.findOne(`${firstName}.${lastName}`.toLowerCase())
+      possibleUser = await this.findOne(username.toLowerCase());
     } catch (error) {}
-    
-    if (possibleUser) throw new BadRequestException('User already exists!')
+
+    if (possibleUser) throw new BadRequestException('User already exists!');
 
     // Hash and encryp tthe password
     const hashed = this.cryptor.encrypt(
@@ -48,13 +50,27 @@ export class UsersService {
     const record = await this.userModel.create({
       password: hashed,
       secret: this.randomString.generate(),
-      username: firstName.toLowerCase() + '.' + lastName.toLowerCase(),
+      username,
       firstName,
+      oauth2Identifiers: {
+        opinsys: '1',
+      },
       lastName,
     });
 
     // Return the object of the user
     return record.toObject();
+  }
+
+  async findOneWithSocial(provider: Provider, id: string) {
+    const property = {};
+    property[provider] = id;
+
+    const user = await this.userModel.findOne({ oauth2Identifiers: property });
+
+    console.log(user, property);
+
+    return user.toObject();
   }
 
   async findAll(): Promise<User[]> {
@@ -63,9 +79,7 @@ export class UsersService {
     return userDocs.map((user) => user.toObject());
   }
 
-  async findOne(
-    identifier: string,
-  ): Promise<User> {
+  async findOne(identifier: string): Promise<User> {
     try {
       const user = await this.userModel.findOne({
         $or: [
@@ -74,45 +88,46 @@ export class UsersService {
           },
           {
             id: identifier,
-          }
+          },
         ],
-      })
+      });
 
-      return user.toObject()
+      return user.toObject();
     } catch (error) {
-      throw new Error('User not found!')
+      throw new Error('User not found!');
     }
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const updatedUser = await this.userModel.findOneAndUpdate({id}, updateUserDto)
-    
-    return updatedUser
+    const updatedUser = await this.userModel.findOneAndUpdate(
+      { id },
+      updateUserDto,
+    );
+
+    return updatedUser;
   }
 
   async remove(id: string): Promise<User> {
-    const removedUser = await this.userModel.remove({ id })
+    const removedUser = await this.userModel.findByIdAndDelete(id);
 
-    return removedUser
+    return removedUser;
   }
 
   async filterUser(user: User): Promise<FilteredUser> {
-    const filteredUser = user
+    const filteredUser = user;
 
     delete filteredUser.password;
     delete filteredUser.secret;
-    delete filteredUser.mfaBackup;
-    delete filteredUser.mfaSecret;
-    delete filteredUser.yubiPIN;
-    delete filteredUser.yubikeyId;
+    delete filteredUser.mfa;
+    delete filteredUser.yubikey;
     delete (filteredUser as any).__v;
-    
+
     if (filteredUser['_id']) {
       delete filteredUser.id;
-      filteredUser['id'] = filteredUser['_id']
+      filteredUser['id'] = filteredUser['_id'];
       delete (filteredUser as any)._id;
-    } 
+    }
 
-    return filteredUser as unknown as Promise<FilteredUser>
+    return filteredUser as unknown as Promise<FilteredUser>;
   }
 }

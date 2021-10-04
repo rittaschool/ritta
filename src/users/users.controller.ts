@@ -17,7 +17,9 @@ export class UsersController {
 
   @Post()
   async createUser(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.filterUser(await this.usersService.create(createUserDto));
+    return this.usersService.filterUser(
+      await this.usersService.create(createUserDto),
+    );
   }
 
   @Get()
@@ -25,7 +27,7 @@ export class UsersController {
     const filteredUsers: FilteredUser[] = [];
 
     (await this.usersService.findAll()).forEach(async (user) => {
-      filteredUsers.push(await this.usersService.filterUser(user))
+      filteredUsers.push(await this.usersService.filterUser(user));
     });
 
     return filteredUsers;
@@ -42,7 +44,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+  async removeUser(@Param('id') id: string) {
+    return this.usersService.filterUser(await this.usersService.remove(id));
   }
 }
