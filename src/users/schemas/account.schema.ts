@@ -15,7 +15,10 @@ export enum AccountType {
   ADMIN = 100,
 }
 
-// Discriminator key means the field what we use to identify the type of the account
+/**
+ * Account schema
+ * @type {AccountType} - Account type
+ */
 @Schema({ discriminatorKey: 'type', timestamps: true })
 export class Account {
   @Prop({ required: true, enum: AccountType })
