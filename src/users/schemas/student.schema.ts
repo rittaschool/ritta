@@ -1,33 +1,21 @@
-import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { AccountType } from './account.schema';
 
 export type StudentDocument = Student & Document;
 
+/**
+ * Student schema
+ * @field {AccountType} type - type of account
+ * @field {String} phoneNumber - phone number of student
+ * @extends {Account}
+ */
 @Schema({ timestamps: true })
 export class Student {
-  @Prop({ required: true })
-  firstName: string;
-
-  @Prop({ required: true })
-  lastName: string;
-
-  @Prop({ required: true })
-  alias: string;
-
-  @Prop(
-    raw({
-      address: { type: String },
-      city: { type: String },
-      postalCode: { type: String },
-    }),
-  )
-  home: Record<string, any>;
+  type: AccountType;
 
   @Prop()
   phoneNumber?: string;
-
-  @Prop()
-  email?: string;
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student);
