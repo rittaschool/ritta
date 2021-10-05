@@ -3,6 +3,7 @@ import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { v4 } from 'uuid';
 import { Account } from './account.schema';
+import { HomeAddress } from '../dto/update-user.dto';
 
 export type UserDocument = User & Document;
 
@@ -15,7 +16,7 @@ export type UserDocument = User & Document;
  * @username {String} - User's username
  * @email {String} - User's email
  * @password {String} - User's password
- * @home {Object} - User's home address - { address: string, city: string, postalCodeL: string }
+ * @home {HomeAddress} - User's home address
  * @secret {String} - User's encryption secret
  * @mfa {Object} - User's MFA settings
  * @yubikey {Object} - User's Yubikey settings
@@ -49,14 +50,8 @@ export class User {
   @Prop({ required: true })
   password: string;
 
-  @Prop(
-    raw({
-      address: { type: String },
-      city: { type: String },
-      postalCode: { type: String },
-    }),
-  )
-  home: Record<string, any>;
+  @Prop({type: HomeAddress, required: false})
+  home: HomeAddress
 
   @Prop({ required: true })
   secret: string;
