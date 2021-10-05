@@ -14,7 +14,12 @@ export const userStub = (): User => {
     secret: 'oni2309u09fn0934jf98j23',
     username: 'test.testing',
     latestLogin: new Date(-10000),
-    isFirstLogin: false
+    isFirstLogin: false,
+    home: {
+      city: 'Helsinki',
+      postalCode: '00100',
+      street: 'Testikatu 1',
+    },
   };
 };
 
@@ -28,6 +33,11 @@ export const filteredUserStub = (): FilteredUser => {
     passwordChangeRequired: true,
     username: 'test.testing',
     latestLogin: new Date(-10000),
-    isFirstLogin: false
-  }
-}
+    isFirstLogin: false,
+    home: {
+      city: 'Helsinki',
+      postalCode: '00100',
+      street: 'Testikatu 1',
+    },
+  };
+};
