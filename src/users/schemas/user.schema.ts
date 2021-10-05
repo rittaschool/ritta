@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { v4 } from 'uuid';
 import { Account } from './account.schema';
-import { HomeAddress } from '../dto/update-user.dto';
+import { HomeAddress } from '../home.definition';
 
 export type UserDocument = User & Document;
 
@@ -51,7 +51,7 @@ export class User {
   password: string;
 
   @Prop({type: HomeAddress, required: false})
-  home: HomeAddress
+  home: HomeAddress;
 
   @Prop({ required: true })
   secret: string;

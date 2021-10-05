@@ -18,7 +18,7 @@ export const userStub = (): User => {
     home: {
       city: 'Helsinki',
       postalCode: '00100',
-      street: 'Testikatu 1',
+      address: 'Testikatu 1',
     },
   };
 };
@@ -37,7 +37,7 @@ export const filteredUserStub = (): FilteredUser => {
     home: {
       city: 'Helsinki',
       postalCode: '00100',
-      street: 'Testikatu 1',
+      address: 'Testikatu 1',
     },
   };
 };

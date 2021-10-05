@@ -1,5 +1,6 @@
 import { OmitType, PartialType } from "@nestjs/mapped-types";
-import { IsAlphanumeric, IsAscii, IsEmail, IsObject, IsPostalCode, IsUUID, MaxLength, MinLength } from "class-validator";
+import { IsAlphanumeric, IsAscii, IsEmail, IsObject, IsUUID, MaxLength, MinLength } from "class-validator";
+import { HomeAddress } from "../home.definition";
 import { User } from "../schemas/user.schema";
 
 export class UpdateUserDto extends PartialType(OmitType(User, ['id', 'isFirstLogin', 'accounts', 'latestLogin', 'latestPasswordChange', 'secret', 'password'])) {
@@ -31,19 +32,4 @@ export class UpdateUserDto extends PartialType(OmitType(User, ['id', 'isFirstLog
 
     @IsObject()
     home?: HomeAddress
-}
-
-export class HomeAddress {
-    @IsAscii()
-    @MinLength(1)
-    @MaxLength(100)
-    address: string
-
-    @IsPostalCode('FI')
-    postalCode: string
-
-    @IsAscii()
-    @MinLength(3)
-    @MaxLength(50)
-    city: string
 }
