@@ -7,10 +7,14 @@ import { UtilsModule } from './utils/utils.module';
 import { AuthModule } from './auth/auth.module';
 import { SchoolsModule } from './schools/schools.module';
 import configuration from './config/configuration';
+import { join } from 'path';
 
 @Module({
   imports: [
-    //GraphQLModule.forRoot(),
+    GraphQLModule.forRoot({
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      sortSchema: true,
+    }),
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
