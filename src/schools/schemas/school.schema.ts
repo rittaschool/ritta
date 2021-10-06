@@ -30,7 +30,7 @@ export class School {
   @Prop()
   email?: string;
 
-  @Prop()
+  @Prop({ required: true, default: [] })
   modules: string[];
 }
 

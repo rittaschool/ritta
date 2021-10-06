@@ -1,5 +1,6 @@
-import { IsString, Length, MinLength } from 'class-validator';
-
+import { IsArray, IsEmail, IsString, Length, MinLength } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { LocationDto } from 'src/utils/dto/location.dto';
 export class CreateSchoolDto {
   @IsString()
   @MinLength(1)
@@ -7,5 +8,14 @@ export class CreateSchoolDto {
 
   @IsString()
   @Length(5)
-  schoolIdentifier: string;
+  schoolIdentifier?: string = '00000';
+
+  @ApiProperty({ type: LocationDto })
+  location: LocationDto;
+
+  @IsEmail()
+  email?: string;
+
+  @IsArray()
+  modules: string[] = [];
 }
