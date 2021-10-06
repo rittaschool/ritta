@@ -24,12 +24,29 @@ type LocationDto {
   postalCode: String!
 }
 
+input LocationDtoInput {
+  address: String!
+  city: String!
+  postalCode: String!
+}
+
 type Mutation {
   createUser(createUserInput: CreateUserDto!): User!
+  updateUser(updateUserInput: UpdateUserDto!): User!
 }
 
 type Query {
   getUsers: [User!]!
+}
+
+input UpdateUserDto {
+  alias: String
+  email: String
+  firstName: String
+  home: LocationDtoInput
+  id: String!
+  lastName: String
+  username: String
 }
 
 type User {
