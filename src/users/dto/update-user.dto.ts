@@ -1,35 +1,53 @@
-import { OmitType, PartialType } from "@nestjs/mapped-types";
-import { IsAlphanumeric, IsAscii, IsEmail, IsObject, IsUUID, MaxLength, MinLength } from "class-validator";
-import { HomeAddress } from "../home.definition";
-import { User } from "../schemas/user.schema";
+import { OmitType, PartialType } from '@nestjs/mapped-types';
+import {
+  IsAlphanumeric,
+  IsAscii,
+  IsEmail,
+  IsObject,
+  IsUUID,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
+import { LocationDto } from '../../utils/dto/location.dto';
+import { User } from '../schemas/user.schema';
 
-export class UpdateUserDto extends PartialType(OmitType(User, ['id', 'isFirstLogin', 'accounts', 'latestLogin', 'latestPasswordChange', 'secret', 'password'])) {
-    @IsUUID('4')
-    id: string
+export class UpdateUserDto extends PartialType(
+  OmitType(User, [
+    'id',
+    'isFirstLogin',
+    'accounts',
+    'latestLogin',
+    'latestPasswordChange',
+    'secret',
+    'password',
+  ]),
+) {
+  @IsUUID('4')
+  id: string;
 
-    @IsAlphanumeric()
-    @MinLength(1)
-    @MaxLength(20)
-    firstName?: string;
-    
-    @IsAlphanumeric()
-    @MinLength(1)
-    @MaxLength(20)
-    lastName?: string
+  @IsAlphanumeric()
+  @MinLength(1)
+  @MaxLength(20)
+  firstName?: string;
 
-    @MaxLength(20)
-    @MinLength(1)
-    @IsAlphanumeric()
-    alias?: string
+  @IsAlphanumeric()
+  @MinLength(1)
+  @MaxLength(20)
+  lastName?: string;
 
-    @MaxLength(30)
-    @MinLength(3)
-    @IsAscii()
-    username?: string
+  @MaxLength(20)
+  @MinLength(1)
+  @IsAlphanumeric()
+  alias?: string;
 
-    @IsEmail()
-    email?: string
+  @MaxLength(30)
+  @MinLength(3)
+  @IsAscii()
+  username?: string;
 
-    @IsObject()
-    home?: HomeAddress
+  @IsEmail()
+  email?: string;
+
+  @IsObject()
+  home?: LocationDto;
 }

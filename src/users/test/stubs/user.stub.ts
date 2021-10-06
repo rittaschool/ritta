@@ -20,6 +20,8 @@ export const userStub = (): User => {
       postalCode: '00100',
       address: 'Testikatu 1',
     },
+    createdAt: new Date(-10000),
+    updatedAt: new Date(-10000),
   };
 };
 
@@ -39,5 +41,7 @@ export const filteredUserStub = (): FilteredUser => {
       postalCode: '00100',
       address: 'Testikatu 1',
     },
+    createdAt: new Date(-10000),
+    updatedAt: new Date(-10000),
   };
 };

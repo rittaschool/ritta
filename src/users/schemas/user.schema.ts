@@ -3,7 +3,8 @@ import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { v4 } from 'uuid';
 import { Account } from './account.schema';
-import { HomeAddress } from '../home.definition';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { LocationDto } from '../../utils/dto/location.dto';
 
 export type UserDocument = User & Document;
 
@@ -27,8 +28,10 @@ export type UserDocument = User & Document;
  * @isFirstLogin {Boolean} - User's first login flag
  * @passwordChangeRequired {Boolean} - User's password change required flag
  */
-@Schema({ timestamps: true })
+@Schema()
+@ObjectType()
 export class User {
+  @Field(() => String)
   @Prop({ required: true, default: v4(), unique: true, index: true })
   id: string;
 
@@ -50,8 +53,8 @@ export class User {
   @Prop({ required: true })
   password: string;
 
-  @Prop({type: HomeAddress, required: false})
-  home: HomeAddress;
+  @Prop({ type: LocationDto, required: false })
+  home: LocationDto;
 
   @Prop({ required: true })
   secret: string;
@@ -97,6 +100,12 @@ export class User {
 
   @Prop({ required: true, default: true })
   passwordChangeRequired: boolean;
+
+  @Prop({ required: true, default: Date.now() })
+  createdAt: Date;
+
+  @Prop({ required: true, default: Date.now() })
+  updatedAt: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
