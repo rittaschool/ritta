@@ -10,7 +10,7 @@ import configuration from './config/configuration';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot(),
+    //GraphQLModule.forRoot(),
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,

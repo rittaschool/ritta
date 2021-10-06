@@ -8,7 +8,7 @@ export class School {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true })
+  @Prop()
   website: string;
 
   @Prop(
@@ -30,7 +30,7 @@ export class School {
   @Prop()
   email?: string;
 
-  @Prop()
+  @Prop({ required: true, default: [] })
   modules: string[];
 }
 
