@@ -1,5 +1,9 @@
 import * as argon2 from 'argon2';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Cryptor } from '../utils/encryption.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -104,8 +108,10 @@ export class UsersService {
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const updatedUser = await this.usersRepository.findOneAndUpdate(
       { id },
-      updateUserDto,
+      { ...updateUserDto, updatedAt: new Date() },
     );
+
+    if (!updatedUser) throw new NotFoundException('User not found!');
 
     return updatedUser;
   }
