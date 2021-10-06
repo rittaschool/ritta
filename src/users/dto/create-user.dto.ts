@@ -1,4 +1,4 @@
-import { IsAlphanumeric, IsAscii, IsString, MinLength } from "class-validator";
+import { IsAlphanumeric, IsAscii, IsString, MinLength } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -10,11 +10,11 @@ export class CreateUserDto {
   lastName: string;
 
   @IsString()
-  @MinLength(10)
+  @MinLength(8)
   @IsAscii()
   password: string;
 
   @IsString()
   @IsAlphanumeric()
-  username?: string
+  username?: string;
 }
