@@ -1,0 +1,48 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Account {
+  type: Float!
+}
+
+input CreateUserDto {
+  firstName: String!
+  lastName: String!
+  password: String!
+  username: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type LocationDto {
+  address: String!
+  city: String!
+  postalCode: String!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserDto!): User!
+}
+
+type Query {
+  getUsers: [User!]!
+}
+
+type User {
+  accounts: [Account!]!
+  alias: String
+  createdAt: DateTime!
+  email: String
+  firstName: String!
+  home: LocationDto
+  id: String!
+  lastName: String!
+  latestLogin: DateTime!
+  latestPasswordChange: DateTime!
+  updatedAt: DateTime!
+  username: String
+}

@@ -1,3 +1,4 @@
+import { ObjectType, Field } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
@@ -20,7 +21,9 @@ export enum AccountType {
  * @type {AccountType} - Account type
  */
 @Schema({ discriminatorKey: 'type', timestamps: true })
+@ObjectType()
 export class Account {
+  @Field()
   @Prop({ required: true, enum: AccountType })
   type: AccountType;
 }

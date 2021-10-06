@@ -12,6 +12,7 @@ import { join } from 'path';
 @Module({
   imports: [
     GraphQLModule.forRoot({
+      include: [UsersModule],
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
     }),

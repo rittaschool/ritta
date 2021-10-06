@@ -31,28 +31,34 @@ export type UserDocument = User & Document;
 @Schema()
 @ObjectType()
 export class User {
-  @Field(() => String)
+  @Field()
   @Prop({ required: true, default: v4(), unique: true, index: true })
   id: string;
 
+  @Field()
   @Prop({ required: true })
   firstName: string;
 
+  @Field()
   @Prop({ required: true })
   lastName: string;
 
+  @Field({ nullable: true })
   @Prop()
   alias?: string;
 
+  @Field({ nullable: true })
   @Prop({ required: false, unique: true, index: true })
   username?: string;
 
+  @Field({ nullable: true })
   @Prop({ required: false, unique: true, index: true })
   email?: string;
 
   @Prop({ required: true })
   password: string;
 
+  @Field(() => LocationDto, { nullable: true })
   @Prop({ type: LocationDto, required: false })
   home: LocationDto;
 
@@ -82,6 +88,7 @@ export class User {
   )
   oauth2Identifiers?: Record<string, any>;
 
+  @Field(() => [Account])
   @Prop({
     required: true,
     default: [],
@@ -89,9 +96,11 @@ export class User {
   })
   accounts: Account[];
 
+  @Field()
   @Prop()
   latestLogin?: Date;
 
+  @Field()
   @Prop({ required: true, default: Date.now() })
   latestPasswordChange: Date;
 
@@ -101,9 +110,11 @@ export class User {
   @Prop({ required: true, default: true })
   passwordChangeRequired: boolean;
 
+  @Field()
   @Prop({ required: true, default: Date.now() })
   createdAt: Date;
 
+  @Field()
   @Prop({ required: true, default: Date.now() })
   updatedAt: Date;
 }
