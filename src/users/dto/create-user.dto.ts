@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsAlphanumeric, IsAscii, IsString, MinLength } from 'class-validator';
+import { IsAscii, IsString, MinLength } from 'class-validator';
 
 @InputType()
 export class CreateUserDto {
@@ -21,6 +21,6 @@ export class CreateUserDto {
 
   @Field({ nullable: true })
   @IsString()
-  @IsAlphanumeric()
+  @IsAscii()
   username?: string;
 }
