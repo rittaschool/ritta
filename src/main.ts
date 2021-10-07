@@ -1,0 +1,43 @@
+import { VersioningType, ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const PORT = process.env.PORT || 3000;
+  const IP = process.env.RITTA_IP || '0.0.0.0';
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter(),
+  );
+
+  // API Versioning, appends v? to the url
+  app.enableVersioning({
+    type: VersioningType.URI,
+  });
+
+  // Swagger (The Nest.Js way for API Documentation)
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Ritta API')
+    .setDescription('The Ritta API documentation')
+    .setVersion('1.0.0')
+    .addTag('ritta')
+    .build();
+  const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('docs', app, swaggerDocument, {
+    customSiteTitle: 'Ritta API - Documentation',
+  });
+
+  // Validation
+  app.useGlobalPipes(new ValidationPipe())
+
+  // Start the app
+  await app.listen(PORT, IP, () => {
+    console.log(`Listening on http://${'localhost'}:${PORT}`);
+  });
+}
+bootstrap();

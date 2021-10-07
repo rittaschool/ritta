@@ -1,0 +1,14 @@
+database:
+    uri: "mongodb://<insert here a mongoose uri>"
+
+security:
+    # KEEP THE ENCRYPTION SECRET A LONG STRING AND DIFFERENT THAN ANY OTHER SECRET YOU MAY HAVE
+    encryption_secret: "<insert here a secret>"
+
+    tokens:
+        access:
+            secret: "<insert here some other secret>"
+            expiresIn: "5m"
+        refresh:
+            secret: "<some secret>"
+            expiresIn: "7d"
