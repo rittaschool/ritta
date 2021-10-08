@@ -5,7 +5,7 @@ export abstract class MockModel<T> {
     this.constructorSpy(createEntityData);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   constructorSpy(_createEntityData: T): void {}
 
   findOne(): { exec: () => T } {

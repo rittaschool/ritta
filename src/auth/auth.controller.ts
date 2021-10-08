@@ -21,12 +21,17 @@ export class AuthController {
 
   @Post()
   async login(@Body() loginUserInput: LoginUserInput): Promise<FilteredUser> {
-    return this.authService.filterUser(await this.authService.validate(loginUserInput))
+    return this.authService.filterUser(
+      await this.authService.validate(loginUserInput),
+    );
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.authService.loginWithThirdParty(Provider[id.toUpperCase()], '12345');
+    return this.authService.loginWithThirdParty(
+      Provider[id.toUpperCase()],
+      '12345',
+    );
   }
 
   // @Patch(':id')

@@ -7,9 +7,11 @@ import { UsersService } from '../../users/users.service';
 import { userStub } from '../../users/test/stubs/user.stub';
 import { Tokens } from '../types';
 import { Cryptor } from '../../utils/encryption.service';
+import { Oauth2Service } from '../oauth2/oauth2.service';
 
 jest.mock('../../users/users.service');
 jest.mock('../../utils/encryption.service');
+jest.mock('../oauth2/oauth2.service.ts');
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -55,6 +57,7 @@ describe('AuthService', () => {
               ),
           },
         },
+        Oauth2Service,
       ],
     }).compile();
 
@@ -75,8 +78,8 @@ describe('AuthService', () => {
 
   it('should validate the user', async () => {
     const validatedUser = await service.validate({
-      username: 'midka.developer',
-      password: 'test124567890',
+      username: 'test.testing',
+      password: 'password',
     });
 
     expect(validatedUser.username).toEqual(mockUser.username);

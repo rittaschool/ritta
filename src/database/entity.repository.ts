@@ -20,8 +20,8 @@ export abstract class EntityRepository<T extends Document> {
     return this.entityModel.find(entityFilterQuery).exec();
   }
 
-  async create(createEntityData: unknown): Promise<T> {
-    const entity = new this.entityModel(createEntityData as any);
+  async create(createEntityData: Partial<T>): Promise<T> {
+    const entity = new this.entityModel(createEntityData);
     return entity.save();
   }
 

@@ -9,7 +9,7 @@ export const userStub = (): User => {
     lastName: 'Testing',
     latestPasswordChange: new Date(-100000),
     password:
-      'ENCRYPTED||ENCRYPTED||$argon2i$v=19$m=16,t=2,p=1$cDl2TTRhb0RxTnJUQWFaZg$V3zRUzi4CSeOh/FLI9Tt9rJ6KdY||ENCRYPTED||ENCRYPTED',
+      'ENCRYPTED||ENCRYPTED||$argon2i$v=19$m=16,t=2,p=1$ZDV3TmcxRUNxY0Y2Zk02TA$Cuah+brXOuULIwjSV6ePziA2s4E||ENCRYPTED||ENCRYPTED',
     passwordChangeRequired: true,
     secret: 'oni2309u09fn0934jf98j23',
     username: 'test.testing',

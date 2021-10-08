@@ -5,7 +5,8 @@ import { Cryptor } from '../../utils/encryption.service';
 import { User, UserDocument } from '../schemas/user.schema';
 import { UsersService } from '../users.service';
 import { filteredUserStub, userStub } from './stubs/user.stub';
-import { userDocStub } from './stubs/user-document.stub';
+import { UsersRepository } from '../users.repository';
+import { UserModel } from './support/user.model';
 
 jest.mock('../../utils/encryption.service');
 
@@ -17,51 +18,18 @@ describe('UsersService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
+        UsersRepository,
         UsersService,
-        {
-          provide: getModelToken(User.name),
-          useValue: {
-            create: (options: Partial<User>) => {
-              const newUser: Partial<UserDocument> = {
-                ...options,
-                ...userStub(),
-                latestLogin: new Date(-10000),
-              };
-
-              users.push(newUser);
-
-              return {
-                toObject: () => newUser,
-              };
-            },
-            find: () => {
-              return {
-                exec: () =>
-                  users.map((user) => {
-                    return {
-                      toObject: () => user,
-                    };
-                  }),
-              };
-            },
-            findById: () => {
-              return {
-                exec: (id: string) => {
-                  return {
-                    toObject: () => users.filter((user) => user._id === id)[0],
-                  };
-                },
-              };
-            },
-            findOne: jest.fn().mockResolvedValue(userDocStub()),
-          },
-        },
         Cryptor,
         {
           provide: RandomString,
           useValue: {
             generate: jest.fn().mockReturnValue(userStub().secret),
           },
+        },
+        {
+          provide: getModelToken(User.name),
+          useClass: UserModel,
         },
       ],
     }).compile();
@@ -107,3 +75,42 @@ describe('UsersService', () => {
     expect(filteredUser).toEqual(filteredUserStub());
   });
 });
+
+// {
+//   provide: getModelToken(User.name),
+//   useValue: {
+//     create: (options: Partial<User>) => {
+//       const newUser: Partial<UserDocument> = {
+//         ...options,
+//         ...userStub(),
+//         latestLogin: new Date(-10000),
+//       };
+
+//       users.push(newUser);
+
+//       return {
+//         toObject: () => newUser,
+//       };
+//     },
+//     find: () => {
+//       return {
+//         exec: () =>
+//           users.map((user) => {
+//             return {
+//               toObject: () => user,
+//             };
+//           }),
+//       };
+//     },
+//     findById: () => {
+//       return {
+//         exec: (id: string) => {
+//           return {
+//             toObject: () => users.filter((user) => user._id === id)[0],
+//           };
+//         },
+//       };
+//     },
+//     findOne: jest.fn().mockResolvedValue(userDocStub()),
+//   },
+// },

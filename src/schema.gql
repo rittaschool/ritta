@@ -32,6 +32,7 @@ input LocationDtoInput {
 
 type Mutation {
   createUser(createUserInput: CreateUserDto!): User!
+  removeUser(id: String!): User!
   updateUser(updateUserInput: UpdateUserDto!): User!
 }
 
