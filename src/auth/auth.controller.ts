@@ -21,17 +21,25 @@ export class AuthController {
 
   @Post()
   async login(@Body() loginUserInput: LoginUserInput): Promise<FilteredUser> {
+<<<<<<< HEAD
     return this.authService.filterUser(
       await this.authService.validate(loginUserInput),
     );
+=======
+    return this.authService.filterUser(await this.authService.validate(loginUserInput))
+>>>>>>> 88c3101501274977b8753f8a5b14d8929a97df1f
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
+<<<<<<< HEAD
     return this.authService.loginWithThirdParty(
       Provider[id.toUpperCase()],
       '12345',
     );
+=======
+    return this.authService.loginWithThirdParty(Provider[id.toUpperCase()], '12345');
+>>>>>>> 88c3101501274977b8753f8a5b14d8929a97df1f
   }
 
   // @Patch(':id')
