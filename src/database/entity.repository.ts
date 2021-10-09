@@ -22,6 +22,7 @@ export abstract class EntityRepository<T extends Document> {
 
   async create(createEntityData: Partial<T>): Promise<T> {
     const entity = new this.entityModel(createEntityData);
+    console.log(entity);
     return entity.save();
   }
 
@@ -38,8 +39,12 @@ export abstract class EntityRepository<T extends Document> {
     );
   }
 
-  async findByIdAndDelete(id: string): Promise<T> {
-    const deleteResult = await this.entityModel.findByIdAndDelete(id);
+  async findByIdAndDelete(id: string, idField?: string): Promise<T> {
+    console.log(id, idField);
+    const deleteResult = await this.entityModel.findOneAndRemove({
+      [idField || '_id']: id,
+    } as any);
+    console.log(deleteResult);
     return deleteResult;
   }
 }

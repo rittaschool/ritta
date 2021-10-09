@@ -7,19 +7,14 @@ import {
 import { Cryptor } from '../utils/encryption.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User, UserDocument } from './schemas/user.schema';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { User } from './schemas/user.schema';
 import { RandomString } from '../utils/randomString';
 import { Provider } from '../auth/types';
 import { UsersRepository } from './users.repository';
 
 // Omit removes some properties from User interface
 export interface FilteredUser
-  extends Omit<
-    User,
-    'password' | 'secret' | 'mfaBackup' | 'mfaSecret' | 'yubiPIN' | 'yubikeyId'
-  > {
+  extends Omit<User, 'password' | 'secret' | 'mfa' | 'yubikey'> {
   id: string;
 }
 
@@ -117,7 +112,7 @@ export class UsersService {
   }
 
   async remove(id: string): Promise<User> {
-    const removedUser = await this.usersRepository.findByIdAndDelete(id);
+    const removedUser = await this.usersRepository.findByIdAndDelete(id, 'id');
 
     return removedUser;
   }
