@@ -70,8 +70,6 @@ export class UsersService {
       oauth2Identifiers: property,
     });
 
-    console.log(user, property);
-
     return user.toObject();
   }
 
