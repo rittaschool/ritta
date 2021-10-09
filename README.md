@@ -5,7 +5,7 @@ Ritta is a modern system for schools to keep connection between home and school 
 
 [![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://opensource.org/licenses/GPLv3)
 [![GitHub last commit](https://img.shields.io/github/last-commit/rittaschool/ritta-server.svg?style=flat)]()
-[![Twitter Follow](https://img.shields.io/twitter/follow/rittaschool.svg?style=social)](https://twitter.com/rittasoft)
+[![Twitter Follow](https://img.shields.io/twitter/follow/rittaschool.svg?style=social)](https://twitter.com/rittaschool)
 [![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/) \
 Also visit our [webpage!](https://ritta.fi/)
 
