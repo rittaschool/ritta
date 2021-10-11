@@ -7,7 +7,6 @@ import { User, UserDocument } from './schemas/user.schema';
 @Injectable()
 export class UsersRepository extends EntityRepository<UserDocument> {
   constructor(@InjectModel(User.name) userModel: Model<UserDocument>) {
-    console.log('UsersRepository', typeof userModel);
     super(userModel);
   }
 }

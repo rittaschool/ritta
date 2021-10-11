@@ -8,7 +8,6 @@ import { userStub } from './stubs/user.stub';
 describe('UsersRepository', () => {
   let usersRepository: UsersRepository;
   let userModel: UserModel;
-  let userFilterQuery: any;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -23,21 +22,23 @@ describe('UsersRepository', () => {
 
     usersRepository = await module.get<UsersRepository>(UsersRepository);
     userModel = await module.get<UserModel>(getModelToken(User.name));
-
-    userFilterQuery = {
-      id: userStub().id,
-    };
-
-    jest.clearAllMocks();
   });
 
   describe('findOne', () => {
+    let userFilterQuery: any;
+
     describe('when findOne is called', () => {
       let user: User;
 
       beforeEach(async () => {
         jest.spyOn(userModel, 'findOne');
         user = await usersRepository.findOne(userFilterQuery);
+
+        userFilterQuery = {
+          id: userStub().id,
+        };
+
+        jest.clearAllMocks();
       });
 
       it('then it should call the userModel', () => {
