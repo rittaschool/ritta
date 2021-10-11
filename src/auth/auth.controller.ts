@@ -8,9 +8,9 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
-import { FilteredUser } from '../users/users.service';
 import { AuthService } from './auth.service';
 import { LoginUserInput, OAuthUserInput } from './dto/login-input.dto';
+import { LoginResponseDto } from './dto/login-response.dto';
 import { Provider } from './types';
 
 @Controller({
@@ -22,15 +22,17 @@ export class AuthController {
 
   @Post()
   @ApiOperation({ summary: 'Use username/email & password for authentication' })
-  async login(@Body() loginUserInput: LoginUserInput): Promise<FilteredUser> {
-    return this.authService.filterUser(
+  async login(
+    @Body() loginUserInput: LoginUserInput,
+  ): Promise<LoginResponseDto> {
+    return this.authService.login(
       await this.authService.validate(loginUserInput),
     );
   }
 
   @Post('/oauth')
   @ApiOperation({ summary: 'Use an oauth code to login' })
-  findOne(@Body() oauthUserInput: OAuthUserInput) {
+  findOne(@Body() oauthUserInput: OAuthUserInput): Promise<LoginResponseDto> {
     return this.authService.loginWithThirdParty(
       Provider[oauthUserInput.providerId.toUpperCase()],
       oauthUserInput.code,

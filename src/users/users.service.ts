@@ -53,7 +53,6 @@ export class UsersService {
         throw new BadRequestException('User with opinsys oauth id exists');
       } catch (e) {
         if (e instanceof BadRequestException) throw e;
-        console.log(e);
         // All fine :)
       }
     }

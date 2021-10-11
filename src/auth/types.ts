@@ -1,13 +1,15 @@
-import { OpinsysOauth } from './oauth2/opinsys.provider';
-
 export interface TokenResponse {
   accessToken: string;
   refreshToken: string;
 }
 
+export enum TokenType {
+  ACCESS = 0,
+  REFRESH = 1,
+}
 export interface TokenPayload {
   sub: string;
-  name: string;
+  type: TokenType;
 }
 
 export interface Tokens {
