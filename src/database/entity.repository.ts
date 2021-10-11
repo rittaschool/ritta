@@ -8,7 +8,7 @@ export abstract class EntityRepository<T extends Document> {
     projection?: Record<string, unknown>,
   ): Promise<T | null> {
     const result = await this.entityModel
-      .findOne(entityFilterQuery, { _id: 0, __v: 0, ...projection })
+      .findOne(entityFilterQuery, projection)
       .exec();
 
     return result;
