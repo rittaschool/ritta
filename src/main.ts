@@ -33,7 +33,7 @@ async function bootstrap() {
   });
 
   // Validation
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(new ValidationPipe());
 
   // Start the app
   await app.listen(PORT, IP, () => {

@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { FilteredUser, UsersService } from '../users/users.service';
@@ -16,7 +20,7 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
     private readonly cryptor: Cryptor,
-    private readonly oauthService: Oauth2Service
+    private readonly oauthService: Oauth2Service,
   ) {}
 
   async validate({ username, password }: LoginUserInput): Promise<User> {
@@ -24,7 +28,7 @@ export class AuthService {
 
     if (!user) throw new UnauthorizedException('Invalid credentials');
 
-    const userPassword = this.cryptor.decrypt(user.password)
+    const userPassword = this.cryptor.decrypt(user.password);
 
     if (!(await argon2.verify(userPassword, password || '')))
       throw new UnauthorizedException('Invalid credentials');
@@ -51,17 +55,15 @@ export class AuthService {
   }
 
   async loginWithThirdParty(socialProvider: Provider, code: string) {
-    try {
-      if (!socialProvider) throw new BadRequestException('Social Provider not provided!')
-      if (!code) throw new BadRequestException('Code not present!')
+    if (!socialProvider)
+      throw new BadRequestException('Social Provider not provided!');
+    if (!code) throw new BadRequestException('Code not present!');
 
-      const { firstName, lastName, id, provider } = await this.oauthService.verifyCode(socialProvider, code)
-      console.log(provider, id)
-      const rittaUser = this.usersService.findOneWithSocial(provider, id)
-      console.log(rittaUser)
-    } catch (error) {
-      throw error
-    }
+    const { firstName, lastName, id, provider } =
+      await this.oauthService.verifyCode(socialProvider, code);
+    console.log(provider, id);
+    const rittaUser = await this.usersService.findOneWithSocial(provider, id);
+    console.log(rittaUser);
   }
 
   getTokenOptions(type: 'access' | 'refresh', user: User): JwtSignOptions {
@@ -76,6 +78,6 @@ export class AuthService {
   }
 
   filterUser(user: User): Promise<FilteredUser> {
-    return this.usersService.filterUser(user)
+    return this.usersService.filterUser(user);
   }
 }

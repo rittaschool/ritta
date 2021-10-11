@@ -1,6 +1,8 @@
 import * as argon2 from 'argon2';
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -32,6 +34,7 @@ export class UsersService {
     firstName,
     lastName,
     username,
+    oauth2Identifiers,
   }: CreateUserDto): Promise<User> {
     // try-catch makes sure that it doesnt throw error for not finding user
     let possibleUser: User;
@@ -41,7 +44,21 @@ export class UsersService {
 
     if (possibleUser) throw new BadRequestException('User already exists!');
 
-    // Hash and encryp tthe password
+    if (oauth2Identifiers.opinsys) {
+      try {
+        await this.findOneWithSocial(
+          Provider.OPINSYS,
+          oauth2Identifiers.opinsys.toString(),
+        );
+        throw new BadRequestException('User with opinsys oauth id exists');
+      } catch (e) {
+        if (e instanceof BadRequestException) throw e;
+        console.log(e);
+        // All fine :)
+      }
+    }
+
+    // Hash and encrypt the password
     const hashed = this.cryptor.encrypt(
       await argon2.hash(password || '', { hashLength: 20 }),
     );
@@ -52,10 +69,8 @@ export class UsersService {
       secret: this.randomString.generate(),
       username,
       firstName,
-      oauth2Identifiers: {
-        opinsys: '1',
-      },
       lastName,
+      oauth2Identifiers,
     });
 
     // Return the object of the user
@@ -69,6 +84,10 @@ export class UsersService {
     const user = await this.usersRepository.findOne({
       oauth2Identifiers: property,
     });
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.FORBIDDEN);
+    }
 
     return user.toObject();
   }
