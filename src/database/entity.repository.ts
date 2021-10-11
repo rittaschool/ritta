@@ -7,13 +7,18 @@ export abstract class EntityRepository<T extends Document> {
     entityFilterQuery: FilterQuery<T>,
     projection?: Record<string, unknown>,
   ): Promise<T | null> {
-    return this.entityModel
-      .findOne(entityFilterQuery, {
-        _id: 0,
-        __v: 0,
-        ...projection,
-      })
+    console.log('query', entityFilterQuery);
+    console.log('projection', projection);
+    console.log(
+      'entityModel',
+      await this.entityModel.findOne(entityFilterQuery).exec(),
+    );
+    const result = await this.entityModel
+      .findOne(entityFilterQuery, { _id: 0, __v: 0, ...projection })
       .exec();
+
+    console.log('result', result);
+    return result;
   }
 
   async find(entityFilterQuery: FilterQuery<T>): Promise<T[] | null> {

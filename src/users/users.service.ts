@@ -76,21 +76,32 @@ export class UsersService {
   async findAll(): Promise<User[]> {
     const userDocs = await this.usersRepository.find({});
 
+    console.log(
+      'userDocs',
+      userDocs.map((user) => user.toObject()),
+    );
+
     return userDocs.map((user) => user.toObject());
   }
 
   async findOne(identifier: string): Promise<User> {
     try {
+      console.log(identifier);
       const user = await this.usersRepository.findOne({
         $or: [
           {
             username: identifier,
           },
           {
+            email: identifier,
+          },
+          {
             id: identifier,
           },
         ],
       });
+
+      console.log(user);
 
       return user.toObject();
     } catch (error) {
@@ -123,12 +134,7 @@ export class UsersService {
     delete filteredUser.mfa;
     delete filteredUser.yubikey;
     delete (filteredUser as any).__v;
-
-    if (filteredUser['_id']) {
-      delete filteredUser.id;
-      filteredUser['id'] = filteredUser['_id'];
-      delete (filteredUser as any)._id;
-    }
+    delete (filteredUser as any)._id;
 
     return filteredUser as unknown as Promise<FilteredUser>;
   }
