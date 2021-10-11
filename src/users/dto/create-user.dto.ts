@@ -1,5 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsAscii, IsString, MinLength } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsAscii, IsObject, IsString, MinLength } from 'class-validator';
+import { OAuthIdentifiersDto } from './oauth-identifiers.dto';
 
 @InputType()
 export class CreateUserDto {
@@ -23,4 +25,7 @@ export class CreateUserDto {
   @IsString()
   @IsAscii()
   username?: string;
+
+  @ApiProperty({ type: OAuthIdentifiersDto })
+  oauth2Identifiers: OAuthIdentifiersDto;
 }

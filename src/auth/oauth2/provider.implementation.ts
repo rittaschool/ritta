@@ -1,7 +1,7 @@
-import { SocialUser } from "../types";
+import { SocialUser } from '../types';
 
 export abstract class Oauth2Provider {
-    abstract getUser({ code }: {code: string}): Promise<SocialUser>
+  abstract getUser({ code }: { code: string }): Promise<SocialUser>;
 
-    abstract getAuthorizationUri(): string
+  abstract getAuthorizationUri(): string;
 }

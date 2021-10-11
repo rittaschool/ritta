@@ -7,9 +7,10 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+import { ApiOperation } from '@nestjs/swagger';
 import { FilteredUser } from '../users/users.service';
 import { AuthService } from './auth.service';
-import { LoginUserInput } from './dto/login-input.dto';
+import { LoginUserInput, OAuthUserInput } from './dto/login-input.dto';
 import { Provider } from './types';
 
 @Controller({
@@ -20,17 +21,19 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Use username/email & password for authentication' })
   async login(@Body() loginUserInput: LoginUserInput): Promise<FilteredUser> {
     return this.authService.filterUser(
       await this.authService.validate(loginUserInput),
     );
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Post('/oauth')
+  @ApiOperation({ summary: 'Use an oauth code to login' })
+  findOne(@Body() oauthUserInput: OAuthUserInput) {
     return this.authService.loginWithThirdParty(
-      Provider[id.toUpperCase()],
-      '12345',
+      Provider[oauthUserInput.providerId.toUpperCase()],
+      oauthUserInput.code,
     );
   }
 
