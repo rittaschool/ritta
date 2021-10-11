@@ -95,17 +95,11 @@ export class UsersService {
   async findAll(): Promise<User[]> {
     const userDocs = await this.usersRepository.find({});
 
-    console.log(
-      'userDocs',
-      userDocs.map((user) => user.toObject()),
-    );
-
     return userDocs.map((user) => user.toObject());
   }
 
   async findOne(identifier: string): Promise<User> {
     try {
-      console.log(identifier);
       const user = await this.usersRepository.findOne({
         $or: [
           {
@@ -119,8 +113,6 @@ export class UsersService {
           },
         ],
       });
-
-      console.log(user);
 
       return user.toObject();
     } catch (error) {
