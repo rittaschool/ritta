@@ -31,25 +31,25 @@ describe('UsersRepository', () => {
       let user: User;
 
       beforeEach(async () => {
-        jest.spyOn(userModel, 'findOne');
-        user = await usersRepository.findOne(userFilterQuery);
-
         userFilterQuery = {
           id: userStub().id,
         };
+
+        jest.spyOn(userModel, 'findOne');
+        user = await usersRepository.findOne(userFilterQuery);
 
         jest.clearAllMocks();
       });
 
       it('then it should call the userModel', () => {
-        expect(userModel.findOne).toHaveBeenCalledWith(userFilterQuery, {
-          _id: 0,
-          __v: 0,
-        });
+        expect(userModel.findOne).toHaveBeenCalled();
       });
 
       it('then it should return a user', () => {
-        expect(user).toEqual(userStub());
+        expect(user).toEqual({
+          ...userStub(),
+          toObject: () => userStub,
+        });
       });
     });
   });
@@ -57,8 +57,13 @@ describe('UsersRepository', () => {
   describe('find', () => {
     describe('when find is called', () => {
       let users: User[];
+      let userFilterQuery: any;
 
       beforeEach(async () => {
+        userFilterQuery = {
+          id: userStub().id,
+        };
+
         jest.spyOn(userModel, 'find');
         users = await usersRepository.find(userFilterQuery);
       });
@@ -68,7 +73,9 @@ describe('UsersRepository', () => {
       });
 
       it('then it should return a user', () => {
-        expect(users).toEqual([userStub()]);
+        expect(users).toStrictEqual([
+          { ...userStub(), toObject: () => userStub },
+        ]);
       });
     });
   });
@@ -76,8 +83,13 @@ describe('UsersRepository', () => {
   describe('findOneAndUpdate', () => {
     describe('when findOneAndUpdate is called', () => {
       let user: User;
+      let userFilterQuery: any;
 
       beforeEach(async () => {
+        userFilterQuery = {
+          id: userStub().id,
+        };
+
         jest.spyOn(userModel, 'findOneAndUpdate');
         user = await usersRepository.findOneAndUpdate(
           userFilterQuery,

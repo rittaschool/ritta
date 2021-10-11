@@ -70,6 +70,7 @@ describe('UsersController', () => {
           firstName: filteredUserStub().firstName,
           lastName: filteredUserStub().lastName,
           password: 'test1234567890',
+          oauth2Identifiers: {},
         };
 
         user = await controller.createUser(createUserDto);

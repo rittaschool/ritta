@@ -10,13 +10,19 @@ export abstract class MockModel<T> {
 
   findOne(): { exec: () => T } {
     return {
-      exec: () => this.entityStub,
+      exec: () => {
+        return {
+          ...this.entityStub,
+          toObject: () => this.entityStub as T,
+        };
+      },
+      // exec: (): T => this.entityStub,
     };
   }
 
-  find(): { exec: () => T[] } {
+  find(): { exec: () => [T & { toObject: () => T }] } {
     return {
-      exec: (): T[] => [this.entityStub],
+      exec: () => [{ ...this.entityStub, toObject: () => this.entityStub }],
     };
   }
 

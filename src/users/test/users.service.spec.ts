@@ -36,6 +36,7 @@ describe('UsersService', () => {
 
     service = module.get<UsersService>(UsersService);
     users.length = 0;
+    users.push(userStub());
   });
 
   it('should be defined', () => {
@@ -49,6 +50,7 @@ describe('UsersService', () => {
       password: 'test1234567890',
       firstName: 'Test1',
       lastName: 'Testing',
+      oauth2Identifiers: {},
     });
 
     expect(user).toBeDefined();
@@ -62,8 +64,6 @@ describe('UsersService', () => {
   });
 
   it('should return my user with id', async () => {
-    console.log(userStub().id, users);
-
     const user = await service.findOne(userStub().id);
 
     expect(user).toEqual(userStub());

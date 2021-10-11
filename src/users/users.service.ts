@@ -95,6 +95,8 @@ export class UsersService {
   async findAll(): Promise<User[]> {
     const userDocs = await this.usersRepository.find({});
 
+    console.log(userDocs[0].toObject);
+
     return userDocs.map((user) => user.toObject());
   }
 
@@ -116,7 +118,8 @@ export class UsersService {
 
       return user.toObject();
     } catch (error) {
-      throw new HttpException('User not found', HttpStatus.FORBIDDEN);
+      console.log(error);
+      throw new NotFoundException('User not found');
     }
   }
 

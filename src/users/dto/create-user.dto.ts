@@ -1,6 +1,12 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsAscii, IsObject, IsString, MinLength } from 'class-validator';
+import {
+  IsAscii,
+  IsObject,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
 import { OAuthIdentifiersDto } from './oauth-identifiers.dto';
 
 @InputType()
