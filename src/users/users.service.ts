@@ -13,6 +13,7 @@ import { User } from './schemas/user.schema';
 import { RandomString } from '../utils/randomString';
 import { Provider } from '../auth/types';
 import { UsersRepository } from './users.repository';
+import { ForbiddenError } from 'apollo-server-errors';
 
 // Omit removes some properties from User interface
 export interface FilteredUser
@@ -53,7 +54,6 @@ export class UsersService {
         throw new BadRequestException('User with opinsys oauth id exists');
       } catch (e) {
         if (e instanceof BadRequestException) throw e;
-        console.log(e);
         // All fine :)
       }
     }
@@ -124,7 +124,7 @@ export class UsersService {
 
       return user.toObject();
     } catch (error) {
-      throw new Error('User not found!');
+      throw new HttpException('User not found', HttpStatus.FORBIDDEN);
     }
   }
 
@@ -134,7 +134,8 @@ export class UsersService {
       { ...updateUserDto, updatedAt: new Date() },
     );
 
-    if (!updatedUser) throw new NotFoundException('User not found!');
+    if (!updatedUser)
+      throw new HttpException('User not found', HttpStatus.FORBIDDEN);
 
     return updatedUser;
   }

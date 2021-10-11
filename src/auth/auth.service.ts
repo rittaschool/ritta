@@ -8,7 +8,13 @@ import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { FilteredUser, UsersService } from '../users/users.service';
 import { User } from '../users/schemas/user.schema';
 import { LoginUserInput } from './dto/login-input.dto';
-import { Provider, TokenPayload, TokenResponse, Tokens } from './types';
+import {
+  Provider,
+  TokenPayload,
+  TokenResponse,
+  Tokens,
+  TokenType,
+} from './types';
 import * as argon2 from 'argon2';
 import { Cryptor } from '../utils/encryption.service';
 import { Oauth2Service } from './oauth2/oauth2.service';
@@ -37,18 +43,23 @@ export class AuthService {
   }
 
   async login(user: User): Promise<TokenResponse> {
-    const payload: TokenPayload = {
+    const accessPayload: TokenPayload = {
       sub: user.id,
-      name: user.username,
+      type: TokenType.ACCESS,
+    };
+
+    const refreshPayload: TokenPayload = {
+      sub: user.id,
+      type: TokenType.REFRESH,
     };
 
     return {
       accessToken: await this.jwtService.signAsync(
-        payload,
+        accessPayload,
         this.getTokenOptions('access', user),
       ),
       refreshToken: await this.jwtService.signAsync(
-        payload,
+        refreshPayload,
         this.getTokenOptions('refresh', user),
       ),
     };
@@ -59,11 +70,32 @@ export class AuthService {
       throw new BadRequestException('Social Provider not provided!');
     if (!code) throw new BadRequestException('Code not present!');
 
-    const { firstName, lastName, id, provider } =
-      await this.oauthService.verifyCode(socialProvider, code);
-    console.log(provider, id);
-    const rittaUser = await this.usersService.findOneWithSocial(provider, id);
-    console.log(rittaUser);
+    const { id, provider } = await this.oauthService.verifyCode(
+      socialProvider,
+      code,
+    );
+    const user = await this.usersService.findOneWithSocial(provider, id);
+
+    const accessPayload: TokenPayload = {
+      sub: user.id,
+      type: TokenType.ACCESS,
+    };
+
+    const refreshPayload: TokenPayload = {
+      sub: user.id,
+      type: TokenType.REFRESH,
+    };
+
+    return {
+      accessToken: await this.jwtService.signAsync(
+        accessPayload,
+        this.getTokenOptions('access', user),
+      ),
+      refreshToken: await this.jwtService.signAsync(
+        refreshPayload,
+        this.getTokenOptions('refresh', user),
+      ),
+    };
   }
 
   getTokenOptions(type: 'access' | 'refresh', user: User): JwtSignOptions {
