@@ -5,7 +5,7 @@
   "contributors": [
     {
       "email": "roni@ritta.fi",
-      "name": "Roni",
+      "name": "Roni Äikäs",
       "url": "https://github.com/raikasdev"
     },
     {
@@ -15,7 +15,7 @@
     }
   ],
   "private": true,
-  "license": "Apache License 2.0",
+  "license": "GPLv3",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
