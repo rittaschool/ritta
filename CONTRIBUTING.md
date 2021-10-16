@@ -8,7 +8,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 1. Ensure that the following are not in the branch:
   * node_modules
-  * .env
+  * config/config.yaml
   * globalConfig.json (test suite config)
   * Anything else listed in .gitignore
 2. List your changes in the pull request comments
