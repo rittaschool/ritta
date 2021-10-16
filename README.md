@@ -1,40 +1,36 @@
-<!-- Hello! Welcome to the sources of the Ritta readme, woo! -->
-<img src="https://github.com/rittaschool/info/raw/master/Ritta.png" alt="Ritta Logo" height="100">
+# <img src="https://raw.githubusercontent.com/rittaschool/info/master/Ritta.png" height="100px" alt="ritta-server" />
 
-Ritta is a modern system for schools to keep connection between home and school strong.
+Ritta is a modern open source school management system for schools to keep connection between home and school strong.
 
-[![License](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://opensource.org/licenses/GPLv3)
-[![GitHub last commit](https://img.shields.io/github/last-commit/rittaschool/ritta-server.svg?style=flat)]()
-[![Twitter Follow](https://img.shields.io/twitter/follow/rittaschool.svg?style=social)](https://twitter.com/rittaschool)
-[![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/) \
-Also visit our [webpage!](https://ritta.fi/)
+[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/)
+[![GitHub last commit](https://img.shields.io/github/last-commit/rittaschool/ritta-server.svg?color=orange&style=for-the-badge&logo=git)](https://github.com/rittaschool/ritta-server/commits/master)
+[![Discord Channel](https://img.shields.io/discord/718870928498360463.svg?color=blue&style=for-the-badge&logo=discord)](https://discord.gg/KwpZGyvX3Q)
 
-## Branches
+## API Documentation
 
-> "release" - Mainly the current main code that has been proven to be pretty stable \
-> "nest" - Current development branch, converting all code into NestJS. Midka & Roni
+The API documentation can be seen by going to `https://<ritta-server url>/docs`
+## Tech Stack
 
-## Our goals
+**[ritta-next](https://github.com/rittaschool/ritta-next):** NextJS, Bootstrap
 
-We want to create a modern solution for nowday's standards. About 50% of **all** traffic is from mobile devices, and when talking about students, more and more do not have a access to a desktop computer. So, making a fast, secure, responsive and a modern solution for schools to strengthen the connection between home and school.
+**[ritta-server](https://github.com/rittaschool/ritta-server):** Node, TypeScript, NestJS, MongoDB
 
-## Project structure
-
-Ritta is currently spread across multiple repos:
-
-- [ritta-server (the API-server)](https://github.com/rittaschool/ritta-server)
-- [ritta-next (NextJS web frontend)](https://github.com/rittaschool/ritta-server)
-
-# Stargazers
-
-[![Stargazers repo roster for @rittaschool/ritta-server](https://reporoster.com/stars/dark/notext/rittaschool/ritta-server)](https://github.com/rittaschool/ritta-server/stargazers)
-
-## What/how?
-
-We use TypeScript for programming, NodeJS for the runtime, NestJS (with mongoose/MongoDB) as the web server framework.
-We also do testing using Jest, as it has some level of support for ES6 TypeScript.
-We highly recommend to using nginx or other something else on top of Ritta as a reverse proxy.
-
+  
 ## Contributing
 
-If you want to contribute, you should join our [Community Discord Server](https://discord.gg/XZhf7seBHX) first!
+Contributions are always welcome! \
+
+See [`CONTRIBUTING.md`](https://github.com/rittaschool/ritta-server/blob/master/CONTRIBUTING.md) for how to contribute.
+## Roadmap
+
+We are currently working on the [1.1 Release "Frostbite"](https://github.com/rittaschool/ritta-server/milestone/1). \
+It's due date is currently on January 1 of 2022, and it will contain the core features likes users, accounts, schools and messaging. \
+It is not functional for school usage, but will be a good starting point for faster development for [1.1 release "Bitterheart"](https://github.com/rittaschool/ritta-server/milestone/2) that adds more functional features.
+# But why?
+
+We need good software, easy to use for the public, easy to integrate for the developers. \
+Finland is the current primary market for Ritta, and here there isn't a open source solution for school management. There have been some projects, but they have in some or other way failed. But we here at Ritta are passionate what we do, and want to make open source software more used in the public sector.
+Also we want to create good open source software for schools. Ritta is open source because we want to give the control to the schools, not the big companies. They can even create their own addons to Ritta so it will suit their need better, or better contribute the addon to the Ritta project. That's the beaty of open source.
+## Contact us!
+
+Contact us at [roni@ritta.fi](mailto:roni@ritta.fi) or join our Discord server (link in the badge above)!
