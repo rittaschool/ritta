@@ -7,6 +7,18 @@ services:
       - PORT=3001
     ports:
       - '3001:3001'
+    networks:
+      - ritta
+
+  users:
+    build: ./apps/users
+    environment:
+      - NODE_ENV=production
+      - PORT=3002
+    ports:
+      - '3002:3002'
+    networks:
+      - ritta
 
   rabbitmq:
     image: rabbitmq:3.9.7
