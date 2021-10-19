@@ -1,0 +1,17 @@
+{
+  "folders": [
+	{
+		"name": "ritta-server",
+		"path": "."
+	},
+	{
+		"name": "gateway",
+		"path": "apps/gateway"
+	},
+	{
+		"name": "users",
+		"path": "apps/users"
+	}
+],
+  "settings": {}
+}
