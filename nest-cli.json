@@ -1,8 +1,0 @@
-{
-  "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
-  "compilerOptions": {
-    "plugins": ["@nestjs/swagger"],
-    "assets": [{ "include": "src/config/*.yaml", "outDir": "./dist/config" }]
-  }
-}
