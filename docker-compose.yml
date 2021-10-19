@@ -1,0 +1,20 @@
+version: '3'
+services:
+  gateway:
+    build: ./apps/gateway
+
+  users:
+    build: ./apps/users
+
+  rabbitmq:
+    image: rabbitmq:3.9.7
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker-vols/rabbitmq/data:/var/lib/rabbitmq/
+      - ~/.docker-vols/rabbitmq/log:/var/log/rabbitmq
+
+networks:
+  ritta:
+    driver: bridge
