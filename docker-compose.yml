@@ -2,9 +2,11 @@ version: '3'
 services:
   gateway:
     build: ./apps/gateway
-
-  users:
-    build: ./apps/users
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+    ports:
+      - '3001:3001'
 
   rabbitmq:
     image: rabbitmq:3.9.7
@@ -14,6 +16,8 @@ services:
     volumes:
       - ~/.docker-vols/rabbitmq/data:/var/lib/rabbitmq/
       - ~/.docker-vols/rabbitmq/log:/var/log/rabbitmq
+    networks:
+      - ritta
 
 networks:
   ritta:
