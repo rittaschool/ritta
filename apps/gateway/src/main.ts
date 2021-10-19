@@ -7,10 +7,6 @@ async function bootstrap() {
     AppModule,
     {
       transport: Transport.RMQ,
-      options: {
-        urls: [],
-        queue: 'gateway',
-      },
     },
   );
   app.listen().then(() => console.log(`Gateway is online`));

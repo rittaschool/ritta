@@ -4,11 +4,16 @@ services:
     build: ./apps/gateway
     environment:
       - NODE_ENV=production
-      - PORT=3001
+      - RMQ_HOST=rabbitmq
+      - RMQ_PORT=5672
+      - RMQ_USERNAME=guest
+      - RMQ_PASSWORD=guest
     ports:
       - '3001:3001'
     networks:
       - ritta
+    depends_on:
+      - rabbitmq
 
   users:
     build: ./apps/users
@@ -22,6 +27,7 @@ services:
 
   rabbitmq:
     image: rabbitmq:3.9.7-management
+    container_name: rabbitmq
     ports:
       - 5672:5672
       - 15672:15672

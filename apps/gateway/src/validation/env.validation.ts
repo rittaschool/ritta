@@ -1,23 +1,38 @@
 import { plainToClass } from 'class-transformer';
-import { IsEnum, IsNumber, validateSync } from 'class-validator';
+import {
+  IsArray,
+  IsEnum,
+  IsNumber,
+  IsString,
+  validateSync,
+} from 'class-validator';
 
-enum Enviroment {
+enum Environment {
   Development = 'development',
   Production = 'production',
   Test = 'test',
   Provision = 'provision',
 }
 
-class EnviromentVariables {
-  @IsEnum(Enviroment)
-  NODE_ENV: Enviroment;
+class EnvironmentVariables {
+  @IsEnum(Environment)
+  NODE_ENV: Environment;
+
+  @IsString()
+  RMQ_HOST: string;
 
   @IsNumber()
-  PORT: number;
+  RMQ_PORT: number;
+
+  @IsString()
+  RMQ_USERNAME: string;
+
+  @IsString()
+  RMQ_PASSWORD: string;
 }
 
 export const validate = (config: Record<string, unknown>) => {
-  const validatedConfig = plainToClass(EnviromentVariables, config, {
+  const validatedConfig = plainToClass(EnvironmentVariables, config, {
     enableImplicitConversion: true,
   });
   const errors = validateSync(validatedConfig, {
