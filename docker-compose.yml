@@ -21,13 +21,13 @@ services:
       - ritta
 
   rabbitmq:
-    image: rabbitmq:3.9.7
+    image: rabbitmq:3.9.7-management
     ports:
       - 5672:5672
       - 15672:15672
     volumes:
-      - ~/.docker-vols/rabbitmq/data:/var/lib/rabbitmq/
-      - ~/.docker-vols/rabbitmq/log:/var/log/rabbitmq
+      - ~/.docker-vols/ritta/rabbitmq/data:/var/lib/rabbitmq/
+      - ~/.docker-vols/ritta/rabbitmq/log:/var/log/rabbitmq
     networks:
       - ritta
 

@@ -1,12 +1,18 @@
-import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const config = app.get(ConfigService);
-  await app.listen(config.get('PORT'), () => {
-    console.log(`Server running on port ${config.get('PORT')}`);
-  });
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.RMQ,
+      options: {
+        urls: [],
+        queue: 'gateway',
+      },
+    },
+  );
+  app.listen().then(() => console.log(`Gateway is online`));
 }
 bootstrap();
