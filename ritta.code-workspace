@@ -1,17 +1,20 @@
 {
   "folders": [
-	{
-		"name": "ritta-server",
-		"path": "."
-	},
-	{
-		"name": "gateway",
-		"path": "apps/gateway"
-	},
-	{
-		"name": "users",
-		"path": "apps/users"
-	}
-],
+    {
+      "name": "ritta-server",
+      "path": "."
+    },
+    {
+      "name": "gateway",
+      "path": "apps/gateway"
+    },
+    {
+      "name": "users",
+      "path": "apps/users"
+    },
+    {
+      "path": "../typings"
+    }
+  ],
   "settings": {}
 }
