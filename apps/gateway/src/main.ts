@@ -1,25 +1,13 @@
 import { config } from 'dotenv';
 config();
 import { NestFactory } from '@nestjs/core';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
+import { ClientProxy } from '@nestjs/microservices';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    AppModule,
-    {
-      transport: Transport.RMQ,
-      options: {
-        urls: [
-          `amqp://${process.env.RMQ_PASSWORD}:${process.env.RMQ_USERNAME}@${process.env.RMQ_HOST}:${process.env.RMQ_PORT}/`,
-        ],
-        queue: 'gateway_queue',
-        queueOptions: {
-          durable: true,
-        },
-      },
-    },
-  );
-  app.listen().then(() => console.log(`Gateway is online`));
+  const app = await NestFactory.create(AppModule);
+  const bus = app.get<ClientProxy>('EVENT_BUS');
+  await bus.connect().catch((err) => console.log(err));
+  await app.listen(process.env.PORT, () => console.log(`Gateway is online`));
 }
 bootstrap();

@@ -6,17 +6,20 @@ services:
       - rabbitmq
     environment:
       - NODE_ENV=production
+      - PORT=3000
       - RMQ_HOST=rabbitmq
       - RMQ_PORT=5672
       - RMQ_USERNAME=guest
       - RMQ_PASSWORD=guest
     ports:
-      - '3001:3001'
+      - '3000:3000'
     networks:
       - ritta
 
   users:
     build: ./apps/users
+    depends_on:
+      - rabbitmq
     environment:
       - NODE_ENV=production
       - RMQ_HOST=rabbitmq
