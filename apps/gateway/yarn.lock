@@ -3646,6 +3646,7 @@ __metadata:
     ts-node: ^10.0.0
     tsconfig-paths: ^3.10.1
     typescript: ^4.3.5
+    typings: rittaschool/typings
   languageName: unknown
   linkType: soft
 
@@ -7139,6 +7140,13 @@ typescript@^4.3.5:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: c97c33903f1eb4f9e178649befdfc859d93157db1eccd1e521e84976ec6861db53412d8018e5e4c5d09268771c65498d42caa64bd881878346c3644f6b7cd202
+  languageName: node
+  linkType: hard
+
+typings@rittaschool/typings:
+  version: 0.0.1
+  resolution: "typings@https://github.com/rittaschool/typings.git#commit=09469855250a24dae7606591b867b38ad75d77fa"
+  checksum: c187953409ee8c219ef6f15b928720c47e44136773c15216be1780099b36f075f4fa0764eb1f768eda8df1ca651a1d6e1fbb4c72891154decc4bc3ee501170e5
   languageName: node
   linkType: hard
 
