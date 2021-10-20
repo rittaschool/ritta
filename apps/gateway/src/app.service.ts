@@ -11,7 +11,6 @@ export class AppService {
   }
 
   user(): string {
-    //console.log(this.client.emit('user', 'user'));
     this.client.emit<string>(IEventType.USER_CREATED, 'new user midka');
     return 'Event sent successfully';
   }
