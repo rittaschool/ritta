@@ -6305,6 +6305,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"shared@github:rittaschool/typings":
+  version: 0.0.2
+  resolution: "shared@https://github.com/rittaschool/typings.git#commit=54dc969b53f1174c44bd71b07855a5b015518a0f"
+  checksum: 495491edcccc3866440681eb709ec065955831a891e8185281646792f8e506da6742c646453d9e3184bcf6b5c891efb9c7f343c671e9b7afe13ad28b3fd0da50
+  languageName: node
+  linkType: hard
+
 "shebang-command@npm:^2.0.0":
   version: 2.0.0
   resolution: "shebang-command@npm:2.0.0"
@@ -7102,13 +7109,6 @@ typescript@^4.3.5:
   languageName: node
   linkType: hard
 
-"typings@github:rittaschool/typings":
-  version: 0.0.1
-  resolution: "typings@https://github.com/rittaschool/typings.git#commit=09469855250a24dae7606591b867b38ad75d77fa"
-  checksum: c187953409ee8c219ef6f15b928720c47e44136773c15216be1780099b36f075f4fa0764eb1f768eda8df1ca651a1d6e1fbb4c72891154decc4bc3ee501170e5
-  languageName: node
-  linkType: hard
-
 "unique-filename@npm:^1.1.1":
   version: 1.1.1
   resolution: "unique-filename@npm:1.1.1"
@@ -7198,13 +7198,13 @@ typescript@^4.3.5:
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
     rxjs: ^7.2.0
+    shared: "github:rittaschool/typings"
     supertest: ^6.1.3
     ts-jest: ^27.0.3
     ts-loader: ^9.2.3
     ts-node: ^10.0.0
     tsconfig-paths: ^3.10.1
     typescript: ^4.3.5
-    typings: "github:rittaschool/typings"
   languageName: unknown
   linkType: soft
 

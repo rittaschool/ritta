@@ -6,8 +6,7 @@
   "private": true,
   "license": "GPLv3",
   "scripts": {
-    "befbuild": "rimraf dist",
-    "build": "befbuild && nest build",
+    "build": "rimraf dist && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -30,11 +29,12 @@
     "amqplib": "^0.8.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
+    "dotenv": "^10.0.0",
     "joi": "^17.4.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "typings": "rittaschool/typings"
+    "shared": "github:rittaschool/typings"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
