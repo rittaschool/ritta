@@ -34,7 +34,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "shared": "github:rittaschool/typings"
+    "shared": "github:rittaschool/typings#main"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",

@@ -3641,7 +3641,7 @@ __metadata:
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
     rxjs: ^7.2.0
-    shared: "github:rittaschool/typings"
+    shared: "github:rittaschool/typings#main"
     supertest: ^6.1.3
     ts-jest: ^27.0.3
     ts-loader: ^9.2.3
@@ -6347,10 +6347,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shared@github:rittaschool/typings":
+"shared@github:rittaschool/typings#main":
   version: 0.0.2
-  resolution: "shared@https://github.com/rittaschool/typings.git#commit=54dc969b53f1174c44bd71b07855a5b015518a0f"
-  checksum: 495491edcccc3866440681eb709ec065955831a891e8185281646792f8e506da6742c646453d9e3184bcf6b5c891efb9c7f343c671e9b7afe13ad28b3fd0da50
+  resolution: "shared@https://github.com/rittaschool/typings.git#commit=4e021c58b0b63c0be25988835a6f84101c2ac24d"
+  checksum: 8263e1b63da7484b64fa605d2d45dc80f43ea4d64d9973c8f57560be1934060596493703b7346bd3b9c7ee0a9a12e832bd9f0c8864e06164d6e65e2d483f0577
   languageName: node
   linkType: hard
 
