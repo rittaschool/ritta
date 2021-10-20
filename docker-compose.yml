@@ -2,6 +2,8 @@ version: '3'
 services:
   gateway:
     build: ./apps/gateway
+    depends_on:
+      - rabbitmq
     environment:
       - NODE_ENV=production
       - RMQ_HOST=rabbitmq
@@ -12,8 +14,6 @@ services:
       - '3001:3001'
     networks:
       - ritta
-    depends_on:
-      - rabbitmq
 
   users:
     build: ./apps/users

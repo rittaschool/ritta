@@ -6,8 +6,8 @@
   "private": true,
   "license": "GPLv3",
   "scripts": {
-    "prebuild": "rimraf dist",
-    "build": "nest build",
+    "befbuild": "rimraf dist",
+    "build": "befbuild && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -73,5 +73,6 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  }
+  },
+  "packageManager": "yarn@3.0.2"
 }

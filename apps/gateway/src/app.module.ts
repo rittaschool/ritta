@@ -19,7 +19,7 @@ import { validate } from './validation/env.validation';
   controllers: [AppController],
   providers: [
     {
-      provide: 'SOME_SERVICE',
+      provide: 'BROKER',
       useFactory: (configService: ConfigService) => {
         const pass = configService.get('RMQ_PASSWORD');
         const user = configService.get('RMQ_USERNAME');
