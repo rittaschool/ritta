@@ -16,5 +16,7 @@
       "path": "../typings"
     }
   ],
-  "settings": {}
+  "settings": {
+    "discord.enabled": false
+  }
 }
