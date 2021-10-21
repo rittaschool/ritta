@@ -26,10 +26,23 @@ services:
       - RMQ_PORT=5672
       - RMQ_USERNAME=guest
       - RMQ_PASSWORD=guest
+      - MONGO_URI=mongodb://password:ritta@mongo:27000/ritta
     ports:
       - '3002:3002'
     networks:
       - ritta
+
+  users_db:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=ritta
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - ~/.docker-vols/ritta/users_db:/data/db
+    networks:
+      - ritta
+    ports:
+      - '27000:27017'
 
   rabbitmq:
     image: rabbitmq:3.9.7-management

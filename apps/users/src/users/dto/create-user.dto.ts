@@ -1,4 +1,4 @@
-import { ILocation, IOAuth2Identifiers } from 'shared';
+import { ILocation, IOAuth2Identifiers } from '@rittaschool/shared';
 
 export class CreateUserDto {
   firstName: string;
