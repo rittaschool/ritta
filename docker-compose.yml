@@ -42,7 +42,7 @@ services:
     networks:
       - ritta
     ports:
-      - '27000:27017'
+      - '4001:27017'
 
   rabbitmq:
     image: rabbitmq:3.9.7-management

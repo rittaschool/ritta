@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { IEventType } from 'shared';
+import { IEventType } from '@rittaschool/shared';
 
 @Injectable()
 export class AppService {
