@@ -58,11 +58,23 @@ export class User implements Omit<IUser, 'accounts'> {
   // string type because we are going to store the accounts in a diffrent service. The string will be the id of the account
   @Prop({ required: true, type: [String], default: [] })
   accounts: string[];
+
+  @Prop({ required: false })
   latestLogin?: Date;
+
+  @Prop({ required: false })
   latestPasswordChange?: Date;
+
+  @Prop({ required: true, default: true })
   isFirstLogin: boolean;
-  isPasswordChangeRequired: boolean;
+
+  @Prop({ required: true, default: true })
+  isPasswordChangeRequired: boolean; // Prompts user to change his password
+
+  @Prop({ required: true, default: Date.now() })
   createdAt: Date;
+
+  @Prop({ required: true, default: Date.now() })
   updatedAt: Date;
 }
 
