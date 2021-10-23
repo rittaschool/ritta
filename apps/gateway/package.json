@@ -1,9 +1,9 @@
 {
   "name": "gateway",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
-  "private": true,
+  "description": "This is an API gateway for ritta server.",
+  "author": "Midka <me@midka.dev>",
+  "private": false,
   "license": "GPLv3",
   "scripts": {
     "build": "rimraf dist && nest build",
