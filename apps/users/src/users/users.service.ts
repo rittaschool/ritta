@@ -1,26 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
+  constructor(private usersRepository: UsersRepository) {}
+
   create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+    // Checking that user has email or username
+    if (!createUserDto.email && !createUserDto.username) {
+      throw new Error('Email or username is required');
+    }
+    return this.usersRepository.create(createUserDto);
   }
 
   findAll() {
-    return `This action returns all users`;
+    return this.usersRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: string) {
+    return this.usersRepository.findOne(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(id: string, updateUserDto: UpdateUserDto) {
+    // TODO: Make updateUserDto validation and add logic here
+    return this.usersRepository.update(id, updateUserDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id: string) {
+    return this.usersRepository.delete(id);
   }
 }
