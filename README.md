@@ -5,6 +5,7 @@
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/)
 [![GitHub last commit](https://img.shields.io/github/last-commit/rittaschool/ritta-server.svg?color=orange&style=for-the-badge&logo=git)](https://github.com/rittaschool/ritta-server/commits/master)
 [![Discord Channel](https://img.shields.io/discord/718870928498360463.svg?color=blue&style=for-the-badge&logo=discord)](https://discord.gg/KwpZGyvX3Q)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frittaschool%2Fritta-server.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frittaschool%2Fritta-server?ref=badge_shield)
 
 ## API Documentation
 
@@ -34,3 +35,7 @@ Also we want to create good open source software for schools. Ritta is open sour
 ## Contact us!
 
 Contact us at [roni@ritta.fi](mailto:roni@ritta.fi) or join our Discord server (link in the badge above)!
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frittaschool%2Fritta-server.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Frittaschool%2Fritta-server?ref=badge_large)
