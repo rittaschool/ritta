@@ -1,14 +1,19 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UsePipes } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import {
+  IEventType,
+  CreateUserDto,
+  CreateUserValidationSchema,
+} from '@rittaschool/shared';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { IEventType } from '@rittaschool/shared';
+import { JoiValidationPipe } from '../validation/joi.pipe';
 
 @Controller()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @UsePipes(new JoiValidationPipe(CreateUserValidationSchema))
   @MessagePattern(IEventType.USER_CREATED)
   create(@Payload() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);

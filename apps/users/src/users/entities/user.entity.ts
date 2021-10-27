@@ -1,81 +1,29 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
-  IAccount,
-  ILocation,
-  IMFAOptions,
-  IOAuth2Identifiers,
-  IUser,
-  IYubikeyOptions,
-} from '@rittaschool/shared';
-import { Document } from 'mongoose';
-import { v4 } from 'uuid';
-import {
+  User,
   MFAOptions,
-  Location,
   YubikeyOptions,
   Oauth2Identifiers,
-} from './classes';
+  Location,
+} from '@rittaschool/shared';
+import { Document, Schema } from 'mongoose';
+import { v4 } from 'uuid';
 
 export type UserDocument = User & Document;
-@Schema()
-export class User implements Omit<IUser, 'accounts'> {
-  @Prop({ unique: true, default: v4(), required: true, index: true })
-  id: string;
 
-  @Prop({ required: true })
-  firstName: string;
-
-  @Prop({ required: true })
-  lastName: string;
-
-  @Prop()
-  phoneNumber?: string;
-
-  @Prop()
-  alias?: string;
-
-  @Prop()
-  username?: string;
-
-  @Prop()
-  email?: string;
-
-  @Prop({ required: true })
-  password: string;
-
-  @Prop({ required: false, type: Location })
-  home: ILocation;
-
-  @Prop({ required: false, type: MFAOptions })
-  mfa?: IMFAOptions;
-
-  @Prop({ required: false, type: YubikeyOptions })
-  yubikey?: IYubikeyOptions;
-
-  @Prop({ required: false, type: Oauth2Identifiers })
-  oauth2Identifiers?: IOAuth2Identifiers;
-
-  // string type because we are going to store the accounts in a diffrent service. The string will be the id of the account
-  @Prop({ required: true, type: [String], default: [] })
-  accounts: string[];
-
-  @Prop({ required: false })
-  latestLogin?: Date;
-
-  @Prop({ required: false })
-  latestPasswordChange?: Date;
-
-  @Prop({ required: true, default: true })
-  isFirstLogin: boolean;
-
-  @Prop({ required: true, default: true })
-  isPasswordChangeRequired: boolean; // Prompts user to change his password
-
-  @Prop({ required: true, default: Date.now() })
-  createdAt: Date;
-
-  @Prop({ required: true, default: Date.now() })
-  updatedAt: Date;
-}
-
-export const UserSchema = SchemaFactory.createForClass(User);
+export const UserSchema = new Schema({
+  id: { type: String, default: v4(), required: true, index: true },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  phoneNumber: { type: String, required: false },
+  alias: { type: String, required: false },
+  username: { type: String, unique: true, required: false },
+  email: { type: String, required: false, unique: true },
+  password: String,
+  accounts: [String], // String because it's the id of the account stored in the accounts service
+  latestLogin: { type: Date, default: Date.now() },
+  latestPasswordChange: { type: Date, default: Date.now() },
+  isFirstLogin: { type: Boolean, default: true },
+  isPasswordChangeRequired: { type: Boolean, default: true },
+  createdAt: { type: Date, default: Date.now() },
+  updatedAt: { type: Date, default: Date.now() },
+});

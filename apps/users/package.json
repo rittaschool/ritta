@@ -28,7 +28,7 @@
     "@nestjs/microservices": "^8.1.1",
     "@nestjs/mongoose": "^9.0.1",
     "@nestjs/platform-express": "^8.0.0",
-    "@rittaschool/shared": "^0.0.5",
+    "@rittaschool/shared": "^0.0.10",
     "amqp-connection-manager": "^3.7.0",
     "amqplib": "^0.8.0",
     "class-transformer": "^0.4.0",
