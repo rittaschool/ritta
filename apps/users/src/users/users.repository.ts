@@ -14,7 +14,9 @@ export class UsersRepository {
   }
 
   async findOne(id: string): Promise<User> {
-    return this.userModel.findById(id).exec();
+    return this.userModel
+      .findOne({ $or: [{ id }, { email: id }, { username: id }] })
+      .exec();
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {

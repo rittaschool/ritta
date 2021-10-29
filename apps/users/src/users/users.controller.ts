@@ -19,13 +19,13 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @MessagePattern('findAllUsers')
+  @MessagePattern('get_users')
   findAll() {
     return this.usersService.findAll();
   }
 
-  @MessagePattern('findOneUser')
-  findOne(@Payload() id: string) {
+  @MessagePattern('get_user')
+  findOne(@Payload() { id }: { id: string }) {
     return this.usersService.findOne(id);
   }
 

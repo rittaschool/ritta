@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { UsersController } from './users.controller';
 
 import { validate } from './validation/env.validation';
 
@@ -24,7 +25,7 @@ import { validate } from './validation/env.validation';
       },
     ]),
   ],
-  controllers: [AppController],
+  controllers: [AppController, UsersController],
   providers: [AppService],
 })
 export class AppModule {}

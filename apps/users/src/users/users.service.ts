@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import { CreateUserDto } from '@rittaschool/shared';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
@@ -12,6 +13,13 @@ export class UsersService {
     if (!createUserDto.email && !createUserDto.username) {
       throw new Error('Email or username is required');
     }
+
+    // Checking that user does not exist
+    const possibleUser = this.findOne(
+      createUserDto.email || createUserDto.username,
+      false,
+    );
+
     return this.usersRepository.create(createUserDto);
   }
 
@@ -19,8 +27,16 @@ export class UsersService {
     return this.usersRepository.findAll();
   }
 
-  findOne(id: string) {
-    return this.usersRepository.findOne(id);
+  async findOne(id: string, throwError = true) {
+    const user = await this.usersRepository.findOne(id);
+    console.log(user);
+
+    if (!user && throwError) {
+      console.log('User not found!');
+      throw new RpcException('User not found');
+    }
+
+    return user;
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
