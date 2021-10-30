@@ -83,7 +83,7 @@ services:
     ports:
       - '4001:27017'
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh --quiet
+      test: mongosh --quiet --eval "db.runCommand('ping').ok"
       interval: 5s
       timeout: 10s
       retries: 12
