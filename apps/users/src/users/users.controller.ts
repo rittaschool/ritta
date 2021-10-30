@@ -35,7 +35,7 @@ export class UsersController {
   }
 
   @MessagePattern(IEventType.USER_REMOVED)
-  remove(@Payload() id: string) {
+  remove(@Payload() { id }: { id: string }) {
     return this.usersService.remove(id);
   }
 }
