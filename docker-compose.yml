@@ -72,7 +72,7 @@ services:
       - ritta
 
   users_db:
-    image: mongo
+    image: mongo:5.0.3
     environment:
       - MONGO_INITDB_ROOT_USERNAME=ritta
       - MONGO_INITDB_ROOT_PASSWORD=password
