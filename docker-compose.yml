@@ -83,7 +83,7 @@ services:
     ports:
       - '4001:27017'
     healthcheck:
-      test: echo 'db.runCommand({serverStatus:1}).ok' | mongo admin -u ritta -p password --quiet | grep 1
+      test: mongosh --quiet --eval "db.runCommand('ping').ok"
       interval: 5s
       timeout: 10s
       retries: 12
