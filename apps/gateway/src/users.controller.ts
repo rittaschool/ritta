@@ -25,8 +25,9 @@ export class UsersController {
   constructor(@Inject('EVENT_BUS') private client: ClientProxy) {}
 
   @Post()
-  @UsePipes(new JoiValidationPipe(CreateUserValidationSchema))
+  @UsePipes(new JoiValidationPipe(CreateUserValidationSchema)) // Validates that the body is right
   async createUser(@Body() createUserDto: CreateUserDto) {
+    // Send message to users microservice and return response, catch errors and send them to client
     return this.client
       .send(IEventType.USER_CREATED, createUserDto)
       .pipe(catchError((val) => of({ error: val.message })))
@@ -40,6 +41,7 @@ export class UsersController {
 
   @Get('/:id')
   async getUser(@Param('id') id: string): Promise<IUser> {
+    // Send message to users microservice and return response, catch errors and send them to client
     return this.client
       .send('get_user', { id })
       .pipe(catchError((val) => of({ error: val.message })))
