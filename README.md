@@ -9,12 +9,6 @@ Ritta is a modern open source school management system for schools to keep conne
 ## API Documentation
 
 The API documentation can be seen by going to `https://<ritta-server url>/docs`
-## Tech Stack
-
-**[ritta-next](https://github.com/rittaschool/ritta-next):** NextJS, Bootstrap
-
-**[ritta-server](https://github.com/rittaschool/ritta-server):** Node, TypeScript, NestJS, MongoDB
-
   
 ## Contributing
 
