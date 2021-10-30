@@ -8,17 +8,21 @@ import { UsersRepository } from './users.repository';
 export class UsersService {
   constructor(private usersRepository: UsersRepository) {}
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     // Checking that user has email or username
     if (!createUserDto.email && !createUserDto.username) {
-      throw new Error('Email or username is required');
+      throw new RpcException('Email or username is required');
     }
 
     // Checking that user does not exist
-    const possibleUser = this.findOne(
+    const possibleUser = await this.findOne(
       createUserDto.email || createUserDto.username,
       false,
     );
+
+    if (possibleUser) {
+      throw new RpcException('User already exists!');
+    }
 
     return this.usersRepository.create(createUserDto);
   }
@@ -29,10 +33,8 @@ export class UsersService {
 
   async findOne(id: string, throwError = true) {
     const user = await this.usersRepository.findOne(id);
-    console.log(user);
 
     if (!user && throwError) {
-      console.log('User not found!');
       throw new RpcException('User not found');
     }
 
