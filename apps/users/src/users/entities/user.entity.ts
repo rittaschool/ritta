@@ -1,12 +1,10 @@
-import {
-  User,
-  MFAOptions,
-  YubikeyOptions,
-  Oauth2Identifiers,
-  Location,
-} from '@rittaschool/shared';
+import { User } from '@rittaschool/shared';
 import { Document, Schema } from 'mongoose';
 import { v4 } from 'uuid';
+import { LocationSchema } from './location.entity';
+import { MFASchema } from './mfa.entity';
+import { Oauth2Schema } from './oauth2.entity';
+import { YubikeySchema } from './yubikey.entity';
 
 export type UserDocument = User & Document;
 
@@ -20,6 +18,24 @@ export const UserSchema = new Schema({
   email: { type: String, required: false, unique: true },
   password: String,
   accounts: [String], // String because it's the id of the account stored in the accounts service
+  mfa: {
+    type: MFASchema,
+    default: {
+      enabled: false,
+      secret: `ritta_${v4()}_${process.env.MFA_SECRET}`,
+    },
+  },
+  yubikey: {
+    type: YubikeySchema,
+    default: {
+      enabled: false,
+    },
+  },
+  oauth2Identifiers: Oauth2Schema,
+  home: {
+    type: LocationSchema,
+    required: true, // true because if the schools needs to send letters to home or something else
+  },
   latestLogin: { type: Date, default: Date.now() },
   latestPasswordChange: { type: Date, default: Date.now() },
   isFirstLogin: { type: Boolean, default: true },
