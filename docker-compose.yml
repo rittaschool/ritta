@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   rabbitmq:
-    build: ./apps/rabbitmq
+    image: rabbitmq:3.9.7-management
     container_name: rabbitmq
     ports:
       - 5672:5672
@@ -12,7 +12,7 @@ services:
     networks:
       - ritta
     healthcheck:
-      test: ["CMD", "/usr/bin/curl", "-f", "https://webhook.site/eb1e061b-06b8-46c1-8e73-65bd64c1db46"]
+      test: rabbitmq-diagnostics -q ping
       interval: 5s
       timeout: 10s
       retries: 12
@@ -83,7 +83,7 @@ services:
     ports:
       - '4001:27017'
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh
+      test: echo 'db.runCommand("ping").ok' | mongosh --quiet
       interval: 5s
       timeout: 10s
       retries: 12
