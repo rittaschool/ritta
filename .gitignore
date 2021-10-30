@@ -46,3 +46,7 @@ config.yaml
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# code-workspace
+
+*.code-workspace
