@@ -47,8 +47,6 @@ services:
   #     - RMQ_PORT=5672
   #     - RMQ_USERNAME=guest
   #     - RMQ_PASSWORD=guest
-  #   ports:
-  #     - '3001:3001'
   #   networks:
   #     - ritta
 
@@ -66,8 +64,6 @@ services:
       - RMQ_USERNAME=guest
       - RMQ_PASSWORD=guest
       - MONGO_URI=mongodb://ritta:password@users_db:27017/ritta?authSource=admin
-    ports:
-      - '3002:3002'
     networks:
       - ritta
 
