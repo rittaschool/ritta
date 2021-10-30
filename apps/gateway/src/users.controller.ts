@@ -1,4 +1,12 @@
-import { Controller, Get, Inject, Param, Post, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Post,
+  UsePipes,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import {
   CreateUserDto,
@@ -15,7 +23,7 @@ export class UsersController {
 
   @Post()
   @UsePipes(new JoiValidationPipe(CreateUserValidationSchema))
-  async createUser(createUserDto: CreateUserDto): Promise<IUser> {
+  async createUser(@Body() createUserDto: CreateUserDto) {
     return this.client
       .send(IEventType.USER_CREATED, createUserDto)
       .pipe(catchError((val) => of({ error: val.message })))
@@ -24,7 +32,6 @@ export class UsersController {
 
   @Get()
   async getUsers(): Promise<IUser[]> {
-    console.log('getUsers');
     return this.client.send<IUser[]>('get_users', {}).toPromise();
   }
 
