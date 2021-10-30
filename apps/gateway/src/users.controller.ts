@@ -17,7 +17,10 @@ import {
 import { catchError, of } from 'rxjs';
 import { JoiValidationPipe } from './validation/joi.pipe';
 
-@Controller('/users')
+@Controller({
+  path: 'users',
+  version: '1',
+})
 export class UsersController {
   constructor(@Inject('EVENT_BUS') private client: ClientProxy) {}
 
