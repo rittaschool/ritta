@@ -15,9 +15,9 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
   const bus = app.get<ClientProxy>('EVENT_BUS');
-  await bus
-    .connect()
-    .catch(() => console.log('Error connecting to RabbitMQ, Reconnecting...'));
+  try {
+    await bus.connect();
+  } catch (error) {}
 
   const config = new DocumentBuilder()
     .setTitle('Ritta')
