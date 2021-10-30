@@ -24,6 +24,7 @@
     "@nestjs/core": "^8.0.0",
     "@nestjs/microservices": "^8.1.1",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/platform-fastify": "^8.1.2",
     "@rittaschool/shared": "^0.0.10",
     "amqp-connection-manager": "^3.7.0",
     "amqplib": "^0.8.0",

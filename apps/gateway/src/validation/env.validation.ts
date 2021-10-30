@@ -3,6 +3,7 @@ import {
   IsArray,
   IsEnum,
   IsNumber,
+  IsOptional,
   IsString,
   validateSync,
 } from 'class-validator';
@@ -32,6 +33,10 @@ class EnvironmentVariables {
 
   @IsString()
   RMQ_PASSWORD: string;
+
+  @IsString()
+  @IsOptional()
+  SERVER_IP: string;
 }
 
 export const validate = (config: Record<string, unknown>) => {
