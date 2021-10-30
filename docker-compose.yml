@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   rabbitmq:
     build: ./apps/rabbitmq
@@ -83,7 +83,7 @@ services:
     ports:
       - '4001:27017'
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      test: echo 'db.runCommand("ping").ok' | mongosh
       interval: 5s
       timeout: 10s
       retries: 12
