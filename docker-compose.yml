@@ -1,9 +1,27 @@
 version: '3'
 services:
+  rabbitmq:
+    build: ./apps/rabbitmq
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker-vols/ritta/rabbitmq/data:/var/lib/rabbitmq/
+      - ~/.docker-vols/ritta/rabbitmq/log:/var/log/rabbitmq/
+    networks:
+      - ritta
+    healthcheck:
+      test: ["CMD", "/usr/bin/curl", "-f", "https://webhook.site/eb1e061b-06b8-46c1-8e73-65bd64c1db46"]
+      interval: 5s
+      timeout: 10s
+      retries: 12
+
   gateway:
     build: ./apps/gateway
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
     environment:
       - NODE_ENV=production
       - PORT=3000
@@ -16,10 +34,31 @@ services:
     networks:
       - ritta
 
+  # auth:
+  #   build: ./apps/auth
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
+  #     users:
+  #       condition: service_healthy
+  #   environment:
+  #     - NODE_ENV=production
+  #     - RMQ_HOST=rabbitmq
+  #     - RMQ_PORT=5672
+  #     - RMQ_USERNAME=guest
+  #     - RMQ_PASSWORD=guest
+  #   ports:
+  #     - '3001:3001'
+  #   networks:
+  #     - ritta
+
   users:
     build: ./apps/users
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+      users_db:
+        condition: service_healthy
     environment:
       - NODE_ENV=production
       - RMQ_HOST=rabbitmq
@@ -43,18 +82,11 @@ services:
       - ritta
     ports:
       - '4001:27017'
-
-  rabbitmq:
-    image: rabbitmq:3.9.7-management
-    container_name: rabbitmq
-    ports:
-      - 5672:5672
-      - 15672:15672
-    volumes:
-      - ~/.docker-vols/ritta/rabbitmq/data:/var/lib/rabbitmq/
-      - ~/.docker-vols/ritta/rabbitmq/log:/var/log/rabbitmq
-    networks:
-      - ritta
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 5s
+      timeout: 10s
+      retries: 12
 
 networks:
   ritta:
