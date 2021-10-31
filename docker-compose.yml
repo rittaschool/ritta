@@ -78,7 +78,7 @@ services:
     networks:
       - ritta
     ports:
-      - "27017-27019:27017-27019"
+      - "127.0.0.1:27017:27017"
     healthcheck:
       test: mongosh --quiet --eval "db.runCommand('ping').ok"
       interval: 5s

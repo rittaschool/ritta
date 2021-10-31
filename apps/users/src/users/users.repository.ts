@@ -24,7 +24,7 @@ export class UsersRepository {
     return createdUser.save();
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     return this.userModel.findByIdAndUpdate(id, updateUserDto).exec();
   }
 

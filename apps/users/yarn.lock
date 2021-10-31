@@ -756,6 +756,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mapbox/node-pre-gyp@npm:^1.0.1":
+  version: 1.0.6
+  resolution: "@mapbox/node-pre-gyp@npm:1.0.6"
+  dependencies:
+    detect-libc: ^1.0.3
+    https-proxy-agent: ^5.0.0
+    make-dir: ^3.1.0
+    node-fetch: ^2.6.5
+    nopt: ^5.0.0
+    npmlog: ^5.0.1
+    rimraf: ^3.0.2
+    semver: ^7.3.5
+    tar: ^6.1.11
+  bin:
+    node-pre-gyp: bin/node-pre-gyp
+  checksum: 1ea1089e011b3fce7b4ccfdec93bfc00680183f36a683c7fbb1d368bcff2391f4c644021c1445261bafd0217eebcbbdd8c58ee0c73b1142e853ec08484d094ab
+  languageName: node
+  linkType: hard
+
 "@nestjs/cli@npm:^8.0.0":
   version: 8.1.4
   resolution: "@nestjs/cli@npm:8.1.4"
@@ -1040,12 +1059,67 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rittaschool/shared@npm:^0.0.10":
-  version: 0.0.10
-  resolution: "@rittaschool/shared@npm:0.0.10"
+"@otplib/core@npm:^12.0.1":
+  version: 12.0.1
+  resolution: "@otplib/core@npm:12.0.1"
+  checksum: b3c34bc20b31bc3f49cc0dc3c0eb070491c0101e8c1efa83cec48ca94158bd736aaca8187df667fc0c4a239d4ac52076bc44084bee04a50c80c3630caf77affa
+  languageName: node
+  linkType: hard
+
+"@otplib/plugin-crypto@npm:^12.0.1":
+  version: 12.0.1
+  resolution: "@otplib/plugin-crypto@npm:12.0.1"
+  dependencies:
+    "@otplib/core": ^12.0.1
+  checksum: 6867c74ee8aca6c2db9670362cf51e44f3648602c39318bf537421242e33f0012a172acd43bbed9a21d706e535dc4c66aff965380673391e9fd74cf685b5b13a
+  languageName: node
+  linkType: hard
+
+"@otplib/plugin-thirty-two@npm:^12.0.1":
+  version: 12.0.1
+  resolution: "@otplib/plugin-thirty-two@npm:12.0.1"
+  dependencies:
+    "@otplib/core": ^12.0.1
+    thirty-two: ^1.0.2
+  checksum: 920099e40d3e8c2941291c84c70064c2d86d0d1ed17230d650445d5463340e406bc413ddf2e40c374ddc4ee988ef1e3facacab9b5248b1ff361fd13df52bf88f
+  languageName: node
+  linkType: hard
+
+"@otplib/preset-default@npm:^12.0.1":
+  version: 12.0.1
+  resolution: "@otplib/preset-default@npm:12.0.1"
+  dependencies:
+    "@otplib/core": ^12.0.1
+    "@otplib/plugin-crypto": ^12.0.1
+    "@otplib/plugin-thirty-two": ^12.0.1
+  checksum: 8133231384f6277f77eb8e42ef83bc32a8b01059bef147d1c358d9e9bfd292e1c239f581fe008367a48489dd68952b7ac0948e6c41412fc06079da2c91b71d16
+  languageName: node
+  linkType: hard
+
+"@otplib/preset-v11@npm:^12.0.1":
+  version: 12.0.1
+  resolution: "@otplib/preset-v11@npm:12.0.1"
+  dependencies:
+    "@otplib/core": ^12.0.1
+    "@otplib/plugin-crypto": ^12.0.1
+    "@otplib/plugin-thirty-two": ^12.0.1
+  checksum: 367cb09397e617c21ec748d54e920ab43f1c5dfba70cbfd88edf73aecca399cf0c09fefe32518f79c7ee8a06e7058d14b200da378cc7d46af3cac4e22a153e2f
+  languageName: node
+  linkType: hard
+
+"@phc/format@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@phc/format@npm:1.0.0"
+  checksum: 15ee02504fbc16590923d89b1f1c2f5892df27cf2bf19180e5678511413e87b6e5355815a092749cd01698855ee5a0fc5d2393951c727acd650934eed290e26e
+  languageName: node
+  linkType: hard
+
+"@rittaschool/shared@npm:^0.0.11":
+  version: 0.0.11
+  resolution: "@rittaschool/shared@npm:0.0.11"
   dependencies:
     joi: ^17.4.2
-  checksum: 2327b890bde0181fdee36fb6a04c8877f370843f547b47899f93de568d237c11cbc4a0f42ff159693a2d1d6304c364efc4baf8615ab0a9235cd26a23a3e2a09d
+  checksum: d676e52a19835032c6cbd71e633062d3cca07216b631c2b622284473ecd78293a6012855a5aef5a232369c3c8b1840deba610188dfda0af92210c60e6a67ce12
   languageName: node
   linkType: hard
 
@@ -1122,6 +1196,15 @@ __metadata:
   version: 1.0.2
   resolution: "@tsconfig/node16@npm:1.0.2"
   checksum: ca94d3639714672bbfd55f03521d3f56bb6a25479bd425da81faf21f13e1e9d15f40f97377dedbbf477a5841c5b0c8f4cd1b391f33553d750b9202c54c2c07aa
+  languageName: node
+  linkType: hard
+
+"@types/argon2@npm:^0.15.0":
+  version: 0.15.0
+  resolution: "@types/argon2@npm:0.15.0"
+  dependencies:
+    argon2: "*"
+  checksum: aeef3846b429c71074c52ba15018ab951596d4bc20b12a19bba569c7a628da9c803545f6e2baccb8ac3fca2fe4ab5cd277cc39d038978f878d008b45c072c280
   languageName: node
   linkType: hard
 
@@ -1911,6 +1994,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ansi-regex@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "ansi-regex@npm:3.0.0"
+  checksum: 2ad11c416f81c39f5c65eafc88cf1d71aa91d76a2f766e75e457c2a3c43e8a003aadbf2966b61c497aa6a6940a36412486c975b3270cdfc3f413b69826189ec3
+  languageName: node
+  linkType: hard
+
 "ansi-regex@npm:^5.0.1":
   version: 5.0.1
   resolution: "ansi-regex@npm:5.0.1"
@@ -1967,6 +2057,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"aproba@npm:^1.0.3 || ^2.0.0":
+  version: 2.0.0
+  resolution: "aproba@npm:2.0.0"
+  checksum: 5615cadcfb45289eea63f8afd064ab656006361020e1735112e346593856f87435e02d8dcc7ff0d11928bc7d425f27bc7c2a84f6c0b35ab0ff659c814c138a24
+  languageName: node
+  linkType: hard
+
+"are-we-there-yet@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "are-we-there-yet@npm:2.0.0"
+  dependencies:
+    delegates: ^1.0.0
+    readable-stream: ^3.6.0
+  checksum: 6c80b4fd04ecee6ba6e737e0b72a4b41bdc64b7d279edfc998678567ff583c8df27e27523bc789f2c99be603ffa9eaa612803da1d886962d2086e7ff6fa90c7c
+  languageName: node
+  linkType: hard
+
 "are-we-there-yet@npm:~1.1.2":
   version: 1.1.7
   resolution: "are-we-there-yet@npm:1.1.7"
@@ -1981,6 +2088,18 @@ __metadata:
   version: 4.1.3
   resolution: "arg@npm:4.1.3"
   checksum: 544af8dd3f60546d3e4aff084d451b96961d2267d668670199692f8d054f0415d86fc5497d0e641e91546f0aa920e7c29e5250e99fc89f5552a34b5d93b77f43
+  languageName: node
+  linkType: hard
+
+"argon2@npm:*, argon2@npm:^0.28.2":
+  version: 0.28.2
+  resolution: "argon2@npm:0.28.2"
+  dependencies:
+    "@mapbox/node-pre-gyp": ^1.0.1
+    "@phc/format": ^1.0.0
+    node-addon-api: ^3.0.2
+    opencollective-postinstall: ^2.0.3
+  checksum: 982dff6c23163317a01368b6259560b73b558a54416dc3d423ceb6928c84e5bcb0a96809794395c1646e3b6e8c950ac1154f2402c4f61c9efcd13c376166b1ca
   languageName: node
   linkType: hard
 
@@ -2580,6 +2699,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"color-support@npm:^1.1.2":
+  version: 1.1.3
+  resolution: "color-support@npm:1.1.3"
+  bin:
+    color-support: bin.js
+  checksum: 9b7356817670b9a13a26ca5af1c21615463b500783b739b7634a0c2047c16cef4b2865d7576875c31c3cddf9dd621fa19285e628f20198b233a5cfdda6d0793b
+  languageName: node
+  linkType: hard
+
 "colors@npm:^1.1.2":
   version: 1.4.0
   resolution: "colors@npm:1.4.0"
@@ -2643,7 +2771,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"console-control-strings@npm:^1.0.0, console-control-strings@npm:~1.1.0":
+"console-control-strings@npm:^1.0.0, console-control-strings@npm:^1.1.0, console-control-strings@npm:~1.1.0":
   version: 1.1.0
   resolution: "console-control-strings@npm:1.1.0"
   checksum: 8755d76787f94e6cf79ce4666f0c5519906d7f5b02d4b884cf41e11dcd759ed69c57da0670afd9236d229a46e0f9cf519db0cd829c6dca820bb5a5c3def584ed
@@ -2868,6 +2996,15 @@ __metadata:
   version: 1.0.4
   resolution: "destroy@npm:1.0.4"
   checksum: da9ab4961dc61677c709da0c25ef01733042614453924d65636a7db37308fef8a24cd1e07172e61173d471ca175371295fbc984b0af5b2b4ff47cd57bd784c03
+  languageName: node
+  linkType: hard
+
+"detect-libc@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "detect-libc@npm:1.0.3"
+  bin:
+    detect-libc: ./bin/detect-libc.js
+  checksum: daaaed925ffa7889bd91d56e9624e6c8033911bb60f3a50a74a87500680652969dbaab9526d1e200a4c94acf80fc862a22131841145a0a8482d60a99c24f4a3e
   languageName: node
   linkType: hard
 
@@ -3683,6 +3820,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"gauge@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "gauge@npm:3.0.1"
+  dependencies:
+    aproba: ^1.0.3 || ^2.0.0
+    color-support: ^1.1.2
+    console-control-strings: ^1.0.0
+    has-unicode: ^2.0.1
+    object-assign: ^4.1.1
+    signal-exit: ^3.0.0
+    string-width: ^1.0.1 || ^2.0.0
+    strip-ansi: ^3.0.1 || ^4.0.0
+    wide-align: ^1.1.2
+  checksum: 3bc14bc5edb3289fb1ba6216f08acee2075e61b96f78dcb1f3b42979a354ccef1eade6b7252e04779efb9b7726905b182d8b455603558e710d24c7a0a317eaee
+  languageName: node
+  linkType: hard
+
 "gauge@npm:~2.7.3":
   version: 2.7.4
   resolution: "gauge@npm:2.7.4"
@@ -3835,7 +3989,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"has-unicode@npm:^2.0.0":
+"has-unicode@npm:^2.0.0, has-unicode@npm:^2.0.1":
   version: 2.0.1
   resolution: "has-unicode@npm:2.0.1"
   checksum: 1eab07a7436512db0be40a710b29b5dc21fa04880b7f63c9980b706683127e3c1b57cb80ea96d47991bdae2dfe479604f6a1ba410106ee1046a41d1bd0814400
@@ -4152,6 +4306,13 @@ __metadata:
   dependencies:
     number-is-nan: ^1.0.0
   checksum: 4d46a7465a66a8aebcc5340d3b63a56602133874af576a9ca42c6f0f4bd787a743605771c5f246db77da96605fefeffb65fc1dbe862dcc7328f4b4d03edf5a57
+  languageName: node
+  linkType: hard
+
+"is-fullwidth-code-point@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "is-fullwidth-code-point@npm:2.0.0"
+  checksum: eef9c6e15f68085fec19ff6a978a6f1b8f48018fd1265035552078ee945573594933b09bbd6f562553e2a241561439f1ef5339276eba68d272001343084cfab8
   languageName: node
   linkType: hard
 
@@ -5140,7 +5301,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"make-dir@npm:^3.0.0":
+"make-dir@npm:^3.0.0, make-dir@npm:^3.1.0":
   version: 3.1.0
   resolution: "make-dir@npm:3.1.0"
   dependencies:
@@ -5529,6 +5690,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-addon-api@npm:^3.0.2":
+  version: 3.2.1
+  resolution: "node-addon-api@npm:3.2.1"
+  dependencies:
+    node-gyp: latest
+  checksum: 2369986bb0881ccd9ef6bacdf39550e07e089a9c8ede1cbc5fc7712d8e2faa4d50da0e487e333d4125f8c7a616c730131d1091676c9d499af1d74560756b4a18
+  languageName: node
+  linkType: hard
+
 "node-emoji@npm:1.11.0":
   version: 1.11.0
   resolution: "node-emoji@npm:1.11.0"
@@ -5538,7 +5708,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.6.1":
+"node-fetch@npm:^2.6.1, node-fetch@npm:^2.6.5":
   version: 2.6.5
   resolution: "node-fetch@npm:2.6.5"
   dependencies:
@@ -5627,6 +5797,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"npmlog@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "npmlog@npm:5.0.1"
+  dependencies:
+    are-we-there-yet: ^2.0.0
+    console-control-strings: ^1.1.0
+    gauge: ^3.0.0
+    set-blocking: ^2.0.0
+  checksum: 516b2663028761f062d13e8beb3f00069c5664925871a9b57989642ebe09f23ab02145bf3ab88da7866c4e112cafff72401f61a672c7c8a20edc585a7016ef5f
+  languageName: node
+  linkType: hard
+
 "number-is-nan@npm:^1.0.0":
   version: 1.0.1
   resolution: "number-is-nan@npm:1.0.1"
@@ -5686,6 +5868,15 @@ __metadata:
   dependencies:
     mimic-fn: ^2.1.0
   checksum: 2478859ef817fc5d4e9c2f9e5728512ddd1dbc9fb7829ad263765bb6d3b91ce699d6e2332eef6b7dff183c2f490bd3349f1666427eaba4469fba0ac38dfd0d34
+  languageName: node
+  linkType: hard
+
+"opencollective-postinstall@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "opencollective-postinstall@npm:2.0.3"
+  bin:
+    opencollective-postinstall: index.js
+  checksum: 0a68c5cef135e46d11e665d5077398285d1ce5311c948e8327b435791c409744d4a6bb9c55bd6507fb5f2ef34b0ad920565adcdaf974cbdae701aead6f32b396
   languageName: node
   linkType: hard
 
@@ -5755,6 +5946,17 @@ __metadata:
   version: 1.0.2
   resolution: "os-tmpdir@npm:1.0.2"
   checksum: 5666560f7b9f10182548bf7013883265be33620b1c1b4a4d405c25be2636f970c5488ff3e6c48de75b55d02bde037249fe5dbfbb4c0fb7714953d56aed062e6d
+  languageName: node
+  linkType: hard
+
+"otplib@npm:^12.0.1":
+  version: 12.0.1
+  resolution: "otplib@npm:12.0.1"
+  dependencies:
+    "@otplib/core": ^12.0.1
+    "@otplib/preset-default": ^12.0.1
+    "@otplib/preset-v11": ^12.0.1
+  checksum: 4a1b91cf1b8e920b50ad4bac2ef2a89126630c62daf68e9b32ff15106b2551db905d3b979955cf5f8f114da0a8883cec3d636901d65e793c1745bb4174e2a572
   languageName: node
   linkType: hard
 
@@ -6455,7 +6657,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"set-blocking@npm:~2.0.0":
+"set-blocking@npm:^2.0.0, set-blocking@npm:~2.0.0":
   version: 2.0.0
   resolution: "set-blocking@npm:2.0.0"
   checksum: 6e65a05f7cf7ebdf8b7c75b101e18c0b7e3dff4940d480efed8aad3a36a4005140b660fa1d804cb8bce911cac290441dc728084a30504d3516ac2ff7ad607b02
@@ -6690,6 +6892,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"string-width@npm:^1.0.1 || ^2.0.0":
+  version: 2.1.1
+  resolution: "string-width@npm:2.1.1"
+  dependencies:
+    is-fullwidth-code-point: ^2.0.0
+    strip-ansi: ^4.0.0
+  checksum: d6173abe088c615c8dffaf3861dc5d5906ed3dc2d6fd67ff2bd2e2b5dce7fd683c5240699cf0b1b8aa679a3b3bd6b28b5053c824cb89b813d7f6541d8f89064a
+  languageName: node
+  linkType: hard
+
 "string-width@npm:^1.0.2 || 2 || 3 || 4, string-width@npm:^4.1.0, string-width@npm:^4.2.0, string-width@npm:^4.2.3":
   version: 4.2.3
   resolution: "string-width@npm:4.2.3"
@@ -6732,6 +6944,15 @@ __metadata:
   dependencies:
     ansi-regex: ^2.0.0
   checksum: 9b974de611ce5075c70629c00fa98c46144043db92ae17748fb780f706f7a789e9989fd10597b7c2053ae8d1513fd707816a91f1879b2f71e6ac0b6a863db465
+  languageName: node
+  linkType: hard
+
+"strip-ansi@npm:^3.0.1 || ^4.0.0, strip-ansi@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "strip-ansi@npm:4.0.0"
+  dependencies:
+    ansi-regex: ^3.0.0
+  checksum: d9186e6c0cf78f25274f6750ee5e4a5725fb91b70fdd79aa5fe648eab092a0ec5b9621b22d69d4534a56319f75d8944efbd84e3afa8d4ad1b9a9491f12c84eca
   languageName: node
   linkType: hard
 
@@ -6880,7 +7101,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar@npm:^6.0.2, tar@npm:^6.1.2":
+"tar@npm:^6.0.2, tar@npm:^6.1.11, tar@npm:^6.1.2":
   version: 6.1.11
   resolution: "tar@npm:6.1.11"
   dependencies:
@@ -6955,6 +7176,13 @@ __metadata:
   version: 0.2.0
   resolution: "text-table@npm:0.2.0"
   checksum: b6937a38c80c7f84d9c11dd75e49d5c44f71d95e810a3250bd1f1797fc7117c57698204adf676b71497acc205d769d65c16ae8fa10afad832ae1322630aef10a
+  languageName: node
+  linkType: hard
+
+"thirty-two@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "thirty-two@npm:1.0.2"
+  checksum: f6700b31d16ef942fdc0d14daed8a2f69ea8b60b0e85db8b83adf58d84bbeafe95a17d343ab55efaae571bb5148b62fc0ee12b04781323bf7af7d7e9693eec76
   languageName: node
   linkType: hard
 
@@ -7361,7 +7589,8 @@ typescript@^4.3.5:
     "@nestjs/platform-express": ^8.0.0
     "@nestjs/schematics": ^8.0.0
     "@nestjs/testing": ^8.0.0
-    "@rittaschool/shared": ^0.0.10
+    "@rittaschool/shared": ^0.0.11
+    "@types/argon2": ^0.15.0
     "@types/express": ^4.17.13
     "@types/jest": ^27.0.1
     "@types/node": ^16.0.0
@@ -7371,6 +7600,7 @@ typescript@^4.3.5:
     "@typescript-eslint/parser": ^4.28.2
     amqp-connection-manager: ^3.7.0
     amqplib: ^0.8.0
+    argon2: ^0.28.2
     class-transformer: ^0.4.0
     class-validator: ^0.13.1
     dotenv: ^10.0.0
@@ -7380,6 +7610,7 @@ typescript@^4.3.5:
     jest: ^27.0.6
     joi: ^17.4.2
     mongoose: ^6.0.11
+    otplib: ^12.0.1
     prettier: ^2.3.2
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
@@ -7625,7 +7856,7 @@ typescript@^4.3.5:
   languageName: node
   linkType: hard
 
-"wide-align@npm:^1.1.0":
+"wide-align@npm:^1.1.0, wide-align@npm:^1.1.2":
   version: 1.1.5
   resolution: "wide-align@npm:1.1.5"
   dependencies:
