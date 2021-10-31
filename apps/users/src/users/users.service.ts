@@ -3,6 +3,7 @@ import { RpcException } from '@nestjs/microservices';
 import { CreateUserDto } from '@rittaschool/shared';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
+import * as argon2 from 'argon2';
 
 @Injectable()
 export class UsersService {
@@ -24,6 +25,11 @@ export class UsersService {
       throw new RpcException('User already exists!');
     }
 
+    // Hash the password
+    createUserDto.password = await argon2.hash(createUserDto.password, {
+      type: argon2.argon2id,
+    });
+
     return this.usersRepository.create(createUserDto);
   }
 
@@ -41,7 +47,15 @@ export class UsersService {
     return user;
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const current = await this.usersRepository.findOne(id);
+
+    if (current.password !== updateUserDto.password) {
+      // Hash the new password.
+      updateUserDto.password = await argon2.hash(updateUserDto.password, {
+        type: argon2.argon2id,
+      });
+    }
     // TODO: Make updateUserDto validation and add logic here
     return this.usersRepository.update(id, updateUserDto);
   }
