@@ -10,7 +10,7 @@ enum Enviroment {
 
 class EnviromentVariables {
   @IsEnum(Enviroment)
-  NODE_ENV: Enviroment = Enviroment.DEVELOPMENT;
+  NODE_ENV: Enviroment;
 
   @IsString()
   RMQ_HOST: string;

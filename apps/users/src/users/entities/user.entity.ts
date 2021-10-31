@@ -34,6 +34,7 @@ export const UserSchema = new Schema({
   oauth2Identifiers: Oauth2Schema,
   home: {
     type: LocationSchema, // Not essential
+    required: false,
   },
   latestLogin: { type: Date, default: Date.now },
   latestPasswordChange: { type: Date, default: Date.now },

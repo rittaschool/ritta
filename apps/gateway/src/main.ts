@@ -23,6 +23,12 @@ async function bootstrap() {
     await bus.connect();
   } catch (error) {}
 
+  // Enable api versioning with type uri
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: 'v1',
+  });
+
   // Swagger documentation
   const config = new DocumentBuilder()
     .setTitle('Ritta')
@@ -30,14 +36,9 @@ async function bootstrap() {
     .setVersion('0.0.1')
     .addTag('ritta')
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
-
-  // Enable api versioning with type uri
-  app.enableVersioning({
-    type: VersioningType.URI,
-    defaultVersion: 'v1',
-  });
 
   // Start server
   await app.listen(process.env.PORT, process.env.SERVER_IP || '0.0.0.0', () =>

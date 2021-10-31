@@ -1,6 +1,5 @@
 import { plainToClass } from 'class-transformer';
 import {
-  IsArray,
   IsEnum,
   IsNumber,
   IsOptional,
@@ -9,10 +8,10 @@ import {
 } from 'class-validator';
 
 enum Environment {
-  Development = 'development',
-  Production = 'production',
-  Test = 'test',
-  Provision = 'provision',
+  DEVELOPMENT = 'development',
+  PRODUCTION = 'production',
+  TEST = 'test',
+  PROVISION = 'provision',
 }
 
 class EnvironmentVariables {
