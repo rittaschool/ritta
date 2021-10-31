@@ -9,7 +9,7 @@ import { YubikeySchema } from './yubikey.entity';
 export type UserDocument = User & Document;
 
 export const UserSchema = new Schema({
-  id: { type: String, default: v4(), required: true, index: true },
+  id: { type: String, default: v4, required: true, index: true },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   phoneNumber: { type: String, required: false },
@@ -22,7 +22,7 @@ export const UserSchema = new Schema({
     type: MFASchema,
     default: {
       enabled: false,
-      secret: `ritta_${v4()}_${process.env.MFA_SECRET}`,
+      secret: ``, // No need to generate here...
     },
   },
   yubikey: {
@@ -33,13 +33,12 @@ export const UserSchema = new Schema({
   },
   oauth2Identifiers: Oauth2Schema,
   home: {
-    type: LocationSchema,
-    required: true, // true because if the schools needs to send letters to home or something else
+    type: LocationSchema, // Not essential
   },
-  latestLogin: { type: Date, default: Date.now() },
-  latestPasswordChange: { type: Date, default: Date.now() },
+  latestLogin: { type: Date, default: Date.now },
+  latestPasswordChange: { type: Date, default: Date.now },
   isFirstLogin: { type: Boolean, default: true },
   isPasswordChangeRequired: { type: Boolean, default: true },
-  createdAt: { type: Date, default: Date.now() },
-  updatedAt: { type: Date, default: Date.now() },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
