@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { GraphQLModule } from '@nestjs/graphql';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersController } from './users.controller';
@@ -24,6 +25,11 @@ import { validate } from './validation/env.validation';
         },
       },
     ]),
+    GraphQLModule.forRoot({
+      playground: true,
+      debug: false,
+      autoSchemaFile: 'src/schema.gql',
+    }),
   ],
   controllers: [AppController, UsersController],
   providers: [AppService],
