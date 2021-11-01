@@ -1076,12 +1076,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rittaschool/shared@npm:^0.0.11":
-  version: 0.0.11
-  resolution: "@rittaschool/shared@npm:0.0.11"
+"@rittaschool/shared@npm:^0.0.12":
+  version: 0.0.12
+  resolution: "@rittaschool/shared@npm:0.0.12"
   dependencies:
     joi: ^17.4.2
-  checksum: d676e52a19835032c6cbd71e633062d3cca07216b631c2b622284473ecd78293a6012855a5aef5a232369c3c8b1840deba610188dfda0af92210c60e6a67ce12
+  checksum: 365b2b449c7e07fb7b60d6f420aa9e590adbda35ebe059030bf2908b00a6582e48c81bf8455fa0a21d4271ef35f2a19ca2b044ed0b439bfb6c324afee5c92fd8
   languageName: node
   linkType: hard
 
@@ -3884,7 +3884,7 @@ __metadata:
     "@nestjs/schematics": ^8.0.0
     "@nestjs/swagger": ^5.1.4
     "@nestjs/testing": ^8.0.0
-    "@rittaschool/shared": ^0.0.11
+    "@rittaschool/shared": ^0.0.12
     "@types/express": ^4.17.13
     "@types/jest": ^27.0.1
     "@types/node": ^16.0.0

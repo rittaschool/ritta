@@ -26,7 +26,7 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/platform-fastify": "^8.1.2",
     "@nestjs/swagger": "^5.1.4",
-    "@rittaschool/shared": "^0.0.11",
+    "@rittaschool/shared": "^0.0.12",
     "amqp-connection-manager": "^3.7.0",
     "amqplib": "^0.8.0",
     "class-transformer": "^0.4.0",
