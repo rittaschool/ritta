@@ -26,7 +26,6 @@ async function bootstrap() {
   // Enable api versioning with type uri
   app.enableVersioning({
     type: VersioningType.URI,
-    defaultVersion: 'v1',
   });
 
   // Swagger documentation
