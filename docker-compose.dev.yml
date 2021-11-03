@@ -1,0 +1,101 @@
+version: '3.8'
+services:
+  rabbitmq:
+    image: rabbitmq:3.9.7-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker-vols/ritta/rabbitmq/data:/var/lib/rabbitmq/
+      - ~/.docker-vols/ritta/rabbitmq/log:/var/log/rabbitmq/
+    networks:
+      - ritta
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 5s
+      timeout: 10s
+      retries: 12
+
+  gateway:
+    build:
+      context: apps/gateway
+    command: yarn start:dev
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - RMQ_HOST=rabbitmq
+      - RMQ_PORT=5672
+      - RMQ_USERNAME=guest
+      - RMQ_PASSWORD=guest
+    ports:
+      - '3000:3000'
+    networks:
+      - ritta
+    volumes:
+      - ./apps/gateway:/home/app
+      - ./apps/gateway/dist:/home/app/dist
+      - ./apps/gateway/node_modules:/home/app/node_modules
+
+  # auth:
+  #   build: ./apps/auth
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
+  #     users:
+  #       condition: service_healthy
+  #   environment:
+  #     - NODE_ENV=production
+  #     - RMQ_HOST=rabbitmq
+  #     - RMQ_PORT=5672
+  #     - RMQ_USERNAME=guest
+  #     - RMQ_PASSWORD=guest
+  #   networks:
+  #     - ritta
+
+  users:
+    build:
+      context: apps/users
+    command: yarn start:dev
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      users_db:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=production
+      - RMQ_HOST=rabbitmq
+      - RMQ_PORT=5672
+      - RMQ_USERNAME=guest
+      - RMQ_PASSWORD=guest
+      - MONGO_URI=mongodb://ritta:password@users_db:27017/ritta?authSource=admin
+      - MFA_SECRET=secret
+    networks:
+      - ritta
+    volumes:
+      - ./apps/users:/home/app
+      - ./apps/users/dist:/home/app/dist
+      - ./apps/users/node_modules:/home/app/node_modules
+
+  users_db:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_DATABASE=ritta
+      - MONGO_INITDB_ROOT_USERNAME=ritta
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - ~/.docker-vols/ritta/users_db:/data/db
+    networks:
+      - ritta
+    healthcheck:
+      test: mongosh --quiet --eval "db.runCommand('ping').ok"
+      interval: 5s
+      timeout: 10s
+      retries: 12
+
+networks:
+  ritta:
+    driver: bridge
