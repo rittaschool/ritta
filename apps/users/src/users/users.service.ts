@@ -10,10 +10,14 @@ export class UsersService {
   constructor(private usersRepository: UsersRepository) {}
 
   async create(createUserDto: CreateUserDto) {
+    console.log('here');
     // Checking that user has email or username
     if (!createUserDto.email && !createUserDto.username) {
+      console.log('email || username missing');
       throw new RpcException('Email or username is required');
     }
+
+    console.log(createUserDto);
 
     // Checking that user does not exist
     const possibleUser = await this.findOne(

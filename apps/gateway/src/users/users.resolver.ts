@@ -1,4 +1,7 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { BadRequestException, UsePipes } from '@nestjs/common';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CreateUserDto, CreateUserValidationSchema } from '@rittaschool/shared';
+import { JoiValidationPipe } from '../validation/joi.pipe';
 import { UsersService } from './users.service';
 
 @Resolver()
@@ -13,5 +16,13 @@ export class UsersResolver {
   @Query()
   async users() {
     return this.usersService.getUsers();
+  }
+
+  @Mutation()
+  @UsePipes(new JoiValidationPipe(CreateUserValidationSchema))
+  async createUser(@Args('createUserInput') createUserDto: CreateUserDto) {
+    return this.usersService.createUser(createUserDto).catch((err) => {
+      throw new BadRequestException(err);
+    });
   }
 }

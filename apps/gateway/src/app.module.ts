@@ -19,6 +19,7 @@ import { DateScalar } from './common/scalars';
       playground: true,
       debug: true,
       typePaths: ['./**/*.graphql'],
+      introspection: true,
     }),
     UsersModule,
   ],

@@ -8,15 +8,31 @@ type User {
   email: String
   home: Location
   oauth2Identifiers: Oauth2Identifiers
-  latestLogin: String
-  latestPasswordChange: String
+  latestLogin: Date
+  latestPasswordChange: Date
   isFirstLogin: Boolean!
   isPasswordChangeRequired: Boolean!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+input CreateUserInput {
+  firstName: String!
+  lastName: String!
+  password: String!
+  email: EmailAddress
+  alias: String
+  home: LocationInput
+  oauth2Identifiers: Oauth2IdentifiersInput
+  phoneNumber: PhoneNumber
+  username: String
 }
 
 type Query {
   user(id: ID!): User
   users: [User]
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User
 }

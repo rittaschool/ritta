@@ -1,9 +1,5 @@
-import {
-  PipeTransform,
-  Injectable,
-  ArgumentMetadata,
-  BadRequestException,
-} from '@nestjs/common';
+import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import { ObjectSchema } from 'joi';
 
 @Injectable()
@@ -14,7 +10,7 @@ export class JoiValidationPipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata) {
     const { error } = this.schema.validate(value);
     if (error) {
-      throw new BadRequestException(error.message);
+      throw new RpcException(error.message);
     }
     return value;
   }

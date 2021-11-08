@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
-import { DateScalar } from './scalars';
+import { DateScalar, EmailAddressScalar, PhoneNumberScalar } from './scalars';
 
 @Module({
   imports: [ConfigModule],
@@ -28,6 +28,8 @@ import { DateScalar } from './scalars';
       inject: [ConfigService],
     },
     DateScalar,
+    EmailAddressScalar,
+    PhoneNumberScalar,
   ],
   exports: ['EVENT_BUS'],
 })
