@@ -1,0 +1,22 @@
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  phoneNumber: String
+  alias: String
+  username: String
+  email: String
+  home: Location
+  oauth2Identifiers: Oauth2Identifiers
+  latestLogin: String
+  latestPasswordChange: String
+  isFirstLogin: Boolean!
+  isPasswordChangeRequired: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Query {
+  user(id: ID!): User
+  users: [User]
+}
