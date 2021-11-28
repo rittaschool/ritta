@@ -66,8 +66,8 @@ export class UsersService {
     return user;
   }
 
-  async updateUser(id: string, updateUserDto: UpdateUserDto) {
-    const current = await this.usersRepository.findOne(id);
+  async updateUser(updateUserDto: UpdateUserDto) {
+    const current = await this.usersRepository.findOne(updateUserDto.id);
 
     if (current.password !== updateUserDto.password) {
       // Hash the new password.
@@ -76,7 +76,7 @@ export class UsersService {
       );
     }
     // TODO: Make updateUserDto validation and add logic here
-    return this.usersRepository.update(id, updateUserDto);
+    return this.usersRepository.update(updateUserDto.id, updateUserDto);
   }
 
   async removeUser(id: string) {

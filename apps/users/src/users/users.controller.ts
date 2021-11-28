@@ -31,11 +31,11 @@ export class UsersController {
 
   @MessagePattern(IEventType.USER_UPDATED)
   updateUser(@Payload() updateUserDto: UpdateUserDto) {
-    return this.usersService.updateUser(updateUserDto.id, updateUserDto);
+    return this.usersService.updateUser(updateUserDto);
   }
 
   @MessagePattern(IEventType.USER_REMOVED)
-  async remove(@Payload() { id }: { id: string }) {
+  async removeUser(@Payload() { id }: { id: string }) {
     try {
       return await this.usersService.removeUser(id);
     } catch (err) {

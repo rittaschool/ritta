@@ -15,6 +15,10 @@ describe('UsersController', () => {
           provide: 'USERS_SERVICE',
           useValue: {
             createUser: jest.fn((x) => x),
+            getUsers: jest.fn(() => []),
+            getUser: jest.fn(() => ({})),
+            updateUser: jest.fn(() => ({})),
+            removeUser: jest.fn(() => ({})),
           },
         },
       ],
@@ -33,28 +37,22 @@ describe('UsersController', () => {
   });
 
   // TODO: implement tests
-  describe('getUsers', () => {
-    it('should do something', () => {
-      expect(1).toBe(1);
-    });
-  });
-
   describe('createUser', () => {
-    // it('should return a successful response', async () => {
-    //   const response = await controller.create({
-    //     firstName: 'John',
-    //     lastName: 'Doe',
-    //     password: 'pass1234',
-    //     email: 'john@doe.com',
-    //   });
+    it('should return a successful response', async () => {
+      const response = await controller.create({
+        firstName: 'John',
+        lastName: 'Doe',
+        password: 'pass1234',
+        email: 'john@doe.com',
+      });
 
-    //   expect(response).toStrictEqual({
-    //     firstName: 'John',
-    //     lastName: 'Doe',
-    //     password: 'pass1234',
-    //     email: 'john@doe.com',
-    //   });
-    // });
+      expect(response).toStrictEqual({
+        firstName: 'John',
+        lastName: 'Doe',
+        password: 'pass1234',
+        email: 'john@doe.com',
+      });
+    });
     it('should throw an error', async () => {
       jest.spyOn(usersService, 'createUser').mockImplementationOnce(() => {
         throw new RpcException('Email or username is required.');
@@ -66,6 +64,44 @@ describe('UsersController', () => {
           password: 'pass1234',
         });
       } catch (error) {}
+    });
+  });
+
+  describe('getUsers', () => {
+    it('should call usersService.getUsers', async () => {
+      await controller.getUsers();
+
+      expect(usersService.getUsers).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('getUser', () => {
+    it('should call usersService.getUser with id', async () => {
+      await controller.getUser({ id: '123' });
+
+      expect(usersService.getUser).toHaveBeenCalledTimes(1);
+      expect(usersService.getUser).toHaveBeenCalledWith('123');
+    });
+  });
+
+  describe('updateUser', () => {
+    it('should call usersService.updateUser with correct params', async () => {
+      await controller.updateUser({ id: '123', firstName: 'Nohj' });
+
+      expect(usersService.updateUser).toHaveBeenCalledTimes(1);
+      expect(usersService.updateUser).toHaveBeenCalledWith({
+        id: '123',
+        firstName: 'Nohj',
+      });
+    });
+  });
+
+  describe('removeUser', () => {
+    it('should call usersService.removeUser with id', async () => {
+      await controller.removeUser({ id: '123' });
+
+      expect(usersService.removeUser).toHaveBeenCalledTimes(1);
+      expect(usersService.removeUser).toHaveBeenCalledWith('123');
     });
   });
 });
