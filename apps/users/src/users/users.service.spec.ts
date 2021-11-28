@@ -3,6 +3,7 @@ import { UsersRepository } from './users.repository';
 import { UsersService } from './users.service';
 import encryptUtils from './encrypt';
 import generator from './generator';
+import { RpcException } from '@nestjs/microservices';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -17,6 +18,8 @@ describe('UsersService', () => {
           useValue: {
             create: jest.fn(),
             findOne: jest.fn(),
+            findAll: jest.fn(),
+            delete: jest.fn(),
           },
         },
       ],
@@ -40,7 +43,7 @@ describe('UsersService', () => {
       .mockImplementation(async () => 'hashed123');
 
     it('should encode password correctly', async () => {
-      await service.create({
+      await service.createUser({
         firstName: 'John',
         lastName: 'Doe',
         email: 'john@doe.com',
@@ -51,7 +54,7 @@ describe('UsersService', () => {
     });
 
     it('should call userRepository.findOne with correct params', async () => {
-      await service.create({
+      await service.createUser({
         firstName: 'John',
         lastName: 'Doe',
         email: 'john@doe.com',
@@ -72,7 +75,7 @@ describe('UsersService', () => {
         .spyOn(generator, 'generateMFASecret')
         .mockImplementationOnce(async () => 'secret');
 
-      await service.create({
+      await service.createUser({
         firstName: 'John',
         lastName: 'Doe',
         email: 'john@doe.com',
@@ -91,6 +94,40 @@ describe('UsersService', () => {
           backupCodes: [{ code: 'backupcode1', used: false }],
         },
       });
+    });
+  });
+
+  describe('getUsers', () => {
+    it('should call userRepository.findAll', async () => {
+      await service.getUsers();
+
+      expect(userRepository.findAll).toHaveBeenCalled();
+    });
+  });
+
+  describe('getUser', () => {
+    it('should call userRepository.findOne with id', async () => {
+      await service.getUser('1', false);
+
+      expect(userRepository.findOne).toHaveBeenCalledWith('1');
+    });
+
+    it('should call userRepository.findOne with id but it should throw error', async () => {
+      expect(service.getUser('1', true)).rejects.toThrow(
+        new RpcException('User not found.'),
+      );
+    });
+  });
+
+  describe('updateUser', () => {
+    it.todo('should call userRepository.update with id and validate new user');
+  });
+
+  describe('removeUser', () => {
+    it('should call userRepository.delete with id', async () => {
+      await service.removeUser('1');
+
+      expect(userRepository.delete).toHaveBeenCalledWith('1');
     });
   });
 });

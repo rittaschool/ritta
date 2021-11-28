@@ -14,7 +14,7 @@ describe('UsersController', () => {
         {
           provide: 'USERS_SERVICE',
           useValue: {
-            create: jest.fn((x) => x),
+            createUser: jest.fn((x) => x),
           },
         },
       ],
@@ -56,7 +56,7 @@ describe('UsersController', () => {
     //   });
     // });
     it('should throw an error', async () => {
-      jest.spyOn(usersService, 'create').mockImplementationOnce(() => {
+      jest.spyOn(usersService, 'createUser').mockImplementationOnce(() => {
         throw new RpcException('Email or username is required.');
       });
       try {

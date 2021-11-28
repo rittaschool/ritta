@@ -11,7 +11,7 @@ export class UsersService {
     @Inject('USERS_REPOSITORY') private usersRepository: UsersRepository,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async createUser(createUserDto: CreateUserDto) {
     const tmpUser: Partial<IUser> = createUserDto;
 
     // Checking that user has email or username
@@ -21,7 +21,7 @@ export class UsersService {
     }
 
     // Checking that user does not exist
-    const possibleUser = await this.findOne(
+    const possibleUser = await this.getUser(
       tmpUser.email || tmpUser.username,
       false,
     );
@@ -52,21 +52,21 @@ export class UsersService {
     }
   }
 
-  findAll() {
+  getUsers() {
     return this.usersRepository.findAll();
   }
 
-  async findOne(id: string, throwError = true) {
+  async getUser(id: string, throwError = true) {
     const user = await this.usersRepository.findOne(id);
 
     if (!user && throwError) {
-      throw new RpcException('User not found');
+      throw new RpcException('User not found.');
     }
 
     return user;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async updateUser(id: string, updateUserDto: UpdateUserDto) {
     const current = await this.usersRepository.findOne(id);
 
     if (current.password !== updateUserDto.password) {
@@ -79,7 +79,7 @@ export class UsersService {
     return this.usersRepository.update(id, updateUserDto);
   }
 
-  async remove(id: string) {
+  async removeUser(id: string) {
     return await this.usersRepository.delete(id);
   }
 }
