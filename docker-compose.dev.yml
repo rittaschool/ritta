@@ -88,6 +88,8 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
       - ~/.docker-vols/ritta/users_db:/data/db
+    ports:
+      - 27018:27017
     networks:
       - ritta
     healthcheck:

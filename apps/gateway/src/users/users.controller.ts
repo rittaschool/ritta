@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -27,7 +28,9 @@ export class UsersController {
   @Post()
   @UsePipes(new JoiValidationPipe(CreateUserValidationSchema)) // Validates that the body is right
   async createUser(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.createUser(createUserDto);
+    return this.usersService.createUser(createUserDto).catch((err) => {
+      throw new BadRequestException(err);
+    });
   }
 
   @Get()

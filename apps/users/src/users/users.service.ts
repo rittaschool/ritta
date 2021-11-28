@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
-import { CreateUserDto } from '@rittaschool/shared';
+import { CreateUserDto, IUser } from '@rittaschool/shared';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
 import * as argon2 from 'argon2';
@@ -10,18 +10,20 @@ export class UsersService {
   constructor(private usersRepository: UsersRepository) {}
 
   async create(createUserDto: CreateUserDto) {
+    const tmpUser: Partial<IUser> = createUserDto;
+
     console.log('here');
     // Checking that user has email or username
-    if (!createUserDto.email && !createUserDto.username) {
+    if (!tmpUser.email && !tmpUser.username) {
       console.log('email || username missing');
       throw new RpcException('Email or username is required');
     }
 
-    console.log(createUserDto);
+    console.log(tmpUser);
 
     // Checking that user does not exist
     const possibleUser = await this.findOne(
-      createUserDto.email || createUserDto.username,
+      tmpUser.email || tmpUser.username,
       false,
     );
 
@@ -29,12 +31,32 @@ export class UsersService {
       throw new RpcException('User already exists!');
     }
 
-    // Hash the password
-    createUserDto.password = await argon2.hash(createUserDto.password, {
-      type: argon2.argon2id,
-    });
+    // // Hash the password
+    // tmpUser.password = await argon2.hash(tmpUser.password, {
+    //   type: argon2.argon2id,
+    // });
 
-    return this.usersRepository.create(createUserDto);
+    tmpUser.mfa = {
+      secret: '1',
+      enabled: false,
+      backupCodes: [
+        {
+          code: 'thisisabackupcode',
+          used: false,
+        },
+      ],
+    };
+
+    // Check if user has email and not username, then sets username to email
+    if (!tmpUser.username && tmpUser.email) {
+      tmpUser.username = tmpUser.email;
+    }
+
+    try {
+      return this.usersRepository.create(createUserDto);
+    } catch (error) {
+      throw new RpcException('Failed');
+    }
   }
 
   findAll() {
@@ -64,7 +86,7 @@ export class UsersService {
     return this.usersRepository.update(id, updateUserDto);
   }
 
-  remove(id: string) {
-    return this.usersRepository.delete(id);
+  async remove(id: string) {
+    return await this.usersRepository.delete(id);
   }
 }

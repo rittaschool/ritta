@@ -20,8 +20,12 @@ export class UsersRepository {
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const createdUser = new this.userModel(createUserDto);
-    return createdUser.save();
+    try {
+      const createdUser = new this.userModel(createUserDto);
+      return createdUser.save();
+    } catch (error) {
+      throw new Error('Failed saving user to database');
+    }
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
@@ -39,6 +43,16 @@ export class UsersRepository {
 
   async delete(id: string): Promise<User> {
     const doc = await this.findOne(id);
-    return this.userModel.remove(doc).exec();
+
+    if (!doc) {
+      throw new Error('User not found!');
+    }
+
+    try {
+      this.userModel.deleteOne(doc).exec();
+      return doc;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }

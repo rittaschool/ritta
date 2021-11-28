@@ -1,5 +1,5 @@
 import { Controller, UsePipes } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import {
   IEventType,
   CreateUserDto,
@@ -16,15 +16,16 @@ export class UsersController {
   @UsePipes(new JoiValidationPipe(CreateUserValidationSchema))
   @MessagePattern(IEventType.USER_CREATED)
   create(@Payload() createUserDto: CreateUserDto) {
+    console.log('createUser users.controller');
     return this.usersService.create(createUserDto);
   }
 
-  @MessagePattern('get_users')
+  @MessagePattern(IEventType.GET_USERS)
   findAll() {
     return this.usersService.findAll();
   }
 
-  @MessagePattern('get_user')
+  @MessagePattern(IEventType.GET_USER)
   findOne(@Payload() { id }: { id: string }) {
     return this.usersService.findOne(id);
   }
@@ -35,7 +36,11 @@ export class UsersController {
   }
 
   @MessagePattern(IEventType.USER_REMOVED)
-  remove(@Payload() { id }: { id: string }) {
-    return this.usersService.remove(id);
+  async remove(@Payload() { id }: { id: string }) {
+    try {
+      return await this.usersService.remove(id);
+    } catch (err) {
+      throw new RpcException(err.message);
+    }
   }
 }

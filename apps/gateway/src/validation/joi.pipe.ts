@@ -12,6 +12,9 @@ export class JoiValidationPipe implements PipeTransform {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   transform(value: any, metadata: ArgumentMetadata) {
+    if (!value) {
+      throw new BadRequestException('No data received.');
+    }
     const { error } = this.schema.validate(value);
     if (error) {
       throw new BadRequestException(error.message);
