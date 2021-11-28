@@ -16,7 +16,6 @@ export class UsersController {
   @UsePipes(new JoiValidationPipe(CreateUserValidationSchema))
   @MessagePattern(IEventType.USER_CREATED)
   create(@Payload() createUserDto: CreateUserDto) {
-    console.log('createUser users.controller');
     return this.usersService.create(createUserDto);
   }
 

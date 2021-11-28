@@ -3,8 +3,8 @@ import { RpcException } from '@nestjs/microservices';
 import { CreateUserDto, IUser } from '@rittaschool/shared';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
-import * as argon2 from 'argon2';
-
+import encryptUtils from './encrypt';
+import generator from './generator';
 @Injectable()
 export class UsersService {
   constructor(
@@ -30,20 +30,14 @@ export class UsersService {
       throw new RpcException('User already exists!');
     }
 
-    // // Hash the password
-    // tmpUser.password = await argon2.hash(tmpUser.password, {
-    //   type: argon2.argon2id,
-    // });
+    // Hash the password
+    tmpUser.password = await encryptUtils.encodePassword(tmpUser.password);
 
+    // These are just placeholders
     tmpUser.mfa = {
-      secret: '1',
+      secret: await generator.generateMFASecret(),
       enabled: false,
-      backupCodes: [
-        {
-          code: 'thisisabackupcode',
-          used: false,
-        },
-      ],
+      backupCodes: [await generator.generateBackupCode()],
     };
 
     // Check if user has email and not username, then sets username to email
@@ -77,9 +71,9 @@ export class UsersService {
 
     if (current.password !== updateUserDto.password) {
       // Hash the new password.
-      updateUserDto.password = await argon2.hash(updateUserDto.password, {
-        type: argon2.argon2id,
-      });
+      updateUserDto.password = await encryptUtils.encodePassword(
+        updateUserDto.password,
+      );
     }
     // TODO: Make updateUserDto validation and add logic here
     return this.usersRepository.update(id, updateUserDto);
