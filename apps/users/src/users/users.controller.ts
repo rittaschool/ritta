@@ -1,4 +1,4 @@
-import { Controller, UsePipes } from '@nestjs/common';
+import { Controller, Inject, UsePipes } from '@nestjs/common';
 import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import {
   IEventType,
@@ -11,7 +11,7 @@ import { JoiValidationPipe } from '../validation/joi.pipe';
 
 @Controller()
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(@Inject('USERS_SERVICE') private usersService: UsersService) {}
 
   @UsePipes(new JoiValidationPipe(CreateUserValidationSchema))
   @MessagePattern(IEventType.USER_CREATED)
@@ -21,17 +21,17 @@ export class UsersController {
   }
 
   @MessagePattern(IEventType.GET_USERS)
-  findAll() {
+  getUsers() {
     return this.usersService.findAll();
   }
 
   @MessagePattern(IEventType.GET_USER)
-  findOne(@Payload() { id }: { id: string }) {
+  getUser(@Payload() { id }: { id: string }) {
     return this.usersService.findOne(id);
   }
 
   @MessagePattern(IEventType.USER_UPDATED)
-  update(@Payload() updateUserDto: UpdateUserDto) {
+  updateUser(@Payload() updateUserDto: UpdateUserDto) {
     return this.usersService.update(updateUserDto.id, updateUserDto);
   }
 

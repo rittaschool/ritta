@@ -11,6 +11,12 @@ import { User } from '@rittaschool/shared';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   controllers: [UsersController],
-  providers: [UsersService, UsersRepository],
+  providers: [
+    {
+      provide: 'USERS_SERVICE',
+      useClass: UsersService,
+    },
+    UsersRepository,
+  ],
 })
 export class UsersModule {}
