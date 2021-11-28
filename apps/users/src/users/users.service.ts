@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { CreateUserDto, IUser } from '@rittaschool/shared';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -7,19 +7,18 @@ import * as argon2 from 'argon2';
 
 @Injectable()
 export class UsersService {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(
+    @Inject('USERS_REPOSITORY') private usersRepository: UsersRepository,
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     const tmpUser: Partial<IUser> = createUserDto;
 
-    console.log('here');
     // Checking that user has email or username
     if (!tmpUser.email && !tmpUser.username) {
       console.log('email || username missing');
       throw new RpcException('Email or username is required');
     }
-
-    console.log(tmpUser);
 
     // Checking that user does not exist
     const possibleUser = await this.findOne(

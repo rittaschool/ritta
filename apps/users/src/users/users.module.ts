@@ -16,7 +16,10 @@ import { User } from '@rittaschool/shared';
       provide: 'USERS_SERVICE',
       useClass: UsersService,
     },
-    UsersRepository,
+    {
+      provide: 'USERS_REPOSITORY',
+      useClass: UsersRepository,
+    },
   ],
 })
 export class UsersModule {}
