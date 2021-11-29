@@ -6,6 +6,12 @@ Ritta is a modern open source school management system for schools to keep conne
 [![GitHub last commit](https://img.shields.io/github/last-commit/rittaschool/ritta-server.svg?color=orange&style=for-the-badge&logo=git)](https://github.com/rittaschool/ritta-server/commits/master)
 [![Discord Channel](https://img.shields.io/discord/718870928498360463.svg?color=blue&style=for-the-badge&logo=discord)](https://discord.gg/KwpZGyvX3Q)
 
+## How does it work?
+
+We use the **Microservices** architecture make Ritta very scalable and allow more flexibility. \
+Ritta also is made of two core parts, ritta-server (that you are viewing right now) and the [ritta-next](https://github.com/rittaschool/ritta-next) (the frontend). \
+We use modern technologies like [NestJS](https://nestjs.com) for the backend of Ritta to make development easier and faster!
+
 ## API Documentation
 
 The API documentation can be seen by going to `https://<ritta-server url>/docs`
@@ -13,7 +19,7 @@ The API documentation can be seen by going to `https://<ritta-server url>/docs`
 ## Requirements
 
     - Docker
-    - Docker-compose
+    - docker-compose
 
 ## Running the app
 
