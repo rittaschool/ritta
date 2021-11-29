@@ -1,0 +1,38 @@
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  phoneNumber: String
+  alias: String
+  username: String
+  email: String
+  home: Location
+  oauth2Identifiers: Oauth2Identifiers
+  latestLogin: Date
+  latestPasswordChange: Date
+  isFirstLogin: Boolean!
+  isPasswordChangeRequired: Boolean!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+input CreateUserInput {
+  firstName: String!
+  lastName: String!
+  password: String!
+  email: EmailAddress
+  alias: String
+  home: LocationInput
+  oauth2Identifiers: Oauth2IdentifiersInput
+  phoneNumber: PhoneNumber
+  username: String
+}
+
+type Query {
+  user(id: ID!): User
+  users: [User]
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User
+}
