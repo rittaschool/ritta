@@ -34,21 +34,22 @@ services:
     networks:
       - ritta
 
-  # auth:
-  #   build: ./apps/auth
-  #   depends_on:
-  #     rabbitmq:
-  #       condition: service_healthy
-  #     users:
-  #       condition: service_healthy
-  #   environment:
-  #     - NODE_ENV=production
-  #     - RMQ_HOST=rabbitmq
-  #     - RMQ_PORT=5672
-  #     - RMQ_USERNAME=guest
-  #     - RMQ_PASSWORD=guest
-  #   networks:
-  #     - ritta
+  auth:
+    build: ./apps/auth
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      users:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=production
+      - RMQ_HOST=rabbitmq
+      - RMQ_PORT=5672
+      - RMQ_USERNAME=guest
+      - RMQ_PASSWORD=guest
+      - SIGNING_KEY=RITTATESTSIGNINGKEY
+    networks:
+      - ritta
 
   users:
     build: ./apps/users
