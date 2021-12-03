@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersController } from './users.controller';
+import { AuthController } from './auth.controller';
 
 import { validate } from './validation/env.validation';
 
@@ -31,7 +32,7 @@ import { validate } from './validation/env.validation';
       autoSchemaFile: 'src/schema.gql',
     }),
   ],
-  controllers: [AppController, UsersController],
+  controllers: [AppController, UsersController, AuthController],
   providers: [AppService],
 })
 export class AppModule {}

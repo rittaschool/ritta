@@ -24,47 +24,35 @@ import { JoiValidationPipe } from './validation/joi.pipe';
   path: 'auth',
   version: '1',
 })
-export class UsersController {
+export class AuthController {
   constructor(@Inject('EVENT_BUS') private client: ClientProxy) {}
 
-  @Post()
+  @Post('/login')
   @UsePipes(new JoiValidationPipe(CreateUserValidationSchema)) // Validates that the body is right
-  async createUser(@Body() createUserDto: CreateUserDto) {
+  async login(@Body() createUserDto: CreateUserDto) {
     // Send message to users microservice and return response, catch errors and send them to client
     return this.client
-      .send(IEventType.USER_CREATED, createUserDto)
+      .send(IEventType.USER_LOGIN, createUserDto)
       .pipe(catchError((val) => of({ error: val.message })))
       .toPromise();
   }
 
-  @Get()
-  async getUsers(): Promise<IUser[]> {
-    return this.client.send<IUser[]>('get_users', {}).toPromise();
-  }
-
-  @Get('/:id')
-  async getUser(@Param('id') id: string): Promise<IUser> {
+  @Post('/mfa')
+  @UsePipes(new JoiValidationPipe(CreateUserValidationSchema)) // Validates that the body is right
+  async loginMFA(@Body() createUserDto: CreateUserDto) {
     // Send message to users microservice and return response, catch errors and send them to client
     return this.client
-      .send('get_user', { id })
+      .send(IEventType.USER_MFA_LOGIN, createUserDto)
       .pipe(catchError((val) => of({ error: val.message })))
       .toPromise();
   }
 
-  @Patch()
-  async updateUser(@Body() updateUserDto: UpdateUserDto): Promise<IUser> {
+  @Post('/oauth')
+  @UsePipes(new JoiValidationPipe(CreateUserValidationSchema)) // Validates that the body is right
+  async loginOAuth(@Body() createUserDto: CreateUserDto) {
     // Send message to users microservice and return response, catch errors and send them to client
     return this.client
-      .send(IEventType.USER_UPDATED, updateUserDto)
-      .pipe(catchError((val) => of({ error: val.message })))
-      .toPromise();
-  }
-
-  @Delete('/:id')
-  async deleteUser(@Param('id') id: string): Promise<IUser> {
-    // Send message to users microservice and return response, catch errors and send them to client
-    return this.client
-      .send(IEventType.USER_REMOVED, { id })
+      .send(IEventType.USER_OAUTH_LOGIN, createUserDto)
       .pipe(catchError((val) => of({ error: val.message })))
       .toPromise();
   }
