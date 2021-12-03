@@ -15,7 +15,7 @@ export const UserSchema = new Schema({
   phoneNumber: { type: String, required: false },
   alias: { type: String, required: false },
   username: { type: String, unique: true, required: false },
-  email: { type: String, required: false, unique: true },
+  email: { type: String, required: false }, // not unique, because it could be null
   password: String,
   accounts: [String], // String because it's the id of the account stored in the accounts service
   mfa: {

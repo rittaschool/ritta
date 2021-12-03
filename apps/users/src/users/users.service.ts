@@ -1,23 +1,28 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
-import { CreateUserDto } from '@rittaschool/shared';
+import { CreateUserDto, IUser } from '@rittaschool/shared';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
-import * as argon2 from 'argon2';
-
+import encryptUtils from './encrypt';
+import generator from './generator';
 @Injectable()
 export class UsersService {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(
+    @Inject('USERS_REPOSITORY') private usersRepository: UsersRepository,
+  ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async createUser(createUserDto: CreateUserDto) {
+    const tmpUser: Partial<IUser> = createUserDto;
+
     // Checking that user has email or username
-    if (!createUserDto.email && !createUserDto.username) {
+    if (!tmpUser.email && !tmpUser.username) {
+      console.log('email || username missing');
       throw new RpcException('Email or username is required');
     }
 
     // Checking that user does not exist
-    const possibleUser = await this.findOne(
-      createUserDto.email || createUserDto.username,
+    const possibleUser = await this.getUser(
+      tmpUser.email || tmpUser.username,
       false,
     );
 
@@ -26,41 +31,55 @@ export class UsersService {
     }
 
     // Hash the password
-    createUserDto.password = await argon2.hash(createUserDto.password, {
-      type: argon2.argon2id,
-    });
+    tmpUser.password = await encryptUtils.encodePassword(tmpUser.password);
 
-    return this.usersRepository.create(createUserDto);
+    // These are just placeholders
+    tmpUser.mfa = {
+      secret: await generator.generateMFASecret(),
+      enabled: false,
+      backupCodes: [await generator.generateBackupCode()],
+    };
+
+    // Check if user has email and not username, then sets username to email
+    if (!tmpUser.username && tmpUser.email) {
+      tmpUser.username = tmpUser.email;
+    }
+
+    try {
+      return this.usersRepository.create(createUserDto);
+    } catch (error) {
+      throw new RpcException('Failed');
+    }
   }
 
-  findAll() {
+  getUsers() {
     return this.usersRepository.findAll();
   }
 
-  async findOne(id: string, throwError = true) {
+  async getUser(id: string, throwError = true) {
     const user = await this.usersRepository.findOne(id);
 
     if (!user && throwError) {
-      throw new RpcException('User not found');
+      throw new RpcException('User not found.');
     }
 
     return user;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    const current = await this.usersRepository.findOne(id);
+  async updateUser(updateUserDto: UpdateUserDto) {
+    const current = await this.usersRepository.findOne(updateUserDto.id);
 
     if (current.password !== updateUserDto.password) {
       // Hash the new password.
-      updateUserDto.password = await argon2.hash(updateUserDto.password, {
-        type: argon2.argon2id,
-      });
+      updateUserDto.password = await encryptUtils.encodePassword(
+        updateUserDto.password,
+      );
     }
     // TODO: Make updateUserDto validation and add logic here
-    return this.usersRepository.update(id, updateUserDto);
+    return this.usersRepository.update(updateUserDto.id, updateUserDto);
   }
 
-  remove(id: string) {
-    return this.usersRepository.delete(id);
+  async removeUser(id: string) {
+    return await this.usersRepository.delete(id);
   }
 }

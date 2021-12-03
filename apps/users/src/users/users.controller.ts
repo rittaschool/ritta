@@ -1,5 +1,5 @@
-import { Controller, UsePipes } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { Controller, Inject, UsePipes } from '@nestjs/common';
+import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import {
   IEventType,
   CreateUserDto,
@@ -11,31 +11,35 @@ import { JoiValidationPipe } from '../validation/joi.pipe';
 
 @Controller()
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(@Inject('USERS_SERVICE') private usersService: UsersService) {}
 
   @UsePipes(new JoiValidationPipe(CreateUserValidationSchema))
   @MessagePattern(IEventType.USER_CREATED)
   create(@Payload() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    return this.usersService.createUser(createUserDto);
   }
 
-  @MessagePattern('get_users')
-  findAll() {
-    return this.usersService.findAll();
+  @MessagePattern(IEventType.GET_USERS)
+  getUsers() {
+    return this.usersService.getUsers();
   }
 
-  @MessagePattern('get_user')
-  findOne(@Payload() { id }: { id: string }) {
-    return this.usersService.findOne(id);
+  @MessagePattern(IEventType.GET_USER)
+  getUser(@Payload() { id }: { id: string }) {
+    return this.usersService.getUser(id);
   }
 
   @MessagePattern(IEventType.USER_UPDATED)
-  update(@Payload() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(updateUserDto.id, updateUserDto);
+  updateUser(@Payload() updateUserDto: UpdateUserDto) {
+    return this.usersService.updateUser(updateUserDto);
   }
 
   @MessagePattern(IEventType.USER_REMOVED)
-  remove(@Payload() { id }: { id: string }) {
-    return this.usersService.remove(id);
+  async removeUser(@Payload() { id }: { id: string }) {
+    try {
+      return await this.usersService.removeUser(id);
+    } catch (err) {
+      throw new RpcException(err.message);
+    }
   }
 }

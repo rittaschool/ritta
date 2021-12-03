@@ -1,0 +1,7 @@
+type Oauth2Identifiers {
+  opinsys: String
+}
+
+input Oauth2IdentifiersInput {
+  opinsys: String
+}
