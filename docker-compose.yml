@@ -39,14 +39,12 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-      users:
-        condition: service_healthy
     environment:
       - NODE_ENV=production
       - RMQ_HOST=rabbitmq
       - RMQ_PORT=5672
-      - RMQ_USERNAME=guest
-      - RMQ_PASSWORD=guest
+      - RMQ_USERNAME=auth
+      - RMQ_PASSWORD=auth
       - SIGNING_KEY=RITTATESTSIGNINGKEY
     networks:
       - ritta
@@ -62,8 +60,8 @@ services:
       - NODE_ENV=production
       - RMQ_HOST=rabbitmq
       - RMQ_PORT=5672
-      - RMQ_USERNAME=guest
-      - RMQ_PASSWORD=guest
+      - RMQ_USERNAME=users
+      - RMQ_PASSWORD=users
       - MONGO_URI=mongodb://ritta:password@users_db:27017/ritta?authSource=admin
     networks:
       - ritta
