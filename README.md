@@ -23,7 +23,7 @@ The API documentation can be seen by going to `https://<ritta-server url>/docs`
 
 ## Running the app
 
-For developing you can just `docker-compose -f docker-compose.dev.yml up` to start it with the development configuration.
+For developing you can just run `docker-compose -f docker-compose.dev.yml up` to start it with the development configuration.
 
 ## Contributing
 
