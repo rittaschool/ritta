@@ -4,7 +4,7 @@ import { User } from '@rittaschool/shared';
 import { catchError, of } from 'rxjs';
 
 @Injectable()
-export class AuthRepository {
+export class UserService {
   constructor(@Inject('EVENT_BUS') private client: ClientProxy) {}
 
   findAll(): Promise<User[]> {

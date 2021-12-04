@@ -7,17 +7,17 @@ import {
   User,
   ILoginResponse,
 } from '@rittaschool/shared';
-import { AuthRepository } from './auth.repository';
+import { UserService } from './user.service';
 import argon2 from 'argon2';
 import jsonwebtoken from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
-  constructor(private authRepository: AuthRepository) {}
+  constructor(private userService: UserService) {}
 
   async login(loginUserDto: LoginUserDto) {
     // Find user by username or e-mail
-    const users = await this.authRepository.findAll();
+    const users = await this.userService.findAll();
     const user = users.find(
       (user) =>
         user.email === loginUserDto.username ||
@@ -42,12 +42,12 @@ export class AuthService {
 
   async loginOAuth(loginOAuthUserDto: LoginOAuthUserDto) {
     // TODO: Implement this
-    return this.authRepository.findAll();
+    return this.userService.findAll();
   }
 
   async loginMFA(loginMFADto: LoginMFAUserDto) {
     const decoded = await this.verifyToken(loginMFADto.mfaToken);
-    const user = await this.authRepository.findOne(
+    const user = await this.userService.findOne(
       (decoded as { uid: string }).uid,
     );
 
