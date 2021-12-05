@@ -1,9 +1,7 @@
-import * as argon2 from 'argon2';
+import * as bcrypt from 'bcrypt';
 
 const encodePassword = async (password: string): Promise<string> => {
-  return await argon2.hash(password, {
-    type: argon2.argon2id,
-  });
+  return await bcrypt.hash(password, 6);
 };
 
 export default {
