@@ -37,6 +37,7 @@
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.11",
+    "otplib": "^12.0.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",

@@ -10,6 +10,7 @@ import {
 import { UserService } from './user.service';
 import * as bcrypt from 'bcrypt';
 import * as jsonwebtoken from 'jsonwebtoken';
+import { totp } from 'otplib';
 
 @Injectable()
 export class AuthService {
@@ -53,6 +54,12 @@ export class AuthService {
 
     if (!user) {
       throw new RpcException('Invalid token');
+    }
+
+    const isValid = totp.check(loginMFADto.mfaCode, user.mfa.secret);
+
+    if (!isValid) {
+      throw new RpcException('Invalid MFA code');
     }
 
     return await this.generateTokens(user, true);
