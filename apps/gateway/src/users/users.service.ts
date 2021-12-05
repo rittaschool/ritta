@@ -15,7 +15,8 @@ export class UsersService {
   async createUser(createUserDto: CreateUserDto): Promise<IUser> {
     return this.client
       .send(IEventType.USER_CREATED, createUserDto)
-      .pipe(timeout(5000)) // timeout
+      .pipe(timeout(10000)) // increased timeout
+      .pipe(catchError((val) => of({ error: val.message })))
       .toPromise(); // converting observable to promise
   }
 

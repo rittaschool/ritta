@@ -18,8 +18,7 @@ services:
       retries: 12
 
   gateway:
-    build:
-      context: apps/gateway
+    build: ./apps/gateway
     command: yarn start:dev
     depends_on:
       rabbitmq:
@@ -35,30 +34,25 @@ services:
       - '3000:3000'
     networks:
       - ritta
-    volumes:
-      - ./apps/gateway:/home/app
-      - ./apps/gateway/dist:/home/app/dist
-      - ./apps/gateway/node_modules:/home/app/node_modules
 
   auth:
     build: ./apps/auth
+    command: yarn start:dev
     depends_on:
       rabbitmq:
-        condition: service_healthy
-      users:
         condition: service_healthy
     environment:
       - NODE_ENV=production
       - RMQ_HOST=rabbitmq
       - RMQ_PORT=5672
-      - RMQ_USERNAME=guest
-      - RMQ_PASSWORD=guest
+      - RMQ_USERNAME=auth
+      - RMQ_PASSWORD=auth
+      - SIGNING_KEY=RITTATESTSIGNINGKEY
     networks:
       - ritta
 
   users:
-    build:
-      context: apps/users
+    build: ./apps/users
     command: yarn start:dev
     depends_on:
       rabbitmq:
@@ -69,16 +63,11 @@ services:
       - NODE_ENV=production
       - RMQ_HOST=rabbitmq
       - RMQ_PORT=5672
-      - RMQ_USERNAME=guest
-      - RMQ_PASSWORD=guest
+      - RMQ_USERNAME=users
+      - RMQ_PASSWORD=users
       - MONGO_URI=mongodb://ritta:password@users_db:27017/ritta?authSource=admin
-      - MFA_SECRET=secret
     networks:
       - ritta
-    volumes:
-      - ./apps/users:/home/app
-      - ./apps/users/dist:/home/app/dist
-      - ./apps/users/node_modules:/home/app/node_modules
 
   users_db:
     image: mongo:latest
@@ -88,10 +77,10 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
       - ~/.docker-vols/ritta/users_db:/data/db
-    ports:
-      - 27018:27017
     networks:
       - ritta
+    ports:
+      - "127.0.0.1:27017:27017"
     healthcheck:
       test: mongosh --quiet --eval "db.runCommand('ping').ok"
       interval: 5s

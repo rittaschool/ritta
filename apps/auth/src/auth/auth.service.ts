@@ -8,8 +8,8 @@ import {
   ILoginResponse,
 } from '@rittaschool/shared';
 import { UserService } from './user.service';
-import argon2 from 'argon2';
-import jsonwebtoken from 'jsonwebtoken';
+import * as bcrypt from 'bcrypt';
+import * as jsonwebtoken from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
@@ -28,9 +28,9 @@ export class AuthService {
       throw new RpcException('Invalid credentials');
     }
 
-    const passwordValid = await argon2.verify(
-      user.password,
+    const passwordValid = await bcrypt.compare(
       loginUserDto.password,
+      user.password,
     );
 
     if (!passwordValid) {
@@ -61,22 +61,31 @@ export class AuthService {
   private async generateTokens(user: User, skipMFA = false) {
     if (user.mfa.enabled && !skipMFA) {
       // Generate MFA tokens
-      return await this.signToken({
+      return {
         type: ILoginResponse.MFA_REQUIRED,
-        uid: user.id,
-      });
+        token: await this.signToken({
+          type: ILoginResponse.MFA_REQUIRED,
+          uid: user.id,
+        }),
+      };
     }
     if (user.isPasswordChangeRequired) {
       // Password change token
-      return await this.signToken({
+      return {
         type: ILoginResponse.PWD_CHANGE_REQUIRED,
-        uid: user.id,
-      });
+        token: await this.signToken({
+          type: ILoginResponse.PWD_CHANGE_REQUIRED,
+          uid: user.id,
+        }),
+      };
     }
-    return await this.signToken({
+    return {
       type: ILoginResponse.LOGGED_IN,
-      uid: user.id,
-    });
+      token: await this.signToken({
+        type: ILoginResponse.LOGGED_IN,
+        uid: user.id,
+      }),
+    };
   }
 
   private signToken(payload: Record<string, unknown>) {
