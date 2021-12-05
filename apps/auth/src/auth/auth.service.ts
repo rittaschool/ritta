@@ -6,6 +6,7 @@ import {
   LoginMFAUserDto,
   User,
   ILoginResponse,
+  ISocialProvider,
 } from '@rittaschool/shared';
 import { UserService } from './user.service';
 import * as bcrypt from 'bcrypt';
@@ -42,8 +43,38 @@ export class AuthService {
   }
 
   async loginOAuth(loginOAuthUserDto: LoginOAuthUserDto) {
-    // TODO: Implement this
-    return this.userService.findAll();
+    switch (loginOAuthUserDto.provider) {
+      case ISocialProvider.OPINSYS:
+        if (!process.env.OPINSYS_SECRET) {
+          throw new RpcException('Unsupported provider');
+        }
+
+        if (!process.env.OPINSYS_ORGANIZATION) {
+          throw new RpcException('Unsupported provider');
+        }
+
+        const jwt = (await this.verifyToken(
+          loginOAuthUserDto.identifier,
+          process.env.OPINSYS_SECRET,
+        )) as IOpinsysJWT;
+
+        if (jwt.organisation_domain !== process.env.OPINSYS_ORGANIZATION) {
+          throw new RpcException('Invalid organization');
+        }
+
+        const users = await this.userService.findAll();
+        const user = users.find(
+          (u) => u.oauth2Identifiers.opinsys === `${jwt.id}`,
+        );
+
+        if (!user) {
+          throw new RpcException('User not found');
+        }
+
+        return await this.generateTokens(user);
+      default:
+        throw new RpcException('Unsupported provider');
+    }
   }
 
   async loginMFA(loginMFADto: LoginMFAUserDto) {
@@ -98,16 +129,16 @@ export class AuthService {
   private signToken(payload: Record<string, unknown>) {
     return new Promise((resolve, reject) => {
       jsonwebtoken.sign(payload, process.env.SIGNING_KEY, (err, encoded) => {
-        if (err) reject(err);
+        if (err) reject(new RpcException('Invalid token'));
         resolve(encoded);
       });
     });
   }
 
-  private verifyToken(token: string) {
+  private verifyToken(token: string, key = process.env.SIGNING_KEY) {
     return new Promise((resolve, reject) => {
-      jsonwebtoken.verify(token, process.env.SIGNING_KEY, (err, decoded) => {
-        if (err) reject(err);
+      jsonwebtoken.verify(token, key, (err, decoded) => {
+        if (err) reject(new RpcException('Invalid token'));
         resolve(decoded);
       });
     });
