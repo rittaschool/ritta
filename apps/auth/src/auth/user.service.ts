@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { IEventType } from '@rittaschool/shared';
 import { User } from '@rittaschool/shared';
 import { catchError, of } from 'rxjs';
 
@@ -8,12 +9,12 @@ export class UserService {
   constructor(@Inject('EVENT_BUS') private client: ClientProxy) {}
 
   findAll(): Promise<User[]> {
-    return this.client.send<User[]>('get_users', {}).toPromise();
+    return this.client.send<User[]>(IEventType.GET_USERS, {}).toPromise();
   }
 
   findOne(id: string): Promise<User> {
     return this.client
-      .send<User>('get_user', { id })
+      .send<User>(IEventType.GET_USER, { id })
       .pipe(catchError(() => of(null)))
       .toPromise();
   }
