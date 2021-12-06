@@ -9,8 +9,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   controllers: [AuthController],
   imports: [ConfigModule],
   providers: [
-    UserService,
-    AuthService,
+    {
+      provide: 'USERS_SERVICE',
+      useClass: UserService,
+    },
+    {
+      provide: 'AUTH_SERVICE',
+      useClass: AuthService,
+    },
     {
       provide: 'EVENT_BUS',
       useFactory: (configService: ConfigService) => {

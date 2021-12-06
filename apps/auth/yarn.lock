@@ -1221,6 +1221,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/bcrypt@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@types/bcrypt@npm:5.0.0"
+  dependencies:
+    "@types/node": "*"
+  checksum: 063c32c7a519d64768dfc0169a319b8244d6a6cb50a355c93992b3c5fee1dbc236526a1111f0e7bb25abc8b0473e5f40a5edfeb8b33cad2a6ea35aa2d7d7db14
+  languageName: node
+  linkType: hard
+
 "@types/body-parser@npm:*":
   version: 1.19.1
   resolution: "@types/body-parser@npm:1.19.1"
@@ -1352,6 +1361,15 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: e60b153664572116dfea673c5bda7778dbff150498f44f998e34b5886d8afc47f16799280e4b6e241c0472aef1bc36add771c569c68fc5125fc2ae519a3eb9ac
+  languageName: node
+  linkType: hard
+
+"@types/jsonwebtoken@npm:^8.5.6":
+  version: 8.5.6
+  resolution: "@types/jsonwebtoken@npm:8.5.6"
+  dependencies:
+    "@types/node": "*"
+  checksum: c1c0e40cb1366d3b5f72c2c283abee8e5aedc5656d8857752ed4cb318eb8e117dad87f35431f73cdc03e7b02d169d19b3a1e58422ef94776c17cfd003ee05a33
   languageName: node
   linkType: hard
 
@@ -2114,8 +2132,10 @@ __metadata:
     "@nestjs/schematics": ^8.0.0
     "@nestjs/testing": ^8.0.0
     "@rittaschool/shared": ^0.0.17
+    "@types/bcrypt": ^5.0.0
     "@types/express": ^4.17.13
     "@types/jest": ^27.0.1
+    "@types/jsonwebtoken": ^8.5.6
     "@types/node": ^16.0.0
     "@types/supertest": ^2.0.11
     "@types/uuid": ^8.3.1

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import {
   LoginUserDto,
@@ -9,13 +9,13 @@ import {
   ISocialProvider,
 } from '@rittaschool/shared';
 import { UserService } from './user.service';
-import * as bcrypt from 'bcrypt';
-import * as jsonwebtoken from 'jsonwebtoken';
 import { totp } from 'otplib';
+import cryptor from './cryptor';
+import tokens from './tokens';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) {}
+  constructor(@Inject('USERS_SERVICE') private userService: UserService) {}
 
   async login(loginUserDto: LoginUserDto) {
     // Find user by username or e-mail
@@ -30,7 +30,7 @@ export class AuthService {
       throw new RpcException('Invalid credentials');
     }
 
-    const passwordValid = await bcrypt.compare(
+    const passwordValid = await cryptor.verifyPassword(
       loginUserDto.password,
       user.password,
     );
@@ -53,7 +53,7 @@ export class AuthService {
           throw new RpcException('Unsupported provider');
         }
 
-        const jwt = (await this.verifyToken(
+        const jwt = (await tokens.verifyToken(
           loginOAuthUserDto.identifier,
           process.env.OPINSYS_SECRET,
         )) as IOpinsysJWT;
@@ -78,22 +78,27 @@ export class AuthService {
   }
 
   async loginMFA(loginMFADto: LoginMFAUserDto) {
-    const decoded = await this.verifyToken(loginMFADto.mfaToken);
-    const user = await this.userService.findOne(
-      (decoded as { uid: string }).uid,
-    );
+    try {
+      const decoded = await tokens.verifyToken(loginMFADto.mfaToken);
+      const user = await this.userService.findOne(
+        (decoded as { uid: string }).uid,
+      );
 
-    if (!user) {
-      throw new RpcException('Invalid token');
+      if (!user) {
+        throw new Error('Invalid token');
+      }
+
+      const isValid = totp.check(loginMFADto.mfaCode, user.mfa.secret);
+
+      if (!isValid) {
+        throw new Error('Invalid MFA code');
+      }
+
+      return await this.generateTokens(user, true);
+    } catch (error) {
+      console.log(error);
+      throw new RpcException(error);
     }
-
-    const isValid = totp.check(loginMFADto.mfaCode, user.mfa.secret);
-
-    if (!isValid) {
-      throw new RpcException('Invalid MFA code');
-    }
-
-    return await this.generateTokens(user, true);
   }
 
   private async generateTokens(user: User, skipMFA = false) {
@@ -101,7 +106,7 @@ export class AuthService {
       // Generate MFA tokens
       return {
         type: ILoginResponse.MFA_REQUIRED,
-        token: await this.signToken({
+        token: await tokens.signToken({
           type: ILoginResponse.MFA_REQUIRED,
           uid: user.id,
         }),
@@ -111,7 +116,7 @@ export class AuthService {
       // Password change token
       return {
         type: ILoginResponse.PWD_CHANGE_REQUIRED,
-        token: await this.signToken({
+        token: await tokens.signToken({
           type: ILoginResponse.PWD_CHANGE_REQUIRED,
           uid: user.id,
         }),
@@ -119,28 +124,10 @@ export class AuthService {
     }
     return {
       type: ILoginResponse.LOGGED_IN,
-      token: await this.signToken({
+      token: await tokens.signToken({
         type: ILoginResponse.LOGGED_IN,
         uid: user.id,
       }),
     };
-  }
-
-  private signToken(payload: Record<string, unknown>) {
-    return new Promise((resolve, reject) => {
-      jsonwebtoken.sign(payload, process.env.SIGNING_KEY, (err, encoded) => {
-        if (err) reject(new RpcException('Invalid token'));
-        resolve(encoded);
-      });
-    });
-  }
-
-  private verifyToken(token: string, key = process.env.SIGNING_KEY) {
-    return new Promise((resolve, reject) => {
-      jsonwebtoken.verify(token, key, (err, decoded) => {
-        if (err) reject(new RpcException('Invalid token'));
-        resolve(decoded);
-      });
-    });
   }
 }
