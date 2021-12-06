@@ -7,6 +7,8 @@ import {
   User,
   ILoginResponse,
   ISocialProvider,
+  RittaError,
+  IErrorType,
 } from '@rittaschool/shared';
 import { UserService } from './user.service';
 import { totp } from 'otplib';
@@ -78,27 +80,22 @@ export class AuthService {
   }
 
   async loginMFA(loginMFADto: LoginMFAUserDto) {
-    try {
-      const decoded = await tokens.verifyToken(loginMFADto.mfaToken);
-      const user = await this.userService.findOne(
-        (decoded as { uid: string }).uid,
-      );
+    const decoded = await tokens.verifyToken(loginMFADto.mfaToken);
+    const user = await this.userService.findOne(
+      (decoded as { uid: string }).uid,
+    );
 
-      if (!user) {
-        throw new Error('Invalid token');
-      }
-
-      const isValid = totp.check(loginMFADto.mfaCode, user.mfa.secret);
-
-      if (!isValid) {
-        throw new Error('Invalid MFA code');
-      }
-
-      return await this.generateTokens(user, true);
-    } catch (error) {
-      console.log(error);
-      throw new RpcException(error);
+    if (!user) {
+      throw new RittaError('Invalid token', IErrorType.INVALID_TOKEN);
     }
+
+    const isValid = totp.check(loginMFADto.mfaCode, user.mfa.secret);
+
+    if (!isValid) {
+      throw new RittaError('Invalid MFA code', IErrorType.INVALID_TOKEN); // TODO: change in the next release of shared to INVALID_CODE
+    }
+
+    return await this.generateTokens(user, true);
   }
 
   private async generateTokens(user: User, skipMFA = false) {
