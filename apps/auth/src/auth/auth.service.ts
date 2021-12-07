@@ -121,6 +121,7 @@ export class AuthService {
       return {
         type: ILoginResponse.MFA_REQUIRED,
         token: await tokenizer.signToken({
+
           type: ILoginResponse.MFA_REQUIRED,
           uid: user.id,
         }),
@@ -141,6 +142,12 @@ export class AuthService {
       token: await tokenizer.signToken({
         type: ILoginResponse.LOGGED_IN,
         uid: user.id,
+        exp: Math.floor(Date.now() / 1000) + 15 * 60, // Expire access token after 15 minutes
+      }),
+      refreshToken: await this.signToken({
+        type: ITokenType.REFRESH_TOKEN,
+        uid: user.id,
+        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // Expire refresh token after 30 days (new refresh tokens will be granted when tokens are refreshed)
       }),
     };
   }
