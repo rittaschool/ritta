@@ -3,7 +3,7 @@ import { IErrorType, ILoginResponse, RittaError } from '@rittaschool/shared';
 import { AuthService } from './auth.service';
 import cryptor from './cryptor';
 import mfa from './mfa';
-import tokens from './tokens';
+import tokenizer from './tokenizer';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -70,7 +70,7 @@ describe('AuthService', () => {
 
         // Mock the token generator
         jest
-          .spyOn(tokens, 'signToken')
+          .spyOn(tokenizer, 'signToken')
           .mockImplementationOnce(async () => 'token');
 
         // Run the service code
@@ -108,7 +108,7 @@ describe('AuthService', () => {
 
         // Mock the token generator
         jest
-          .spyOn(tokens, 'signToken')
+          .spyOn(tokenizer, 'signToken')
           .mockImplementationOnce(async () => 'token');
 
         // Run the service code
@@ -137,7 +137,7 @@ describe('AuthService', () => {
       it('should throw invalid mfa code', async () => {
         // Mock the tokenizer
         jest
-          .spyOn(tokens, 'verifyToken')
+          .spyOn(tokenizer, 'verifyToken')
           .mockImplementationOnce(async () => true);
         try {
           await service.loginMFA({
@@ -155,10 +155,10 @@ describe('AuthService', () => {
       it('should return a user', async () => {
         // Mock the tokenizer
         jest
-          .spyOn(tokens, 'signToken')
+          .spyOn(tokenizer, 'signToken')
           .mockImplementationOnce(async () => 'token');
         jest
-          .spyOn(tokens, 'verifyToken')
+          .spyOn(tokenizer, 'verifyToken')
           .mockImplementationOnce(async () => true);
 
         // Mock the mfa validator

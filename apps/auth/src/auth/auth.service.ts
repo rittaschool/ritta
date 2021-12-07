@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
 import {
   LoginUserDto,
   LoginOAuthUserDto,
@@ -12,7 +11,7 @@ import {
 } from '@rittaschool/shared';
 import { UserService } from './user.service';
 import cryptor from './cryptor';
-import tokens from './tokens';
+import tokenizer from './tokenizer';
 import mfa from './mfa';
 
 @Injectable()
@@ -67,7 +66,7 @@ export class AuthService {
           );
         }
 
-        const jwt = (await tokens.verifyToken(
+        const jwt = (await tokenizer.verifyToken(
           loginOAuthUserDto.identifier,
           process.env.OPINSYS_SECRET,
         )) as IOpinsysJWT;
@@ -98,7 +97,7 @@ export class AuthService {
   }
 
   async loginMFA(loginMFADto: LoginMFAUserDto) {
-    const decoded = await tokens.verifyToken(loginMFADto.mfaToken);
+    const decoded = await tokenizer.verifyToken(loginMFADto.mfaToken);
     const user = await this.userService.findOne(
       (decoded as { uid: string }).uid,
     );
@@ -121,7 +120,7 @@ export class AuthService {
       // Generate MFA tokens
       return {
         type: ILoginResponse.MFA_REQUIRED,
-        token: await tokens.signToken({
+        token: await tokenizer.signToken({
           type: ILoginResponse.MFA_REQUIRED,
           uid: user.id,
         }),
@@ -131,7 +130,7 @@ export class AuthService {
       // Password change token
       return {
         type: ILoginResponse.PWD_CHANGE_REQUIRED,
-        token: await tokens.signToken({
+        token: await tokenizer.signToken({
           type: ILoginResponse.PWD_CHANGE_REQUIRED,
           uid: user.id,
         }),
@@ -139,7 +138,7 @@ export class AuthService {
     }
     return {
       type: ILoginResponse.LOGGED_IN,
-      token: await tokens.signToken({
+      token: await tokenizer.signToken({
         type: ILoginResponse.LOGGED_IN,
         uid: user.id,
       }),
