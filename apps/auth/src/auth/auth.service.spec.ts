@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { IErrorType, ILoginResponse, RittaError } from '@rittaschool/shared';
 import { AuthService } from './auth.service';
 import cryptor from './cryptor';
+import mfa from './mfa';
 import tokens from './tokens';
 
 describe('AuthService', () => {
@@ -25,13 +27,33 @@ describe('AuthService', () => {
                   enabled: false,
                 },
               },
+              {
+                id: 2,
+                username: 'testerWithMfa',
+                password: 'hashed124withMfa',
+                mfa: {
+                  enabled: true,
+                  secret: 'secret',
+                },
+              },
             ]),
+            findOne: jest.fn().mockReturnValue({
+              id: 2,
+              username: 'testerWithMfa',
+              password: 'hashed124withMfa',
+              mfa: {
+                enabled: true,
+                secret: 'secret',
+              },
+            }),
           },
         },
       ],
     }).compile();
 
     service = module.get<AuthService>('AUTH_SERVICE');
+
+    jest.clearAllMocks();
   });
 
   it('should be defined', () => {
@@ -47,7 +69,9 @@ describe('AuthService', () => {
           .mockImplementation(async () => true);
 
         // Mock the token generator
-        jest.spyOn(tokens, 'signToken').mockImplementation(async () => 'token');
+        jest
+          .spyOn(tokens, 'signToken')
+          .mockImplementationOnce(async () => 'token');
 
         // Run the service code
         const result = await service.login({
@@ -55,7 +79,7 @@ describe('AuthService', () => {
           password: '123456',
         });
 
-        expect(result.type).toBe('logged_in');
+        expect(result.type).toBe(ILoginResponse.LOGGED_IN);
         expect(result.token).toBe('token');
       });
 
@@ -72,24 +96,82 @@ describe('AuthService', () => {
             password: '123456',
           });
         } catch (err) {
-          expect(err.error).toBe('Invalid credentials');
+          expect(err.type).toBe(IErrorType.INVALID_CREDENTIALS);
         }
+      });
+
+      it('should ask user for mfa code', async () => {
+        // Mock the cryptor
+        jest
+          .spyOn(cryptor, 'verifyPassword')
+          .mockImplementation(async () => true);
+
+        // Mock the token generator
+        jest
+          .spyOn(tokens, 'signToken')
+          .mockImplementationOnce(async () => 'token');
+
+        // Run the service code
+        const result = await service.login({
+          username: 'testerWithMfa',
+          password: '123456',
+        });
+
+        expect(result.type).toBe(ILoginResponse.MFA_REQUIRED);
+        expect(result.token).toBe('token');
       });
     });
 
     describe('loginMFA', () => {
       it('should throw invalid token', async () => {
         try {
-          const result = await service.loginMFA({
+          await service.loginMFA({
             mfaCode: '12345',
             mfaToken: 'mfa_token',
           });
-
-          console.log(result);
         } catch (error) {
-          console.log(error);
-          expect(error.error).toBe('Invalid token');
+          expect(error.type).toBe(IErrorType.INVALID_TOKEN);
         }
+      });
+
+      it('should throw invalid mfa code', async () => {
+        // Mock the tokenizer
+        jest
+          .spyOn(tokens, 'verifyToken')
+          .mockImplementationOnce(async () => true);
+        try {
+          await service.loginMFA({
+            mfaCode: '12345',
+            mfaToken: 'mfa_token',
+          });
+        } catch (error) {
+          expect(error).toStrictEqual(
+            new RittaError('Invalid MFA code', IErrorType.INVALID_TOKEN), // TODO: change in shared@0.0.20 to INVALID_MFA_CODE
+          );
+          expect(error.type).toBe(IErrorType.INVALID_TOKEN); // TODO: change in shared@0.0.20 to INVALID_MFA_CODE
+        }
+      });
+
+      it('should return a user', async () => {
+        // Mock the tokenizer
+        jest
+          .spyOn(tokens, 'signToken')
+          .mockImplementationOnce(async () => 'token');
+        jest
+          .spyOn(tokens, 'verifyToken')
+          .mockImplementationOnce(async () => true);
+
+        // Mock the mfa validator
+        jest.spyOn(mfa, 'checkMfaCode').mockImplementationOnce(() => true);
+
+        // Call the function
+        const result = await service.loginMFA({
+          mfaCode: '12345',
+          mfaToken: 'mfa_token',
+        });
+
+        expect(result.type).toBe(ILoginResponse.LOGGED_IN);
+        expect(result.token).toBe('token');
       });
     });
   });

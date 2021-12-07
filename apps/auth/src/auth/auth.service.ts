@@ -11,9 +11,9 @@ import {
   IErrorType,
 } from '@rittaschool/shared';
 import { UserService } from './user.service';
-import { totp } from 'otplib';
 import cryptor from './cryptor';
 import tokens from './tokens';
+import mfa from './mfa';
 
 @Injectable()
 export class AuthService {
@@ -29,7 +29,10 @@ export class AuthService {
     );
 
     if (!user) {
-      throw new RpcException('Invalid credentials');
+      throw new RittaError(
+        'Invalid credentials',
+        IErrorType.INVALID_CREDENTIALS,
+      );
     }
 
     const passwordValid = await cryptor.verifyPassword(
@@ -38,7 +41,10 @@ export class AuthService {
     );
 
     if (!passwordValid) {
-      throw new RpcException('Invalid credentials');
+      throw new RittaError(
+        'Invalid credentials',
+        IErrorType.INVALID_CREDENTIALS,
+      );
     }
 
     return await this.generateTokens(user);
@@ -48,11 +54,17 @@ export class AuthService {
     switch (loginOAuthUserDto.provider) {
       case ISocialProvider.OPINSYS:
         if (!process.env.OPINSYS_SECRET) {
-          throw new RpcException('Unsupported provider');
+          throw new RittaError(
+            'Unsupported provider',
+            IErrorType.UNSUPPORTED_PROVIDER,
+          );
         }
 
         if (!process.env.OPINSYS_ORGANIZATION) {
-          throw new RpcException('Unsupported provider');
+          throw new RittaError(
+            'Unsupported provider',
+            IErrorType.UNSUPPORTED_PROVIDER,
+          );
         }
 
         const jwt = (await tokens.verifyToken(
@@ -61,7 +73,10 @@ export class AuthService {
         )) as IOpinsysJWT;
 
         if (jwt.organisation_domain !== process.env.OPINSYS_ORGANIZATION) {
-          throw new RpcException('Invalid organization');
+          throw new RittaError(
+            'Invalid organization',
+            IErrorType.INVALID_ORGANIZATION,
+          );
         }
 
         const users = await this.userService.findAll();
@@ -70,12 +85,15 @@ export class AuthService {
         );
 
         if (!user) {
-          throw new RpcException('User not found');
+          throw new RittaError('User not found', IErrorType.USER_NOT_FOUND);
         }
 
         return await this.generateTokens(user);
       default:
-        throw new RpcException('Unsupported provider');
+        throw new RittaError(
+          'Unsupported provider',
+          IErrorType.UNSUPPORTED_PROVIDER,
+        );
     }
   }
 
@@ -89,10 +107,10 @@ export class AuthService {
       throw new RittaError('Invalid token', IErrorType.INVALID_TOKEN);
     }
 
-    const isValid = totp.check(loginMFADto.mfaCode, user.mfa.secret);
+    const isValid = mfa.checkMfaCode(loginMFADto.mfaCode, user.mfa.secret);
 
     if (!isValid) {
-      throw new RittaError('Invalid MFA code', IErrorType.INVALID_TOKEN); // TODO: change in the next release of shared to INVALID_CODE
+      throw new RittaError('Invalid MFA code', IErrorType.INVALID_TOKEN); // TODO: change in shared@0.0.20 to INVALID_MFA_CODE
     }
 
     return await this.generateTokens(user, true);
