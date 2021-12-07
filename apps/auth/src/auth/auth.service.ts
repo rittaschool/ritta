@@ -1,5 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
+import { Inject, Injectable } from '@nestjs/common';
 import {
   LoginUserDto,
   LoginOAuthUserDto,
@@ -7,16 +6,17 @@ import {
   User,
   ILoginResponse,
   ISocialProvider,
-  ITokenType,
+  RittaError,
+  IErrorType,
 } from '@rittaschool/shared';
 import { UserService } from './user.service';
-import * as bcrypt from 'bcrypt';
-import * as jsonwebtoken from 'jsonwebtoken';
-import { totp } from 'otplib';
+import cryptor from './cryptor';
+import tokenizer from './tokenizer';
+import mfa from './mfa';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) {}
+  constructor(@Inject('USERS_SERVICE') private userService: UserService) {}
 
   async login(loginUserDto: LoginUserDto) {
     // Find user by username or e-mail
@@ -28,16 +28,22 @@ export class AuthService {
     );
 
     if (!user) {
-      throw new RpcException('Invalid credentials');
+      throw new RittaError(
+        'Invalid credentials',
+        IErrorType.INVALID_CREDENTIALS,
+      );
     }
 
-    const passwordValid = await bcrypt.compare(
+    const passwordValid = await cryptor.verifyPassword(
       loginUserDto.password,
       user.password,
     );
 
     if (!passwordValid) {
-      throw new RpcException('Invalid credentials');
+      throw new RittaError(
+        'Invalid credentials',
+        IErrorType.INVALID_CREDENTIALS,
+      );
     }
 
     return await this.generateTokens(user);
@@ -47,20 +53,29 @@ export class AuthService {
     switch (loginOAuthUserDto.provider) {
       case ISocialProvider.OPINSYS:
         if (!process.env.OPINSYS_SECRET) {
-          throw new RpcException('Unsupported provider');
+          throw new RittaError(
+            'Unsupported provider',
+            IErrorType.UNSUPPORTED_PROVIDER,
+          );
         }
 
         if (!process.env.OPINSYS_ORGANIZATION) {
-          throw new RpcException('Unsupported provider');
+          throw new RittaError(
+            'Unsupported provider',
+            IErrorType.UNSUPPORTED_PROVIDER,
+          );
         }
 
-        const jwt = (await this.verifyToken(
+        const jwt = (await tokenizer.verifyToken(
           loginOAuthUserDto.identifier,
           process.env.OPINSYS_SECRET,
         )) as IOpinsysJWT;
 
         if (jwt.organisation_domain !== process.env.OPINSYS_ORGANIZATION) {
-          throw new RpcException('Invalid organization');
+          throw new RittaError(
+            'Invalid organization',
+            IErrorType.INVALID_ORGANIZATION,
+          );
         }
 
         const users = await this.userService.findAll();
@@ -69,29 +84,32 @@ export class AuthService {
         );
 
         if (!user) {
-          throw new RpcException('User not found');
+          throw new RittaError('User not found', IErrorType.USER_NOT_FOUND);
         }
 
         return await this.generateTokens(user);
       default:
-        throw new RpcException('Unsupported provider');
+        throw new RittaError(
+          'Unsupported provider',
+          IErrorType.UNSUPPORTED_PROVIDER,
+        );
     }
   }
 
   async loginMFA(loginMFADto: LoginMFAUserDto) {
-    const decoded = await this.verifyToken(loginMFADto.mfaToken);
+    const decoded = await tokenizer.verifyToken(loginMFADto.mfaToken);
     const user = await this.userService.findOne(
       (decoded as { uid: string }).uid,
     );
 
     if (!user) {
-      throw new RpcException('Invalid token');
+      throw new RittaError('Invalid token', IErrorType.INVALID_TOKEN);
     }
 
-    const isValid = totp.check(loginMFADto.mfaCode, user.mfa.secret);
+    const isValid = mfa.checkMfaCode(loginMFADto.mfaCode, user.mfa.secret);
 
     if (!isValid) {
-      throw new RpcException('Invalid MFA code');
+      throw new RittaError('Invalid MFA code', IErrorType.INVALID_TOKEN); // TODO: change in shared@0.0.20 to INVALID_MFA_CODE
     }
 
     return await this.generateTokens(user, true);
@@ -101,8 +119,9 @@ export class AuthService {
     if (user.mfa.enabled && !skipMFA) {
       // Generate MFA tokens
       return {
-        type: ITokenType.MFA_TOKEN,
-        token: await this.signToken({
+        type: ILoginResponse.MFA_REQUIRED,
+        token: await tokenizer.signToken({
+
           type: ILoginResponse.MFA_REQUIRED,
           uid: user.id,
         }),
@@ -111,8 +130,8 @@ export class AuthService {
     if (user.isPasswordChangeRequired) {
       // Password change token
       return {
-        type: ITokenType.PWD_CHANGE_TOKEN,
-        token: await this.signToken({
+        type: ILoginResponse.PWD_CHANGE_REQUIRED,
+        token: await tokenizer.signToken({
           type: ILoginResponse.PWD_CHANGE_REQUIRED,
           uid: user.id,
         }),
@@ -120,8 +139,8 @@ export class AuthService {
     }
     return {
       type: ILoginResponse.LOGGED_IN,
-      accessToken: await this.signToken({
-        type: ITokenType.ACCESS_TOKEN,
+      token: await tokenizer.signToken({
+        type: ILoginResponse.LOGGED_IN,
         uid: user.id,
         exp: Math.floor(Date.now() / 1000) + 15 * 60, // Expire access token after 15 minutes
       }),
@@ -131,23 +150,5 @@ export class AuthService {
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // Expire refresh token after 30 days (new refresh tokens will be granted when tokens are refreshed)
       }),
     };
-  }
-
-  private signToken(payload: Record<string, unknown>) {
-    return new Promise((resolve, reject) => {
-      jsonwebtoken.sign(payload, process.env.SIGNING_KEY, (err, encoded) => {
-        if (err) reject(new RpcException('Invalid token'));
-        resolve(encoded);
-      });
-    });
-  }
-
-  private verifyToken(token: string, key = process.env.SIGNING_KEY) {
-    return new Promise((resolve, reject) => {
-      jsonwebtoken.verify(token, key, (err, decoded) => {
-        if (err) reject(new RpcException('Invalid token'));
-        resolve(decoded);
-      });
-    });
   }
 }

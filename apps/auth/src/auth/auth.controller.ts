@@ -1,4 +1,4 @@
-import { Controller, UsePipes } from '@nestjs/common';
+import { Controller, Inject, UsePipes } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   IEventType,
@@ -14,7 +14,9 @@ import { JoiValidationPipe } from '../validation/joi.pipe';
 
 @Controller()
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    @Inject('AUTH_SERVICE') private readonly authService: AuthService,
+  ) {}
 
   @UsePipes(new JoiValidationPipe(LoginValidationSchema))
   @MessagePattern(IEventType.USER_LOGIN)
