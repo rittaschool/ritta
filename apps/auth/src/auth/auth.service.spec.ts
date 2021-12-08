@@ -71,7 +71,8 @@ describe('AuthService', () => {
         // Mock the token generator
         jest
           .spyOn(tokenizer, 'signToken')
-          .mockImplementationOnce(async () => 'token');
+          .mockImplementationOnce(async () => 'token')
+          .mockImplementationOnce(async () => 'refresh_token');
 
         // Run the service code
         const result = await service.login({
@@ -156,7 +157,8 @@ describe('AuthService', () => {
         // Mock the tokenizer
         jest
           .spyOn(tokenizer, 'signToken')
-          .mockImplementationOnce(async () => 'token');
+          .mockImplementationOnce(async () => 'token')
+          .mockImplementationOnce(async () => 'refresh_token');
         jest
           .spyOn(tokenizer, 'verifyToken')
           .mockImplementationOnce(async () => true);
