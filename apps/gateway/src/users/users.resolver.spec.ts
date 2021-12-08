@@ -6,10 +6,13 @@ describe('UsersResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UsersResolver],
+      providers: [
+        { provide: 'USERS_RESOLVER', useClass: UsersResolver },
+        { provide: 'USERS_SERVICE', useValue: {} },
+      ],
     }).compile();
 
-    resolver = module.get<UsersResolver>(UsersResolver);
+    resolver = module.get<UsersResolver>('USERS_RESOLVER');
   });
 
   it('should be defined', () => {

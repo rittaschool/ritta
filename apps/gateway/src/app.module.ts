@@ -8,7 +8,6 @@ import { AuthController } from './auth.controller';
 import { validate } from './validation/env.validation';
 import { UsersModule } from './users/users.module';
 import { CommonModule } from './common/common.module';
-import { DateScalar } from './common/scalars';
 
 @Module({
   imports: [

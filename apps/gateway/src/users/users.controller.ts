@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Patch,
   Post,
@@ -23,7 +24,7 @@ import { UsersService } from './users.service';
   version: '1',
 })
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(@Inject('USERS_SERVICE') private usersService: UsersService) {}
 
   @Post()
   @UsePipes(new JoiValidationPipe(CreateUserValidationSchema)) // Validates that the body is right
