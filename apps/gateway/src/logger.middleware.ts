@@ -10,7 +10,7 @@ export class LoggerMiddleware implements NestMiddleware {
     this.logger.log({
       context: 'LoggerMiddleware',
       rid,
-      message: `${req.method} ${req.url}`,
+      message: `${req.method} ${req.originalUrl || req.url}`,
     });
     req.headers['rid'] = rid;
     next();
