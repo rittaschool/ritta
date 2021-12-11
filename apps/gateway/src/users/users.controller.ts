@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Inject,
+  Logger,
   Param,
   Patch,
   Post,
@@ -24,7 +25,10 @@ import { UsersService } from './users.service';
   version: '1',
 })
 export class UsersController {
-  constructor(@Inject('USERS_SERVICE') private usersService: UsersService) {}
+  constructor(
+    @Inject('USERS_SERVICE') private usersService: UsersService,
+    @Inject('LOGGER') private logger: Logger,
+  ) {}
 
   @Post()
   @UsePipes(new JoiValidationPipe(CreateUserValidationSchema)) // Validates that the body is right
@@ -36,6 +40,11 @@ export class UsersController {
 
   @Get()
   async getUsers(): Promise<IUser[]> {
+    this.logger.log({
+      message: 'Get all users',
+      rid: 'request id for debugging',
+      context: 'UsersController',
+    });
     return this.usersService.getUsers();
   }
 

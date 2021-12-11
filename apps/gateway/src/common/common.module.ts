@@ -1,8 +1,9 @@
-import { Module } from '@nestjs/common';
+import { Global, Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 import { DateScalar, EmailAddressScalar, PhoneNumberScalar } from './scalars';
 
+@Global()
 @Module({
   imports: [ConfigModule],
   providers: [
@@ -30,7 +31,11 @@ import { DateScalar, EmailAddressScalar, PhoneNumberScalar } from './scalars';
     DateScalar,
     EmailAddressScalar,
     PhoneNumberScalar,
+    {
+      provide: 'LOGGER',
+      useClass: Logger,
+    },
   ],
-  exports: ['EVENT_BUS'],
+  exports: ['EVENT_BUS', 'LOGGER'],
 })
 export class CommonModule {}

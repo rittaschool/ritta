@@ -39,9 +39,11 @@
     "graphql-scalars": "^1.13.1",
     "joi": "^17.4.2",
     "nest-graphql-scalar-adapter": "^1.1.2",
+    "nest-winston": "^1.6.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.1.4",
