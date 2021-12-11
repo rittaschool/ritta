@@ -19,7 +19,10 @@ async function bootstrap() {
     new FastifyAdapter(),
     {
       logger: WinstonModule.createLogger({
-        transports: [new transports.Console({})],
+        transports: [
+          new transports.Console({}),
+          new transports.File({ filename: 'logs/all.log', level: 'debug' }),
+        ],
       }),
     },
   );
