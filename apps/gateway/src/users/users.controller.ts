@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UsePipes,
 } from '@nestjs/common';
 import {
@@ -39,10 +40,9 @@ export class UsersController {
   }
 
   @Get()
-  async getUsers(): Promise<IUser[]> {
+  async getUsers(@Req() req): Promise<IUser[]> {
     this.logger.log({
-      message: 'Get all users',
-      rid: 'request id for debugging',
+      rid: req.headers.rid,
       context: 'UsersController',
     });
     return this.usersService.getUsers();

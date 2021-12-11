@@ -11,6 +11,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { VersioningType } from '@nestjs/common';
 import { WinstonModule } from 'nest-winston';
 import { transports } from 'winston';
+import { consoleFormat, loggerFormat } from './logger.format';
 
 async function bootstrap() {
   // Initialize APP with fastify framework (default: express)
@@ -20,8 +21,10 @@ async function bootstrap() {
     {
       logger: WinstonModule.createLogger({
         transports: [
-          new transports.Console({}),
-          new transports.File({ filename: 'logs/all.log', level: 'debug' }),
+          new transports.Console({
+            format: consoleFormat,
+          }),
+          new transports.File({ filename: 'logs/all.log' }),
         ],
       }),
     },
@@ -51,7 +54,7 @@ async function bootstrap() {
 
   // Start server
   await app.listen(process.env.PORT, process.env.SERVER_IP || '0.0.0.0', () =>
-    app.get('LOGGER').log(`Gateway is online`),
+    app.get('LOGGER').log({ message: `Gateway is online`, context: 'Main' }),
   );
 }
 bootstrap();
