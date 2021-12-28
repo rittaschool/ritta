@@ -6,11 +6,13 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+      - 15692:15692
     volumes:
       - ~/.docker-vols/ritta/rabbitmq/data:/var/lib/rabbitmq/
       - ~/.docker-vols/ritta/rabbitmq/log:/var/log/rabbitmq/
     networks:
       - ritta
+      - loki
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 5s
@@ -18,14 +20,14 @@ services:
       retries: 12
 
   gateway:
-    build: 
+    build:
       context: apps/gateway
     command: yarn start:dev
     depends_on:
       rabbitmq:
         condition: service_healthy
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
       - PORT=3000
       - RMQ_HOST=rabbitmq
       - RMQ_PORT=5672
@@ -36,19 +38,20 @@ services:
     networks:
       - ritta
     volumes:
+      - ./logs/gateway.log:/home/app/logs/all.log
       - ./apps/gateway:/home/app
       - ./apps/gateway/dist:/home/app/dist
       - ./apps/gateway/node_modules:/home/app/node_modules
 
   auth:
-    build: 
+    build:
       context: apps/auth
     command: yarn start:dev
     depends_on:
       rabbitmq:
         condition: service_healthy
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
       - RMQ_HOST=rabbitmq
       - RMQ_PORT=5672
       - RMQ_USERNAME=auth
@@ -62,7 +65,7 @@ services:
       - ./apps/auth/node_modules:/home/app/node_modules
 
   users:
-    build: 
+    build:
       context: apps/users
     command: yarn start:dev
     depends_on:
@@ -71,7 +74,7 @@ services:
       users_db:
         condition: service_healthy
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
       - RMQ_HOST=rabbitmq
       - RMQ_PORT=5672
       - RMQ_USERNAME=users
@@ -110,7 +113,7 @@ services:
   promtail:
     image: grafana/promtail:2.4.0
     volumes:
-      - /var/log:/var/log
+      - ./logs/:/var/log
     command: -config.file=/etc/promtail/config.yml
     networks:
       - loki
@@ -122,7 +125,20 @@ services:
     networks:
       - loki
 
+  prometheus:
+    # https://hub.docker.com/r/prom/prometheus/tags
+    image: prom/prometheus:v2.28.1
+    networks:
+      - loki
+    ports:
+      - "9090:9090"
+    volumes:
+      - rabbitpr:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
 networks:
   ritta:
     driver: bridge
-  loki:
+  loki: null
+
+volumes:
+  rabbitpr: null

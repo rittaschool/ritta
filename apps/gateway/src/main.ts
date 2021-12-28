@@ -11,7 +11,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { VersioningType } from '@nestjs/common';
 import { WinstonModule } from 'nest-winston';
 import { transports } from 'winston';
-import { consoleFormat, loggerFormat } from './logger.format';
+import { consoleFormat } from './logger.format';
 
 async function bootstrap() {
   // Initialize APP with fastify framework (default: express)
@@ -20,6 +20,7 @@ async function bootstrap() {
     new FastifyAdapter(),
     {
       logger: WinstonModule.createLogger({
+        defaultMeta: { service: 'gateway', enviroment: process.env.NODE_ENV },
         transports: [
           new transports.Console({
             format: consoleFormat,

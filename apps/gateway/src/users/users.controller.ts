@@ -4,12 +4,12 @@ import {
   Controller,
   Delete,
   Get,
+  Headers,
   Inject,
   Logger,
   Param,
   Patch,
   Post,
-  Req,
   UsePipes,
 } from '@nestjs/common';
 import {
@@ -40,9 +40,9 @@ export class UsersController {
   }
 
   @Get()
-  async getUsers(@Req() req): Promise<IUser[]> {
+  async getUsers(@Headers('rid') rid): Promise<IUser[]> {
     this.logger.log({
-      rid: req.headers.rid,
+      rid,
       context: 'UsersController',
     });
     return this.usersService.getUsers();
