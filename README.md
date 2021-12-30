@@ -25,6 +25,12 @@ The API documentation can be viewed by going to `https://<ritta-server url>/docs
 
 For development, run `docker-compose -f docker-compose.dev.yml up` to start with the development configuration.
 
+## Bugs and suggestions
+
+Found something or got an idea you would like to share? \
+For minor bugs and suggestions use [issues](https://github.com/rittaschool/ritta-server/issues). \
+For security problems and bigger bugs, please follow procedures in [`SECURITY.md`](https://github.com/rittaschool/ritta-server/blob/master/SECURITY.md)
+
 ## Contributing
 
 Contributions are always welcome!
