@@ -32,9 +32,14 @@ async function bootstrap() {
   );
 
   // Microservices message broker
-  const bus = app.get<ClientProxy>('EVENT_BUS');
+  const bus = app.get<ClientProxy>('USERS_BUS');
   try {
     await bus.connect();
+  } catch (error) {}
+
+  const bus2 = app.get<ClientProxy>('AUTH_BUS');
+  try {
+    await bus2.connect();
   } catch (error) {}
 
   // Enable api versioning with type uri

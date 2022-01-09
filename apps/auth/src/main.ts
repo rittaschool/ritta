@@ -17,7 +17,7 @@ async function bootstrap() {
         urls: [
           `amqp://${process.env.RMQ_PASSWORD}:${process.env.RMQ_USERNAME}@${process.env.RMQ_HOST}:${process.env.RMQ_PORT}/`,
         ],
-        queue: 'main-queue',
+        queue: 'auth',
         queueOptions: {
           durable: true,
         },

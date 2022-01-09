@@ -18,19 +18,12 @@ import { JoiValidationPipe } from './validation/joi.pipe';
   version: '1',
 })
 export class AuthController {
-  constructor(@Inject('EVENT_BUS') private client: ClientProxy) {}
+  constructor(@Inject('AUTH_BUS') private client: ClientProxy) {}
 
   @Post('/login')
   @UsePipes(new JoiValidationPipe(LoginValidationSchema)) // Validates that the body is right
   async login(@Body() loginUsertDto: LoginUserDto) {
     // Send message to users microservice and return response, catch errors and send them to client
-    console.log('shit');
-    console.log(
-      await this.client
-        .send(IEventType.USER_LOGIN, loginUsertDto)
-        .pipe(catchError((val) => of({ error: val.message })))
-        .toPromise(),
-    );
     return this.client
       .send(IEventType.USER_LOGIN, loginUsertDto)
       .pipe(catchError((val) => of({ error: val.message })))

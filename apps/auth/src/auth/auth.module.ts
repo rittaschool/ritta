@@ -29,7 +29,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
         return ClientProxyFactory.create({
           options: {
-            queue: 'main-queue',
+            queue: 'users',
             queueOptions: { durable: true },
             urls: [url],
           },

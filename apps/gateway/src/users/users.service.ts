@@ -10,7 +10,7 @@ import { catchError, of, timeout } from 'rxjs';
 
 @Injectable()
 export class UsersService {
-  constructor(@Inject('EVENT_BUS') private client: ClientProxy) {}
+  constructor(@Inject('USERS_BUS') private client: ClientProxy) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<IUser> {
     return this.client
