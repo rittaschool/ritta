@@ -77,8 +77,8 @@ services:
       - NODE_ENV=development
       - RMQ_HOST=rabbitmq
       - RMQ_PORT=5672
-      - RMQ_USERNAME=users
-      - RMQ_PASSWORD=users
+      - RMQ_USERNAME=guest
+      - RMQ_PASSWORD=guest
       - MONGO_URI=mongodb://ritta:password@users_db:27017/ritta?authSource=admin
     networks:
       - ritta
@@ -124,17 +124,16 @@ services:
       - "3001:3000"
     networks:
       - loki
-
-  prometheus:
-    # https://hub.docker.com/r/prom/prometheus/tags
-    image: prom/prometheus:v2.28.1
-    networks:
-      - loki
-    ports:
-      - "9090:9090"
-    volumes:
-      - rabbitpr:/prometheus
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  # prometheus:
+  #   # https://hub.docker.com/r/prom/prometheus/tags
+  #   image: prom/prometheus:v2.28.1
+  #   networks:
+  #     - loki
+  #   ports:
+  #     - "9090:9090"
+  #   volumes:
+  #     - rabbitpr:/prometheus
+  #     - ./prometheus.yml:/etc/prometheus/prometheus.yml
 networks:
   ritta:
     driver: bridge
