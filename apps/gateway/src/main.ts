@@ -11,7 +11,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { VersioningType } from '@nestjs/common';
 import { WinstonModule } from 'nest-winston';
 import { transports } from 'winston';
-import { consoleFormat } from './logger.format';
+import { consoleFormat, fileFormat } from './logger.format';
 
 async function bootstrap() {
   // Initialize APP with fastify framework (default: express)
@@ -25,7 +25,7 @@ async function bootstrap() {
           new transports.Console({
             format: consoleFormat,
           }),
-          new transports.File({ filename: 'logs/all.log' }),
+          new transports.File({ filename: 'logs/all.log', format: fileFormat }),
         ],
       }),
     },
