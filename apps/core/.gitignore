@@ -1,6 +1,6 @@
 # compiled output
 /dist
-node_modules
+/node_modules
 
 # Logs
 logs
@@ -10,9 +10,6 @@ pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
-
-# Config
-config/*.toml
 
 # OS
 .DS_Store
@@ -45,7 +42,3 @@ config/*.toml
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-
-# code-workspace
-
-*.code-workspace

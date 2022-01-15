@@ -42,6 +42,11 @@ async function bootstrap() {
     await bus2.connect();
   } catch (error) {}
 
+  const bus3 = app.get<ClientProxy>('CORE_BUS');
+  try {
+    await bus3.connect();
+  } catch (error) {}
+
   // Enable api versioning with type uri
   app.enableVersioning({
     type: VersioningType.URI,

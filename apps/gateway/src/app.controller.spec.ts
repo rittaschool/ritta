@@ -18,6 +18,10 @@ describe('AppController', () => {
           provide: 'AUTH_BUS',
           useValue: {},
         },
+        {
+          provide: 'CORE_BUS',
+          useValue: {},
+        },
       ],
     }).compile();
 

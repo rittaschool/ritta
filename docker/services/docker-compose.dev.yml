@@ -31,6 +31,27 @@ services:
       - ../../apps/gateway:/home/app
       - ../../apps/gateway/dist:/home/app/dist
       - ../../apps/gateway/node_modules:/home/app/node_modules
+
+  core:
+    build:
+      context: ../../apps/core
+    command: yarn start:dev
+    environment:
+      - NODE_ENV=development
+      - RMQ_HOST=rmq0
+      - RMQ_PORT=5672
+      - RMQ_USERNAME=guest
+      - RMQ_PASSWORD=guest
+      - SIGNING_KEY=RITTATESTSIGNINGKEY
+    networks:
+      - rabbitmq
+      - services
+    volumes:
+      - ../../apps/core:/home/app
+      - ../../apps/core/dist:/home/app/dist
+      - ../../apps/core/node_modules:/home/app/node_modules
+      - ../../config:/home/app/config
+
   auth:
     build:
       context: ../../apps/auth
