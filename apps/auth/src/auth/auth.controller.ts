@@ -21,7 +21,6 @@ export class AuthController {
   @UsePipes(new JoiValidationPipe(LoginValidationSchema))
   @MessagePattern(IEventType.USER_LOGIN)
   login(@Payload() loginUserDto: LoginUserDto) {
-    console.log('got it');
     return this.authService.login(loginUserDto);
   }
 

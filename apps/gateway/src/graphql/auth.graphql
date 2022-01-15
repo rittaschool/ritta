@@ -1,0 +1,26 @@
+type Query {
+  login(loginUserDto: LoginUserDto!): LoginResponse!
+}
+
+input LoginUserDto {
+  username: String!
+  password: String!
+}
+
+interface Response {
+  type: ResponseType!
+}
+
+type LoginResponse implements Response {
+  type: ResponseType!
+  token: String!
+  refreshToken: String!
+  user: User!
+}
+
+enum ResponseType {
+  INVALID_CREDINTIALS
+  MFA_REQUIRED
+  PWD_CHANGE_REQUIRED
+  LOGGED_IN
+}

@@ -42,14 +42,14 @@ export class UsersService {
     };
 
     try {
-      return this.usersRepository.create(createUserDto);
+      return await this.usersRepository.create(createUserDto);
     } catch (error) {
       throw new RpcException('Failed');
     }
   }
 
-  getUsers() {
-    return this.usersRepository.findAll();
+  async getUsers() {
+    return await this.usersRepository.findAll();
   }
 
   async getUser(id: string, throwError = true) {
@@ -72,7 +72,7 @@ export class UsersService {
       );
     }
     // TODO: Make updateUserDto validation and add logic here
-    return this.usersRepository.update(updateUserDto.id, updateUserDto);
+    return await this.usersRepository.update(updateUserDto.id, updateUserDto);
   }
 
   async removeUser(id: string) {

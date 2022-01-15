@@ -137,6 +137,7 @@ export class AuthService {
         }),
       };
     }
+
     return {
       type: ILoginResponse.LOGGED_IN,
       token: await tokenizer.signToken({
