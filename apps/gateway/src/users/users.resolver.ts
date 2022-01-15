@@ -22,8 +22,12 @@ export class UsersResolver {
   @UsePipes(new JoiValidationPipe(CreateUserValidationSchema))
   async createUser(@Args('createUserInput') createUserDto: CreateUserDto) {
     console.log('createUser users.resolver');
-    return this.usersService.createUser(createUserDto).catch((err) => {
-      throw new BadRequestException(err);
-    });
+    const data = (await this.usersService.createUser(createUserDto)) as {
+      error?: string;
+    };
+    if (data.error) {
+      throw new BadRequestException(data.error);
+    }
+    return data;
   }
 }
