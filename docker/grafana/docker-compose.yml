@@ -30,3 +30,20 @@ services:
       # https://grafana.com/plugins/vonage-status-panel
       # https://grafana.com/plugins/yesoreyeram-boomtable-panel
       GF_INSTALL_PLUGINS: "flant-statusmap-panel,grafana-piechart-panel"
+  loki:
+    image: grafana/loki:2.4.0
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki.yml:/etc/loki/config.yaml
+    command: -config.file=/etc/loki/config.yaml
+    networks:
+      - grafana
+
+  promtail:
+    image: grafana/promtail:2.4.0
+    volumes:
+      - ../../logs/:/var/log
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - grafana
