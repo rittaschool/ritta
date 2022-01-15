@@ -1,11 +1,11 @@
-import bcrypt from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 
 const hashPassword = (password: string) => {
-  return bcrypt.hash(password, 15);
+  return hash(password, 15);
 };
 
-const verifyPassword = (password: string, hash: string) => {
-  return bcrypt.compare(password, hash);
+const verifyPassword = async (password: string, hash: string) => {
+  return await compare(password, hash);
 };
 
 export default {

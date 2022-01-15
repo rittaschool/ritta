@@ -17,6 +17,8 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
       - users-db:/data/db
+    ports:
+      - "27018:27017"
     networks:
       - databases
     healthcheck:
