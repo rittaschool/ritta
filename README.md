@@ -25,7 +25,7 @@ The API documentation can be viewed by going to `https://<ritta-server url>/docs
 
 For development, run `./start-docker.sh` to start with the development configuration. \
 You can stop the containers with `./stop-docker.sh`. \
-And if you want you can remove all of the networks and containers with `./remove-docker.sh`. \
+And if you want you can remove all of the networks and containers with `./remove-docker.sh`.
 
 ## Bugs and suggestions
 
