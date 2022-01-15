@@ -6,10 +6,19 @@ describe('AuthResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthResolver],
+      providers: [
+        {
+          provide: 'AUTH_RESOLVER',
+          useClass: AuthResolver,
+        },
+        {
+          provide: 'AUTH_SERVICE',
+          useValue: {},
+        },
+      ],
     }).compile();
 
-    resolver = module.get<AuthResolver>(AuthResolver);
+    resolver = module.get<AuthResolver>('AUTH_RESOLVER');
   });
 
   it('should be defined', () => {
