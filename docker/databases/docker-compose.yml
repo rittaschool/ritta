@@ -1,0 +1,26 @@
+version: "3.6"
+
+networks:
+  databases:
+    external:
+      name: ritta-databases
+
+volumes:
+  users-db: null
+
+services:
+  users_db:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_DATABASE=ritta
+      - MONGO_INITDB_ROOT_USERNAME=ritta
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - users-db:/data/db
+    networks:
+      - databases
+    healthcheck:
+      test: mongosh --quiet --eval "db.runCommand('ping').ok"
+      interval: 5s
+      timeout: 10s
+      retries: 12

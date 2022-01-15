@@ -1,0 +1,71 @@
+version: "3.6"
+
+networks:
+  rabbitmq:
+    external:
+      name: ritta-rmq
+  databases:
+    external:
+      name: ritta-databases
+  services: null
+
+services:
+  gateway:
+    build:
+      context: ../../apps/gateway
+    command: yarn start:dev
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - RMQ_HOST=rmq0
+      - RMQ_PORT=5672
+      - RMQ_USERNAME=guest
+      - RMQ_PASSWORD=guest
+    ports:
+      - '3000:3000'
+    networks:
+      - rabbitmq
+      - services
+    volumes:
+      - ../../logs/gateway.log:/home/app/logs/all.log
+      - ../../apps/gateway:/home/app
+      - ../../apps/gateway/dist:/home/app/dist
+      - ../../apps/gateway/node_modules:/home/app/node_modules
+  auth:
+    build:
+      context: ../../apps/auth
+    command: yarn start:dev
+    environment:
+      - NODE_ENV=development
+      - RMQ_HOST=rmq0
+      - RMQ_PORT=5672
+      - RMQ_USERNAME=guest
+      - RMQ_PASSWORD=guest
+      - SIGNING_KEY=RITTATESTSIGNINGKEY
+    networks:
+      - rabbitmq
+      - services
+    volumes:
+      - ../../apps/auth:/home/app
+      - ../../apps/auth/dist:/home/app/dist
+      - ../../apps/auth/node_modules:/home/app/node_modules
+
+  users:
+    build:
+      context: ../../apps/users
+    command: yarn start:dev
+    environment:
+      - NODE_ENV=development
+      - RMQ_HOST=rmq0
+      - RMQ_PORT=5672
+      - RMQ_USERNAME=guest
+      - RMQ_PASSWORD=guest
+      - MONGO_URI=mongodb://ritta:password@users_db:27017/ritta?authSource=admin
+    networks:
+      - rabbitmq
+      - services
+      - databases
+    volumes:
+      - ../../apps/users:/home/app
+      - ../../apps/users/dist:/home/app/dist
+      - ../../apps/users/node_modules:/home/app/node_modules
