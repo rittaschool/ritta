@@ -10,10 +10,12 @@ jobs:
     strategy:
       matrix:
         app: [gateway, core, auth, users]
+    env:
+      tag: ${{ matrix.app }}:$(date +%s)
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build apps/${{ matrix.app }} --file apps/${{ matrix.app }}/Dockerfile --tag ${{ matrix.app }}:$(date +%s)
+      run: docker build apps/${{ matrix.app }} --file apps/${{ matrix.app }}/Dockerfile --tag ${{ env.tag }}
     - name: Login to gcloud registry
       id: gcloud
       uses: elgohr/gcloud-login-action@master
@@ -22,7 +24,7 @@ jobs:
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: ${{ matrix.app }}:$(date +%s)
+        name: ${{ env.tag }}
         username: ${{ steps.gcloud.outputs.username }}
         password: ${{ steps.gcloud.outputs.password }}
         registry: eu.gcr.io
