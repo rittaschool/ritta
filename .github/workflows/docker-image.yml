@@ -1,0 +1,28 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: [gateway, core, auth, users]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build apps/${{ matrix.app }} --file Dockerfile --tag ${{ matrix.app }}:$(date +%s)
+    - name: Login to gcloud registry
+      id: gcloud
+      uses: elgohr/gcloud-login-action@master
+      with:
+        account_key: ${{ secrets.GCLOUD_KEY }}
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: ${{ matrix.app }}:$(date +%s)
+        username: ${{ steps.gcloud.outputs.username }}
+        password: ${{ steps.gcloud.outputs.password }}
+        registry: eu.gcr.io
