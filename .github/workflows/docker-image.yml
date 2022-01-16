@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build apps/${{ matrix.app }} --file Dockerfile --tag ${{ matrix.app }}:$(date +%s)
+      run: docker build apps/${{ matrix.app }} --file apps/${{ matrix.app }}/Dockerfile --tag ${{ matrix.app }}:$(date +%s)
     - name: Login to gcloud registry
       id: gcloud
       uses: elgohr/gcloud-login-action@master
