@@ -47,8 +47,6 @@ services:
       - RMQ_PASSWORD=core
     networks:
       - ritta
-    volumes: 
-      - ./config:/home/app/config
 
   auth:
     build: ./apps/auth
