@@ -50,7 +50,6 @@ services:
       - ../../apps/core:/home/app
       - ../../apps/core/dist:/home/app/dist
       - ../../apps/core/node_modules:/home/app/node_modules
-      - ../../config:/home/app/config
 
   auth:
     build:
