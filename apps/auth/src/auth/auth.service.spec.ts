@@ -1,9 +1,32 @@
-// import { Test, TestingModule } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 // import { IErrorType, ILoginResponse, RittaError } from '@rittaschool/shared';
-// import { AuthService } from './auth.service';
+import { AuthService } from './auth.service';
 // import cryptor from './cryptor';
 // import mfa from './mfa';
 // import tokenizer from './tokenizer';
+
+describe('AuthService', () => {
+  let service: AuthService;
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        {
+          provide: 'AUTH_SERVICE',
+          useClass: AuthService,
+        },
+      ],
+    }).compile();
+
+    service = module.get<AuthService>('AUTH_SERVICE');
+
+    jest.clearAllMocks();
+  });
+
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+});
 
 // describe('AuthService', () => {
 //   let service: AuthService;
