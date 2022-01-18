@@ -1,26 +1,48 @@
 type Query {
-  login(loginUserDto: LoginUserDto!): LoginResponse!
+  startLoginProcess(email: String!): StartLoginProcessResponse!
+  submitChallenge(challenge: ChallengeInput!): SubmitChallengeResponse!
 }
 
-input LoginUserDto {
-  username: String!
+type StartLoginProcessResponse {
+  challenge: Challenge!
+  userPhotoUri: String!
+  userFirstName: String!
+}
+
+input ChallengeInput {
+  id: String!
+  type: ChallengeType!
+  data: ChallengeData!
+  userId: String!
+}
+
+type Challenge {
+  id: ID!
+  type: ChallengeType!
+  userId: String!
+}
+
+enum ChallengeType {
+  PASSWORD_NEEDED
+  OTP_NEEDED
+  FIDO2_NEEDED
+}
+
+input ChallengeData {
+  passwordData: PasswordDataInput
+  otpData: OtpDataInput
+  publicKey: String
+}
+
+input PasswordDataInput {
   password: String!
 }
 
-interface Response {
-  type: ResponseType!
+input OtpDataInput {
+  otp: String!
 }
 
-type LoginResponse implements Response {
-  type: ResponseType!
-  token: String!
-  refreshToken: String!
-  user: User!
-}
-
-enum ResponseType {
-  INVALID_CREDINTIALS
-  MFA_REQUIRED
-  PWD_CHANGE_REQUIRED
-  LOGGED_IN
+type SubmitChallengeResponse {
+  user: User
+  challenge: Challenge
 }

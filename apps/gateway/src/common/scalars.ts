@@ -2,6 +2,7 @@ import {
   DateResolver,
   EmailAddressResolver,
   PhoneNumberResolver,
+  JSONResolver,
 } from 'graphql-scalars';
 import { createFromGraphQLScalar } from 'nest-graphql-scalar-adapter';
 
@@ -9,6 +10,7 @@ import { createFromGraphQLScalar } from 'nest-graphql-scalar-adapter';
 DateResolver.description = 'Date custom scalar type';
 EmailAddressResolver.description = 'EmailAddress custom scalar type';
 PhoneNumberResolver.description = 'PhoneNumber custom scalar type';
+JSONResolver.description = 'JSON custom scalar type';
 
 export const DateScalar = createFromGraphQLScalar({
   scalar: DateResolver,
@@ -20,4 +22,8 @@ export const EmailAddressScalar = createFromGraphQLScalar({
 
 export const PhoneNumberScalar = createFromGraphQLScalar({
   scalar: PhoneNumberResolver,
+});
+
+export const JSONScalar = createFromGraphQLScalar({
+  scalar: JSONResolver,
 });

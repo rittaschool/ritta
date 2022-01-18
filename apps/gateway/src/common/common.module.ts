@@ -1,7 +1,12 @@
 import { Global, Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
-import { DateScalar, EmailAddressScalar, PhoneNumberScalar } from './scalars';
+import {
+  DateScalar,
+  EmailAddressScalar,
+  JSONScalar,
+  PhoneNumberScalar,
+} from './scalars';
 
 @Global()
 @Module({
@@ -73,6 +78,7 @@ import { DateScalar, EmailAddressScalar, PhoneNumberScalar } from './scalars';
     DateScalar,
     EmailAddressScalar,
     PhoneNumberScalar,
+    JSONScalar,
     {
       provide: 'LOGGER',
       useClass: Logger,
