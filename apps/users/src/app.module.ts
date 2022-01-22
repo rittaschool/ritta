@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { validate } from './validation/env.validation';
 import { UsersModule } from './users/users.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { UsersModule } from './users/users.module';
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }),
+    CommonModule,
   ],
 })
 export class AppModule {}

@@ -34,14 +34,6 @@ async function bootstrap() {
     },
   );
 
-  function sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  }
-
-  await sleep(1000);
-
   await app.listen().then(() => {
     app
       .get('LOGGER')
