@@ -18,6 +18,7 @@ import {
   IUser,
   UpdateUserDto,
 } from '@rittaschool/shared';
+import { RID } from '../rid.param';
 import { JoiValidationPipe } from '../validation/joi.pipe';
 import { UsersService } from './users.service';
 
@@ -40,12 +41,12 @@ export class UsersController {
   }
 
   @Get()
-  async getUsers(@Headers('rid') rid): Promise<IUser[]> {
+  async getUsers(@RID() rid: string): Promise<IUser[]> {
     this.logger.log({
       rid,
       context: 'UsersController',
     });
-    return this.usersService.getUsers();
+    return this.usersService.getUsers(rid);
   }
 
   @Get('/:id')

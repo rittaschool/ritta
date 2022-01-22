@@ -20,9 +20,10 @@ export class UsersService {
       .toPromise(); // converting observable to promise
   }
 
-  async getUsers(): Promise<IUser[]> {
+  async getUsers(rid: string): Promise<IUser[]> {
+    console.log(rid);
     return this.client
-      .send<IUser[]>(IEventType.GET_USERS, {})
+      .send<IUser[]>(IEventType.GET_USERS, { rid })
       .pipe(timeout(5000)) // timeout
       .toPromise();
   }

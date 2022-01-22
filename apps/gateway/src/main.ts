@@ -1,17 +1,17 @@
-import { config } from 'dotenv';
-config();
+import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ClientProxy } from '@nestjs/microservices';
 import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { VersioningType } from '@nestjs/common';
+import { config } from 'dotenv';
 import { WinstonModule } from 'nest-winston';
 import { transports } from 'winston';
+import { AppModule } from './app.module';
 import { consoleFormat, fileFormat } from './logger.format';
+config();
 
 async function bootstrap() {
   // Initialize APP with fastify framework (default: express)
