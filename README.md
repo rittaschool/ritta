@@ -23,7 +23,15 @@ The API documentation can be viewed by going to `https://<ritta-server url>/docs
 
 ## Running the app
 
-For development, run `docker-compose -f docker-compose.dev.yml up` to start with the development configuration.
+For development, run `./start-docker.sh` to start with the development configuration. \
+You can stop the containers with `./stop-docker.sh`. \
+And if you want you can remove all of the networks and containers with `./remove-docker.sh`.
+
+## Bugs and suggestions
+
+Found something or got an idea you would like to share? \
+For minor bugs and suggestions use [issues](https://github.com/rittaschool/ritta-server/issues). \
+For security problems and bigger bugs, please follow procedures in [`SECURITY.md`](https://github.com/rittaschool/ritta-server/blob/master/SECURITY.md)
 
 ## Contributing
 
@@ -32,22 +40,22 @@ See [`CONTRIBUTING.md`](https://github.com/rittaschool/ritta-server/blob/master/
 
 ## Roadmap
 
-We are currently working on the [1.0 Release "Frostbite"](https://github.com/rittaschool/ritta-server/milestone/1). 
-It's release date is currently on January 1. 2022 and it will contain the core features like accounts, schools and messaging. 
+We are currently working on the [1.0 Release "Frostbite"](https://github.com/rittaschool/ritta-server/milestone/1).
+It's release date is currently on January 1. 2022 and it will contain the core features like accounts, schools and messaging.
 
 It is not functional for school usage yet, but will be a good starting point for [1.1 Release "Bitterheart"](https://github.com/rittaschool/ritta-server/milestone/2), which adds more functionality.
 
-# Why?
+## Why?
 
-We need efficient and easy to use software for the public that is easy to develop. 
+We need efficient and easy to use software for the public that is easy to develop.
 
-Finland is the current primary market for Ritta, because in Finland there isn't an open source solution for school management. 
-There have been some, but they have failed in some way. 
+Finland is the current primary market for Ritta, because in Finland there isn't an open source solution for school management.
+There have been some, but they have failed in some way.
 
 We here at Ritta are passionate what we do, we want to make open source software more used in the public sector.
 
 Ritta is open source because we want to hand the control to the schools and not to the big companies. With this model they can even create their own add-ons to, so it will suit their needs better. That's the beauty of open source software.
 
-## Contact us!
+## Contact us
 
 Contact us at [roni@ritta.fi](mailto:roni@ritta.fi) or alternatively on our Discord server (Link in the at the top)!

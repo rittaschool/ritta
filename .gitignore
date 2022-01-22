@@ -12,8 +12,7 @@ yarn-error.log*
 lerna-debug.log*
 
 # Config
-config.yaml
-!config.yaml.example
+config/*.toml
 
 # OS
 .DS_Store

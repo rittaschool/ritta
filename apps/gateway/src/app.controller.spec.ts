@@ -11,7 +11,15 @@ describe('AppController', () => {
       providers: [
         AppService,
         {
-          provide: 'EVENT_BUS',
+          provide: 'USERS_BUS',
+          useValue: {},
+        },
+        {
+          provide: 'AUTH_BUS',
+          useValue: {},
+        },
+        {
+          provide: 'CORE_BUS',
           useValue: {},
         },
       ],

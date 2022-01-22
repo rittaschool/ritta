@@ -10,63 +10,23 @@ on:
     branches: [master]
 
 jobs:
-  gateway:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        app: [auth, users, gateway]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     defaults:
       run:
-        working-directory: ./apps/gateway
+        working-directory: ./apps/${{ matrix.app }}
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 16.x
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 16.x
           cache: 'yarn'
           cache-dependency-path: 'apps/gateway/yarn.lock'
-      - run: yarn install
-      - run: yarn build
-      - run: yarn test
-  auth:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-    defaults:
-      run:
-        working-directory: ./apps/auth
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
-          cache-dependency-path: 'apps/auth/yarn.lock'
-      - run: yarn install
-      - run: yarn build
-      - run: yarn test
-  users:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-    defaults:
-      run:
-        working-directory: ./apps/users
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
-          cache-dependency-path: 'apps/users/yarn.lock'
       - run: yarn install
       - run: yarn build
       - run: yarn test

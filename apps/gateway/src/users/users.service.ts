@@ -10,7 +10,7 @@ import { catchError, of, timeout } from 'rxjs';
 
 @Injectable()
 export class UsersService {
-  constructor(@Inject('EVENT_BUS') private client: ClientProxy) {}
+  constructor(@Inject('USERS_BUS') private client: ClientProxy) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<IUser> {
     return this.client
@@ -29,7 +29,7 @@ export class UsersService {
 
   async getUser(id: string): Promise<IUser> {
     return this.client
-      .send(IEventType, { id }) // get user with id
+      .send(IEventType.GET_USER, { id }) // get user with id
       .pipe(catchError((val) => of({ error: val.message }))) // error handling
       .pipe(timeout(5000)) // timeout
       .toPromise(); // converting observable to promise

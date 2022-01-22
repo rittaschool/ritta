@@ -1,6 +1,6 @@
 import { format } from 'winston';
 
-const { printf, combine, timestamp, colorize } = format;
+const { printf, combine, timestamp, colorize, json } = format;
 
 export const loggerFormat = combine(
   timestamp(),
@@ -18,3 +18,5 @@ export const loggerFormat = combine(
 );
 
 export const consoleFormat = combine(colorize(), loggerFormat);
+
+export const fileFormat = combine(timestamp(), json());

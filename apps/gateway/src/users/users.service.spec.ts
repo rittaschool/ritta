@@ -11,7 +11,9 @@ describe('UsersService', () => {
           provide: 'USERS_SERVICE',
           useClass: UsersService,
         },
-        { provide: 'EVENT_BUS', useValue: {} },
+        { provide: 'USERS_BUS', useValue: {} },
+        { provide: 'AUTH_BUS', useValue: {} },
+        { provide: 'CORE_BUS', useValue: {} },
       ],
     }).compile();
 

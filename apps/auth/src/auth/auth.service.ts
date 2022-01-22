@@ -9,11 +9,17 @@ import {
   RittaError,
   IErrorType,
   ITokenType,
+  IPasswordChallengeData,
+  IChallengeType,
+  IOtpChallengeData,
+  generateChallenge,
+  ChallengeData,
 } from '@rittaschool/shared';
 import { UserService } from './user.service';
 import cryptor from './cryptor';
 import tokenizer from './tokenizer';
 import mfa from './mfa';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class AuthService {
@@ -45,6 +51,53 @@ export class AuthService {
         'Invalid credentials',
         IErrorType.INVALID_CREDENTIALS,
       );
+    }
+
+    return await this.generateTokens(user);
+  }
+
+  async loginWithPassword(data: ChallengeData, userId: string) {
+    const user = await this.userService.findOne(userId);
+
+    if (!user) {
+      throw new RittaError('User not found!', IErrorType.USER_NOT_FOUND);
+    }
+
+    const passwordValid = await cryptor.verifyPassword(
+      data.passwordData.password,
+      user.password,
+    );
+
+    if (!passwordValid) {
+      console.log('password not valid');
+      throw new RittaError(
+        'Invalid credentials',
+        IErrorType.INVALID_CREDENTIALS,
+      );
+    }
+
+    if (user.mfa.enabled) {
+      const challenge = generateChallenge(IChallengeType.OTP_NEEDED, userId);
+
+      return challenge;
+    }
+
+    return await this.generateTokens(user);
+  }
+
+  async submitOtpCode(data: IOtpChallengeData, userId: string) {
+    const user = await this.userService.findOne(userId);
+
+    if (!user) {
+      throw new RittaError('User not found!', IErrorType.USER_NOT_FOUND);
+    }
+
+    if (!user.mfa.enabled) throw new RpcException('MFA not enabled');
+
+    const isValid = mfa.checkMfaCode(data.otp, user.mfa.secret);
+
+    if (!isValid) {
+      throw new RittaError('Invalid MFA code', IErrorType.INVALID_CODE);
     }
 
     return await this.generateTokens(user);
@@ -97,36 +150,26 @@ export class AuthService {
     }
   }
 
-  async loginMFA(loginMFADto: LoginMFAUserDto) {
-    const decoded = await tokenizer.verifyToken(loginMFADto.mfaToken);
-    const user = await this.userService.findOne(
-      (decoded as { uid: string }).uid,
-    );
+  // async loginMFA(loginMFADto: LoginMFAUserDto) {
+  //   const decoded = await tokenizer.verifyToken(loginMFADto.mfaToken);
+  //   const user = await this.userService.findOne(
+  //     (decoded as { uid: string }).uid,
+  //   );
 
-    if (!user) {
-      throw new RittaError('Invalid token', IErrorType.INVALID_TOKEN);
-    }
+  //   if (!user) {
+  //     throw new RittaError('Invalid token', IErrorType.INVALID_TOKEN);
+  //   }
 
-    const isValid = mfa.checkMfaCode(loginMFADto.mfaCode, user.mfa.secret);
+  //   const isValid = mfa.checkMfaCode(loginMFADto.mfaCode, user.mfa.secret);
 
-    if (!isValid) {
-      throw new RittaError('Invalid MFA code', IErrorType.INVALID_TOKEN); // TODO: change in shared@0.0.20 to INVALID_MFA_CODE
-    }
+  //   if (!isValid) {
+  //     throw new RittaError('Invalid MFA code', IErrorType.INVALID_CODE);
+  //   }
 
-    return await this.generateTokens(user, true);
-  }
+  //   return await this.generateTokens(user);
+  // }
 
-  private async generateTokens(user: User, skipMFA = false) {
-    if (user.mfa.enabled && !skipMFA) {
-      // Generate MFA tokens
-      return {
-        type: ILoginResponse.MFA_REQUIRED,
-        token: await tokenizer.signToken({
-          type: ILoginResponse.MFA_REQUIRED,
-          uid: user.id,
-        }),
-      };
-    }
+  private async generateTokens(user: User) {
     if (user.isPasswordChangeRequired) {
       // Password change token
       return {
@@ -137,8 +180,10 @@ export class AuthService {
         }),
       };
     }
+
     return {
       type: ILoginResponse.LOGGED_IN,
+      user,
       token: await tokenizer.signToken({
         type: ILoginResponse.LOGGED_IN,
         uid: user.id,

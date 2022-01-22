@@ -1,0 +1,48 @@
+type Query {
+  startLoginProcess(email: String!): StartLoginProcessResponse!
+  submitChallenge(challenge: ChallengeInput!): SubmitChallengeResponse!
+}
+
+type StartLoginProcessResponse {
+  challenge: Challenge!
+  userPhotoUri: String!
+  userFirstName: String!
+}
+
+input ChallengeInput {
+  id: String!
+  type: ChallengeType!
+  data: ChallengeData!
+  userId: String!
+}
+
+type Challenge {
+  id: ID!
+  type: ChallengeType!
+  userId: String!
+}
+
+enum ChallengeType {
+  PASSWORD_NEEDED
+  OTP_NEEDED
+  FIDO2_NEEDED
+}
+
+input ChallengeData {
+  passwordData: PasswordDataInput
+  otpData: OtpDataInput
+  publicKey: String
+}
+
+input PasswordDataInput {
+  password: String!
+}
+
+input OtpDataInput {
+  otp: String!
+}
+
+type SubmitChallengeResponse {
+  user: User
+  challenge: Challenge
+}

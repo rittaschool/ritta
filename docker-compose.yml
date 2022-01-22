@@ -34,6 +34,22 @@ services:
     networks:
       - ritta
 
+  core:
+    build: ./apps/core
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=production
+      - RMQ_HOST=rabbitmq
+      - RMQ_PORT=5672
+      - RMQ_USERNAME=core
+      - RMQ_PASSWORD=core
+    networks:
+      - ritta
+    volumes: 
+      - ./config:/home/app/config
+
   auth:
     build: ./apps/auth
     depends_on:
@@ -102,7 +118,7 @@ services:
   grafana:
     image: grafana/grafana:latest
     ports:
-      - "3000:3000"
+      - "3001:3000"
     networks:
       - loki
 

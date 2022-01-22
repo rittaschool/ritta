@@ -15,6 +15,7 @@ import { validate } from './validation/env.validation';
 import { UsersModule } from './users/users.module';
 import { CommonModule } from './common/common.module';
 import { LoggerMiddleware } from './logger.middleware';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { LoggerMiddleware } from './logger.middleware';
       introspection: true,
     }),
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService],
