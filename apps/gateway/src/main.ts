@@ -11,6 +11,7 @@ import { WinstonModule } from 'nest-winston';
 import { transports } from 'winston';
 import { AppModule } from './app.module';
 import { consoleFormat, fileFormat } from './logger.format';
+import { LoggingInterceptor } from './logging.interceptor';
 config();
 
 async function bootstrap() {
@@ -51,6 +52,9 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
+
+  // Bind logging interceptor
+  app.useGlobalInterceptors(new LoggingInterceptor(app.get('LOGGER')));
 
   // Swagger documentation
   const config = new DocumentBuilder()
