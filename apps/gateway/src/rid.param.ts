@@ -1,8 +1,23 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { generateRID } from './rid.generator';
 
 export const RID = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext) => {
-    const request = ctx.getType();
-    return 'rid';
+  (_data: unknown, ctx: ExecutionContext) => {
+    let rid: string;
+
+    switch (ctx.getType() as any) {
+      case 'http':
+        rid = ctx.switchToHttp().getRequest().rid;
+        break;
+
+      case 'graphql':
+        rid = ctx.getArgByIndex(2).rid;
+        break;
+
+      default:
+        break;
+    }
+
+    return rid;
   },
 );

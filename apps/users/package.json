@@ -29,7 +29,7 @@
     "@nestjs/microservices": "^8.2.4",
     "@nestjs/mongoose": "^9.0.2",
     "@nestjs/platform-express": "^8.2.4",
-    "@rittaschool/shared": "^0.0.11",
+    "@rittaschool/shared": "^0.0.27",
     "amqp-connection-manager": "^3.7.0",
     "amqplib": "^0.8.0",
     "bcrypt": "^5.0.1",

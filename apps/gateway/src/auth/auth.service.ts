@@ -18,7 +18,10 @@ export class AuthService {
     @Inject('USERS_SERVICE') private readonly userService: UsersService,
   ) {}
 
-  async startLoginProcess(identifier: string): Promise<{
+  async startLoginProcess(
+    identifier: string,
+    rid: string,
+  ): Promise<{
     // token: string;
     // refreshToken: string;
     // type: IRequestType;
@@ -27,7 +30,7 @@ export class AuthService {
     userPhotoUri: string;
     userFirstName: string;
   }> {
-    const user = await this.userService.getUser(identifier);
+    const user = await this.userService.getUser(identifier, rid);
 
     // return {
     //   user,

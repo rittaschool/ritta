@@ -1,6 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { Args, Resolver, Query } from '@nestjs/graphql';
 import { Challenge } from '@rittaschool/shared';
+import { RID } from '../rid.param';
 import { AuthService } from './auth.service';
 
 @Resolver()
@@ -15,8 +16,8 @@ export class AuthResolver {
   // }
 
   @Query()
-  startLoginProcess(@Args('email') identifier: string) {
-    return this.authService.startLoginProcess(identifier);
+  startLoginProcess(@Args('email') identifier: string, @RID() rid: string) {
+    return this.authService.startLoginProcess(identifier, rid);
   }
 
   @Query()
