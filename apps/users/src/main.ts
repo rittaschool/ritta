@@ -3,6 +3,10 @@ config();
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
+import { WinstonModule } from 'nest-winston';
+import { consoleFormat } from './logger.format';
+import { transports } from 'winston';
+import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -18,8 +22,22 @@ async function bootstrap() {
           durable: true,
         },
       },
+      logger: WinstonModule.createLogger({
+        defaultMeta: { service: 'users', enviroment: process.env.NODE_ENV },
+        transports: [
+          new transports.Console({
+            format: consoleFormat,
+          }),
+          new transports.File({ filename: 'logs/all.log' }),
+        ],
+      }),
     },
   );
-  app.listen().then(() => console.log(`Users service is online`));
+
+  await app.listen().then(() => {
+    app
+      .get('LOGGER')
+      .log({ message: `Users service is online`, context: 'Main' });
+  });
 }
 bootstrap();

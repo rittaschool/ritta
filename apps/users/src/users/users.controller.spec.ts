@@ -21,6 +21,10 @@ describe('UsersController', () => {
             removeUser: jest.fn(() => ({})),
           },
         },
+        {
+          provide: 'LOGGER',
+          useValue: {},
+        },
       ],
     }).compile();
 

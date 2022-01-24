@@ -5,10 +5,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './entities/user.entity';
 import { UsersRepository } from './users.repository';
 import { User } from '@rittaschool/shared';
+import { CommonModule } from '../common/common.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    CommonModule,
   ],
   controllers: [UsersController],
   providers: [

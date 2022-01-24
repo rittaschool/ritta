@@ -1,4 +1,4 @@
-import { Controller, Inject, UsePipes } from '@nestjs/common';
+import { Controller, Inject, UseInterceptors, UsePipes } from '@nestjs/common';
 import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import {
   IEventType,
@@ -8,7 +8,9 @@ import {
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JoiValidationPipe } from '../validation/joi.pipe';
+import { LoggingInterceptor } from '../common/logging.interceptor';
 
+@UseInterceptors(LoggingInterceptor)
 @Controller()
 export class UsersController {
   constructor(@Inject('USERS_SERVICE') private usersService: UsersService) {}

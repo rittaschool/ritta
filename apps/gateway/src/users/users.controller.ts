@@ -18,6 +18,7 @@ import {
   IUser,
   UpdateUserDto,
 } from '@rittaschool/shared';
+import { RID } from '../rid.param';
 import { JoiValidationPipe } from '../validation/joi.pipe';
 import { UsersService } from './users.service';
 
@@ -33,33 +34,35 @@ export class UsersController {
 
   @Post()
   @UsePipes(new JoiValidationPipe(CreateUserValidationSchema)) // Validates that the body is right
-  async createUser(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.createUser(createUserDto).catch((err) => {
+  async createUser(@Body() createUserDto: CreateUserDto, @RID() rid: string) {
+    return this.usersService.createUser(createUserDto, rid).catch((err) => {
       throw new BadRequestException(err);
     });
   }
 
   @Get()
-  async getUsers(@Headers('rid') rid): Promise<IUser[]> {
-    this.logger.log({
-      rid,
-      context: 'UsersController',
-    });
-    return this.usersService.getUsers();
+  async getUsers(@RID() rid: string): Promise<IUser[]> {
+    return this.usersService.getUsers(rid);
   }
 
   @Get('/:id')
-  async getUser(@Param('id') id: string): Promise<IUser> {
-    return this.usersService.getUser(id);
+  async getUser(@Param('id') id: string, @RID() rid: string): Promise<IUser> {
+    return this.usersService.getUser(id, rid);
   }
 
   @Patch()
-  async updateUser(@Body() updateUserDto: UpdateUserDto): Promise<IUser> {
-    return this.usersService.updateUser(updateUserDto);
+  async updateUser(
+    @Body() updateUserDto: UpdateUserDto,
+    @RID() rid: string,
+  ): Promise<IUser> {
+    return this.usersService.updateUser(updateUserDto, rid);
   }
 
   @Delete('/:id')
-  async deleteUser(@Param('id') id: string): Promise<IUser> {
-    return this.usersService.deleteUser(id);
+  async deleteUser(
+    @Param('id') id: string,
+    @RID() rid: string,
+  ): Promise<IUser> {
+    return this.usersService.deleteUser(id, rid);
   }
 }

@@ -1,17 +1,19 @@
-import { config } from 'dotenv';
-config();
+import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ClientProxy } from '@nestjs/microservices';
 import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { VersioningType } from '@nestjs/common';
+import { config } from 'dotenv';
 import { WinstonModule } from 'nest-winston';
 import { transports } from 'winston';
+import { AppModule } from './app.module';
 import { consoleFormat, fileFormat } from './logger.format';
+import { LoggingInterceptor } from './logging.interceptor';
+import { RidInterceptor } from './rid.interceptor';
+config();
 
 async function bootstrap() {
   // Initialize APP with fastify framework (default: express)
@@ -51,6 +53,10 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
+
+  // Bind global interceptors
+  app.useGlobalInterceptors(new RidInterceptor());
+  app.useGlobalInterceptors(new LoggingInterceptor(app.get('LOGGER')));
 
   // Swagger documentation
   const config = new DocumentBuilder()

@@ -1,6 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
-import { CreateUserDto, IUser } from '@rittaschool/shared';
+import {
+  CreateUserDto,
+  IErrorType,
+  IUser,
+  RittaError,
+  User,
+} from '@rittaschool/shared';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
 import encryptUtils from './encrypt';
@@ -12,7 +18,7 @@ export class UsersService {
     @Inject('USERS_REPOSITORY') private usersRepository: UsersRepository,
   ) {}
 
-  async createUser(createUserDto: CreateUserDto) {
+  async createUser(createUserDto: CreateUserDto): Promise<Res<User>> {
     const tmpUser: Partial<IUser> = createUserDto;
 
     // Checking that user has email or username
@@ -28,7 +34,12 @@ export class UsersService {
     const possibleUser = await this.getUser(tmpUser.username, false);
 
     if (possibleUser) {
-      throw new RpcException('User already exists!');
+      return {
+        error: new RittaError(
+          'Käyttäjä on jo olemassa',
+          IErrorType.USER_ALREADY_EXISTS,
+        ),
+      };
     }
 
     // Hash the password
@@ -41,11 +52,22 @@ export class UsersService {
       backupCodes: [await generator.generateBackupCode()],
     };
 
+    let newUser: User;
+    let error: RittaError;
+
     try {
-      return await this.usersRepository.create(createUserDto);
+      newUser = await this.usersRepository.create(createUserDto);
     } catch (error) {
-      throw new RpcException('Failed');
+      error = new RittaError(
+        'Käyttäjä on jo olemassa',
+        IErrorType.USER_ALREADY_EXISTS,
+      );
     }
+
+    return {
+      data: newUser,
+      error,
+    };
   }
 
   async getUsers() {
@@ -78,4 +100,9 @@ export class UsersService {
   async removeUser(id: string) {
     return await this.usersRepository.delete(id);
   }
+}
+
+export interface Res<T, E = RittaError> {
+  data?: T;
+  error?: E;
 }
