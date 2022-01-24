@@ -25,7 +25,6 @@ export class AuthController {
   @MessagePattern('user_login_password') //TODO: use the one from IEventType when new shared release
   async loginWithPassword(@Payload() challenge: Challenge) {
     const { data, userId } = challenge;
-    console.log('user login password', challenge);
 
     return await this.authService.loginWithPassword(data, userId);
   }

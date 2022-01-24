@@ -7,6 +7,10 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { AppModule } from './app.module';
+import { WinstonModule } from 'nest-winston';
+import { transports } from 'winston';
+import { consoleFormat } from './logger.format';
+import { LoggingInterceptor } from './common/logging.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -22,8 +26,20 @@ async function bootstrap() {
           durable: true,
         },
       },
+      logger: WinstonModule.createLogger({
+        defaultMeta: { service: 'users', enviroment: process.env.NODE_ENV },
+        transports: [
+          new transports.Console({
+            format: consoleFormat,
+          }),
+          new transports.File({ filename: 'logs/all.log' }),
+        ],
+      }),
     },
   );
+
+  // Bind Logging interceptor
+  app.useGlobalInterceptors(new LoggingInterceptor(app.get('LOGGER')));
 
   // Microservices message broker
   const bus = app.get<ClientProxy>('EVENT_BUS');
@@ -31,6 +47,12 @@ async function bootstrap() {
     await bus.connect();
   } catch (error) {}
 
-  app.listen().then(() => console.log(`Auth service is online`));
+  app
+    .listen()
+    .then(() =>
+      app
+        .get('LOGGER')
+        .log({ message: `Auth service is online`, context: 'Main' }),
+    );
 }
 bootstrap();
