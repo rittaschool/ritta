@@ -1,17 +1,16 @@
 import {
-  BadGatewayException,
-  BadRequestException,
   CallHandler,
   ExecutionContext,
   Injectable,
   Logger,
   NestInterceptor,
+  Inject,
 } from '@nestjs/common';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
-  constructor(private logger: Logger) {}
+  constructor(@Inject('LOGGER') private logger: Logger) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     let path: string;
