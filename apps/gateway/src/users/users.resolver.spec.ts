@@ -9,6 +9,10 @@ describe('UsersResolver', () => {
       providers: [
         { provide: 'USERS_RESOLVER', useClass: UsersResolver },
         { provide: 'USERS_SERVICE', useValue: {} },
+        {
+          provide: 'LOGGER',
+          useValue: {},
+        },
       ],
     }).compile();
 
