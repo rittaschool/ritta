@@ -66,6 +66,7 @@ services:
       - rabbitmq
       - services
     volumes:
+      - ../../logs/auth.log:/home/app/logs/all.log
       - ../../apps/auth:/home/app
       - ../../apps/auth/dist:/home/app/dist
       - ../../apps/auth/node_modules:/home/app/node_modules
