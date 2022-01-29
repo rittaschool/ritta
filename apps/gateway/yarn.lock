@@ -3353,6 +3353,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cookie-signature@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "cookie-signature@npm:1.1.0"
+  checksum: 1586cb0a89d79354ca64dce661ac44959e46482faab756f49e71d086052c6de8b82fe8dd1bfb7ec1658afab8585c44c931d9cb441eab9b8fed8edbd140b2b0c5
+  languageName: node
+  linkType: hard
+
 "cookie@npm:0.4.0":
   version: 0.4.0
   resolution: "cookie@npm:0.4.0"
@@ -4267,6 +4274,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fastify-cookie@npm:^5.5.0":
+  version: 5.5.0
+  resolution: "fastify-cookie@npm:5.5.0"
+  dependencies:
+    cookie-signature: ^1.1.0
+    fastify-plugin: ^3.0.0
+  checksum: aaafcd994a6e5feccf5d2a9e1348b069b7143804b9fc2078a7c483cc5b9423628e122c85a851f93bf0c3a21c2abc05bfd402c6386df9ea97f6a417a5e69b12a8
+  languageName: node
+  linkType: hard
+
 "fastify-cors@npm:6.0.2, fastify-cors@npm:^6.0.0":
   version: 6.0.2
   resolution: "fastify-cors@npm:6.0.2"
@@ -4358,6 +4375,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fastify@npm:^3.27.0":
+  version: 3.27.0
+  resolution: "fastify@npm:3.27.0"
+  dependencies:
+    "@fastify/ajv-compiler": ^1.0.0
+    abstract-logging: ^2.0.0
+    avvio: ^7.1.2
+    fast-json-stringify: ^2.5.2
+    fastify-error: ^0.3.0
+    find-my-way: ^4.5.0
+    flatstr: ^1.0.12
+    light-my-request: ^4.2.0
+    pino: ^6.13.0
+    process-warning: ^1.0.0
+    proxy-addr: ^2.0.7
+    rfdc: ^1.1.4
+    secure-json-parse: ^2.0.0
+    semver: ^7.3.2
+    tiny-lru: ^7.0.0
+  checksum: 258b563001ca11402fcb79f4ed59f30aa1713c7d936238a7e00e3d00489b39081ce9a326514aa3d473dd28ba72725d3065a6ca62a7876431dc80bf509ff5d6c2
+  languageName: node
+  linkType: hard
+
 "fastq@npm:^1.6.0, fastq@npm:^1.6.1":
   version: 1.13.0
   resolution: "fastq@npm:1.13.0"
@@ -4434,6 +4474,18 @@ __metadata:
     safe-regex2: ^2.0.0
     semver-store: ^0.3.0
   checksum: c5f212d2d2a5e76be91a86409b2de9391a1c3cf5210d357facf0fe91d1e46608865aa2396a98a8d4772116bfae2eb0b05abe4efa725d5cf3cc9b9554bb34e048
+  languageName: node
+  linkType: hard
+
+"find-my-way@npm:^4.5.0":
+  version: 4.5.1
+  resolution: "find-my-way@npm:4.5.1"
+  dependencies:
+    fast-decode-uri-component: ^1.0.1
+    fast-deep-equal: ^3.1.3
+    safe-regex2: ^2.0.0
+    semver-store: ^0.3.0
+  checksum: 85b8c07d34a36f0203438e0c0f0cdbfaf5e1c521ed2e56f9250bed846ceb0eea074127fad7f70137d61bed56387047f212969cc0ba5d818ed5e37b3e3606c43f
   languageName: node
   linkType: hard
 
@@ -4660,6 +4712,8 @@ __metadata:
     eslint: ^7.30.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^3.4.0
+    fastify: ^3.27.0
+    fastify-cookie: ^5.5.0
     fastify-swagger: ^4.12.6
     graphql: ^15.5.3
     graphql-scalars: ^1.13.1
@@ -7251,6 +7305,13 @@ __metadata:
   version: 2.0.1
   resolution: "process-nextick-args@npm:2.0.1"
   checksum: 1d38588e520dab7cea67cbbe2efdd86a10cc7a074c09657635e34f035277b59fbb57d09d8638346bf7090f8e8ebc070c96fa5fd183b777fff4f5edff5e9466cf
+  languageName: node
+  linkType: hard
+
+"process-warning@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "process-warning@npm:1.0.0"
+  checksum: c708a03241deec3cabaeee39c4f9ee8c4d71f1c5ef9b746c8252cdb952a6059068cfcdaf348399775244cbc441b6ae5e26a9c87ed371f88335d84f26d19180f9
   languageName: node
   linkType: hard
 

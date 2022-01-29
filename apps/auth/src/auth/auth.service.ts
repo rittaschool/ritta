@@ -25,36 +25,36 @@ import { RpcException } from '@nestjs/microservices';
 export class AuthService {
   constructor(@Inject('USERS_SERVICE') private userService: UserService) {}
 
-  async login(loginUserDto: LoginUserDto) {
-    // Find user by username or e-mail
-    const users = await this.userService.findAll();
-    const user = users.find(
-      (user) =>
-        user.email === loginUserDto.username ||
-        user.username === loginUserDto.username, // Username = E-mail or username :)
-    );
+  // async login(loginUserDto: LoginUserDto) {
+  //   // Find user by username or e-mail
+  //   const users = await this.userService.findAll();
+  //   const user = users.find(
+  //     (user) =>
+  //       user.email === loginUserDto.username ||
+  //       user.username === loginUserDto.username, // Username = E-mail or username :)
+  //   );
 
-    if (!user) {
-      throw new RittaError(
-        'Invalid credentials',
-        IErrorType.INVALID_CREDENTIALS,
-      );
-    }
+  //   if (!user) {
+  //     throw new RittaError(
+  //       'Invalid credentials',
+  //       IErrorType.INVALID_CREDENTIALS,
+  //     );
+  //   }
 
-    const passwordValid = await cryptor.verifyPassword(
-      loginUserDto.password,
-      user.password,
-    );
+  //   const passwordValid = await cryptor.verifyPassword(
+  //     loginUserDto.password,
+  //     user.password,
+  //   );
 
-    if (!passwordValid) {
-      throw new RittaError(
-        'Invalid credentials',
-        IErrorType.INVALID_CREDENTIALS,
-      );
-    }
+  //   if (!passwordValid) {
+  //     throw new RittaError(
+  //       'Invalid credentials',
+  //       IErrorType.INVALID_CREDENTIALS,
+  //     );
+  //   }
 
-    return await this.generateTokens(user);
-  }
+  //   return await this.generateTokens(user);
+  // }
 
   async loginWithPassword(data: ChallengeData, userId: string) {
     const user = await this.userService.findOne(userId);
@@ -169,31 +169,55 @@ export class AuthService {
   //   return await this.generateTokens(user);
   // }
 
-  private async generateTokens(user: User) {
-    if (user.isPasswordChangeRequired) {
-      // Password change token
-      return {
-        type: ILoginResponse.PWD_CHANGE_REQUIRED,
-        token: await tokenizer.signToken({
-          type: ILoginResponse.PWD_CHANGE_REQUIRED,
-          uid: user.id,
-        }),
-      };
-    }
+  private async generateTokens(user: User): Promise<{
+    user: User;
+    tokens: { accessToken: string; refreshToken: string };
+  }> {
+    // TODO: implement later after auth works with new system
+    // if (user.isPasswordChangeRequired) {
+    //   // Password change token
+    //   return {
+    //     type: ILoginResponse.PWD_CHANGE_REQUIRED,
+    //     token: await tokenizer.signToken({
+    //       type: ILoginResponse.PWD_CHANGE_REQUIRED,
+    //       uid: user.id,
+    //     }),
+    //   };
+    // }
+
+    // return {
+    //   type: ILoginResponse.LOGGED_IN,
+    //   user,
+    //   token: await tokenizer.signToken({
+    //     type: ILoginResponse.LOGGED_IN,
+    //     uid: user.id,
+    //     exp: Math.floor(Date.now() / 1000) + 15 * 60, // Expire access token after 15 minutes
+    //   }),
+    //   refreshToken: await tokenizer.signToken({
+    //     type: ITokenType.REFRESH_TOKEN,
+    //     uid: user.id,
+    //     exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // Expire refresh token after 30 days (new refresh tokens will be granted when tokens are refreshed)
+    //   }),
+    // };
+
+    const refreshToken = (await tokenizer.signToken({
+      type: ITokenType.REFRESH_TOKEN,
+      uid: user.id,
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // Expire refresh token after 30 days (new refresh tokens will be granted when tokens are refreshed)
+    })) as string;
+
+    const accessToken = (await tokenizer.signToken({
+      type: ITokenType.ACCESS_TOKEN,
+      uid: user.id,
+      exp: Math.floor(Date.now() / 1000) + 15 * 60, // Expire access token after 15 minutes
+    })) as string;
 
     return {
-      type: ILoginResponse.LOGGED_IN,
       user,
-      token: await tokenizer.signToken({
-        type: ILoginResponse.LOGGED_IN,
-        uid: user.id,
-        exp: Math.floor(Date.now() / 1000) + 15 * 60, // Expire access token after 15 minutes
-      }),
-      refreshToken: await tokenizer.signToken({
-        type: ITokenType.REFRESH_TOKEN,
-        uid: user.id,
-        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // Expire refresh token after 30 days (new refresh tokens will be granted when tokens are refreshed)
-      }),
+      tokens: {
+        refreshToken,
+        accessToken,
+      },
     };
   }
 }

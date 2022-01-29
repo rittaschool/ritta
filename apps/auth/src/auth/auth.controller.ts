@@ -11,6 +11,7 @@ import {
   Challenge,
   IOtpChallengeData,
   IPasswordChallengeData,
+  IUser,
 } from '@rittaschool/shared';
 import { AuthService } from './auth.service';
 import { JoiValidationPipe } from '../validation/joi.pipe';

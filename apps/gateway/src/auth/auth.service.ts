@@ -7,7 +7,10 @@ import {
   IChallengeType,
   generateChallenge,
   IUser,
+  User,
+  ILoginResponse,
 } from '@rittaschool/shared';
+import { FastifyReply } from 'fastify';
 import { timeout, catchError, of } from 'rxjs';
 import { UsersService } from '../users/users.service';
 
@@ -58,19 +61,16 @@ export class AuthService {
     };
   }
 
-  async handleLoginRequest(challenge: Challenge) {
-    console.log(challenge);
-    let res;
+  async handleLoginRequest(challenge: Challenge, reply: FastifyReply) {
+    let res: SuccessfulLoginResponse;
 
     switch (challenge.type) {
       case IChallengeType.PASSWORD_NEEDED:
-        console.log('password needed');
-        console.log('pass challenge', challenge);
-        res = await this.client
+        res = (await this.client
           .send('user_login_password', challenge)
           .pipe(timeout(10000))
           .pipe(catchError((val) => of({ error: val.message })))
-          .toPromise();
+          .toPromise()) as SuccessfulLoginResponse;
         break;
       case IChallengeType.FIDO2_NEEDED:
         console.log('fido2 needed');
@@ -81,11 +81,11 @@ export class AuthService {
         break;
       case IChallengeType.OTP_NEEDED:
         console.log('otp needed');
-        res = await this.client
+        res = (await this.client
           .send('user_login_otp', challenge)
           .pipe(timeout(10000))
           .pipe(catchError((val) => of({ error: val.message })))
-          .toPromise();
+          .toPromise()) as SuccessfulLoginResponse;
         break;
 
       default:
@@ -95,17 +95,32 @@ export class AuthService {
         ); //TODO: change to UNSUPPORTED_CHALLENGE and add UNKNOWN
     }
 
-    const response: { user?: IUser; challenge?: Challenge } = {};
+    const response: {
+      user?: IUser;
+      challenge?: Challenge;
+      accessToken?: string;
+    } = {};
 
-    if (res.user) {
+    if (res.user && res.tokens) {
       response.user = res.user;
-    } else {
-      response.challenge = res;
-    }
+      response.accessToken = res.tokens.accessToken;
 
-    console.log('response', response);
-    console.log('res', res);
+      reply.setCookie('rif', res.tokens.refreshToken, {
+        httpOnly: true,
+        //domain: ".ritta.fi" . means every subdomain //TODO: use in production
+        maxAge: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, //30 days
+      });
+    } else {
+      response.challenge = res.challenge;
+    }
 
     return response;
   }
+}
+
+interface SuccessfulLoginResponse {
+  type: ILoginResponse;
+  user?: IUser;
+  tokens?: { accessToken: string; refreshToken: string };
+  challenge?: Challenge;
 }

@@ -34,6 +34,8 @@
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "dotenv": "^10.0.0",
+    "fastify": "^3.27.0",
+    "fastify-cookie": "^5.5.0",
     "fastify-swagger": "^4.12.6",
     "graphql": "^15.5.3",
     "graphql-scalars": "^1.13.1",

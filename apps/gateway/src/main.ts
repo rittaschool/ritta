@@ -1,4 +1,5 @@
 import { VersioningType } from '@nestjs/common';
+import fastifyCookie from 'fastify-cookie';
 import { NestFactory } from '@nestjs/core';
 import { ClientProxy } from '@nestjs/microservices';
 import {
@@ -32,6 +33,11 @@ async function bootstrap() {
       }),
     },
   );
+
+  // Register cookie handler
+  app.register(fastifyCookie, {
+    secret: 'my-secret', // for cookies signature //TODO: move to env @raikasdev
+  });
 
   // Microservices message broker
   const bus = app.get<ClientProxy>('USERS_BUS');
