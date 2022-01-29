@@ -14,6 +14,7 @@ import { AppModule } from './app.module';
 import { consoleFormat, fileFormat } from './logger.format';
 import { LoggingInterceptor } from './logging.interceptor';
 import { RidInterceptor } from './rid.interceptor';
+import { ChallengeService } from './challenge/challenge.service';
 config();
 
 async function bootstrap() {
@@ -59,6 +60,10 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
+
+  // Init challenge database
+  const challengeService = app.get<ChallengeService>('CHALLENGE_SERVICE');
+  await challengeService.init();
 
   // Bind global interceptors
   app.useGlobalInterceptors(new RidInterceptor());

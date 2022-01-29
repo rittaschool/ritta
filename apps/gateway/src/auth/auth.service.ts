@@ -12,6 +12,7 @@ import {
 } from '@rittaschool/shared';
 import { FastifyReply } from 'fastify';
 import { timeout, catchError, of } from 'rxjs';
+import { ChallengeService } from '../challenge/challenge.service';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
@@ -19,6 +20,7 @@ export class AuthService {
   constructor(
     @Inject('AUTH_BUS') private client: ClientProxy,
     @Inject('USERS_SERVICE') private readonly userService: UsersService,
+    @Inject('CHALLENGE_SERVICE') private challengeService: ChallengeService,
   ) {}
 
   async startLoginProcess(
@@ -53,6 +55,8 @@ export class AuthService {
     } else {
       challenge = generateChallenge(IChallengeType.PASSWORD_NEEDED, user.id);
     }
+
+    this.challengeService.storeChallenge(challenge);
 
     return {
       userFirstName: user.firstName,

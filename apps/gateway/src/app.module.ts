@@ -10,6 +10,7 @@ import { CommonModule } from './common/common.module';
 import { CustomContext } from './graphql-ctx';
 import { UsersModule } from './users/users.module';
 import { validate } from './validation/env.validation';
+import { ChallengeModule } from './challenge/challenge.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { validate } from './validation/env.validation';
     }),
     UsersModule,
     AuthModule,
+    ChallengeModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService],
