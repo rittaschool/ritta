@@ -65,6 +65,13 @@ export class AuthService {
       challenge.id,
     );
 
+    if (!isChallengeValid) {
+      throw new RittaError(
+        'Challenge not found or it has expired!',
+        IErrorType.INVALID_CODE, //TODO: CHALLENGE_NOT_FOUND
+      );
+    }
+
     // Make sure that the type matches
     if (isChallengeValid.type !== challenge.type) {
       throw new RittaError(
@@ -78,13 +85,6 @@ export class AuthService {
       );
     }
 
-    if (!isChallengeValid) {
-      throw new RittaError(
-        'Challenge not found or it has expired!',
-        IErrorType.INVALID_CODE, //TODO: CHALLENGE_NOT_FOUND
-      );
-    }
-
     switch (challenge.type) {
       case IChallengeType.PASSWORD_NEEDED:
         res = (await this.client
@@ -92,6 +92,7 @@ export class AuthService {
           .pipe(timeout(10000))
           .pipe(catchError((val) => of({ error: val.message })))
           .toPromise()) as SuccessfulLoginResponse;
+        console.log('pass needed res', res);
         break;
       case IChallengeType.FIDO2_NEEDED:
         console.log('fido2 needed');
@@ -122,7 +123,7 @@ export class AuthService {
       accessToken?: string;
     } = {};
 
-    if (res.user && res.tokens && !res.challenge) {
+    if (res.user && res.tokens) {
       response.user = res.user;
       response.accessToken = res.tokens.accessToken;
 
@@ -131,9 +132,9 @@ export class AuthService {
         //domain: ".ritta.fi" . means every subdomain //TODO: use in production
         maxAge: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, //30 days
       });
-    } else {
+    } else if (res.challenge) {
       response.challenge = res.challenge;
-      this.challengeService.storeChallenge(res.challenge);
+      await this.challengeService.storeChallenge(res.challenge);
     }
 
     return response;
