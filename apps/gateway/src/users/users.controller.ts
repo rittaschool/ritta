@@ -10,6 +10,7 @@ import {
   Param,
   Patch,
   Post,
+  UseFilters,
   UsePipes,
 } from '@nestjs/common';
 import {
@@ -19,6 +20,7 @@ import {
   UpdateUserDto,
 } from '@rittaschool/shared';
 import { RID } from '../rid.param';
+import { ExceptionFilter } from '../rpc-exception.filter';
 import { JoiValidationPipe } from '../validation/joi.pipe';
 import { UsersService } from './users.service';
 

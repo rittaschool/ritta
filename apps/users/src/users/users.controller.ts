@@ -1,14 +1,23 @@
-import { Controller, Inject, UseInterceptors, UsePipes } from '@nestjs/common';
+import {
+  Controller,
+  Inject,
+  UseInterceptors,
+  UsePipes,
+  UseGuards,
+} from '@nestjs/common';
 import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import {
   IEventType,
   CreateUserDto,
   CreateUserValidationSchema,
+  Permission,
 } from '@rittaschool/shared';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JoiValidationPipe } from '../validation/joi.pipe';
 import { LoggingInterceptor } from '../common/logging.interceptor';
+import { PermissionsGuard } from '../auth.guard';
+import { Permissions } from '../auth.decorator';
 
 @UseInterceptors(LoggingInterceptor)
 @Controller()
@@ -21,6 +30,7 @@ export class UsersController {
     return this.usersService.createUser(createUserDto);
   }
 
+  @Permissions(Permission.GET_ALL_USERS)
   @MessagePattern(IEventType.GET_USERS)
   getUsers() {
     return this.usersService.getUsers();

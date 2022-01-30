@@ -11,6 +11,8 @@ import {
   IEventType,
   IUser,
   RittaError,
+  Permission,
+  Permissions,
   UpdateUserDto,
 } from '@rittaschool/shared';
 import { catchError, of, timeout } from 'rxjs';
@@ -53,8 +55,14 @@ export class UsersService {
       context: 'UsersService',
       message: 'getUsers',
     });
+    // const perms = Permissions.addPermissions(
+    //   0,
+    //   Permission.GET_ALL_USERS,
+    //   Permission.INSTALL_PLUGIN,
+    // );
+
     return this.client
-      .send<IUser[]>(IEventType.GET_USERS, { rid })
+      .send(IEventType.GET_USERS, { rid, permissions: 32 })
       .pipe(timeout(5000)) // timeout
       .toPromise();
   }
