@@ -37,13 +37,6 @@ export class AuthService {
   }> {
     const user = await this.userService.getUser(identifier, rid);
 
-    // return {
-    //   user,
-    //   token: res.token,
-    //   refreshToken: res.refreshToken,
-    //   type: res.type,
-    // };
-
     if ((user as any).error) {
       throw new RittaError('User not found!', IErrorType.USER_NOT_FOUND);
     }
