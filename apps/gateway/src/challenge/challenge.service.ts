@@ -77,6 +77,7 @@ export class ChallengeService {
       new Date(Date.now() + ttlInSeconds * 1000).getTime() / 1000,
     );
 
+    // Add TTL (time to live)
     const res = await this.client.execute([
       'EXPIREAT',
       type + ':' + key,
