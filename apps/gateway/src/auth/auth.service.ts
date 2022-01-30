@@ -72,6 +72,19 @@ export class AuthService {
       challenge.id,
     );
 
+    // Make sure that the type matches
+    if (isChallengeValid.type !== challenge.type) {
+      throw new RittaError(
+        'Challenge type does not match!',
+        IErrorType.INVALID_CODE,
+      );
+    } else if (isChallengeValid.userId !== challenge.userId) {
+      throw new RittaError(
+        'Challenge userId does not match!',
+        IErrorType.INVALID_CODE,
+      );
+    }
+
     if (!isChallengeValid) {
       throw new RittaError(
         'Challenge not found or it has expired!',
