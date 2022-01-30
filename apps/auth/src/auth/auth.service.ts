@@ -9,42 +9,95 @@ import {
   RittaError,
   IErrorType,
   ITokenType,
+  IPasswordChallengeData,
+  IChallengeType,
+  IOtpChallengeData,
+  generateChallenge,
+  ChallengeData,
 } from '@rittaschool/shared';
 import { UserService } from './user.service';
 import cryptor from './cryptor';
 import tokenizer from './tokenizer';
 import mfa from './mfa';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class AuthService {
   constructor(@Inject('USERS_SERVICE') private userService: UserService) {}
 
-  async login(loginUserDto: LoginUserDto) {
-    // Find user by username or e-mail
-    const users = await this.userService.findAll();
-    const user = users.find(
-      (user) =>
-        user.email === loginUserDto.username ||
-        user.username === loginUserDto.username, // Username = E-mail or username :)
-    );
+  // async login(loginUserDto: LoginUserDto) {
+  //   // Find user by username or e-mail
+  //   const users = await this.userService.findAll();
+  //   const user = users.find(
+  //     (user) =>
+  //       user.email === loginUserDto.username ||
+  //       user.username === loginUserDto.username, // Username = E-mail or username :)
+  //   );
+
+  //   if (!user) {
+  //     throw new RittaError(
+  //       'Invalid credentials',
+  //       IErrorType.INVALID_CREDENTIALS,
+  //     );
+  //   }
+
+  //   const passwordValid = await cryptor.verifyPassword(
+  //     loginUserDto.password,
+  //     user.password,
+  //   );
+
+  //   if (!passwordValid) {
+  //     throw new RittaError(
+  //       'Invalid credentials',
+  //       IErrorType.INVALID_CREDENTIALS,
+  //     );
+  //   }
+
+  //   return await this.generateTokens(user);
+  // }
+
+  async loginWithPassword(data: ChallengeData, userId: string) {
+    const user = await this.userService.findOne(userId);
 
     if (!user) {
+      throw new RittaError('User not found!', IErrorType.USER_NOT_FOUND);
+    }
+
+    const passwordValid = await cryptor.verifyPassword(
+      data.passwordData.password,
+      user.password,
+    );
+
+    if (!passwordValid) {
+      console.log('password not valid');
       throw new RittaError(
         'Invalid credentials',
         IErrorType.INVALID_CREDENTIALS,
       );
     }
 
-    const passwordValid = await cryptor.verifyPassword(
-      loginUserDto.password,
-      user.password,
-    );
+    if (user.mfa.enabled) {
+      const challenge = generateChallenge(IChallengeType.OTP_NEEDED, userId);
 
-    if (!passwordValid) {
-      throw new RittaError(
-        'Invalid credentials',
-        IErrorType.INVALID_CREDENTIALS,
-      );
+      return challenge;
+    }
+
+    return await this.generateTokens(user);
+  }
+
+  async submitOtpCode(data: IOtpChallengeData, userId: string) {
+    const user = await this.userService.findOne(userId);
+
+    if (!user) {
+      throw new RittaError('User not found!', IErrorType.USER_NOT_FOUND);
+    }
+
+    if (!user.mfa.enabled) throw new RpcException('MFA not enabled');
+
+    const isValid = mfa.checkMfaCode(data.otp, user.mfa.secret);
+
+    if (!isValid) {
+      throw new RittaError('Invalid MFA code', IErrorType.INVALID_CODE);
     }
 
     return await this.generateTokens(user);
@@ -97,59 +150,74 @@ export class AuthService {
     }
   }
 
-  async loginMFA(loginMFADto: LoginMFAUserDto) {
-    const decoded = await tokenizer.verifyToken(loginMFADto.mfaToken);
-    const user = await this.userService.findOne(
-      (decoded as { uid: string }).uid,
-    );
+  // async loginMFA(loginMFADto: LoginMFAUserDto) {
+  //   const decoded = await tokenizer.verifyToken(loginMFADto.mfaToken);
+  //   const user = await this.userService.findOne(
+  //     (decoded as { uid: string }).uid,
+  //   );
 
-    if (!user) {
-      throw new RittaError('Invalid token', IErrorType.INVALID_TOKEN);
-    }
+  //   if (!user) {
+  //     throw new RittaError('Invalid token', IErrorType.INVALID_TOKEN);
+  //   }
 
-    const isValid = mfa.checkMfaCode(loginMFADto.mfaCode, user.mfa.secret);
+  //   const isValid = mfa.checkMfaCode(loginMFADto.mfaCode, user.mfa.secret);
 
-    if (!isValid) {
-      throw new RittaError('Invalid MFA code', IErrorType.INVALID_TOKEN); // TODO: change in shared@0.0.20 to INVALID_MFA_CODE
-    }
+  //   if (!isValid) {
+  //     throw new RittaError('Invalid MFA code', IErrorType.INVALID_CODE);
+  //   }
 
-    return await this.generateTokens(user, true);
-  }
+  //   return await this.generateTokens(user);
+  // }
 
-  private async generateTokens(user: User, skipMFA = false) {
-    if (user.mfa.enabled && !skipMFA) {
-      // Generate MFA tokens
-      return {
-        type: ILoginResponse.MFA_REQUIRED,
-        token: await tokenizer.signToken({
-          type: ILoginResponse.MFA_REQUIRED,
-          uid: user.id,
-        }),
-      };
-    }
-    if (user.isPasswordChangeRequired) {
-      // Password change token
-      return {
-        type: ILoginResponse.PWD_CHANGE_REQUIRED,
-        token: await tokenizer.signToken({
-          type: ILoginResponse.PWD_CHANGE_REQUIRED,
-          uid: user.id,
-        }),
-      };
-    }
+  private async generateTokens(user: User): Promise<{
+    user: User;
+    tokens: { accessToken: string; refreshToken: string };
+  }> {
+    // TODO: implement later after auth works with new system
+    // if (user.isPasswordChangeRequired) {
+    //   // Password change token
+    //   return {
+    //     type: ILoginResponse.PWD_CHANGE_REQUIRED,
+    //     token: await tokenizer.signToken({
+    //       type: ILoginResponse.PWD_CHANGE_REQUIRED,
+    //       uid: user.id,
+    //     }),
+    //   };
+    // }
+
+    // return {
+    //   type: ILoginResponse.LOGGED_IN,
+    //   user,
+    //   token: await tokenizer.signToken({
+    //     type: ILoginResponse.LOGGED_IN,
+    //     uid: user.id,
+    //     exp: Math.floor(Date.now() / 1000) + 15 * 60, // Expire access token after 15 minutes
+    //   }),
+    //   refreshToken: await tokenizer.signToken({
+    //     type: ITokenType.REFRESH_TOKEN,
+    //     uid: user.id,
+    //     exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // Expire refresh token after 30 days (new refresh tokens will be granted when tokens are refreshed)
+    //   }),
+    // };
+
+    const refreshToken = (await tokenizer.signToken({
+      type: ITokenType.REFRESH_TOKEN,
+      uid: user.id,
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // Expire refresh token after 30 days (new refresh tokens will be granted when tokens are refreshed)
+    })) as string;
+
+    const accessToken = (await tokenizer.signToken({
+      type: ITokenType.ACCESS_TOKEN,
+      uid: user.id,
+      exp: Math.floor(Date.now() / 1000) + 15 * 60, // Expire access token after 15 minutes
+    })) as string;
 
     return {
-      type: ILoginResponse.LOGGED_IN,
-      token: await tokenizer.signToken({
-        type: ILoginResponse.LOGGED_IN,
-        uid: user.id,
-        exp: Math.floor(Date.now() / 1000) + 15 * 60, // Expire access token after 15 minutes
-      }),
-      refreshToken: await tokenizer.signToken({
-        type: ITokenType.REFRESH_TOKEN,
-        uid: user.id,
-        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // Expire refresh token after 30 days (new refresh tokens will be granted when tokens are refreshed)
-      }),
+      user,
+      tokens: {
+        refreshToken,
+        accessToken,
+      },
     };
   }
 }

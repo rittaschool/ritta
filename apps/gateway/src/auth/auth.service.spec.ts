@@ -19,6 +19,10 @@ describe('AuthService', () => {
           provide: 'USERS_SERVICE',
           useValue: {},
         },
+        {
+          provide: 'CHALLENGE_SERVICE',
+          useValue: {},
+        },
       ],
     }).compile();
 

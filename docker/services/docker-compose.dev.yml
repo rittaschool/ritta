@@ -21,11 +21,13 @@ services:
       - RMQ_PORT=5672
       - RMQ_USERNAME=guest
       - RMQ_PASSWORD=guest
+      - REDIS_URI=redis://gateway-db:6379
     ports:
       - '3000:3000'
     networks:
       - rabbitmq
       - services
+      - databases
     volumes:
       - ../../logs/gateway.log:/home/app/logs/all.log
       - ../../apps/gateway:/home/app
@@ -66,6 +68,7 @@ services:
       - rabbitmq
       - services
     volumes:
+      - ../../logs/auth.log:/home/app/logs/all.log
       - ../../apps/auth:/home/app
       - ../../apps/auth/dist:/home/app/dist
       - ../../apps/auth/node_modules:/home/app/node_modules
@@ -86,6 +89,7 @@ services:
       - services
       - databases
     volumes:
+      - ../../logs/users.log:/home/app/logs/all.log
       - ../../apps/users:/home/app
       - ../../apps/users/dist:/home/app/dist
       - ../../apps/users/node_modules:/home/app/node_modules

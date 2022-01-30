@@ -1,6 +1,9 @@
-import { Inject } from '@nestjs/common';
-import { Args, Resolver, Query } from '@nestjs/graphql';
-import { LoginUserDto } from '@rittaschool/shared';
+import { Inject, Res } from '@nestjs/common';
+import { Args, Resolver, Query, Context } from '@nestjs/graphql';
+import { Challenge } from '@rittaschool/shared';
+import { FastifyReply } from 'fastify';
+import { CustomContext } from '../graphql-ctx';
+import { RID } from '../rid.param';
 import { AuthService } from './auth.service';
 
 @Resolver()
@@ -9,8 +12,21 @@ export class AuthResolver {
     @Inject('AUTH_SERVICE') private readonly authService: AuthService,
   ) {}
 
+  // @Query()
+  // async login(@Args('loginUserDto') loginUserDto: LoginUserDto) {
+  //   return await this.authService.login(loginUserDto); // await is important
+  // }
+
   @Query()
-  async login(@Args('loginUserDto') loginUserDto: LoginUserDto) {
-    return await this.authService.login(loginUserDto); // await is important
+  startLoginProcess(@Args('email') identifier: string, @RID() rid: string) {
+    return this.authService.startLoginProcess(identifier, rid);
+  }
+
+  @Query()
+  async submitChallenge(
+    @Args('challenge') challenge: Challenge,
+    @Context() ctx: CustomContext,
+  ) {
+    return await this.authService.handleLoginRequest(challenge, ctx.reply);
   }
 }

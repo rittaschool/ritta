@@ -8,6 +8,10 @@ import {
   LoginMFAUserDto,
   LoginOAuthValidationSchema,
   LoginMFAValidationSchema,
+  Challenge,
+  IOtpChallengeData,
+  IPasswordChallengeData,
+  IUser,
 } from '@rittaschool/shared';
 import { AuthService } from './auth.service';
 import { JoiValidationPipe } from '../validation/joi.pipe';
@@ -18,10 +22,20 @@ export class AuthController {
     @Inject('AUTH_SERVICE') private readonly authService: AuthService,
   ) {}
 
-  @UsePipes(new JoiValidationPipe(LoginValidationSchema))
-  @MessagePattern(IEventType.USER_LOGIN)
-  login(@Payload() loginUserDto: LoginUserDto) {
-    return this.authService.login(loginUserDto);
+  //@UsePipes(new JoiValidationPipe(LoginValidationSchema)) //TODO: make new schema
+  @MessagePattern('user_login_password') //TODO: use the one from IEventType when new shared release
+  async loginWithPassword(@Payload() challenge: Challenge) {
+    const { data, userId } = challenge;
+
+    return await this.authService.loginWithPassword(data, userId);
+  }
+
+  // TODO: add validation schema
+  @MessagePattern('user_login_otp')
+  submitOtpCode(@Payload() challenge: Challenge) {
+    const { data, userId } = challenge;
+
+    return this.authService.submitOtpCode(data as IOtpChallengeData, userId);
   }
 
   @UsePipes(new JoiValidationPipe(LoginOAuthValidationSchema))
@@ -30,9 +44,9 @@ export class AuthController {
     return this.authService.loginOAuth(loginOauthUserDto);
   }
 
-  @UsePipes(new JoiValidationPipe(LoginMFAValidationSchema))
-  @MessagePattern(IEventType.USER_MFA_LOGIN)
-  loginMFA(loginMFAUserDto: LoginMFAUserDto) {
-    return this.authService.loginMFA(loginMFAUserDto);
-  }
+  // @UsePipes(new JoiValidationPipe(LoginMFAValidationSchema))
+  // @MessagePattern(IEventType.USER_MFA_LOGIN)
+  // loginMFA(loginMFAUserDto: LoginMFAUserDto) {
+  //   return this.authService.loginMFA(loginMFAUserDto);
+  // }
 }

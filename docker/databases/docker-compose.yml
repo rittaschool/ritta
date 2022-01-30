@@ -7,7 +7,6 @@ networks:
 
 volumes:
   users-db: null
-
 services:
   users_db:
     image: mongo:latest
@@ -26,3 +25,9 @@ services:
       interval: 5s
       timeout: 10s
       retries: 12
+  gateway-db:
+    image: redislabs/rejson:latest
+    networks: 
+      - databases
+    ports:
+      - "6380:6379"

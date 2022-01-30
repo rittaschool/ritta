@@ -1299,6 +1299,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@node-redis/client@npm:^1.0.0":
+  version: 1.0.2
+  resolution: "@node-redis/client@npm:1.0.2"
+  dependencies:
+    cluster-key-slot: 1.1.0
+    generic-pool: 3.8.2
+    redis-parser: 3.0.0
+    yallist: 4.0.0
+  checksum: 4f029ad6cb1c77a659ad5d24622b466fa13ed87866660b3fe0f19474516f5ded3c5baaf763c28cd1c113e2b60de678faad09b51a90e61c82eaf1e97a139129f6
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -1432,13 +1444,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rittaschool/shared@npm:^0.0.17":
-  version: 0.0.17
-  resolution: "@rittaschool/shared@npm:0.0.17"
+"@rittaschool/shared@npm:^0.0.27":
+  version: 0.0.27
+  resolution: "@rittaschool/shared@npm:0.0.27"
   dependencies:
     joi: ^17.4.2
     mongoose: ^6.0.12
-  checksum: 4373c0dd5be4e59bec8ced5fffc2f9ce732ca1fbea2c87a9f630d7adbc427fcfed5416530556766c689d3888b3a431a69f6a1c189d5cf553e6d1320759cf3bc1
+  checksum: 7a490e5a86fc76b1145155ca9a17947f09a2907a152b3bc3da78ac5311fe5d71458bce4cf261094107fb29b95e6144ecf3ea515daf5068c05b0e4ff964bbcc9c
   languageName: node
   linkType: hard
 
@@ -1669,13 +1681,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:^27.0.1":
-  version: 27.0.2
-  resolution: "@types/jest@npm:27.0.2"
+"@types/jest@npm:^27.4.0":
+  version: 27.4.0
+  resolution: "@types/jest@npm:27.4.0"
   dependencies:
     jest-diff: ^27.0.0
     pretty-format: ^27.0.0
-  checksum: 814ad5f5d2f277849f47e52906da4b745758e555630fc8cb46a071bde648eefeffb1b35710c530a8cea7fc4ea7c1d813812c120484bf7902ab6c5e473cdd49c9
+  checksum: d2350267f954f9a2e4a15e5f02fbf19a77abfb9fd9e57a954de1fb0e9a0d3d5f8d3646ac7d9c42aeb4b4d828d2e70624ec149c85bb50a48634a54eed8429e1f8
   languageName: node
   linkType: hard
 
@@ -3168,6 +3180,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cluster-key-slot@npm:1.1.0":
+  version: 1.1.0
+  resolution: "cluster-key-slot@npm:1.1.0"
+  checksum: fc953c75209b1ef9088081bab4e40a0b2586491c974ab93460569c014515ca5a2e31c043f185285e177007162fc353d07836d98f570c171dbe055775430e495b
+  languageName: node
+  linkType: hard
+
 "co@npm:^4.6.0":
   version: 4.6.0
   resolution: "co@npm:4.6.0"
@@ -3350,6 +3369,13 @@ __metadata:
   version: 1.0.6
   resolution: "cookie-signature@npm:1.0.6"
   checksum: f4e1b0a98a27a0e6e66fd7ea4e4e9d8e038f624058371bf4499cfcd8f3980be9a121486995202ba3fca74fbed93a407d6d54d43a43f96fd28d0bd7a06761591a
+  languageName: node
+  linkType: hard
+
+"cookie-signature@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "cookie-signature@npm:1.1.0"
+  checksum: 1586cb0a89d79354ca64dce661ac44959e46482faab756f49e71d086052c6de8b82fe8dd1bfb7ec1658afab8585c44c931d9cb441eab9b8fed8edbd140b2b0c5
   languageName: node
   linkType: hard
 
@@ -4267,6 +4293,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fastify-cookie@npm:^5.5.0":
+  version: 5.5.0
+  resolution: "fastify-cookie@npm:5.5.0"
+  dependencies:
+    cookie-signature: ^1.1.0
+    fastify-plugin: ^3.0.0
+  checksum: aaafcd994a6e5feccf5d2a9e1348b069b7143804b9fc2078a7c483cc5b9423628e122c85a851f93bf0c3a21c2abc05bfd402c6386df9ea97f6a417a5e69b12a8
+  languageName: node
+  linkType: hard
+
 "fastify-cors@npm:6.0.2, fastify-cors@npm:^6.0.0":
   version: 6.0.2
   resolution: "fastify-cors@npm:6.0.2"
@@ -4358,6 +4394,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fastify@npm:^3.27.0":
+  version: 3.27.0
+  resolution: "fastify@npm:3.27.0"
+  dependencies:
+    "@fastify/ajv-compiler": ^1.0.0
+    abstract-logging: ^2.0.0
+    avvio: ^7.1.2
+    fast-json-stringify: ^2.5.2
+    fastify-error: ^0.3.0
+    find-my-way: ^4.5.0
+    flatstr: ^1.0.12
+    light-my-request: ^4.2.0
+    pino: ^6.13.0
+    process-warning: ^1.0.0
+    proxy-addr: ^2.0.7
+    rfdc: ^1.1.4
+    secure-json-parse: ^2.0.0
+    semver: ^7.3.2
+    tiny-lru: ^7.0.0
+  checksum: 258b563001ca11402fcb79f4ed59f30aa1713c7d936238a7e00e3d00489b39081ce9a326514aa3d473dd28ba72725d3065a6ca62a7876431dc80bf509ff5d6c2
+  languageName: node
+  linkType: hard
+
 "fastq@npm:^1.6.0, fastq@npm:^1.6.1":
   version: 1.13.0
   resolution: "fastq@npm:1.13.0"
@@ -4434,6 +4493,18 @@ __metadata:
     safe-regex2: ^2.0.0
     semver-store: ^0.3.0
   checksum: c5f212d2d2a5e76be91a86409b2de9391a1c3cf5210d357facf0fe91d1e46608865aa2396a98a8d4772116bfae2eb0b05abe4efa725d5cf3cc9b9554bb34e048
+  languageName: node
+  linkType: hard
+
+"find-my-way@npm:^4.5.0":
+  version: 4.5.1
+  resolution: "find-my-way@npm:4.5.1"
+  dependencies:
+    fast-decode-uri-component: ^1.0.1
+    fast-deep-equal: ^3.1.3
+    safe-regex2: ^2.0.0
+    semver-store: ^0.3.0
+  checksum: 85b8c07d34a36f0203438e0c0f0cdbfaf5e1c521ed2e56f9250bed846ceb0eea074127fad7f70137d61bed56387047f212969cc0ba5d818ed5e37b3e3606c43f
   languageName: node
   linkType: hard
 
@@ -4644,9 +4715,9 @@ __metadata:
     "@nestjs/schematics": ^8.0.5
     "@nestjs/swagger": ^5.1.5
     "@nestjs/testing": ^8.2.4
-    "@rittaschool/shared": ^0.0.17
+    "@rittaschool/shared": ^0.0.27
     "@types/express": ^4.17.13
-    "@types/jest": ^27.0.1
+    "@types/jest": ^27.4.0
     "@types/node": ^16.0.0
     "@types/supertest": ^2.0.11
     "@typescript-eslint/eslint-plugin": ^4.28.2
@@ -4660,6 +4731,8 @@ __metadata:
     eslint: ^7.30.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^3.4.0
+    fastify: ^3.27.0
+    fastify-cookie: ^5.5.0
     fastify-swagger: ^4.12.6
     graphql: ^15.5.3
     graphql-scalars: ^1.13.1
@@ -4668,6 +4741,7 @@ __metadata:
     nest-graphql-scalar-adapter: ^1.1.2
     nest-winston: ^1.6.2
     prettier: ^2.3.2
+    redis-om: ^0.1.7
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
     rxjs: ^7.2.0
@@ -4694,6 +4768,13 @@ __metadata:
     strip-ansi: ^3.0.1
     wide-align: ^1.1.0
   checksum: a89b53cee65579b46832e050b5f3a79a832cc422c190de79c6b8e2e15296ab92faddde6ddf2d376875cbba2b043efa99b9e1ed8124e7365f61b04e3cee9d40ee
+  languageName: node
+  linkType: hard
+
+"generic-pool@npm:3.8.2":
+  version: 3.8.2
+  resolution: "generic-pool@npm:3.8.2"
+  checksum: f549077d90265e5e4d32a2410205b357ec61cf73d17861f1013637984390e09fe7bf537129a2c6ed30ae57662a57c8d54194f80046408d3349836330f422dbde
   languageName: node
   linkType: hard
 
@@ -7254,6 +7335,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"process-warning@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "process-warning@npm:1.0.0"
+  checksum: c708a03241deec3cabaeee39c4f9ee8c4d71f1c5ef9b746c8252cdb952a6059068cfcdaf348399775244cbc441b6ae5e26a9c87ed371f88335d84f26d19180f9
+  languageName: node
+  linkType: hard
+
 "progress@npm:^2.0.0":
   version: 2.0.3
   resolution: "progress@npm:2.0.3"
@@ -7454,6 +7542,32 @@ __metadata:
   dependencies:
     resolve: ^1.1.6
   checksum: fe76bf9c21875ac16e235defedd7cbd34f333c02a92546142b7911a0f7c7059d2e16f441fe6fb9ae203f459c05a31b2bcf26202896d89e390eda7514d5d2702b
+  languageName: node
+  linkType: hard
+
+"redis-errors@npm:^1.0.0":
+  version: 1.2.0
+  resolution: "redis-errors@npm:1.2.0"
+  checksum: f28ac2692113f6f9c222670735aa58aeae413464fd58ccf3fce3f700cae7262606300840c802c64f2b53f19f65993da24dc918afc277e9e33ac1ff09edb394f4
+  languageName: node
+  linkType: hard
+
+"redis-om@npm:^0.1.7":
+  version: 0.1.7
+  resolution: "redis-om@npm:0.1.7"
+  dependencies:
+    "@node-redis/client": ^1.0.0
+    ulid: ^2.3.0
+  checksum: ce180b6ffdda2417369a85696d7e46a83dc676bfc7c83ade2ffa29c60f93bb3e1d159dd5d360718cded566b2e94c9a7c76763af4f489e809dad45448b6a75a9d
+  languageName: node
+  linkType: hard
+
+"redis-parser@npm:3.0.0":
+  version: 3.0.0
+  resolution: "redis-parser@npm:3.0.0"
+  dependencies:
+    redis-errors: ^1.0.0
+  checksum: 89290ae530332f2ae37577647fa18208d10308a1a6ba750b9d9a093e7398f5e5253f19855b64c98757f7129cccce958e4af2573fdc33bad41405f87f1943459a
   languageName: node
   linkType: hard
 
@@ -8781,6 +8895,15 @@ typescript@^4.3.5:
   languageName: node
   linkType: hard
 
+"ulid@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "ulid@npm:2.3.0"
+  bin:
+    ulid: ./bin/cli.js
+  checksum: d6dbf253fdc189f60fe2829d934ee5447b3dab62d05449a2e0fe89670d77087dd6eba4f844a69f9ffdb01384ec6fd97bdd9be638fc67d593569a45e8969f1e69
+  languageName: node
+  linkType: hard
+
 "unique-filename@npm:^1.1.1":
   version: 1.1.1
   resolution: "unique-filename@npm:1.1.1"
@@ -9236,7 +9359,7 @@ typescript@^4.3.5:
   languageName: node
   linkType: hard
 
-"yallist@npm:^4.0.0":
+"yallist@npm:4.0.0, yallist@npm:^4.0.0":
   version: 4.0.0
   resolution: "yallist@npm:4.0.0"
   checksum: 343617202af32df2a15a3be36a5a8c0c8545208f3d3dfbc6bb7c3e3b7e8c6f8e7485432e4f3b88da3031a6e20afa7c711eded32ddfb122896ac5d914e75848d5

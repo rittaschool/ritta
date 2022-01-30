@@ -36,6 +36,9 @@ class EnvironmentVariables {
   @IsString()
   @IsOptional()
   SERVER_IP: string;
+
+  @IsString()
+  REDIS_URI: string;
 }
 
 export const validate = (config: Record<string, unknown>) => {

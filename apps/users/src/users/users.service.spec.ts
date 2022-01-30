@@ -22,6 +22,10 @@ describe('UsersService', () => {
             delete: jest.fn(),
           },
         },
+        {
+          provide: 'LOGGER',
+          useValue: {},
+        },
       ],
     }).compile();
 
