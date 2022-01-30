@@ -68,6 +68,17 @@ export class AuthService {
   async handleLoginRequest(challenge: Challenge, reply: FastifyReply) {
     let res: SuccessfulLoginResponse;
 
+    const isChallengeValid = await this.challengeService.getChallenge(
+      challenge.id,
+    );
+
+    if (!isChallengeValid) {
+      throw new RittaError(
+        'Challenge not found or it has expired!',
+        IErrorType.INVALID_CODE, //TODO: CHALLENGE_NOT_FOUND
+      );
+    }
+
     switch (challenge.type) {
       case IChallengeType.PASSWORD_NEEDED:
         res = (await this.client
@@ -105,7 +116,7 @@ export class AuthService {
       accessToken?: string;
     } = {};
 
-    if (res.user && res.tokens) {
+    if (res.user && res.tokens && !res.challenge) {
       response.user = res.user;
       response.accessToken = res.tokens.accessToken;
 
@@ -116,6 +127,7 @@ export class AuthService {
       });
     } else {
       response.challenge = res.challenge;
+      this.challengeService.storeChallenge(res.challenge);
     }
 
     return response;
