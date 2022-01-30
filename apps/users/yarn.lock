@@ -1213,13 +1213,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rittaschool/shared@npm:^0.0.27":
-  version: 0.0.27
-  resolution: "@rittaschool/shared@npm:0.0.27"
+"@rittaschool/shared@npm:^0.0.28":
+  version: 0.0.28
+  resolution: "@rittaschool/shared@npm:0.0.28"
   dependencies:
     joi: ^17.4.2
     mongoose: ^6.0.12
-  checksum: 7a490e5a86fc76b1145155ca9a17947f09a2907a152b3bc3da78ac5311fe5d71458bce4cf261094107fb29b95e6144ecf3ea515daf5068c05b0e4ff964bbcc9c
+  checksum: 12f70925c3ecc9249f809d5a29daf8e915ba85ab60092084eb506e2d97d19e473ee07540c21e1f049ccbafe3a3a90f7d55803fc1b07caccfe3349f8928386a07
   languageName: node
   linkType: hard
 
@@ -8227,7 +8227,7 @@ typescript@^4.3.5:
     "@nestjs/platform-express": ^8.2.4
     "@nestjs/schematics": ^8.0.5
     "@nestjs/testing": ^8.2.4
-    "@rittaschool/shared": ^0.0.27
+    "@rittaschool/shared": ^0.0.28
     "@types/argon2": ^0.15.0
     "@types/bcrypt": ^5.0.0
     "@types/express": ^4.17.13

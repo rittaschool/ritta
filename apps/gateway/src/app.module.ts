@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-import { FastifyRequest, FastifyReply } from 'fastify';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthController } from './auth.controller';
@@ -11,6 +10,9 @@ import { CustomContext } from './graphql-ctx';
 import { UsersModule } from './users/users.module';
 import { validate } from './validation/env.validation';
 import { ChallengeModule } from './challenge/challenge.module';
+import { TerminusModule } from '@nestjs/terminus';
+import { HealthController } from './health/health.controller';
+import { MicroserviceHealthIndicator } from './health/rmq.health';
 
 @Module({
   imports: [
@@ -31,8 +33,9 @@ import { ChallengeModule } from './challenge/challenge.module';
     UsersModule,
     AuthModule,
     ChallengeModule,
+    TerminusModule,
   ],
-  controllers: [AppController, AuthController],
-  providers: [AppService],
+  controllers: [AppController, AuthController, HealthController],
+  providers: [AppService, MicroserviceHealthIndicator],
 })
 export class AppModule {}

@@ -28,7 +28,7 @@
     "@nestjs/mapped-types": "^1.0.1",
     "@nestjs/microservices": "^8.2.4",
     "@nestjs/platform-express": "^8.2.4",
-    "@rittaschool/shared": "^0.0.27",
+    "@rittaschool/shared": "^0.0.28",
     "amqp-connection-manager": "^3.7.0",
     "amqplib": "^0.8.0",
     "bcrypt": "^5.0.1",

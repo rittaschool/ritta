@@ -49,4 +49,11 @@ export class AuthController {
   // loginMFA(loginMFAUserDto: LoginMFAUserDto) {
   //   return this.authService.loginMFA(loginMFAUserDto);
   // }
+
+  @MessagePattern(IEventType.STATUS)
+  async status() {
+    return {
+      status: 'ok',
+    };
+  }
 }

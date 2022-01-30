@@ -45,6 +45,7 @@ services:
       - RMQ_USERNAME=guest
       - RMQ_PASSWORD=guest
       - SIGNING_KEY=RITTATESTSIGNINGKEY
+      - INSTANCE_NAME=Ritta Testing
     networks:
       - rabbitmq
       - services
