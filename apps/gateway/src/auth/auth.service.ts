@@ -37,13 +37,6 @@ export class AuthService {
   }> {
     const user = await this.userService.getUser(identifier, rid);
 
-    // return {
-    //   user,
-    //   token: res.token,
-    //   refreshToken: res.refreshToken,
-    //   type: res.type,
-    // };
-
     if ((user as any).error) {
       throw new RittaError('User not found!', IErrorType.USER_NOT_FOUND);
     }
@@ -68,6 +61,30 @@ export class AuthService {
   async handleLoginRequest(challenge: Challenge, reply: FastifyReply) {
     let res: SuccessfulLoginResponse;
 
+    const isChallengeValid = await this.challengeService.getChallenge(
+      challenge.id,
+    );
+
+    if (!isChallengeValid) {
+      throw new RittaError(
+        'Challenge not found or it has expired!',
+        IErrorType.INVALID_CODE, //TODO: CHALLENGE_NOT_FOUND
+      );
+    }
+
+    // Make sure that the type matches
+    if (isChallengeValid.type !== challenge.type) {
+      throw new RittaError(
+        'Challenge type does not match!',
+        IErrorType.INVALID_CODE,
+      );
+    } else if (isChallengeValid.userId !== challenge.userId) {
+      throw new RittaError(
+        'Challenge userId does not match!',
+        IErrorType.INVALID_CODE,
+      );
+    }
+
     switch (challenge.type) {
       case IChallengeType.PASSWORD_NEEDED:
         res = (await this.client
@@ -75,6 +92,7 @@ export class AuthService {
           .pipe(timeout(10000))
           .pipe(catchError((val) => of({ error: val.message })))
           .toPromise()) as SuccessfulLoginResponse;
+        console.log('pass needed res', res);
         break;
       case IChallengeType.FIDO2_NEEDED:
         console.log('fido2 needed');
@@ -114,8 +132,9 @@ export class AuthService {
         //domain: ".ritta.fi" . means every subdomain //TODO: use in production
         maxAge: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, //30 days
       });
-    } else {
+    } else if (res.challenge) {
       response.challenge = res.challenge;
+      await this.challengeService.storeChallenge(res.challenge);
     }
 
     return response;

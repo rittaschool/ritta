@@ -1,12 +1,13 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Challenge } from '@rittaschool/shared';
+import { Challenge, IErrorType, RittaError } from '@rittaschool/shared';
 import { Client, Repository } from 'redis-om';
-import schema from './challenge.entity';
+import schema, { ChallengeRepository } from './challenge.entity';
 
 @Injectable()
 export class ChallengeService {
   client: Client;
+  repository: ChallengeRepository;
 
   constructor(
     @Inject('LOGGER') private logger: Logger,
@@ -16,6 +17,19 @@ export class ChallengeService {
   }
 
   async init() {
+    await this.connect();
+    this.repository = new Repository(schema, this.client);
+
+    await this.createIndex();
+  }
+
+  private async createIndex() {
+    try {
+      await this.repository.createIndex();
+    } catch (error) {}
+  }
+
+  private async connect() {
     if (this.client.isOpen()) return;
 
     try {
@@ -32,9 +46,7 @@ export class ChallengeService {
   async storeChallenge(
     challenge: Challenge,
   ): Promise<{ id: string; storedChallenge: Challenge }> {
-    const repository = new Repository(schema, this.client);
-
-    const chal = repository.createEntity();
+    const chal = this.repository.createEntity();
 
     chal.id = challenge.id;
     chal.type = challenge.type;
@@ -43,7 +55,7 @@ export class ChallengeService {
     let id: string;
 
     try {
-      id = await repository.save(chal);
+      id = await this.repository.save(chal);
       const expirySet = await this.handleExpire(id, 'Challenge', 5 * 60); // 5 minutes
 
       if (!expirySet) {
@@ -51,7 +63,7 @@ export class ChallengeService {
           context: 'ChallengeDatabase',
           message: 'Could not set expiry for challenge with id ' + challenge.id,
         });
-        await repository.remove(id);
+        await this.repository.remove(id);
       }
     } catch (error) {
       this.logger.error(error, error.stack, { context: 'ChallengeDatabase' });
@@ -61,6 +73,23 @@ export class ChallengeService {
       id,
       storedChallenge: chal,
     };
+  }
+
+  async getChallenge(id: string): Promise<Challenge> {
+    const repository = new Repository(schema, this.client);
+
+    let challenges: Challenge[];
+
+    try {
+      challenges = await repository.search().where('id').equals(id).returnAll();
+    } catch (error) {
+      throw new RittaError(
+        'Challenge not found!',
+        IErrorType.INVALID_CODE, //TODO: CHALLENGE_NOT_FOUND
+      );
+    }
+
+    return challenges[0];
   }
 
   async handleExpire(

@@ -1,8 +1,10 @@
-import { Entity, Schema } from 'redis-om';
+import { Entity, Repository, Schema } from 'redis-om';
 import { Challenge as Challe } from '@rittaschool/shared';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Challenge extends Challe {}
+
+export type ChallengeRepository = Repository<Challenge>;
 
 class Challenge extends Entity {}
 

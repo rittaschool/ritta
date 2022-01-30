@@ -79,7 +79,7 @@ export class AuthService {
     if (user.mfa.enabled) {
       const challenge = generateChallenge(IChallengeType.OTP_NEEDED, userId);
 
-      return challenge;
+      return { challenge };
     }
 
     return await this.generateTokens(user);
