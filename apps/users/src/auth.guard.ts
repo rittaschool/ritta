@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
@@ -18,21 +13,20 @@ export class PermissionsGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.getArgs();
-    const requiredPermissions: number = this.reflector.get<number>(
+    const requiredPermissions: number = this.reflector.get<number[]>(
       'permissions',
       context.getHandler(),
-    );
+    )[0];
 
-    const requiredPerms = Permissions.getPermissions(requiredPermissions);
-    const userPerms = Permissions.getPermissions(request[0].permissions);
+    const userPerms = request[0].permissions;
 
-    // TODO: switch to shared library method checkHasPermission
-    const doesUserHavePermission = requiredPerms.every((element) =>
-      userPerms.includes(element),
+    const doesUserHavePermission = Permissions.checkHasPermission(
+      requiredPermissions,
+      userPerms,
     );
 
     if (!doesUserHavePermission) {
-      throw new RpcException('Invalid credentials.');
+      throw new RpcException('Invalid permissions.');
     }
 
     return doesUserHavePermission;

@@ -62,7 +62,7 @@ export class UsersService {
     // );
 
     return this.client
-      .send(IEventType.GET_USERS, { rid, permissions: 32 })
+      .send(IEventType.GET_USERS, { rid, permissions: 3 })
       .pipe(timeout(5000)) // timeout
       .toPromise();
   }
