@@ -37,6 +37,8 @@ export class AuthService {
   }> {
     const user = await this.userService.getUser(identifier, rid);
 
+    console.log(user);
+
     if ((user as any).error) {
       throw new RittaError('User not found!', IErrorType.USER_NOT_FOUND);
     }
@@ -92,7 +94,6 @@ export class AuthService {
           .pipe(timeout(10000))
           .pipe(catchError((val) => of({ error: val.message })))
           .toPromise()) as SuccessfulLoginResponse;
-        console.log('pass needed res', res);
         break;
       case IChallengeType.FIDO2_NEEDED:
         console.log('fido2 needed');

@@ -22,6 +22,7 @@ services:
       - RMQ_USERNAME=guest
       - RMQ_PASSWORD=guest
       - REDIS_URI=redis://gateway-db:6379
+      - JWT_SIGNING_SECRET=RITTATESTSIGNINGKEY
     ports:
       - '3000:3000'
     networks:

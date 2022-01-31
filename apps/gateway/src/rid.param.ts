@@ -1,5 +1,4 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { generateRID } from './rid.generator';
 
 export const RID = createParamDecorator(
   (_data: unknown, ctx: ExecutionContext) => {

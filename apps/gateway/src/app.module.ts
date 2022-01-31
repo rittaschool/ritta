@@ -11,6 +11,10 @@ import { CustomContext } from './graphql-ctx';
 import { UsersModule } from './users/users.module';
 import { validate } from './validation/env.validation';
 import { ChallengeModule } from './challenge/challenge.module';
+import { APP_GUARD } from '@nestjs/core';
+import { UserGuard } from './user.guard';
+import { RidGuard } from './rid.guard';
+import { Tokenizer } from './validation/tokenizer';
 
 @Module({
   imports: [
@@ -33,6 +37,20 @@ import { ChallengeModule } from './challenge/challenge.module';
     ChallengeModule,
   ],
   controllers: [AppController, AuthController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: 'TOKENIZER',
+      useClass: Tokenizer,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RidGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: UserGuard,
+    },
+  ],
 })
 export class AppModule {}

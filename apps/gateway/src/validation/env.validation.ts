@@ -39,6 +39,9 @@ class EnvironmentVariables {
 
   @IsString()
   REDIS_URI: string;
+
+  @IsString()
+  JWT_SIGNING_SECRET: string;
 }
 
 export const validate = (config: Record<string, unknown>) => {
