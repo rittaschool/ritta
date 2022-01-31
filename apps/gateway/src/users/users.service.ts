@@ -73,11 +73,17 @@ export class UsersService {
       context: 'UsersService',
       message: `getUser with id ${id} `,
     });
-    return this.client
+    const user = await this.client
       .send(IEventType.GET_USER, { id, rid }) // get user with id
       .pipe(catchError((val) => of({ error: val.message }))) // error handling
       .pipe(timeout(5000)) // timeout
       .toPromise(); // converting observable to promise
+
+    if (user.error) {
+      throw new BadRequestException(user.error);
+    } else {
+      return user;
+    }
   }
 
   async updateUser(updateUserDto: UpdateUserDto, rid: string): Promise<IUser> {

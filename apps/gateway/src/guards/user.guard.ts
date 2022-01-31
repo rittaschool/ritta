@@ -5,7 +5,6 @@ import {
   Injectable,
   Logger,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import { UsersService } from '../users/users.service';
 import { Tokenizer } from '../validation/tokenizer';
 
@@ -17,9 +16,7 @@ export class UserGuard implements CanActivate {
     @Inject('TOKENIZER') private tokenizer: Tokenizer,
   ) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     // Get the token, switch because its diffrent for graphql and rest (possibly websockets)
     let token: string;
     let request: any;
@@ -50,10 +47,14 @@ export class UserGuard implements CanActivate {
       iat: number;
     }>(token);
 
-    this.userService
-      .getUser(data.uid, rid)
-      .then((user) => (request.user = user))
-      .catch((err) => this.logger.error('Unable to get user', err));
+    const user = await this.userService.getUser(data.uid, rid);
+
+    if (!user) {
+      this.logger.error(`User not found for token ${token}`);
+      return true;
+    }
+
+    request.user = user;
 
     return true;
   }

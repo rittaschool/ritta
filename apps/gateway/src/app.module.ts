@@ -14,6 +14,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { UserGuard } from './guards/user.guard';
 import { RidGuard } from './guards/rid.guard';
 import { Tokenizer } from './validation/tokenizer';
+import { GqlUserGuard } from './gql-user.guard';
 
 @Module({
   imports: [
@@ -45,6 +46,10 @@ import { Tokenizer } from './validation/tokenizer';
     {
       provide: APP_GUARD,
       useClass: RidGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: GqlUserGuard,
     },
     {
       provide: APP_GUARD,
