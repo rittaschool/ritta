@@ -47,17 +47,16 @@ export class UserGuard implements CanActivate {
       iat: number;
     }>(token);
 
-    console.log(data);
-
     // Return true because we want this to be always run, even if the token is invalid
     if (!data) return true;
 
     const user = await this.userService.getUser(data.uid, false, rid);
 
-    console.log('usr', user);
-
     if (user == null || !user) {
-      this.logger.error(`User not found for token ${token}`);
+      this.logger.error({
+        context: 'UserGuard',
+        message: `User not found for token ${token.substring(0, 10)}...`,
+      });
       return true;
     }
 

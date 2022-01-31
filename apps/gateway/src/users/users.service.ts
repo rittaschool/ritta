@@ -79,8 +79,6 @@ export class UsersService {
       .pipe(timeout(5000)) // timeout
       .toPromise(); // converting observable to promise
 
-    console.log(user);
-
     if (throwError && !user) {
       throw new BadRequestException('User not found');
     }
