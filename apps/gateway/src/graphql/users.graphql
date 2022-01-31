@@ -8,12 +8,12 @@ type User {
   email: String
   home: Location
   oauth2Identifiers: Oauth2Identifiers
-  latestLogin: Date
-  latestPasswordChange: Date
+  latestLogin: Int!
+  latestPasswordChange: Int!
   isFirstLogin: Boolean!
   isPasswordChangeRequired: Boolean!
-  createdAt: Date!
-  updatedAt: Date!
+  createdAt: Int!
+  updatedAt: Int!
 }
 
 input CreateUserInput {
@@ -31,8 +31,10 @@ input CreateUserInput {
 type Query {
   user(id: ID!): User
   users: [User]
+  me: User
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User
+  removeUser(id: ID!): User
 }

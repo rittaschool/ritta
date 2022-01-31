@@ -1,22 +1,22 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
-export const RID = createParamDecorator(
-  (_data: unknown, ctx: ExecutionContext) => {
-    let rid: string;
+export const User = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext) => {
+    let user: string;
 
     switch (ctx.getType() as any) {
       case 'http':
-        rid = ctx.switchToHttp().getRequest().rid;
+        user = ctx.switchToHttp().getRequest().user;
         break;
 
       case 'graphql':
-        rid = ctx.getArgByIndex(2).rid;
+        user = ctx.getArgByIndex(2).req.user;
         break;
 
       default:
         break;
     }
 
-    return rid;
+    return user;
   },
 );

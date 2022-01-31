@@ -10,6 +10,7 @@ import {
   Param,
   Patch,
   Post,
+  UseFilters,
   UsePipes,
 } from '@nestjs/common';
 import {
@@ -47,7 +48,7 @@ export class UsersController {
 
   @Get('/:id')
   async getUser(@Param('id') id: string, @RID() rid: string): Promise<IUser> {
-    return this.usersService.getUser(id, rid);
+    return this.usersService.getUser(id, true, rid);
   }
 
   @Patch()

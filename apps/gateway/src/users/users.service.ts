@@ -11,6 +11,8 @@ import {
   IEventType,
   IUser,
   RittaError,
+  Permission,
+  Permissions,
   UpdateUserDto,
 } from '@rittaschool/shared';
 import { catchError, of, timeout } from 'rxjs';
@@ -53,23 +55,39 @@ export class UsersService {
       context: 'UsersService',
       message: 'getUsers',
     });
+    // const perms = Permissions.addPermissions(
+    //   0,
+    //   Permission.GET_ALL_USERS,
+    //   Permission.INSTALL_PLUGIN,
+    // );
+
     return this.client
-      .send<IUser[]>(IEventType.GET_USERS, { rid })
+      .send(IEventType.GET_USERS, { rid, permissions: 3 })
       .pipe(timeout(5000)) // timeout
       .toPromise();
   }
 
-  async getUser(id: string, rid: string): Promise<IUser> {
+  async getUser(id: string, throwError = true, rid: string): Promise<IUser> {
     this.logger.log({
       rid,
       context: 'UsersService',
       message: `getUser with id ${id} `,
     });
-    return this.client
-      .send(IEventType.GET_USER, { id, rid }) // get user with id
+    const user = await this.client
+      .send(IEventType.GET_USER, { id, rid, throwError }) // get user with id
       .pipe(catchError((val) => of({ error: val.message }))) // error handling
       .pipe(timeout(5000)) // timeout
       .toPromise(); // converting observable to promise
+
+    if (throwError && !user) {
+      throw new BadRequestException('User not found');
+    }
+
+    if (throwError && user.error) {
+      throw new BadRequestException(user.error);
+    } else {
+      return user;
+    }
   }
 
   async updateUser(updateUserDto: UpdateUserDto, rid: string): Promise<IUser> {

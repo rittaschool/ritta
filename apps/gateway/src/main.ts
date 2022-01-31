@@ -13,7 +13,6 @@ import { transports } from 'winston';
 import { AppModule } from './app.module';
 import { consoleFormat, fileFormat } from './logger.format';
 import { LoggingInterceptor } from './logging.interceptor';
-import { RidInterceptor } from './rid.interceptor';
 import { ChallengeService } from './challenge/challenge.service';
 config();
 
@@ -68,7 +67,6 @@ async function bootstrap() {
   await challengeService.init();
 
   // Bind global interceptors
-  app.useGlobalInterceptors(new RidInterceptor());
   app.useGlobalInterceptors(new LoggingInterceptor(app.get('LOGGER')));
 
   // Swagger documentation

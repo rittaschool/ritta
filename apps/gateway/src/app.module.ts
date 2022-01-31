@@ -10,6 +10,11 @@ import { CustomContext } from './graphql-ctx';
 import { UsersModule } from './users/users.module';
 import { validate } from './validation/env.validation';
 import { ChallengeModule } from './challenge/challenge.module';
+import { APP_GUARD } from '@nestjs/core';
+import { UserGuard } from './guards/user.guard';
+import { RidGuard } from './guards/rid.guard';
+import { Tokenizer } from './validation/tokenizer';
+import { GqlUserGuard } from './gql-user.guard';
 import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from './health/health.controller';
 import { MicroserviceHealthIndicator } from './health/rmq.health';
@@ -36,6 +41,25 @@ import { MicroserviceHealthIndicator } from './health/rmq.health';
     TerminusModule,
   ],
   controllers: [AppController, AuthController, HealthController],
-  providers: [AppService, MicroserviceHealthIndicator],
+  providers: [
+    AppService,
+    {
+      provide: 'TOKENIZER',
+      useClass: Tokenizer,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RidGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: GqlUserGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: UserGuard,
+    },
+    MicroserviceHealthIndicator,
+  ],
 })
 export class AppModule {}

@@ -36,10 +36,16 @@ export const UserSchema = new Schema({
     type: LocationSchema, // Not essential
     required: false,
   },
-  latestLogin: { type: Date, default: Date.now },
-  latestPasswordChange: { type: Date, default: Date.now },
+  latestLogin: {
+    type: Number,
+    default: Math.floor(new Date().getTime() / 1000),
+  },
+  latestPasswordChange: {
+    type: Number,
+    default: Math.floor(new Date().getTime() / 1000),
+  },
   isFirstLogin: { type: Boolean, default: true },
   isPasswordChangeRequired: { type: Boolean, default: true },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
+  createdAt: { type: Number, default: Math.floor(new Date().getTime() / 1000) },
+  updatedAt: { type: Number, default: Math.floor(new Date().getTime() / 1000) },
 });
