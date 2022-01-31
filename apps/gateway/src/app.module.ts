@@ -40,7 +40,7 @@ import { MicroserviceHealthIndicator } from './health/rmq.health';
     ChallengeModule,
     TerminusModule,
   ],
-  controllers: [AppController, AuthController],
+  controllers: [AppController, AuthController, HealthController],
   providers: [
     AppService,
     {
@@ -61,6 +61,5 @@ import { MicroserviceHealthIndicator } from './health/rmq.health';
     },
     MicroserviceHealthIndicator,
   ],
-  controllers: [AppController, AuthController, HealthController],
 })
 export class AppModule {}
