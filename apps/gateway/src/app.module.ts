@@ -59,8 +59,8 @@ import { MicroserviceHealthIndicator } from './health/rmq.health';
       provide: APP_GUARD,
       useClass: UserGuard,
     },
+    MicroserviceHealthIndicator,
   ],
   controllers: [AppController, AuthController, HealthController],
-  providers: [AppService, MicroserviceHealthIndicator],
 })
 export class AppModule {}
