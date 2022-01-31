@@ -18,15 +18,14 @@ export class UsersResolver {
   async me(@User() user: IUser) {
     return user;
   }
-
-  @Query()
-  async user(@Args('id') id: string, @RID() rid: string) {
-    return this.usersService.getUser(id, rid);
-  }
-
   @Query()
   async users(@RID() rid: string) {
     return this.usersService.getUsers(rid);
+  }
+
+  @Query()
+  async user(@Args('id') id: string, @RID() rid: string) {
+    return this.usersService.getUser(id, true, rid);
   }
 
   @Mutation()

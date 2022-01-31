@@ -35,7 +35,7 @@ export class AuthService {
     userPhotoUri: string;
     userFirstName: string;
   }> {
-    const user = await this.userService.getUser(identifier, rid);
+    const user = await this.userService.getUser(identifier, true, rid);
 
     console.log(user);
 

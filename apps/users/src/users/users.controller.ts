@@ -37,8 +37,8 @@ export class UsersController {
   }
 
   @MessagePattern(IEventType.GET_USER)
-  getUser(@Payload() { id }: { id: string }) {
-    return this.usersService.getUser(id, true);
+  getUser(@Payload() { id, throwError }: { id: string; throwError: boolean }) {
+    return this.usersService.getUser(id, throwError);
   }
 
   @MessagePattern(IEventType.USER_UPDATED)

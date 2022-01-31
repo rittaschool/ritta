@@ -67,19 +67,25 @@ export class UsersService {
       .toPromise();
   }
 
-  async getUser(id: string, rid: string): Promise<IUser> {
+  async getUser(id: string, throwError = true, rid: string): Promise<IUser> {
     this.logger.log({
       rid,
       context: 'UsersService',
       message: `getUser with id ${id} `,
     });
     const user = await this.client
-      .send(IEventType.GET_USER, { id, rid }) // get user with id
+      .send(IEventType.GET_USER, { id, rid, throwError }) // get user with id
       .pipe(catchError((val) => of({ error: val.message }))) // error handling
       .pipe(timeout(5000)) // timeout
       .toPromise(); // converting observable to promise
 
-    if (user.error) {
+    console.log(user);
+
+    if (throwError && !user) {
+      throw new BadRequestException('User not found');
+    }
+
+    if (throwError && user.error) {
       throw new BadRequestException(user.error);
     } else {
       return user;
