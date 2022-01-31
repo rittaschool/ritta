@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { generateRID } from './rid.generator';
+import { generateRID } from '../rid.generator';
 
 @Injectable()
 export class RidGuard implements CanActivate {

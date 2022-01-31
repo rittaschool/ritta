@@ -6,8 +6,8 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { UsersService } from './users/users.service';
-import { Tokenizer } from './validation/tokenizer';
+import { UsersService } from '../users/users.service';
+import { Tokenizer } from '../validation/tokenizer';
 
 @Injectable()
 export class UserGuard implements CanActivate {

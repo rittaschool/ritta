@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-import { FastifyRequest, FastifyReply } from 'fastify';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthController } from './auth.controller';
@@ -12,8 +11,8 @@ import { UsersModule } from './users/users.module';
 import { validate } from './validation/env.validation';
 import { ChallengeModule } from './challenge/challenge.module';
 import { APP_GUARD } from '@nestjs/core';
-import { UserGuard } from './user.guard';
-import { RidGuard } from './rid.guard';
+import { UserGuard } from './guards/user.guard';
+import { RidGuard } from './guards/rid.guard';
 import { Tokenizer } from './validation/tokenizer';
 
 @Module({
