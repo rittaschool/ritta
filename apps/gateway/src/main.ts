@@ -34,6 +34,8 @@ async function bootstrap() {
     },
   );
 
+  app.enableShutdownHooks();
+
   // Register cookie handler
   app.register(fastifyCookie, {
     secret: 'my-secret', // for cookies signature //TODO: move to env @raikasdev

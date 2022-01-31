@@ -15,6 +15,9 @@ import { UserGuard } from './guards/user.guard';
 import { RidGuard } from './guards/rid.guard';
 import { Tokenizer } from './validation/tokenizer';
 import { GqlUserGuard } from './gql-user.guard';
+import { TerminusModule } from '@nestjs/terminus';
+import { HealthController } from './health/health.controller';
+import { MicroserviceHealthIndicator } from './health/rmq.health';
 
 @Module({
   imports: [
@@ -35,6 +38,7 @@ import { GqlUserGuard } from './gql-user.guard';
     UsersModule,
     AuthModule,
     ChallengeModule,
+    TerminusModule,
   ],
   controllers: [AppController, AuthController],
   providers: [
@@ -56,5 +60,7 @@ import { GqlUserGuard } from './gql-user.guard';
       useClass: UserGuard,
     },
   ],
+  controllers: [AppController, AuthController, HealthController],
+  providers: [AppService, MicroserviceHealthIndicator],
 })
 export class AppModule {}

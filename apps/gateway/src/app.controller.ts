@@ -14,4 +14,9 @@ export class AppController {
   async getInfo() {
     return this.appService.getInfo();
   }
+
+  @Get('/corestatus')
+  async getStatus() {
+    return this.appService.getStatus();
+  }
 }

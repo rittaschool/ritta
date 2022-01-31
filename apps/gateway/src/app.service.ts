@@ -16,4 +16,11 @@ export class AppService {
       .pipe(timeout(5000)) // timeout
       .toPromise();
   }
+
+  async getStatus() {
+    return this.client
+      .send('status', {})
+      .pipe(timeout(5000)) // timeout
+      .toPromise();
+  }
 }
