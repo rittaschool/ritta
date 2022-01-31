@@ -1,15 +1,12 @@
-import {
-  CallHandler,
-  ExecutionContext,
-  Injectable,
-  NestInterceptor,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { generateRID } from './rid.generator';
 
 @Injectable()
-export class RidInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+export class RidGuard implements CanActivate {
+  canActivate(
+    context: ExecutionContext,
+  ): boolean | Promise<boolean> | Observable<boolean> {
     switch (context.getType() as any) {
       case 'http':
         context.switchToHttp().getRequest().rid = generateRID();
@@ -22,7 +19,6 @@ export class RidInterceptor implements NestInterceptor {
       default:
         break;
     }
-
-    return next.handle();
+    return true;
   }
 }
