@@ -54,4 +54,11 @@ export class UsersController {
       throw new RpcException(err.message);
     }
   }
+
+  @MessagePattern(IEventType.STATUS)
+  async status() {
+    return {
+      status: 'ok',
+    };
+  }
 }

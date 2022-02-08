@@ -14,7 +14,7 @@ Ritta is made of two core parts, backend (ritta-server, which is this repository
 
 ## API Documentation
 
-The API documentation can be viewed by going to `https://<ritta-server url>/docs`.
+The API documentation can be viewed by going to `https://<ritta-server url>/docs` or you could go to `https://api.demo.ritta.fi/docs`.
 
 ## Requirements
 

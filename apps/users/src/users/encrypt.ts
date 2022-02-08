@@ -1,7 +1,7 @@
-import * as bcrypt from 'bcrypt';
+import crypto from 'crypto';
 
 const encodePassword = async (password: string): Promise<string> => {
-  return await bcrypt.hash(password, 6);
+  return crypto.createHash('sha512').update(password).digest('hex');
 };
 
 export default {

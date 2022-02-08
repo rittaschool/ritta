@@ -81,10 +81,10 @@ describe('UsersController', () => {
 
   describe('getUser', () => {
     it('should call usersService.getUser with id', async () => {
-      await controller.getUser({ id: '123' });
+      await controller.getUser({ id: '123', throwError: true });
 
       expect(usersService.getUser).toHaveBeenCalledTimes(1);
-      expect(usersService.getUser).toHaveBeenCalledWith('123');
+      expect(usersService.getUser).toHaveBeenCalledWith('123', true);
     });
   });
 

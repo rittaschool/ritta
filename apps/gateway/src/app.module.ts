@@ -1,6 +1,8 @@
+import { TerminusModule } from '@nestjs/terminus';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
+import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthController } from './auth.controller';
@@ -10,12 +12,13 @@ import { CustomContext } from './graphql-ctx';
 import { UsersModule } from './users/users.module';
 import { validate } from './validation/env.validation';
 import { ChallengeModule } from './challenge/challenge.module';
-import { APP_GUARD } from '@nestjs/core';
+import { HealthController } from './health/health.controller';
 import { UserGuard } from './guards/user.guard';
 import { RidGuard } from './guards/rid.guard';
 import { Tokenizer } from './validation/tokenizer';
 import { GqlUserGuard } from './gql-user.guard';
 import { PermissionsGuard } from './permissions.guard.';
+import { MicroserviceHealthIndicator } from './health/rmq.health';
 
 @Module({
   imports: [
@@ -36,8 +39,9 @@ import { PermissionsGuard } from './permissions.guard.';
     UsersModule,
     AuthModule,
     ChallengeModule,
+    TerminusModule,
   ],
-  controllers: [AppController, AuthController],
+  controllers: [AppController, AuthController, HealthController],
   providers: [
     AppService,
     {
@@ -60,6 +64,7 @@ import { PermissionsGuard } from './permissions.guard.';
       provide: APP_GUARD,
       useClass: PermissionsGuard,
     },
+    MicroserviceHealthIndicator,
   ],
 })
 export class AppModule {}

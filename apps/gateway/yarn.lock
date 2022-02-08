@@ -1279,6 +1279,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nestjs/terminus@npm:^8.0.4":
+  version: 8.0.4
+  resolution: "@nestjs/terminus@npm:8.0.4"
+  dependencies:
+    check-disk-space: 3.1.0
+  peerDependencies:
+    "@nestjs/common": 8.x
+    "@nestjs/core": 8.x
+    reflect-metadata: 0.1.x
+    rxjs: 7.x
+  checksum: 641cf0f0e09f68e08e2cc600c5fef099834029474a49854d99313dd5a813c5da903d0f7ff972bdf4d83bb293a19d88cbec848ed4f0680fd7e6e2fd85c5b46e0a
+  languageName: node
+  linkType: hard
+
 "@nestjs/testing@npm:^8.2.4":
   version: 8.2.4
   resolution: "@nestjs/testing@npm:8.2.4"
@@ -1444,13 +1458,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rittaschool/shared@npm:^0.0.27":
-  version: 0.0.27
-  resolution: "@rittaschool/shared@npm:0.0.27"
+"@rittaschool/shared@npm:^0.0.28":
+  version: 0.0.28
+  resolution: "@rittaschool/shared@npm:0.0.28"
   dependencies:
     joi: ^17.4.2
     mongoose: ^6.0.12
-  checksum: 7a490e5a86fc76b1145155ca9a17947f09a2907a152b3bc3da78ac5311fe5d71458bce4cf261094107fb29b95e6144ecf3ea515daf5068c05b0e4ff964bbcc9c
+  checksum: 12f70925c3ecc9249f809d5a29daf8e915ba85ab60092084eb506e2d97d19e473ee07540c21e1f049ccbafe3a3a90f7d55803fc1b07caccfe3349f8928386a07
   languageName: node
   linkType: hard
 
@@ -3054,6 +3068,13 @@ __metadata:
   version: 0.7.0
   resolution: "chardet@npm:0.7.0"
   checksum: 6fd5da1f5d18ff5712c1e0aed41da200d7c51c28f11b36ee3c7b483f3696dabc08927fc6b227735eb8f0e1215c9a8abd8154637f3eff8cada5959df7f58b024d
+  languageName: node
+  linkType: hard
+
+"check-disk-space@npm:3.1.0":
+  version: 3.1.0
+  resolution: "check-disk-space@npm:3.1.0"
+  checksum: 6744f1046742956f6d3ccb57f278572a6048be439e02ebbeb978e3a80091c612c8e1e9bd936aaf462a97a91dcf306d81ab4f1b8eadf7a0b0bfa437330df1e879
   languageName: node
   linkType: hard
 
@@ -4739,8 +4760,9 @@ __metadata:
     "@nestjs/platform-fastify": ^8.2.4
     "@nestjs/schematics": ^8.0.5
     "@nestjs/swagger": ^5.1.5
+    "@nestjs/terminus": ^8.0.4
     "@nestjs/testing": ^8.2.4
-    "@rittaschool/shared": ^0.0.27
+    "@rittaschool/shared": ^0.0.28
     "@types/express": ^4.17.13
     "@types/jest": ^27.4.0
     "@types/jsonwebtoken": ^8.5.8
