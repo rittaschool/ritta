@@ -12,6 +12,7 @@ import {
   IUser,
   RittaError,
   Permission,
+  Permissions,
   UpdateUserDto,
 } from '@rittaschool/shared';
 import { Permissions } from '../permissions.decorator';
