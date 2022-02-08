@@ -12,9 +12,9 @@ import {
   IUser,
   RittaError,
   Permission,
-  Permissions,
   UpdateUserDto,
 } from '@rittaschool/shared';
+import { Permissions } from '../permissions.decorator';
 import { catchError, of, timeout } from 'rxjs';
 
 @Injectable()
@@ -49,6 +49,7 @@ export class UsersService {
     }
   }
 
+  @Permissions(Permission.GET_ALL_USERS)
   async getUsers(rid: string): Promise<IUser[]> {
     this.logger.log({
       rid,

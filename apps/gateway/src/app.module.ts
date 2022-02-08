@@ -15,6 +15,7 @@ import { UserGuard } from './guards/user.guard';
 import { RidGuard } from './guards/rid.guard';
 import { Tokenizer } from './validation/tokenizer';
 import { GqlUserGuard } from './gql-user.guard';
+import { PermissionsGuard } from './permissions.guard.';
 
 @Module({
   imports: [
@@ -54,6 +55,10 @@ import { GqlUserGuard } from './gql-user.guard';
     {
       provide: APP_GUARD,
       useClass: UserGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionsGuard,
     },
   ],
 })
