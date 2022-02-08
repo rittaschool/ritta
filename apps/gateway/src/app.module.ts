@@ -17,10 +17,6 @@ import { RidGuard } from './guards/rid.guard';
 import { Tokenizer } from './validation/tokenizer';
 import { GqlUserGuard } from './gql-user.guard';
 import { HealthController } from './health/health.controller';
-import { UserGuard } from './guards/user.guard';
-import { RidGuard } from './guards/rid.guard';
-import { Tokenizer } from './validation/tokenizer';
-import { GqlUserGuard } from './gql-user.guard';
 import { PermissionsGuard } from './permissions.guard.';
 import { MicroserviceHealthIndicator } from './health/rmq.health';
 
