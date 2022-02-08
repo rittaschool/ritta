@@ -15,6 +15,7 @@ import {
   Permissions,
   UpdateUserDto,
 } from '@rittaschool/shared';
+import { Permissions as PermDecorator } from '../permissions.decorator';
 import { catchError, of, timeout } from 'rxjs';
 
 @Injectable()
@@ -49,6 +50,7 @@ export class UsersService {
     }
   }
 
+  @PermDecorator(Permission.GET_ALL_USERS)
   async getUsers(rid: string): Promise<IUser[]> {
     this.logger.log({
       rid,
