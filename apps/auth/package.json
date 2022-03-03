@@ -38,11 +38,13 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.11",
     "nest-winston": "^1.6.2",
+    "node-fetch": "^3.2.1",
     "otplib": "^12.0.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "uuid": "^8.3.2",
+    "webpack": "^5.70.0",
     "winston": "^3.4.0"
   },
   "devDependencies": {
