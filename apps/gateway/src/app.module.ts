@@ -19,6 +19,7 @@ import { GqlUserGuard } from './gql-user.guard';
 import { HealthController } from './health/health.controller';
 import { PermissionsGuard } from './permissions.guard.';
 import { MicroserviceHealthIndicator } from './health/rmq.health';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { MicroserviceHealthIndicator } from './health/rmq.health';
       validate,
     }),
     CommonModule,
-    GraphQLModule.forRoot({
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
       playground: true,
       debug: true,
       typePaths: ['./**/*.graphql'],
