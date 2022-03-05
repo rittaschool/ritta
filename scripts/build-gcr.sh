@@ -1,4 +1,3 @@
-cd ..
 export PROJECT_ID="$(gcloud config get-value project -q)"
 gcloud auth configure-docker
 
