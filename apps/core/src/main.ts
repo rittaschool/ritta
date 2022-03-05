@@ -21,6 +21,6 @@ async function bootstrap() {
     },
   );
 
-  app.listen().then(() => console.log(`Auth service is online`));
+  app.listen().then(() => console.log(`Auth service is online`)).catch(console.error);
 }
 bootstrap();

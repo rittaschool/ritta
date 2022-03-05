@@ -38,6 +38,7 @@ async function bootstrap() {
 
   // Register cookie handler
   app.register(fastifyCookie, {
+    // deepcode ignore HardcodedNonCryptoSecret: it is TODO
     secret: 'my-secret', // for cookies signature //TODO: move to env @raikasdev
   });
 
