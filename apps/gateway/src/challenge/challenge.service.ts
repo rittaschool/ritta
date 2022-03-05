@@ -18,7 +18,7 @@ export class ChallengeService {
 
   async init() {
     await this.connect();
-    this.repository = new Repository(schema, this.client);
+    this.repository = this.client.fetchRepository(schema);
 
     await this.createIndex();
   }
@@ -76,12 +76,14 @@ export class ChallengeService {
   }
 
   async getChallenge(id: string): Promise<Challenge> {
-    const repository = new Repository(schema, this.client);
-
     let challenges: Challenge[];
 
     try {
-      challenges = await repository.search().where('id').equals(id).returnAll();
+      challenges = await this.repository
+        .search()
+        .where('id')
+        .equals(id)
+        .returnAll();
     } catch (error) {
       throw new RittaError(
         'Challenge not found!',
@@ -97,8 +99,7 @@ export class ChallengeService {
     type: string,
     ttlInSeconds: number,
   ): Promise<boolean> {
-    const repository = new Repository(schema, this.client);
-    const chal = await repository.fetch(key);
+    const chal = await this.repository.fetch(key);
 
     if (!chal) return;
 
