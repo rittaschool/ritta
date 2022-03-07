@@ -28,7 +28,7 @@
     "@nestjs/mapped-types": "^1.0.1",
     "@nestjs/microservices": "^8.2.4",
     "@nestjs/mongoose": "^9.0.2",
-    "@nestjs/platform-express": "^8.2.4",
+    "@nestjs/platform-express": "^8.4.0",
     "@rittaschool/shared": "^0.0.28",
     "amqp-connection-manager": "^4.1.1",
     "amqplib": "^0.8.0",
