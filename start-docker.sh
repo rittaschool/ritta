@@ -11,18 +11,18 @@ createNetwork "ritta-rmq"
 createNetwork "ritta-databases"
 
 echo "Starting databases..."
-docker-compose -f ./docker/databases/docker-compose.yml up -d
+docker-compose -f ./docker/databases/docker-compose.yml up -d --build
 echo "Started databases"
 
 echo "Starting Grafana..."
-docker-compose -f ./docker/grafana/docker-compose.yml up -d
+docker-compose -f ./docker/grafana/docker-compose.yml up -d --build
 echo "Started Grafana"
 
 echo "Starting RabbitMQ..."
-docker-compose -f ./docker/rmq/docker-compose.yml up -d
+docker-compose -f ./docker/rmq/docker-compose.yml up -d --build
 echo "Started RabbitMQ"
 
 echo "Starting Ritta Services..."
-docker-compose -f ./docker/services/docker-compose.dev.yml up -d
+docker-compose -f ./docker/services/docker-compose.dev.yml up -d --build
 echo "Started Services"
 
