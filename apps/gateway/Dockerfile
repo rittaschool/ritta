@@ -1,11 +1,17 @@
-FROM node:16.13-alpine
+FROM node:17-alpine
 
-WORKDIR /home/app/
+WORKDIR /home/app
 
-COPY . .
+COPY .yarn/releases/ ./.yarn/releases/
+COPY package.json yarn.lock ./
 
 RUN yarn install
 
+COPY src/ .
+COPY tsconfig* ./
+
 RUN yarn build
+
+USER node
 
 CMD [ "yarn", "run", "start:prod" ]
