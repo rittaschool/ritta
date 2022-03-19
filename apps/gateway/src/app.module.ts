@@ -20,6 +20,8 @@ import { HealthController } from './health/health.controller';
 import { PermissionsGuard } from './permissions.guard.';
 import { MicroserviceHealthIndicator } from './health/rmq.health';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { Fido2Controller } from './fido2/fido2.controller';
+import { Fido2Module } from './fido2/fido2.module';
 
 @Module({
   imports: [
@@ -42,8 +44,9 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
     AuthModule,
     ChallengeModule,
     TerminusModule,
+    Fido2Module,
   ],
-  controllers: [AppController, AuthController, HealthController],
+  controllers: [AppController, AuthController, HealthController, Fido2Controller],
   providers: [
     AppService,
     {

@@ -77,10 +77,7 @@ export class UsersService {
   async getUser(id: string, throwError = true) {
     const user = await this.usersRepository.findOne(id);
 
-    console.log(user);
-
     if (user == null && throwError) {
-      console.log('here');
       throw new RpcException('User not found.');
     }
 

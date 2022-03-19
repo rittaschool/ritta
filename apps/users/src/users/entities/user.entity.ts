@@ -4,7 +4,7 @@ import { v4 } from 'uuid';
 import { LocationSchema } from './location.entity';
 import { MFASchema } from './mfa.entity';
 import { Oauth2Schema } from './oauth2.entity';
-import { YubikeySchema } from './yubikey.entity';
+import { FidoSchema } from './fido.entity';
 
 export type UserDocument = User & Document;
 
@@ -25,8 +25,8 @@ export const UserSchema = new Schema({
       secret: ``, // No need to generate here...
     },
   },
-  yubikey: {
-    type: YubikeySchema,
+  fido: {
+    type: FidoSchema,
     default: {
       enabled: false,
     },

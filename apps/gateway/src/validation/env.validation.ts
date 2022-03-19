@@ -42,6 +42,9 @@ class EnvironmentVariables {
 
   @IsString()
   JWT_SIGNING_SECRET: string;
+
+  @IsString()
+  FRONTEND_PUBLIC_URL: string;
 }
 
 export const validate = (config: Record<string, unknown>) => {

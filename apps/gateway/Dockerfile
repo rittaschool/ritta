@@ -12,6 +12,4 @@ COPY tsconfig* ./
 
 RUN yarn build
 
-USER node
-
 CMD [ "yarn", "run", "start:prod" ]

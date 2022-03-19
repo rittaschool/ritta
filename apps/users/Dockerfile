@@ -1,4 +1,4 @@
-FROM node:17-alpine
+FROM node:17
 
 WORKDIR /home/app
 
@@ -11,7 +11,5 @@ COPY src/ .
 COPY tsconfig* ./
 
 RUN yarn build
-
-USER node
 
 CMD [ "yarn", "run", "start:prod" ]
