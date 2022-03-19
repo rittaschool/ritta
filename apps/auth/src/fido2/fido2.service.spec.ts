@@ -6,7 +6,17 @@ describe('Fido2Service', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [Fido2Service],
+      providers: [
+        Fido2Service,
+        {
+          provide: 'FIDO2',
+          useValue: {},
+        },
+        {
+          provide: 'USERS_SERVICE',
+          useValue: {},
+        },
+      ],
     }).compile();
 
     service = module.get<Fido2Service>(Fido2Service);

@@ -7,6 +7,12 @@ describe('Fido2Controller', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [Fido2Controller],
+      providers: [
+        {
+          provide: 'FIDO2_SERVICE',
+          useValue: {},
+        },
+      ],
     }).compile();
 
     controller = module.get<Fido2Controller>(Fido2Controller);
