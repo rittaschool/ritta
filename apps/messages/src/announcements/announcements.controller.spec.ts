@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CoreController } from './core.controller';
+import { AnnouncementsController } from './announcements.controller';
 
 describe('UsersController', () => {
-  let controller: CoreController;
+  let controller: AnnouncementsController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [CoreController],
+      controllers: [AnnouncementsController],
       providers: [
         {
           provide: 'CORE_SERVICE',
@@ -15,7 +15,7 @@ describe('UsersController', () => {
       ],
     }).compile();
 
-    controller = module.get<CoreController>(CoreController);
+    controller = module.get<AnnouncementsController>(AnnouncementsController);
   });
 
   it('should be defined', () => {

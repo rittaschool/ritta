@@ -1,17 +1,18 @@
 import { Controller, Inject } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { CoreService } from './core.service';
+import { MessagesService } from './messages.service';
 import { IEventType } from '@rittaschool/shared';
 @Controller()
 export class CoreController {
   constructor(
-    @Inject('CORE_SERVICE') private readonly coreService: CoreService,
+    @Inject('MESSAGES_SERVICE')
+    private readonly messagesService: MessagesService,
   ) {}
 
   @MessagePattern('instance_info')
   async info() {
     return {
-      name: await this.coreService.getName(),
+      name: await this.messagesService.getName(),
       authMethods: ['password'], // TODO: get methods from auth module, when implemented
     };
   }

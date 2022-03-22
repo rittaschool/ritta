@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CoreController } from './core.controller';
+import { CoreController } from './messages.controller';
 
 describe('UsersController', () => {
   let controller: CoreController;
@@ -9,7 +9,7 @@ describe('UsersController', () => {
       controllers: [CoreController],
       providers: [
         {
-          provide: 'CORE_SERVICE',
+          provide: 'MESSAGES_SERVICE',
           useValue: {},
         },
       ],
