@@ -80,6 +80,20 @@ services:
     networks:
       - ritta
 
+  messages:
+    build: ./apps/messages
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=production
+      - RMQ_HOST=rabbitmq
+      - RMQ_PORT=5672
+      - RMQ_USERNAME=messages
+      - RMQ_PASSWORD=messages
+    networks:
+      - ritta
+
   users_db:
     image: mongo:latest
     environment:

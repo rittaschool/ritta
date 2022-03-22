@@ -96,3 +96,23 @@ services:
       - ../../apps/users:/home/app
       - ../../apps/users/dist:/home/app/dist
       - ../../apps/users/node_modules:/home/app/node_modules
+  messages:
+    build:
+      context: ../../apps/messages
+    command: yarn start:dev
+    environment:
+      - NODE_ENV=development
+      - RMQ_HOST=rmq0
+      - RMQ_PORT=5672
+      - RMQ_USERNAME=guest
+      - RMQ_PASSWORD=guest
+      - MONGO_URI=mongodb://ritta:password@users_db:27017/ritta?authSource=admin
+    networks:
+      - rabbitmq
+      - services
+      - databases
+    volumes:
+      - ../../logs/messages.log:/home/app/logs/all.log
+      - ../../apps/messages:/home/app
+      - ../../apps/messages/dist:/home/app/dist
+      - ../../apps/messages/node_modules:/home/app/node_modules

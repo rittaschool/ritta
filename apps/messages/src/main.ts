@@ -13,7 +13,7 @@ async function bootstrap() {
         urls: [
           `amqp://${process.env.RMQ_PASSWORD}:${process.env.RMQ_USERNAME}@${process.env.RMQ_HOST}:${process.env.RMQ_PORT}/`,
         ],
-        queue: 'core',
+        queue: 'messages',
         queueOptions: {
           durable: true,
         },
@@ -21,6 +21,9 @@ async function bootstrap() {
     },
   );
 
-  app.listen().then(() => console.log(`Core service is online`)).catch(console.error);
+  app
+    .listen()
+    .then(() => console.log(`Messages service is online`))
+    .catch(console.error);
 }
 bootstrap();
