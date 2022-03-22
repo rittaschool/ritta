@@ -9,7 +9,7 @@ describe('UsersController', () => {
       controllers: [AnnouncementsController],
       providers: [
         {
-          provide: 'CORE_SERVICE',
+          provide: 'ANNOUNCEMENTS_SERVICE',
           useValue: {},
         },
       ],

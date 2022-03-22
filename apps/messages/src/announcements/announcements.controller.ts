@@ -9,12 +9,29 @@ export class AnnouncementsController {
     private readonly announcementsService: AnnouncementsService,
   ) {}
 
-  @MessagePattern('instance_info')
-  async info() {
-    return {
-      name: await this.announcementsService.getName(),
-      authMethods: ['password'], // TODO: get methods from auth module, when implemented
-    };
+  @MessagePattern('get_announcements')
+  async getAnnouncements() {
+    return []; // TODO: implement
+  }
+
+  @MessagePattern('create_announcement')
+  async createAnnouncement() {
+    return { success: false }; // TODO: implement
+  }
+
+  @MessagePattern('edit_announcement')
+  async editAnnouncement() {
+    return { success: false }; // TODO: implement
+  }
+
+  @MessagePattern('archive_announcements')
+  async archiveAnnouncements() {
+    return { success: false }; // TODO: implement
+  }
+
+  @MessagePattern('delete_announcements')
+  async deleteAnnouncements() {
+    return { success: false }; // TODO: implement
   }
 
   @MessagePattern(IEventType.STATUS)
