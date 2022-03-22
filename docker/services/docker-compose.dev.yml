@@ -23,6 +23,7 @@ services:
       - RMQ_PASSWORD=guest
       - REDIS_URI=redis://gateway-db:6379
       - JWT_SIGNING_SECRET=RITTATESTSIGNINGKEY
+      - FRONTEND_PUBLIC_URL=https://code.midka.dev
     ports:
       - '3000:3000'
     networks:

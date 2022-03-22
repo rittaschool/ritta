@@ -15,7 +15,7 @@ import {
   generateChallenge,
   ChallengeData,
 } from '@rittaschool/shared';
-import { UserService } from './user.service';
+import { UserService } from '../common/user.service';
 import cryptor from './cryptor';
 import tokenizer from './tokenizer';
 import mfa from './mfa';

@@ -1,42 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { CommonModule } from '../common/common.module';
 import { AuthController } from './auth.controller';
-import { UserService } from './user.service';
-import { ClientProxyFactory, Transport } from '@nestjs/microservices';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthService } from './auth.service';
 
 @Module({
   controllers: [AuthController],
-  imports: [ConfigModule],
+  imports: [CommonModule],
   providers: [
-    {
-      provide: 'USERS_SERVICE',
-      useClass: UserService,
-    },
     {
       provide: 'AUTH_SERVICE',
       useClass: AuthService,
-    },
-    {
-      provide: 'EVENT_BUS',
-      useFactory: (configService: ConfigService) => {
-        const host = configService.get<string>('RMQ_HOST');
-        const port = configService.get<string>('RMQ_PORT');
-        const user = configService.get<string>('RMQ_USERNAME');
-        const pass = configService.get<string>('RMQ_PASSWORD');
-
-        const url = `amqp://${user}:${pass}@${host}:${port}`;
-
-        return ClientProxyFactory.create({
-          options: {
-            queue: 'users',
-            queueOptions: { durable: true },
-            urls: [url],
-          },
-          transport: Transport.RMQ,
-        });
-      },
-      inject: [ConfigService],
     },
   ],
 })

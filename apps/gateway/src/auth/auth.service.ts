@@ -124,6 +124,8 @@ export class AuthService {
       accessToken?: string;
     } = {};
 
+    console.log('res', res);
+
     if (res.user && res.tokens) {
       response.user = res.user;
       response.accessToken = res.tokens.accessToken;

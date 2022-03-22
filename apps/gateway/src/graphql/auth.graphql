@@ -1,6 +1,11 @@
 type Query {
   startLoginProcess(email: String!): StartLoginProcessResponse!
   submitChallenge(challenge: ChallengeInput!): SubmitChallengeResponse!
+  startFidoSetup(email: String!): StartFidoSetupResponse!
+}
+
+type Mutation {
+  respondToFidoSetup(data: Fido2ResponseInput!): Boolean!
 }
 
 type StartLoginProcessResponse {
@@ -45,4 +50,49 @@ input OtpDataInput {
 type SubmitChallengeResponse {
   user: User
   challenge: Challenge
+}
+
+type StartFidoSetupResponse {
+  rp: Fido2RP!
+  user: Fido2User!
+  challenge: String! # Base64
+  pubKeyCredParams: [Fido2PubKeyCredParam!]!
+  timeout: Int!
+  attestation: String!
+  authenticatorSelection: Fido2AuthenticatorSelection!
+}
+
+input Fido2ResponseInput {
+  publicKey: String!
+  rawId: String!
+  response: Fido2ClientResponse!
+  type: String!
+}
+
+input Fido2ClientResponse {
+  attestationObject: String!
+  clientDataJSON: String!
+}
+
+type Fido2RP {
+  name: String!
+  id: String!
+  icon: String!
+}
+
+type Fido2User {
+  id: String!
+  name: String!
+  displayName: String!
+}
+
+type Fido2PubKeyCredParam {
+  alg: Int!
+  type: String!
+}
+
+type Fido2AuthenticatorSelection {
+  authenticatorAttachment: String!
+  requireResidentKey: Boolean!
+  userVerification: String!
 }

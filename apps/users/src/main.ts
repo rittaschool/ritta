@@ -1,12 +1,11 @@
-import { config } from 'dotenv';
-config();
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { AppModule } from './app.module';
+import { config } from 'dotenv';
 import { WinstonModule } from 'nest-winston';
-import { consoleFormat } from './logger.format';
 import { transports } from 'winston';
-import { Logger } from '@nestjs/common';
+import { AppModule } from './app.module';
+import { consoleFormat } from './logger.format';
+config();
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(

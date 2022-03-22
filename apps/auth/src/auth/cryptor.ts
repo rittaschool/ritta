@@ -1,11 +1,14 @@
-import crypto from 'crypto';
+import argon2 from 'argon2';
 
-const hashPassword = (password: string) => {
-  return crypto.createHash('sha512').update(password).digest('hex');
+const hashPassword = async (password: string): Promise<string> => {
+  return await argon2.hash(password, { saltLength: 16 });
 };
 
-const verifyPassword = async (password: string, hash: string) => {
-  return hashPassword(password) === hash;
+const verifyPassword = async (
+  password: string,
+  hash: string,
+): Promise<boolean> => {
+  return await argon2.verify(hash, password);
 };
 
 export default {
