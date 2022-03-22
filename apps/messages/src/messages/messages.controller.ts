@@ -9,9 +9,8 @@ export class CoreController {
     private readonly messagesService: MessagesService,
   ) {}
 
-
   @MessagePattern('get_threads')
-  async createNewThread() {
+  async getThreads() {
     return [];
   }
 
