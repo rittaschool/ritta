@@ -7,6 +7,8 @@ networks:
 
 volumes:
   users-db: null
+  messages-db: null
+
 services:
   users_db:
     image: mongo:latest
@@ -18,6 +20,23 @@ services:
       - users-db:/data/db
     ports:
       - "27018:27017"
+    networks:
+      - databases
+    healthcheck:
+      test: mongosh --quiet --eval "db.runCommand('ping').ok"
+      interval: 5s
+      timeout: 10s
+      retries: 12
+  messages_db:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_DATABASE=ritta
+      - MONGO_INITDB_ROOT_USERNAME=ritta
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - messages-db:/data/db
+    ports:
+      - "27019:27017"
     networks:
       - databases
     healthcheck:
