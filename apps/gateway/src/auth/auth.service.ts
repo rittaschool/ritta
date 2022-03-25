@@ -45,7 +45,7 @@ export class AuthService {
 
     let challenge: Challenge;
 
-    if (user.yubikey.enabled) {
+    if (user.fido.enabled) {
       challenge = generateChallenge(IChallengeType.FIDO2_NEEDED, user.id);
     } else {
       challenge = generateChallenge(IChallengeType.PASSWORD_NEEDED, user.id);

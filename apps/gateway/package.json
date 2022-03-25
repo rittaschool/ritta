@@ -29,7 +29,7 @@
     "@nestjs/platform-fastify": "latest",
     "@nestjs/swagger": "latest",
     "@nestjs/terminus": "latest",
-    "@rittaschool/shared": "^0.0.28",
+    "@rittaschool/shared": "^0.0.29",
     "amqp-connection-manager": "^4.1.1",
     "amqplib": "^0.8.0",
     "apollo-server-fastify": "^3.6.3",
