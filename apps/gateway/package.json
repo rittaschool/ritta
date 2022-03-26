@@ -20,10 +20,10 @@
   },
   "dependencies": {
     "@nestjs/apollo": "^10.0.6",
-    "@nestjs/graphql": "latest",
-    "@nestjs/platform-fastify": "latest",
-    "@nestjs/swagger": "latest",
-    "@nestjs/terminus": "latest",
+    "@nestjs/graphql": "^10.0.8",
+    "@nestjs/platform-fastify": "^8.4.3",
+    "@nestjs/swagger": "^5.2.1",
+    "@nestjs/terminus": "^8.0.6",
     "apollo-server-fastify": "^3.6.3",
     "fastify": "^3.27.2",
     "fastify-cookie": "^5.6.0",
@@ -36,7 +36,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.4",
-    "webpack": "^5.70.0"
+    "tslib": "^2.3.1"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.8"

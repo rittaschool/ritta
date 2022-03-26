@@ -12,7 +12,10 @@ networks:
 services:
   gateway:
     build:
-      context: ../../apps/gateway
+      context: ../../
+      dockerfile: Dockerfile
+      args:
+        - BUILD_CONTEXT=gateway
     command: yarn start:dev
     environment:
       - NODE_ENV=development
@@ -38,7 +41,10 @@ services:
 
   core:
     build:
-      context: ../../apps/core
+      context: ../../
+      dockerfile: Dockerfile
+      args:
+        - BUILD_CONTEXT=core
     command: yarn start:dev
     environment:
       - NODE_ENV=development
@@ -58,7 +64,10 @@ services:
 
   auth:
     build:
-      context: ../../apps/auth
+      context: ../../
+      dockerfile: Dockerfile
+      args:
+        - BUILD_CONTEXT=auth
     command: yarn start:dev
     environment:
       - NODE_ENV=development
@@ -78,7 +87,10 @@ services:
 
   users:
     build:
-      context: ../../apps/users
+      context: ../../
+      dockerfile: Dockerfile
+      args:
+        - BUILD_CONTEXT=users
     command: yarn start:dev
     environment:
       - NODE_ENV=development
@@ -98,7 +110,10 @@ services:
       - ../../apps/users/node_modules:/home/app/node_modules
   messages:
     build:
-      context: ../../apps/messages
+      context: ../../
+      dockerfile: Dockerfile
+      args:
+        - BUILD_CONTEXT=messages
     command: yarn start:dev
     environment:
       - NODE_ENV=development
@@ -106,7 +121,7 @@ services:
       - RMQ_PORT=5672
       - RMQ_USERNAME=guest
       - RMQ_PASSWORD=guest
-      - MONGO_URI=mongodb://ritta:password@users_db:27017/ritta?authSource=admin
+      - MONGO_URI=mongodb://ritta:password@messages_db:27017/ritta?authSource=admin
     networks:
       - rabbitmq
       - services
