@@ -1,6 +1,6 @@
 #!/bin/bash
 function removeNetwork () {
-    docker network remove $1;
+    docker network remove $1 >> /dev/null;
     echo "Removed network $1" 
 }
 

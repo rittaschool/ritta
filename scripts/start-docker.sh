@@ -1,7 +1,7 @@
 #!/bin/bash
 function createNetwork () {
     if [ -z $(docker network ls --filter name=^$1$ --format="{{ .Name }}") ] ; then 
-        docker network create $1 ;
+        docker network create $1 >> /dev/null;
         echo "Created network $1" 
     fi
 }
@@ -11,9 +11,13 @@ for i in "grafana" "rmq" "databases"; do
     createNetwork "ritta-$i"
 done
 
-for i in "services" "rmq" "grafana" "databases"; do
+for i in "rmq" "grafana" "databases" "services" ; do
   echo "Starting $i..."
-  docker-compose -f ./docker/$i/docker-compose.yml up
-  echo "Started $i"
-done
 
+  if [ "$i" = "services" ]; then
+    docker-compose -f ./docker/$i/docker-compose.yml up 
+  else
+    docker-compose -f ./docker/$i/docker-compose.yml up -d &
+    echo "Started $i"
+  fi
+done
