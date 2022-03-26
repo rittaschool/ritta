@@ -4,7 +4,7 @@
   "description": "",
   "author": "Roni Äikäs <roni@ritta.fi>",
   "private": true,
-  "license": "GPLv3",
+  "license": "GPL-3.0-or-later",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",

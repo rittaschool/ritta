@@ -46,7 +46,12 @@ import { Fido2Module } from './fido2/fido2.module';
     TerminusModule,
     Fido2Module,
   ],
-  controllers: [AppController, AuthController, HealthController, Fido2Controller],
+  controllers: [
+    AppController,
+    AuthController,
+    HealthController,
+    Fido2Controller,
+  ],
   providers: [
     AppService,
     {

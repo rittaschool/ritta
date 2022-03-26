@@ -13,6 +13,6 @@ RUN yarn install
 
 COPY ./apps/$BUILD_CONTEXT/src apps/$BUILD_CONTEXT/
 
-RUN yarn workspace ${BUILD_CONTEXT} build
+RUN yarn workspace $BUILD_CONTEXT build
 
-CMD [ "yarn", "workspace", "${BUILD_CONTEXT}", "run", "start:prod" ]
+CMD [ "yarn", "workspace", "$BUILD_CONTEXT", "run", "start:prod" ]

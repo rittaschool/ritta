@@ -1,6 +1,6 @@
 {
   "private": true,
-  "license": "GPLv3",
+  "license": "GPL-3.0-or-later",
   "workspaces": ["apps/*"],
   "dependencies": {
     "@nestjs/common": "^8.2.4",

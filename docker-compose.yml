@@ -23,6 +23,7 @@ services:
       dockerfile: Dockerfile
       args:
         - BUILD_CONTEXT=gateway
+    command: yarn workspace gateway run start:prod
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -33,6 +34,7 @@ services:
       - RMQ_PORT=5672
       - RMQ_USERNAME=guest
       - RMQ_PASSWORD=guest
+      - BUILD_CONTEXT=gateway
     ports:
       - '3000:3000'
     networks:
@@ -53,6 +55,7 @@ services:
       - RMQ_PORT=5672
       - RMQ_USERNAME=core
       - RMQ_PASSWORD=core
+      - BUILD_CONTEXT=core
     networks:
       - ritta
 
@@ -62,6 +65,7 @@ services:
       dockerfile: Dockerfile
       args:
         - BUILD_CONTEXT=auth
+    command: yarn workspace auth run start:prod
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -72,6 +76,7 @@ services:
       - RMQ_USERNAME=auth
       - RMQ_PASSWORD=auth
       - SIGNING_KEY=RITTATESTSIGNINGKEY
+      - BUILD_CONTEXT=auth
     networks:
       - ritta
 
@@ -81,6 +86,7 @@ services:
       dockerfile: Dockerfile
       args:
         - BUILD_CONTEXT=users
+    command: yarn workspace users run start:prod
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -93,6 +99,7 @@ services:
       - RMQ_USERNAME=users
       - RMQ_PASSWORD=users
       - MONGO_URI=mongodb://ritta:password@users_db:27017/ritta?authSource=admin
+      - BUILD_CONTEXT=users
     networks:
       - ritta
 
@@ -102,8 +109,11 @@ services:
       dockerfile: Dockerfile
       args:
         - BUILD_CONTEXT=messages
+    command: yarn workspace messages run start:prod
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      messages_db:
         condition: service_healthy
     environment:
       - NODE_ENV=production
@@ -112,6 +122,7 @@ services:
       - RMQ_USERNAME=messages
       - RMQ_PASSWORD=messages
       - MONGO_URI=mongodb://ritta:password@messages_db:27019/ritta?authSource=admin
+      - BUILD_CONTEXT=messages
     networks:
       - ritta
 
