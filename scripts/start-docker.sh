@@ -11,7 +11,7 @@ for i in "grafana" "rmq" "databases"; do
     createNetwork "ritta-$i"
 done
 
-for i in "rmq" "grafana" "databases" "services" ; do
+for i in "rmq" "grafana" "databases" "services"; do
   echo "Starting $i..."
 
   if [ "$i" = "services" ]; then
