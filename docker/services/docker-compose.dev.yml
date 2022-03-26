@@ -16,7 +16,7 @@ services:
       dockerfile: Dockerfile
       args:
         - BUILD_CONTEXT=gateway
-    command: yarn start:dev
+    command: /home/app/node_modules/.bin/nest start --watch
     environment:
       - NODE_ENV=development
       - PORT=3000
@@ -34,10 +34,12 @@ services:
       - services
       - databases
     volumes:
-      - ../../logs/gateway.log:/home/app/logs/all.log
-      - ../../apps/gateway:/home/app
-      - ../../apps/gateway/dist:/home/app/dist
-      - ../../apps/gateway/node_modules:/home/app/node_modules
+      - ../../:/home/app
+      - ../../node_modules:/home/app/node_modules
+      - ../../logs/gateway.log:/home/app/apps/gateway/logs/all.log
+      - ../../apps/gateway:/home/apps/gateway/app
+      - ../../apps/gateway/dist:/home/app/apps/gateway/dist
+      - ../../apps/gateway/node_modules:/home/app/apps/gateway/node_modules
 
   core:
     build:
@@ -45,7 +47,7 @@ services:
       dockerfile: Dockerfile
       args:
         - BUILD_CONTEXT=core
-    command: yarn start:dev
+    command: /home/app/node_modules/.bin/nest start --watch
     environment:
       - NODE_ENV=development
       - RMQ_HOST=rmq0
@@ -58,9 +60,11 @@ services:
       - rabbitmq
       - services
     volumes:
-      - ../../apps/core:/home/app
-      - ../../apps/core/dist:/home/app/dist
-      - ../../apps/core/node_modules:/home/app/node_modules
+      - ../../:/home/app
+      - ../../node_modules:/home/app/node_modules
+      - ../../apps/core:/home/app/apps/core
+      - ../../apps/core/dist:/home/app/apps/core/dist
+      - ../../apps/core/node_modules:/home/app/apps/core/node_modules
 
   auth:
     build:
@@ -68,7 +72,7 @@ services:
       dockerfile: Dockerfile
       args:
         - BUILD_CONTEXT=auth
-    command: yarn start:dev
+    command: /home/app/node_modules/.bin/nest start --watch
     environment:
       - NODE_ENV=development
       - RMQ_HOST=rmq0
@@ -80,10 +84,12 @@ services:
       - rabbitmq
       - services
     volumes:
-      - ../../logs/auth.log:/home/app/logs/all.log
-      - ../../apps/auth:/home/app
-      - ../../apps/auth/dist:/home/app/dist
-      - ../../apps/auth/node_modules:/home/app/node_modules
+      - ../../:/home/app
+      - ../../node_modules:/home/app/node_modules
+      - ../../logs/auth.log:/home/app/apps/auth/logs/all.log
+      - ../../apps/auth:/home/apps/auth/app
+      - ../../apps/auth/dist:/home/app/apps/auth/dist
+      - ../../apps/auth/node_modules:/home/app/apps/auth/node_modules
 
   users:
     build:
@@ -91,7 +97,7 @@ services:
       dockerfile: Dockerfile
       args:
         - BUILD_CONTEXT=users
-    command: yarn start:dev
+    command: /home/app/node_modules/.bin/nest start --watch
     environment:
       - NODE_ENV=development
       - RMQ_HOST=rmq0
@@ -104,17 +110,19 @@ services:
       - services
       - databases
     volumes:
-      - ../../logs/users.log:/home/app/logs/all.log
-      - ../../apps/users:/home/app
-      - ../../apps/users/dist:/home/app/dist
-      - ../../apps/users/node_modules:/home/app/node_modules
+      - ../../:/home/app
+      - ../../node_modules:/home/app/node_modules
+      - ../../logs/users.log:/home/app/apps/users/logs/all.log
+      - ../../apps/users:/home/app/apps/users
+      - ../../apps/users/dist:/home/app/apps/users/dist
+      - ../../apps/users/node_modules:/home/app/apps/users/node_modules
   messages:
     build:
       context: ../../
       dockerfile: Dockerfile
       args:
         - BUILD_CONTEXT=messages
-    command: yarn start:dev
+    command: /home/app/node_modules/.bin/nest start --watch
     environment:
       - NODE_ENV=development
       - RMQ_HOST=rmq0
@@ -127,7 +135,9 @@ services:
       - services
       - databases
     volumes:
-      - ../../logs/messages.log:/home/app/logs/all.log
-      - ../../apps/messages:/home/app
-      - ../../apps/messages/dist:/home/app/dist
-      - ../../apps/messages/node_modules:/home/app/node_modules
+      - ../../:/home/app
+      - ../../node_modules:/home/app/node_modules
+      - ../../logs/messages.log:/home/app/apps/messages/logs/all.log
+      - ../../apps/messages:/home/app/apps/messages
+      - ../../apps/messages/dist:/home/app/apps/messages/dist
+      - ../../apps/messages/node_modules:/home/app/apps/messages/node_modules

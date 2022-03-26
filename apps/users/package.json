@@ -23,8 +23,8 @@
   "dependencies": {
     "@nestjs/mongoose": "^9.0.3",
     "argon2": "^0.28.5",
-    "otplib": "^12.0.1",
-    "mongoose": "^6.2.8"
+    "mongoose": "^6.2.8",
+    "otplib": "^12.0.1"
   },
   "jest": {
     "moduleFileExtensions": [
