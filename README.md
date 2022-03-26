@@ -54,4 +54,4 @@ See [`CONTRIBUTING.md`](https://github.com/rittaschool/ritta-server/blob/master/
 
 ## Contact us
 
-Contact us at [roni@ritta.fi](mailto:roni@ritta.fi) or alternatively on our Discord server (Link in the at the top)!
+Contact us at [tuki@ritta.fi](mailto:tuki@ritta.fi) or alternatively on our Discord server (Link in the at the top)!
