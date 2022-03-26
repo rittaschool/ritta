@@ -8,11 +8,15 @@ COPY yarn.lock .
 
 COPY ./apps/$BUILD_CONTEXT/package.json apps/$BUILD_CONTEXT/
 COPY ./apps/$BUILD_CONTEXT/tsconfig* apps/$BUILD_CONTEXT/
+COPY ./apps/$BUILD_CONTEXT/src apps/$BUILD_CONTEXT/src
+
+RUN ls /home/app/apps/$BUILD_CONTEXT
+
+WORKDIR /home/app/apps/$BUILD_CONTEXT
 
 RUN yarn install
+RUN yarn build
 
-COPY ./apps/$BUILD_CONTEXT/src apps/$BUILD_CONTEXT/
+RUN ls /home/app/apps/$BUILD_CONTEXT
 
-RUN yarn workspace $BUILD_CONTEXT build
-
-CMD [ "yarn", "workspace", "$BUILD_CONTEXT", "run", "start:prod" ]
+CMD [ "yarn", "run", "start:prod" ]

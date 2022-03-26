@@ -1,7 +1,9 @@
 {
   "private": true,
   "license": "GPL-3.0-or-later",
-  "workspaces": ["apps/*"],
+  "workspaces": [
+    "apps/*"
+  ],
   "dependencies": {
     "@nestjs/common": "^8.2.4",
     "@nestjs/config": "^1.1.6",
@@ -16,12 +18,12 @@
     "dotenv": "^16.0.0",
     "joi": "^17.6.0",
     "nest-winston": "^1.6.2",
-    "winston": "^3.6.0",
-    "rimraf": "^3.0.2",
-    "uuid": "^8.3.2",
-    "rxjs": "^7.5.4",
     "reflect-metadata": "^0.1.13",
-    "webpack": "^5.70.0"
+    "rimraf": "^3.0.2",
+    "rxjs": "^7.5.4",
+    "uuid": "^8.3.2",
+    "webpack": "^5.70.0",
+    "winston": "^3.6.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.2.0",

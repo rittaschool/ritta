@@ -1,0 +1,12 @@
+scripts
+node_modules
+logs
+docker
+dist
+.yarn
+.husky
+.github
+LICENSE
+prometheus.yml
+*.md
+.git
