@@ -18,7 +18,12 @@ services:
       retries: 12
 
   gateway:
-    build: ./apps/gateway
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BUILD_CONTEXT=gateway
+    command: yarn workspace gateway run start:prod
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -29,13 +34,18 @@ services:
       - RMQ_PORT=5672
       - RMQ_USERNAME=guest
       - RMQ_PASSWORD=guest
+      - BUILD_CONTEXT=gateway
     ports:
       - '3000:3000'
     networks:
       - ritta
 
   core:
-    build: ./apps/core
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BUILD_CONTEXT=core
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -45,11 +55,17 @@ services:
       - RMQ_PORT=5672
       - RMQ_USERNAME=core
       - RMQ_PASSWORD=core
+      - BUILD_CONTEXT=core
     networks:
       - ritta
 
   auth:
-    build: ./apps/auth
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BUILD_CONTEXT=auth
+    command: yarn workspace auth run start:prod
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -60,11 +76,17 @@ services:
       - RMQ_USERNAME=auth
       - RMQ_PASSWORD=auth
       - SIGNING_KEY=RITTATESTSIGNINGKEY
+      - BUILD_CONTEXT=auth
     networks:
       - ritta
 
   users:
-    build: ./apps/users
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BUILD_CONTEXT=users
+    command: yarn workspace users run start:prod
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -77,13 +99,21 @@ services:
       - RMQ_USERNAME=users
       - RMQ_PASSWORD=users
       - MONGO_URI=mongodb://ritta:password@users_db:27017/ritta?authSource=admin
+      - BUILD_CONTEXT=users
     networks:
       - ritta
 
   messages:
-    build: ./apps/messages
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BUILD_CONTEXT=messages
+    command: yarn workspace messages run start:prod
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      messages_db:
         condition: service_healthy
     environment:
       - NODE_ENV=production
@@ -91,6 +121,8 @@ services:
       - RMQ_PORT=5672
       - RMQ_USERNAME=messages
       - RMQ_PASSWORD=messages
+      - MONGO_URI=mongodb://ritta:password@messages_db:27019/ritta?authSource=admin
+      - BUILD_CONTEXT=messages
     networks:
       - ritta
 
@@ -111,6 +143,25 @@ services:
       interval: 5s
       timeout: 10s
       retries: 12
+
+  messages_db:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_DATABASE=ritta
+      - MONGO_INITDB_ROOT_USERNAME=ritta
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - ~/.docker-vols/ritta/messages_db:/data/db
+    networks:
+      - ritta
+    ports:
+      - "127.0.0.1:27019:27017"
+    healthcheck:
+      test: mongosh --quiet --eval "db.runCommand('ping').ok"
+      interval: 5s
+      timeout: 10s
+      retries: 12
+
   loki:
     image: grafana/loki:2.4.0
     ports:
