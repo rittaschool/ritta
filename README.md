@@ -1,31 +1,33 @@
 # <img src="https://raw.githubusercontent.com/rittaschool/info/master/Ritta.png" height="100px" alt="ritta-server" />
 
-<a href="https://ritta.fi">Ritta</a> is a modern open source school management system to hold the connection between home and school strong.
-
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/)
 [![GitHub last commit](https://img.shields.io/github/last-commit/rittaschool/ritta-server.svg?color=orange&style=for-the-badge&logo=git)](https://github.com/rittaschool/ritta-server/commits/master)
 [![Discord Channel](https://img.shields.io/discord/718870928498360463.svg?color=blue&style=for-the-badge&logo=discord)](https://discord.gg/KwpZGyvX3Q)
 
-## How does it work?
+Hello, and thank you for showing interest in Ritta! 👋
+We here at Ritta are creating new platforms to support the future of education.
 
-We use the **Microservices** architecture to make Ritta very scalable and allow more flexibility, and technologies like [NestJS](https://nestjs.com) in order to make development faster.
+We think current solutions aren't good enough for today's needs.
+Current solutions available in Finland are old, difficult to use and not responsive. The education space changes every year, and new solutions are needed.
 
-Ritta is made of two core parts, backend (ritta-server, which is this repository.) and the frontend [ritta-next](https://github.com/rittaschool/ritta-next).
+That's why we are creating Ritta.
+Ritta is an open source student management system designed for making life easier.
+Our team currently consists of four talented young developers and/or designers.
+
+## How does Ritta work?
+
+We are trying to use modern technologies and following best practices.
+*(psst: from now on this will be pretty much technical stuff.)*
+
+We use Microservice architecture provided by the [NestJS](https://nestjs.com) framework, which allows Ritta to be horizontally scalable.
+For development and production we use Docker and docker-compose. For dependency management we use [Yarn](https://yarnpkg.com), especially Yarn Workspaces.
+For client application development we provide REST and GraphQL APIs.
+
+You also might be interested in our official frontend, [ritta-next](https://github.com/rittaschool/ritta-next).
 
 ## API Documentation
 
-The API documentation can be viewed by going to `https://<ritta-server url>/docs` or you could go to `https://api.demo.ritta.fi/docs`.
-
-## Requirements
-
-    - Docker
-    - docker-compose
-
-## Running the app
-
-For development, run `./start-docker.sh` to start with the development configuration. \
-You can stop the containers with `./stop-docker.sh`. \
-And if you want you can remove all of the networks and containers with `./remove-docker.sh`.
+The instance specific API documentation can be viewed by going to `https://<ritta-server url>/docs` or to `https://api.demo.ritta.fi/docs` (most addons enabled).
 
 ## Bugs and suggestions
 
@@ -33,28 +35,22 @@ Found something or got an idea you would like to share? \
 For minor bugs and suggestions use [issues](https://github.com/rittaschool/ritta-server/issues). \
 For security problems and bigger bugs, please follow procedures in [`SECURITY.md`](https://github.com/rittaschool/ritta-server/blob/master/SECURITY.md)
 
+## Running
+
+For running Ritta you must have NodeJS, Yarn, Docker and docker-compose installed.
+Easiest way to run Ritta then is to run `docker-compose up` in the root directory of the project.
+
+## Official Development environment
+
+The Ritta development environment is a docker-compose environment where your code is linked to the containers using volumes. \
+For development, run `./start-docker.sh` to start with the development configuration. \
+You can stop the containers with `./stop-docker.sh`. \
+And if you want you can remove all of the networks and containers with `./remove-docker.sh`.
+
 ## Contributing
 
 Contributions are always welcome!
 See [`CONTRIBUTING.md`](https://github.com/rittaschool/ritta-server/blob/master/CONTRIBUTING.md) for how to contribute.
-
-## Roadmap
-
-We are currently working on the [1.0 Release "Frostbite"](https://github.com/rittaschool/ritta-server/milestone/1).
-It's release date is currently on January 1. 2022 and it will contain the core features like accounts, schools and messaging.
-
-It is not functional for school usage yet, but will be a good starting point for [1.1 Release "Bitterheart"](https://github.com/rittaschool/ritta-server/milestone/2), which adds more functionality.
-
-## Why?
-
-We need efficient and easy to use software for the public that is easy to develop.
-
-Finland is the current primary market for Ritta, because in Finland there isn't an open source solution for school management.
-There have been some, but they have failed in some way.
-
-We here at Ritta are passionate what we do, we want to make open source software more used in the public sector.
-
-Ritta is open source because we want to hand the control to the schools and not to the big companies. With this model they can even create their own add-ons to, so it will suit their needs better. That's the beauty of open source software.
 
 ## Contact us
 
