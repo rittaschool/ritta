@@ -16,6 +16,8 @@ services:
       dockerfile: Dockerfile
       args:
         - BUILD_CONTEXT=gateway
+        - USER_ID=${USER_ID:-0}
+        - GROUP_ID=${GROUP_ID:-0}
     command: /home/app/node_modules/.bin/nest start --watch
     environment:
       - NODE_ENV=development
@@ -47,6 +49,8 @@ services:
       dockerfile: Dockerfile
       args:
         - BUILD_CONTEXT=core
+        - USER_ID=${USER_ID:-0}
+        - GROUP_ID=${GROUP_ID:-0}
     command: /home/app/node_modules/.bin/nest start --watch
     environment:
       - NODE_ENV=development
@@ -72,6 +76,8 @@ services:
       dockerfile: Dockerfile
       args:
         - BUILD_CONTEXT=auth
+        - USER_ID=${USER_ID:-0}
+        - GROUP_ID=${GROUP_ID:-0}
     command: /home/app/node_modules/.bin/nest start --watch
     environment:
       - NODE_ENV=development
@@ -97,6 +103,8 @@ services:
       dockerfile: Dockerfile
       args:
         - BUILD_CONTEXT=users
+        - USER_ID=${USER_ID:-0}
+        - GROUP_ID=${GROUP_ID:-0}
     command: /home/app/node_modules/.bin/nest start --watch
     environment:
       - NODE_ENV=development
@@ -122,6 +130,8 @@ services:
       dockerfile: Dockerfile
       args:
         - BUILD_CONTEXT=messages
+        - USER_ID=${USER_ID:-0}
+        - GROUP_ID=${GROUP_ID:-0}
     command: /home/app/node_modules/.bin/nest start --watch
     environment:
       - NODE_ENV=development
