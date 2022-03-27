@@ -14,8 +14,9 @@ done
 for i in "rmq" "grafana" "databases" "services"; do
   echo "Starting $i..."
 
+  # $1 is there because you might want to specify --build flag
   if [ "$i" = "services" ]; then
-    docker-compose -f ./docker/$i/docker-compose.yml up 
+    docker-compose -f ./docker/$i/docker-compose.yml up $1
   else
     docker-compose -f ./docker/$i/docker-compose.yml up -d &
     echo "Started $i"
