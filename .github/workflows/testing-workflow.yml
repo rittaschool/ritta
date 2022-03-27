@@ -24,8 +24,8 @@ jobs:
 
       - name: Lint, test and build (push)
         if: ${{ github.event_name == 'push' }}
-        run: yarn && yarn turbo run build --since=${{ steps.extract_parent_branch.outputs.parent_branch }}
+        run: yarn && yarn turbo run build
 
       - name: Lint, test and build (pull request)
         if: ${{ github.event_name == 'pull_request' }}
-        run: yarn && yarn turbo run build --since=origin/${{ github.base_ref }}
+        run: yarn && yarn turbo run build
