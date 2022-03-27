@@ -19,6 +19,13 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 17.x
-          cache: 'yarn'
-      - run: yarn install
-      - run: yarn test
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Lint, test and build (push)
+        if: ${{ github.event_name == 'push' }}
+        run: yarn && yarn turbo run build --since=${{ steps.extract_parent_branch.outputs.parent_branch }}
+
+      - name: Lint, test and build (pull request)
+        if: ${{ github.event_name == 'pull_request' }}
+        run: yarn && yarn turbo run build --since=origin/${{ github.base_ref }}
