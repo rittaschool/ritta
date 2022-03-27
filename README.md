@@ -43,9 +43,9 @@ Easiest way to run Ritta then is to run `docker-compose up` in the root director
 ## Official Development environment
 
 The Ritta development environment is a docker-compose environment where your code is linked to the containers using volumes. \
-For development, run `./start-docker.sh` to start with the development configuration. \
-You can stop the containers with `./stop-docker.sh`. \
-And if you want you can remove all of the networks and containers with `./remove-docker.sh`.
+For development, run `./scripts/start-docker.sh` to start with the development configuration. \
+You can stop the containers with `./scripts/stop-docker.sh`. \
+And if you want you can remove all of the networks and containers with `./scripts/remove-docker.sh`.
 
 ## Contributing
 
