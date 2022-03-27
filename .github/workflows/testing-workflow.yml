@@ -26,7 +26,8 @@ jobs:
         with:
           node-version: 17.x
           cache: 'yarn'
-          cache-dependency-path: 'yarn.lock'
       - run: yarn install
+        env: 
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
       - run: yarn build
       - run: yarn test
