@@ -21,6 +21,4 @@ jobs:
           node-version: 17.x
           cache: 'yarn'
       - run: yarn install
-        env:
-          CI: true
-      - run: yarn turbo run test
+      - run: yarn test

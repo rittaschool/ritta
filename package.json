@@ -2,6 +2,10 @@
   "name": "ritta",
   "private": true,
   "license": "GPL-3.0-or-later",
+  "scripts": {
+    "test": "turbo run test",
+    "build": "turbo run build"
+  },
   "workspaces": [
     "apps/*"
   ],
