@@ -13,20 +13,23 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # To use Remote Caching, uncomment the next lines and follow the steps below.
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+    #  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 17.x
         uses: actions/setup-node@v2
         with:
           node-version: 17.x
+          cache: yarn
 
       - name: Install dependencies
         run: yarn install
 
-      - name: Lint, test and build (push)
-        if: ${{ github.event_name == 'push' }}
-        run: yarn turbo run build
+      - name: build
+        run: yarn build
 
-      - name: Lint, test and build (pull request)
-        if: ${{ github.event_name == 'pull_request' }}
-        run: yarn turbo run build
+      - name: Test
+        run: yarn test
