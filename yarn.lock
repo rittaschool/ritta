@@ -989,7 +989,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/apollo@npm:^10.0.6":
+"@nestjs/apollo@npm:^10.0.8":
   version: 10.0.8
   resolution: "@nestjs/apollo@npm:10.0.8"
   dependencies:
@@ -1017,7 +1017,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/cli@npm:^8.2.0":
+"@nestjs/cli@npm:^8.2.4":
   version: 8.2.4
   resolution: "@nestjs/cli@npm:8.2.4"
   dependencies:
@@ -1049,7 +1049,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/common@npm:^8.2.4":
+"@nestjs/common@npm:^8.4.3":
   version: 8.4.3
   resolution: "@nestjs/common@npm:8.4.3"
   dependencies:
@@ -1074,23 +1074,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/config@npm:^1.1.6":
-  version: 1.2.1
-  resolution: "@nestjs/config@npm:1.2.1"
+"@nestjs/config@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@nestjs/config@npm:2.0.0"
   dependencies:
     dotenv: 16.0.0
-    dotenv-expand: 5.1.0
+    dotenv-expand: 8.0.2
     lodash: 4.17.21
     uuid: 8.3.2
   peerDependencies:
     "@nestjs/common": ^7.0.0 || ^8.0.0
     reflect-metadata: ^0.1.13
     rxjs: ^6.0.0 || ^7.2.0
-  checksum: 59684a609e34d3a709df784252b7390e5e6cd2f5695c2071b07c0ff596b92fe1065a0724d172b48bcf68f9ed7dbdf4053e2cccffa7053cf12ccce37c8abab240
+  checksum: f0aedec1b6a6fd44f686121c05d38b7ff32f3e70c5df1ded91fae788ee73e1371f6f1a6a9223c82f41c5e15a38ccf09aaf6650fc71714c0813452595fb5f3917
   languageName: node
   linkType: hard
 
-"@nestjs/core@npm:^8.2.4":
+"@nestjs/core@npm:^8.4.3":
   version: 8.4.3
   resolution: "@nestjs/core@npm:8.4.3"
   dependencies:
@@ -1170,7 +1170,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/microservices@npm:^8.2.4":
+"@nestjs/microservices@npm:^8.4.3":
   version: 8.4.3
   resolution: "@nestjs/microservices@npm:8.4.3"
   dependencies:
@@ -1245,7 +1245,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/schematics@npm:^8.0.3, @nestjs/schematics@npm:^8.0.5":
+"@nestjs/schematics@npm:^8.0.3, @nestjs/schematics@npm:^8.0.9":
   version: 8.0.9
   resolution: "@nestjs/schematics@npm:8.0.9"
   dependencies:
@@ -1296,7 +1296,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/testing@npm:^8.2.4":
+"@nestjs/testing@npm:^8.4.3":
   version: 8.4.3
   resolution: "@nestjs/testing@npm:8.4.3"
   dependencies:
@@ -2577,7 +2577,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apollo-server-fastify@npm:^3.6.3":
+"apollo-server-fastify@npm:^3.6.7":
   version: 3.6.7
   resolution: "apollo-server-fastify@npm:3.6.7"
   dependencies:
@@ -2757,7 +2757,7 @@ __metadata:
     "@types/jsonwebtoken": ^8.5.6
     argon2: ^0.28.5
     fido2-lib: ^2.8.1
-    joi: ^17.4.2
+    joi: ^17.6.0
     jsonwebtoken: ^8.5.1
     nest-winston: ^1.6.2
     otplib: ^12.0.1
@@ -3799,10 +3799,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv-expand@npm:5.1.0":
-  version: 5.1.0
-  resolution: "dotenv-expand@npm:5.1.0"
-  checksum: 8017675b7f254384915d55f9eb6388e577cf0a1231a28d54b0ca03b782be9501b0ac90ac57338636d395fa59051e6209e9b44b8ddf169ce6076dffb5dea227d3
+"dotenv-expand@npm:8.0.2":
+  version: 8.0.2
+  resolution: "dotenv-expand@npm:8.0.2"
+  checksum: 4b42b2602478bccf1bfde25c97ecc0fee4059e74df4f8fda7f076b2ef428315e00b301bda43eec3707bfa083837abb284d6fec91571f164449243001ed8eef81
   languageName: node
   linkType: hard
 
@@ -4471,20 +4471,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastify-swagger@npm:^4.17.0":
-  version: 4.17.1
-  resolution: "fastify-swagger@npm:4.17.1"
+"fastify-swagger@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "fastify-swagger@npm:5.1.0"
   dependencies:
     fastify-plugin: ^3.0.0
     fastify-static: ^4.0.0
     js-yaml: ^4.0.0
     json-schema-resolver: ^1.3.0
     openapi-types: ^10.0.0
-  checksum: 77e088bbf7d4d892d7f8d005f99e32ab1887bc1e968a79b94c0d88a7b7df3e15defcf30598e3141b4e9e9830ecc0c1e07415c14ff2d4ae7124ef05bb4985cb58
+  checksum: d9e1c4d4ebbb27da62ddf9c75975ec5913eeb12c60500eefa0697757e66c011406111332f21f34d68d5cac7981a016028821cf70928fc71a5b749a7dde338db0
   languageName: node
   linkType: hard
 
-"fastify@npm:3.27.4, fastify@npm:^3.27.2":
+"fastify@npm:3.27.4, fastify@npm:^3.27.4":
   version: 3.27.4
   resolution: "fastify@npm:3.27.4"
   dependencies:
@@ -4783,24 +4783,24 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "gateway@workspace:apps/gateway"
   dependencies:
-    "@nestjs/apollo": ^10.0.6
+    "@nestjs/apollo": ^10.0.8
     "@nestjs/graphql": ^10.0.8
     "@nestjs/platform-fastify": ^8.4.3
     "@nestjs/swagger": ^5.2.1
     "@nestjs/terminus": ^8.0.6
     "@types/jsonwebtoken": ^8.5.8
-    apollo-server-fastify: ^3.6.3
-    fastify: ^3.27.2
+    apollo-server-fastify: ^3.6.7
+    fastify: ^3.27.4
     fastify-cookie: ^5.6.0
-    fastify-swagger: ^4.17.0
+    fastify-swagger: ^5.1.0
     graphql: ^16.3.0
-    graphql-scalars: ^1.15.0
+    graphql-scalars: ^1.17.0
     jsonwebtoken: ^8.5.1
     nest-graphql-scalar-adapter: ^1.1.2
-    redis-om: ^0.2.0
+    redis-om: ^0.2.1
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
-    rxjs: ^7.5.4
+    rxjs: ^7.5.5
     tslib: ^2.3.1
   languageName: unknown
   linkType: soft
@@ -4969,7 +4969,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql-scalars@npm:^1.15.0":
+"graphql-scalars@npm:^1.17.0":
   version: 1.17.0
   resolution: "graphql-scalars@npm:1.17.0"
   dependencies:
@@ -6833,7 +6833,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongoose@npm:^6.0.12, mongoose@npm:^6.2.8":
+"mongoose@npm:^6.0.12, mongoose@npm:^6.2.9":
   version: 6.2.9
   resolution: "mongoose@npm:6.2.9"
   dependencies:
@@ -7690,7 +7690,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redis-om@npm:^0.2.0":
+"redis-om@npm:^0.2.1":
   version: 0.2.1
   resolution: "redis-om@npm:0.2.1"
   dependencies:
@@ -7874,14 +7874,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ritta@workspace:."
   dependencies:
-    "@nestjs/cli": ^8.2.0
-    "@nestjs/common": ^8.2.4
-    "@nestjs/config": ^1.1.6
-    "@nestjs/core": ^8.2.4
+    "@nestjs/cli": ^8.2.4
+    "@nestjs/common": ^8.4.3
+    "@nestjs/config": ^2.0.0
+    "@nestjs/core": ^8.4.3
     "@nestjs/mapped-types": ^1.0.1
-    "@nestjs/microservices": ^8.2.4
-    "@nestjs/schematics": ^8.0.5
-    "@nestjs/testing": ^8.2.4
+    "@nestjs/microservices": ^8.4.3
+    "@nestjs/schematics": ^8.0.9
+    "@nestjs/testing": ^8.4.3
     "@rittaschool/shared": ^0.0.29
     "@types/jest": ^27.0.1
     "@types/jsonwebtoken": ^8.5.6
@@ -7942,7 +7942,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:^7.2.0, rxjs@npm:^7.5.4":
+"rxjs@npm:^7.2.0, rxjs@npm:^7.5.4, rxjs@npm:^7.5.5":
   version: 7.5.5
   resolution: "rxjs@npm:7.5.5"
   dependencies:
@@ -9177,7 +9177,7 @@ typescript@^4.6.2:
   dependencies:
     "@nestjs/mongoose": ^9.0.3
     argon2: ^0.28.5
-    mongoose: ^6.2.8
+    mongoose: ^6.2.9
     otplib: ^12.0.1
   languageName: unknown
   linkType: soft
