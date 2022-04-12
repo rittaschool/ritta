@@ -14,13 +14,13 @@ FROM base AS dev-deps
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/yarn.lock ./yarn.lock
 RUN yarn install --immutable
+RUN yarn turbo run test --scope=${SCOPE}  
 
 FROM base AS prod-deps
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/yarn.lock ./yarn.lock
 COPY --from=dev-deps /app/${YARN_CACHE_FOLDER} /${YARN_CACHE_FOLDER} 
 RUN yarn install --immutable --production --prefer-offline --ignore-scripts
-RUN ls -la
 RUN rm -rf /app/${YARN_CACHE_FOLDER}
 
 FROM base AS builder
@@ -31,5 +31,4 @@ RUN find . -name node_modules | xargs rm -rf
 
 FROM prod-deps AS runner
 COPY --from=builder /app/ .
-RUN ls -la node_modules/@nestjs
 CMD yarn workspace ${SCOPE} run start
