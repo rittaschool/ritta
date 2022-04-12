@@ -28,10 +28,10 @@
     "rxjs": "^7.5.4",
     "uuid": "^8.3.2",
     "webpack": "^5.70.0",
-    "winston": "^3.6.0"
+    "winston": "^3.6.0",
+    "@nestjs/cli": "^8.2.4"
   },
   "devDependencies": {
-    "@nestjs/cli": "^8.2.4",
     "@nestjs/schematics": "^8.0.9",
     "@nestjs/testing": "^8.4.3",
     "@types/jest": "^27.0.1",
