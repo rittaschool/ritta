@@ -10,6 +10,7 @@
     "apps/*"
   ],
   "dependencies": {
+    "@nestjs/cli": "^8.2.4",
     "@nestjs/common": "^8.4.3",
     "@nestjs/config": "^2.0.0",
     "@nestjs/core": "^8.4.3",
@@ -28,8 +29,7 @@
     "rxjs": "^7.5.4",
     "uuid": "^8.3.2",
     "webpack": "^5.70.0",
-    "winston": "^3.6.0",
-    "@nestjs/cli": "^8.2.4"
+    "winston": "^3.6.0"
   },
   "devDependencies": {
     "@nestjs/schematics": "^8.0.9",

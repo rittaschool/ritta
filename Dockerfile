@@ -14,13 +14,12 @@ FROM base AS dev-deps
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/yarn.lock ./yarn.lock
 RUN yarn install --immutable
-RUN yarn turbo run test --scope=${SCOPE}  
 
 FROM base AS prod-deps
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/yarn.lock ./yarn.lock
 COPY --from=dev-deps /app/${YARN_CACHE_FOLDER} /${YARN_CACHE_FOLDER} 
-RUN yarn install --immutable --production --prefer-offline --ignore-scripts
+RUN yarn install --immutable --production --check-cache --ignore-scripts
 RUN rm -rf /app/${YARN_CACHE_FOLDER}
 
 FROM base AS builder
