@@ -1,13 +1,13 @@
 FROM node:lts-alpine AS base
 RUN apk update
-WORKDIR /
-RUN yarn version set stable
 WORKDIR /app
 ARG SCOPE
 ENV SCOPE=${SCOPE}
 ENV YARN_CACHE_FOLDER=.yarn-cache
 
 FROM base AS pruner
+RUN yarn set version stable
+
 RUN yarn global add turbo@1.1.10
 COPY . .
 RUN turbo prune --scope=${SCOPE} --docker
