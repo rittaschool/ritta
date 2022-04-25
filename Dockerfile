@@ -17,7 +17,7 @@ RUN yarn set version stable
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/yarn.lock ./yarn.lock
 COPY ./scripts/rebuild-hasher.sh ./rebuild-hasher.sh
-RUN yarn install --immutable
+RUN yarn install
 RUN ./rebuild-hasher.sh $1
 
 FROM base AS prod-deps
@@ -25,7 +25,7 @@ RUN yarn set version stable
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/yarn.lock ./yarn.lock
 COPY --from=dev-deps /app/${YARN_CACHE_FOLDER} /${YARN_CACHE_FOLDER} 
-RUN yarn install --immutable --production --check-cache --ignore-scripts
+RUN yarn install --production --check-cache --ignore-scripts
 RUN rm -rf /app/${YARN_CACHE_FOLDER}
 
 FROM base AS builder
