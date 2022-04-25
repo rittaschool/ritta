@@ -1,4 +1,5 @@
 scripts
+!scripts/rebuild-hasher.sh
 node_modules
 logs
 docker

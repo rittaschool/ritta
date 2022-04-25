@@ -13,7 +13,9 @@ RUN turbo prune --scope=${SCOPE} --docker
 FROM base AS dev-deps
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/yarn.lock ./yarn.lock
+COPY ./scripts/rebuild-hasher.sh ./rebuild-hasher.sh
 RUN yarn install --immutable
+RUN ./rebuild-hasher.sh $1
 
 FROM base AS prod-deps
 COPY --from=pruner /app/out/json/ .
