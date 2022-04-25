@@ -25,6 +25,12 @@ jobs:
           node-version: 17.x
           cache: yarn
 
+      - name: Setup corepack
+        run: corepack enable
+
+      - name: Setup yarn 3
+        run: yarn set version stable
+
       - name: Install dependencies
         run: yarn install
 
