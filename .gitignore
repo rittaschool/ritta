@@ -49,3 +49,10 @@ config/*.toml
 # code-workspace
 
 *.code-workspace
+
+# TURBOREPO
+.turbo
+
+# Docker stuff
+.env
+!.env.example
