@@ -8,7 +8,7 @@ ENV YARN_CACHE_FOLDER=.yarn-cache
 FROM base AS pruner
 RUN yarn set version stable
 
-RUN yarn global add turbo@1.1.10
+RUN npm install -g turbo@1.1.10
 COPY . .
 RUN turbo prune --scope=${SCOPE} --docker
 
