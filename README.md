@@ -3,6 +3,8 @@
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/)
 [![GitHub last commit](https://img.shields.io/github/last-commit/rittaschool/ritta-server.svg?color=orange&style=for-the-badge&logo=git)](https://github.com/rittaschool/ritta-server/commits/master)
 [![Discord Channel](https://img.shields.io/discord/718870928498360463.svg?color=blue&style=for-the-badge&logo=discord)](https://discord.gg/KwpZGyvX3Q)
+[![Tests](https://github.com/rittaschool/ritta-server/actions/workflows/testing-workflow.yml/badge.svg)](https://github.com/rittaschool/ritta-server/actions/workflows/testing-workflow.yml)
+[![Docker](https://github.com/rittaschool/ritta-server/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/rittaschool/ritta-server/actions/workflows/docker-publish.yml)
 
 Hello, and thank you for showing interest in Ritta! 👋
 We here at Ritta are creating new platforms to support the future of education.
@@ -17,7 +19,7 @@ Our team currently consists of four talented young developers and/or designers.
 ## How does Ritta work?
 
 We are trying to use modern technologies and following best practices.
-*(psst: from now on this will be pretty much technical stuff.)*
+_(psst: from now on this will be pretty much technical stuff.)_
 
 We use Microservice architecture provided by the [NestJS](https://nestjs.com) framework, which allows Ritta to be horizontally scalable.
 For development and production we use Docker and docker-compose. For dependency management we use [Yarn](https://yarnpkg.com), especially Yarn Workspaces.
