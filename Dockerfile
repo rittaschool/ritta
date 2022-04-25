@@ -25,7 +25,7 @@ RUN yarn set version stable
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/yarn.lock ./yarn.lock
 COPY --from=dev-deps /app/${YARN_CACHE_FOLDER} /${YARN_CACHE_FOLDER} 
-RUN yarn install --production --check-cache
+RUN yarn install
 RUN rm -rf /app/${YARN_CACHE_FOLDER}
 
 FROM base AS builder
