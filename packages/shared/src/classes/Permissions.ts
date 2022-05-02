@@ -1,5 +1,5 @@
 import { Permission } from "../enums";
-import { IErrorType, RittaError } from "../";
+import { IErrorType, RittaError } from "..";
 export namespace Permissions {
   export const permissions: Record<string, Permission> = {
     getAllUsers: Permission.GET_ALL_USERS,

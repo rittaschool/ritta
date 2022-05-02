@@ -1,4 +1,4 @@
-import { IErrorType } from "../";
+import { IErrorType } from "..";
 
 export class RittaError extends Error {
   name = "RittaException";

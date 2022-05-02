@@ -16,7 +16,7 @@ export { MFAOptions } from "./MFAOptions";
 export { Oauth2Identifiers } from "./Oauth2Identifiers";
 export { User } from "./User";
 export { FidoOptions } from "./FidoOptions";
-export * from "./dto/";
+export * from "./dto";
 
 export { RittaError } from "./RittaError";
 export { Permissions } from "./Permissions";
