@@ -1,8 +1,9 @@
 name: Publish package
 on:
   workflow_dispatch:
-  release:
-    types: [published]
+  push:
+    paths:
+      - 'packages/shared/package.json'
 jobs:
   build:
     runs-on: ubuntu-latest
