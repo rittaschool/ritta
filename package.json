@@ -7,6 +7,7 @@
     "build": "turbo run build"
   },
   "workspaces": [
+    "packages/*",
     "apps/*"
   ],
   "dependencies": {
@@ -16,7 +17,7 @@
     "@nestjs/core": "^8.4.3",
     "@nestjs/mapped-types": "^1.0.1",
     "@nestjs/microservices": "^8.4.3",
-    "@rittaschool/shared": "^0.0.29",
+    "@rittaschool/shared": "*",
     "amqp-connection-manager": "^4.1.1",
     "amqplib": "^0.8.0",
     "class-transformer": "^0.5.1",
