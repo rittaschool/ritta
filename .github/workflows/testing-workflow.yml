@@ -13,10 +13,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    # To use Remote Caching, uncomment the next lines and follow the steps below.
-    # env:
-    #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-    #  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 17.x
