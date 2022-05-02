@@ -27,7 +27,8 @@
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "nest-winston": "^1.6.2",
-    "otplib": "^12.0.1"
+    "otplib": "^12.0.1",
+    "@rittaschool/shared": "*"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.6"
