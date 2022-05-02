@@ -1,0 +1,33 @@
+{
+  "name": "@rittaschool/shared",
+  "version": "0.0.30",
+  "main": "./lib/index.cjs.js",
+  "module": "./lib/index.esm.js",
+  "types": "./lib/index.d.ts",
+  "description": "Shared library for rittaschool software.",
+  "repository": "https://github.com/rittaschool/shared.git",
+  "author": "Midka <me@midka.dev>",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c",
+    "test": "jest"
+  },
+  "packageManager": "yarn@3.0.2",
+  "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.6",
+    "jest": "^27.4.5",
+    "rollup": "^2.58.0",
+    "rollup-plugin-typescript2": "^0.30.0",
+    "ts-jest": "^27.1.2",
+    "typescript": "^4.4.4"
+  },
+  "files": [
+    "lib",
+    "package.json"
+  ],
+  "dependencies": {
+    "joi": "^17.4.2",
+    "mongoose": "^6.0.12"
+  }
+}
