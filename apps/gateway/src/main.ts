@@ -1,5 +1,5 @@
 import { VersioningType } from '@nestjs/common';
-import fastifyCookie from 'fastify-cookie';
+import fastifyCookie from '@fastify/cookie';
 import { NestFactory } from '@nestjs/core';
 import { ClientProxy } from '@nestjs/microservices';
 import {
