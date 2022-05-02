@@ -39,7 +39,7 @@ For security problems and bigger bugs, please follow procedures in [`SECURITY.md
 
 ## Running
 
-For running Ritta you must have NodeJS, Yarn, Docker and docker-compose installed.
+For running Ritta you must have NodeJS **16**, Yarn, Docker and docker-compose installed.
 Easiest way to run Ritta then is to run `docker-compose up` in the root directory of the project.
 
 ## Official Development environment
