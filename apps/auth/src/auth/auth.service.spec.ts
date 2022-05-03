@@ -1,14 +1,28 @@
 import { Test, TestingModule } from '@nestjs/testing';
-// import { IErrorType, ILoginResponse, RittaError } from '@rittaschool/shared';
+import {
+  generateChallenge,
+  IChallengeType,
+  IErrorType,
+  RittaError,
+} from '@rittaschool/shared';
 import { AuthService } from './auth.service';
-// import cryptor from './cryptor';
-// import mfa from './mfa';
-// import tokenizer from './tokenizer';
+import cryptor from './cryptor';
+import tokenizer from './tokenizer';
+
+jest.mock('@rittaschool/shared', () => ({
+  ...(jest.requireActual('@rittaschool/shared') as any), // required for errors to work
+  generateChallenge: jest.fn(),
+}));
 
 describe('AuthService', () => {
   let service: AuthService;
 
+  // Mocks
+  let findOneUser: jest.Mock;
+
   beforeEach(async () => {
+    findOneUser = jest.fn();
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
@@ -17,8 +31,10 @@ describe('AuthService', () => {
         },
         {
           provide: 'USERS_SERVICE',
-          useValue: {}
-        }
+          useValue: {
+            findOne: findOneUser,
+          },
+        },
       ],
     }).compile();
 
@@ -30,178 +46,89 @@ describe('AuthService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  describe('loginWithPassword', () => {
+    it('should throw an error if user not found', () => {
+      findOneUser.mockResolvedValue(undefined);
+
+      expect(
+        service.loginWithPassword('12345678', 'testihenkilö@ritta.app'),
+      ).rejects.toThrowError(
+        new RittaError('User not found!', IErrorType.USER_NOT_FOUND),
+      );
+    });
+
+    it('should throw error if password is incorrect', () => {
+      findOneUser.mockResolvedValue({ email: 'testihenkilö@ritta.app' });
+
+      jest
+        .spyOn(cryptor, 'verifyPassword')
+        .mockImplementation(async () => false);
+
+      expect(
+        service.loginWithPassword('12345678', 'testihenkilö@ritta.app'),
+      ).rejects.toThrowError(
+        new RittaError('Invalid credentials', IErrorType.INVALID_CREDENTIALS),
+      );
+    });
+
+    it('should generate a new otp challenge if mfa is enabled', () => {
+      findOneUser.mockResolvedValue({
+        email: 'testihenkilö@ritta.app',
+        mfa: {
+          enabled: true,
+        },
+      });
+
+      jest
+        .spyOn(cryptor, 'verifyPassword')
+        .mockImplementation(async () => true);
+
+      const challenge = {
+        type: IChallengeType.OTP_NEEDED,
+        userId: 'testihenkilö@ritta.app',
+        id: 'challenge-some-id',
+        data: { otpData: { otp: '' } },
+      };
+
+      (generateChallenge as jest.Mock).mockReturnValue(challenge);
+
+      expect(
+        service.loginWithPassword('12345678', 'testihenkilö@ritta.app'),
+      ).resolves.toEqual({
+        challenge,
+      });
+    });
+
+    it('should generate a new token if mfa is disabled', () => {
+      const user = {
+        email: 'testihenkilö@ritta.app',
+        mfa: {
+          enabled: false,
+        },
+      };
+
+      findOneUser.mockResolvedValue(user);
+
+      jest
+        .spyOn(cryptor, 'verifyPassword')
+        .mockImplementation(async () => true);
+      jest
+        .spyOn(tokenizer, 'signToken')
+        .mockImplementationOnce(async () => 'refresh-token')
+        .mockImplementationOnce(async () => 'access-token');
+
+      expect(
+        service.loginWithPassword('12345678', 'testihenkilö@ritta.app'),
+      ).resolves.toEqual({
+        user,
+        tokens: {
+          // snyk warning
+          // file deepcode ignore HardcodedNonCryptoSecret: <please specify a reason of ignoring this>
+          accessToken: 'access-token',
+          refreshToken: 'refresh-token',
+        },
+      });
+    });
+  });
 });
-
-// describe('AuthService', () => {
-//   let service: AuthService;
-
-//   beforeEach(async () => {
-//     const module: TestingModule = await Test.createTestingModule({
-//       providers: [
-//         {
-//           provide: 'AUTH_SERVICE',
-//           useClass: AuthService,
-//         },
-//         {
-//           provide: 'USERS_SERVICE',
-//           useValue: {
-//             findAll: jest.fn().mockReturnValue([
-//               {
-//                 id: 1,
-//                 username: 'tester',
-//                 password: 'hashed124',
-//                 mfa: {
-//                   enabled: false,
-//                 },
-//               },
-//               {
-//                 id: 2,
-//                 username: 'testerWithMfa',
-//                 password: 'hashed124withMfa',
-//                 mfa: {
-//                   enabled: true,
-//                   secret: 'secret',
-//                 },
-//               },
-//             ]),
-//             findOne: jest.fn().mockReturnValue({
-//               id: 2,
-//               username: 'testerWithMfa',
-//               password: 'hashed124withMfa',
-//               mfa: {
-//                 enabled: true,
-//                 secret: 'secret',
-//               },
-//             }),
-//           },
-//         },
-//       ],
-//     }).compile();
-
-//     service = module.get<AuthService>('AUTH_SERVICE');
-
-//     jest.clearAllMocks();
-//   });
-
-//   it('should be defined', () => {
-//     expect(service).toBeDefined();
-//   });
-
-//   describe('login', () => {
-//     describe('login', () => {
-//       it('should return a user', async () => {
-//         // Mock the cryptor
-//         jest
-//           .spyOn(cryptor, 'verifyPassword')
-//           .mockImplementation(async () => true);
-
-//         // Mock the token generator
-//         jest
-//           .spyOn(tokenizer, 'signToken')
-//           .mockImplementationOnce(async () => 'token')
-//           .mockImplementationOnce(async () => 'refresh_token');
-
-//         // Run the service code
-//         const result = await service.login({
-//           username: 'tester',
-//           password: '123456',
-//         });
-
-//         expect(result.type).toBe(ILoginResponse.LOGGED_IN);
-//         expect(result.token).toBe('token');
-//       });
-
-//       it('should throw invalid credentials error', async () => {
-//         // Mock the cryptor
-//         jest
-//           .spyOn(cryptor, 'verifyPassword')
-//           .mockImplementation(async () => false);
-
-//         // Run the service code
-//         try {
-//           await service.login({
-//             username: 'tester',
-//             password: '123456',
-//           });
-//         } catch (err) {
-//           expect(err.type).toBe(IErrorType.INVALID_CREDENTIALS);
-//         }
-//       });
-
-//       it('should ask user for mfa code', async () => {
-//         // Mock the cryptor
-//         jest
-//           .spyOn(cryptor, 'verifyPassword')
-//           .mockImplementation(async () => true);
-
-//         // Mock the token generator
-//         jest
-//           .spyOn(tokenizer, 'signToken')
-//           .mockImplementationOnce(async () => 'token');
-
-//         // Run the service code
-//         const result = await service.login({
-//           username: 'testerWithMfa',
-//           password: '123456',
-//         });
-
-//         expect(result.type).toBe(ILoginResponse.MFA_REQUIRED);
-//         expect(result.token).toBe('token');
-//       });
-//     });
-
-//     describe('loginMFA', () => {
-//       it('should throw invalid token', async () => {
-//         try {
-//           await service.loginMFA({
-//             mfaCode: '12345',
-//             mfaToken: 'mfa_token',
-//           });
-//         } catch (error) {
-//           expect(error.type).toBe(IErrorType.INVALID_TOKEN);
-//         }
-//       });
-
-//       it('should throw invalid mfa code', async () => {
-//         // Mock the tokenizer
-//         jest
-//           .spyOn(tokenizer, 'verifyToken')
-//           .mockImplementationOnce(async () => true);
-//         try {
-//           await service.loginMFA({
-//             mfaCode: '12345',
-//             mfaToken: 'mfa_token',
-//           });
-//         } catch (error) {
-//           expect(error).toStrictEqual(
-//             new RittaError('Invalid MFA code', IErrorType.INVALID_TOKEN), // TODO: change in shared@0.0.20 to INVALID_MFA_CODE
-//           );
-//           expect(error.type).toBe(IErrorType.INVALID_TOKEN); // TODO: change in shared@0.0.20 to INVALID_MFA_CODE
-//         }
-//       });
-
-//       it('should return a user', async () => {
-//         // Mock the tokenizer
-//         jest
-//           .spyOn(tokenizer, 'signToken')
-//           .mockImplementationOnce(async () => 'token')
-//           .mockImplementationOnce(async () => 'refresh_token');
-//         jest
-//           .spyOn(tokenizer, 'verifyToken')
-//           .mockImplementationOnce(async () => true);
-
-//         // Mock the mfa validator
-//         jest.spyOn(mfa, 'checkMfaCode').mockImplementationOnce(() => true);
-
-//         // Call the function
-//         const result = await service.loginMFA({
-//           mfaCode: '12345',
-//           mfaToken: 'mfa_token',
-//         });
-
-//         expect(result.type).toBe(ILoginResponse.LOGGED_IN);
-//         expect(result.token).toBe('token');
-//       });
-//     });
-//   });
-// });
