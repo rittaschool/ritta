@@ -1,75 +1,35 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import {
-  LoginUserDto,
-  LoginOAuthUserDto,
-  LoginMFAUserDto,
-  User,
-  ILoginResponse,
-  ISocialProvider,
-  RittaError,
-  IErrorType,
-  ITokenType,
-  IPasswordChallengeData,
-  IChallengeType,
-  IOtpChallengeData,
   generateChallenge,
-  ChallengeData,
+  IChallengeType,
+  IErrorType,
+  IOtpChallengeData,
+  ISocialProvider,
+  ITokenType,
+  LoginOAuthUserDto,
+  RittaError,
+  User,
 } from '@rittaschool/shared';
 import { UserService } from '../common/user.service';
 import cryptor from './cryptor';
-import tokenizer from './tokenizer';
 import mfa from './mfa';
-import { RpcException } from '@nestjs/microservices';
+import tokenizer from './tokenizer';
 
 @Injectable()
 export class AuthService {
   constructor(@Inject('USERS_SERVICE') private userService: UserService) {}
 
-  // async login(loginUserDto: LoginUserDto) {
-  //   // Find user by username or e-mail
-  //   const users = await this.userService.findAll();
-  //   const user = users.find(
-  //     (user) =>
-  //       user.email === loginUserDto.username ||
-  //       user.username === loginUserDto.username, // Username = E-mail or username :)
-  //   );
-
-  //   if (!user) {
-  //     throw new RittaError(
-  //       'Invalid credentials',
-  //       IErrorType.INVALID_CREDENTIALS,
-  //     );
-  //   }
-
-  //   const passwordValid = await cryptor.verifyPassword(
-  //     loginUserDto.password,
-  //     user.password,
-  //   );
-
-  //   if (!passwordValid) {
-  //     throw new RittaError(
-  //       'Invalid credentials',
-  //       IErrorType.INVALID_CREDENTIALS,
-  //     );
-  //   }
-
-  //   return await this.generateTokens(user);
-  // }
-
-  async loginWithPassword(data: ChallengeData, userId: string) {
+  async loginWithPassword(password: string, userId: string) {
     const user = await this.userService.findOne(userId);
 
     if (!user) {
       throw new RittaError('User not found!', IErrorType.USER_NOT_FOUND);
     }
 
-    const passwordValid = await cryptor.verifyPassword(
-      data.passwordData.password,
-      user.password,
-    );
+    const passwordValid = await cryptor.verifyPassword(password, user.password);
 
     if (!passwordValid) {
-      console.log('password not valid');
       throw new RittaError(
         'Invalid credentials',
         IErrorType.INVALID_CREDENTIALS,

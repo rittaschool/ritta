@@ -1,14 +1,14 @@
 import { Controller, Inject, UsePipes } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
+  Challenge,
   IEventType,
+  IOtpChallengeData,
   LoginOAuthUserDto,
   LoginOAuthValidationSchema,
-  Challenge,
-  IOtpChallengeData,
 } from '@rittaschool/shared';
-import { AuthService } from './auth.service';
 import { JoiValidationPipe } from '../validation/joi.pipe';
+import { AuthService } from './auth.service';
 
 @Controller()
 export class AuthController {
@@ -21,7 +21,10 @@ export class AuthController {
   async loginWithPassword(@Payload() challenge: Challenge) {
     const { data, userId } = challenge;
 
-    return await this.authService.loginWithPassword(data, userId);
+    return await this.authService.loginWithPassword(
+      data.passwordData.password,
+      userId,
+    );
   }
 
   // TODO: add validation schema
