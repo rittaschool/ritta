@@ -13,7 +13,7 @@ export interface IThread {
   id: string;
   name: string;
   sender: {
-    userId: string;
+    id: string;
     archived: boolean; // Has the sender archived the thread?
   };
   removed: boolean; // Is the thread removed (this can be done if nobody has replied to the thread).

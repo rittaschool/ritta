@@ -3,6 +3,7 @@ import { MessagesService } from './messages.service';
 import { MessagesController } from './messages.controller';
 import { ConfigModule } from '@nestjs/config';
 import { MessagesRepository } from './messages.repository';
+import { ThreadsRepository } from './threads.repository';
 
 @Module({
   controllers: [MessagesController],
@@ -15,6 +16,10 @@ import { MessagesRepository } from './messages.repository';
     {
       provide: 'MESSAGES_REPOSITORY',
       useClass: MessagesRepository,
+    },
+    {
+      provide: 'THREADS_REPOSITORY',
+      useClass: ThreadsRepository,
     },
   ],
 })

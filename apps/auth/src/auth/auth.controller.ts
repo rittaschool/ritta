@@ -2,16 +2,10 @@ import { Controller, Inject, UsePipes } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   IEventType,
-  LoginValidationSchema,
-  LoginUserDto,
   LoginOAuthUserDto,
-  LoginMFAUserDto,
   LoginOAuthValidationSchema,
-  LoginMFAValidationSchema,
   Challenge,
   IOtpChallengeData,
-  IPasswordChallengeData,
-  IUser,
 } from '@rittaschool/shared';
 import { AuthService } from './auth.service';
 import { JoiValidationPipe } from '../validation/joi.pipe';

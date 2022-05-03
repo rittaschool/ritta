@@ -22,7 +22,7 @@ export class Message implements IMessage {
 export class Thread implements IThread {
   id: string;
   name: string;
-  sender: { userId: string; archived: boolean; };
+  sender: { id: string; archived: boolean; };
   removed: boolean;
   showNames: boolean;
   canReply: boolean;
@@ -32,7 +32,7 @@ export class Thread implements IThread {
   created: number;
   
 
-  constructor(id: string, name: string, sender: { userId: string; archived: boolean; }, removed: boolean, showNames: boolean, canReply: boolean, draft: boolean, recipients: { type: IRecipientType, id: string, archived?: boolean | undefined; }[], messages: Message[], created: number) {
+  constructor(id: string, name: string, sender: { id: string; archived: boolean; }, removed: boolean, showNames: boolean, canReply: boolean, draft: boolean, recipients: { type: IRecipientType, id: string, archived?: boolean | undefined; }[], messages: Message[], created: number) {
     this.id = id;
     this.name = name;
     this.sender = sender;

@@ -10,7 +10,7 @@ export const ThreadSchema = new Schema({
   },
   sender: {
     type: {
-      userId: {
+      id: {
         type: String,
         required: true,
       },

@@ -26,10 +26,10 @@ export class NewThreadDto {
 }
 
 export class GetThreadsDto {
-  folder: IThreadFolders;
+  folder?: IThreadFolders;
 
   constructor(
-    folder: IThreadFolders
+    folder?: IThreadFolders
   ) {
     this.folder = folder;
   }
