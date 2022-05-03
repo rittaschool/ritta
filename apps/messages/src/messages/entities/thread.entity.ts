@@ -41,7 +41,11 @@ export const ThreadSchema = new Schema({
     type: [
       {
         type: {
-          userId: {
+          type: {
+            type: Number,
+            required: true,
+          },
+          id: {
             type: String,
             required: true,
           },
@@ -58,9 +62,8 @@ export const ThreadSchema = new Schema({
   messages: {
     type: [
       {
-        type: Schema.Types.ObjectId,
+        type: String,
         required: true,
-        ref: 'Message',
       },
     ],
     required: true,

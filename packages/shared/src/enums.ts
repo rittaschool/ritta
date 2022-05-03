@@ -85,3 +85,17 @@ export enum IErrorType {
   PERMISSION_IS_ALREADY_ADDED = "permission_is_already_added",
   PERMISSION_NOT_FOUND = "permission_not_found",
 }
+
+export enum IRecipientType {
+  ACCOUNT = "single",
+  CLASS = "class",
+  GROUP = "group"
+}
+
+export enum IThreadFolders {
+  INBOX = "inbox",
+  OUTBOX = "outbox",
+  ARCHIVE = "archive",
+  DRAFTS = "drafts",
+  ALL = "all"
+}

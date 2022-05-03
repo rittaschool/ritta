@@ -1,56 +1,59 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User, CreateUserDto } from '@rittaschool/shared';
+import {
+  NewMessageDto,
+  EditMessageDto,
+  Message,
+  DeleteMessageDto,
+} from '@rittaschool/shared';
 import { Model } from 'mongoose';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { MessageDocument } from './entities/message.entity';
-import { ThreadDocument } from './entities/thread.entity';
 
 @Injectable()
 export class MessagesRepository {
-  constructor(@InjectModel(User.name) private messageModel: Model<MessageDocument>) {}
+  constructor(
+    @InjectModel(Message.name) private messageModel: Model<MessageDocument>,
+  ) {}
 
-  async findAll(): Promise<User[]> {
-    return this.userModel.find().exec();
+  async findAll(): Promise<Message[]> {
+    return this.messageModel.find().exec();
   }
 
-  async findOne(id: string): Promise<User> {
-    return this.userModel
-      .findOne({ $or: [{ id }, { email: id }, { username: id }] })
-      .exec();
+  async findOne(id: string): Promise<Message> {
+    return this.messageModel.findOne({ id }).exec();
   }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(newMessageDto: NewMessageDto): Promise<Message> {
     try {
-      const createdUser = new this.userModel(createUserDto);
+      const createdUser = new this.messageModel(newMessageDto);
       return createdUser.save();
     } catch (error) {
-      throw new Error('Failed saving user to database');
+      throw new Error('Failed saving message to database: ' + error.message);
     }
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const doc = await this.findOne(id);
+  async update(editMessageDto: EditMessageDto): Promise<Message> {
+    const doc = await this.findOne(editMessageDto.messageId);
     const newDoc = {
       ...doc,
-      ...updateUserDto,
+      content: editMessageDto.newContent,
     };
-    const res = await this.userModel.updateOne(doc, newDoc).exec();
+    const res = await this.messageModel.updateOne(doc, newDoc).exec();
     return {
       ...doc,
       ...res,
     };
   }
 
-  async delete(id: string): Promise<User> {
-    const doc = await this.findOne(id);
+  async delete(deleteMessageDto: DeleteMessageDto): Promise<Message> {
+    const doc = await this.findOne(deleteMessageDto.messageId);
 
     if (!doc) {
       throw new Error('User not found!');
     }
 
     try {
-      this.userModel.deleteOne(doc).exec();
+      this.messageModel.deleteOne(doc).exec();
       return doc;
     } catch (error) {
       throw new Error(error);

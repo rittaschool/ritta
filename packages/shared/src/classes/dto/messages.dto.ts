@@ -1,40 +1,114 @@
-import { ISocialProvider } from "../..";
+import { IRecipientType, IThreadFolders } from "../..";
 
-export class LoginUserDto {
-  username: string;
-  password: string;
+export class NewThreadDto {
+  title: string;
+  content: string;
+  showNames: boolean;
+  canReply: boolean;
+  draft: boolean;
+  recipients: { type: IRecipientType; id: string; }[];
 
   constructor(
-    username: string,
-    password: string,
+    title: string,
+    content: string,
+    showNames: boolean,
+    canReply: boolean,
+    draft: boolean,
+    recipients: { type: IRecipientType; id: string; }[]
   ) {
-    this.username = username;
-    this.password = password;
+    this.title = title;
+    this.content = content;
+    this.showNames = showNames;
+    this.canReply = canReply;
+    this.draft = draft;
+    this.recipients = recipients;
   }
 }
 
-export class LoginMFAUserDto {
-  mfaToken: string;
-  mfaCode: string;
+export class GetThreadsDto {
+  folder: IThreadFolders;
 
   constructor(
-    mfaToken: string,
-    mfaCode: string,
+    folder: IThreadFolders
   ) {
-    this.mfaToken = mfaToken;
-    this.mfaCode = mfaCode;
+    this.folder = folder;
   }
 }
 
-export class LoginOAuthUserDto {
-  provider: ISocialProvider;
-  identifier: string;
+export class NewMessageDto {
+  threadId: string;
+  content: string;
 
   constructor(
-    provider: ISocialProvider,
-    identifier: string,
+    threadId: string,
+    content: string,
   ) {
-    this.provider = provider;
-    this.identifier = identifier;
+    this.threadId = threadId;
+    this.content = content;
+  }
+}
+
+export class EditMessageDto {
+  messageId: string;
+  newContent: string;
+
+  constructor(
+    messageId: string,
+    newContent: string
+  ) {
+    this.messageId = messageId;
+    this.newContent = newContent;
+  }
+}
+export class DeleteMessageDto {
+  threadId: string;
+  messageId: string;
+
+  constructor(
+    threadId: string,
+    messageId: string
+  ) {
+    this.threadId = threadId;
+    this.messageId = messageId;
+  }
+}
+
+export class DeleteThreadDto {
+  threadId: string;
+  
+  constructor(
+    threadId: string
+  ) {
+    this.threadId = threadId;
+  }
+}
+
+export class ArchiveThreadDto {
+  threadId: string;
+  
+  constructor(
+    threadId: string
+  ) {
+    this.threadId = threadId;
+  }
+}
+
+export class MarkThreadAsReadDto {
+  threadId: string;
+  
+  constructor(
+    threadId: string
+  ) {
+    this.threadId = threadId;
+  }
+}
+
+export class MarkThreadAsUnreadDto {
+  threadId: string;
+  
+  constructor(
+    threadId: string
+  ) {
+    this.threadId = threadId;
   }
 }

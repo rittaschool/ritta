@@ -11,4 +11,5 @@ export const ThreadSchema = new Schema({
   created: { type: Number, default: Date.now },
   content: { type: String, required: true },
   seenBy: { type: [String], default: [] },
+  removed: { type: Boolean, default: false },
 });

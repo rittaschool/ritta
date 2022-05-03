@@ -1,11 +1,16 @@
+import { IRecipientType } from "../enums";
+
 export interface IMessage {
+  id: string;
   senderId: string;
   created: number;
   content: string;
   seenBy: string[]; // uid[]
+  removed: boolean;
 }
 
 export interface IThread {
+  id: string;
   name: string;
   sender: {
     userId: string;
@@ -16,7 +21,8 @@ export interface IThread {
   canReply: boolean; // If this is false, replying will create a new thread
   draft: boolean;
   recipients: {
-    userId: string;
+    type: IRecipientType;
+    id: string;
     archived?: boolean; // This value are only available for the thread sender or if the recipient is the client.
   }[];
   messages: IMessage[];
@@ -24,6 +30,7 @@ export interface IThread {
 }
 
 export interface IAnnouncement {
+  id: string;
   name: string;
   senderId: string;
   content: string;
