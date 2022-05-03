@@ -23,9 +23,6 @@ class EnviromentVariables {
 
   @IsString()
   RMQ_PASSWORD: string;
-
-  @IsString()
-  INSTANCE_NAME: string;
 }
 
 export const validate = (config: Record<string, unknown>) => {

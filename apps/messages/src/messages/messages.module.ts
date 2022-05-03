@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MessagesService } from './messages.service';
-import { CoreController } from './messages.controller';
+import { MessagesController } from './messages.controller';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  controllers: [CoreController],
+  controllers: [MessagesController],
   imports: [ConfigModule],
   providers: [
     {
-      provide: 'MESAGES_SERVICE',
+      provide: 'MESSAGES_SERVICE',
       useClass: MessagesService,
     },
   ],

@@ -17,7 +17,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=ritta
       - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
-      - users-db:/data/db
+      - users-db:/data/usr-db
     ports:
       - "27018:27017"
     networks:
@@ -27,6 +27,7 @@ services:
       interval: 5s
       timeout: 10s
       retries: 12
+
   messages_db:
     image: mongo:latest
     environment:
@@ -34,7 +35,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=ritta
       - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
-      - messages-db:/data/db
+      - messages-db:/data/msg-db
     ports:
       - "27019:27017"
     networks:

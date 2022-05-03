@@ -9,27 +9,27 @@ export class AnnouncementsController {
     private readonly announcementsService: AnnouncementsService,
   ) {}
 
-  @MessagePattern('get_announcements')
+  @MessagePattern(IEventType.GET_ANNOUNCEMENTS)
   async getAnnouncements() {
     return []; // TODO: implement
   }
 
-  @MessagePattern('create_announcement')
+  @MessagePattern(IEventType.CREATE_ANNOUNCEMENT)
   async createAnnouncement() {
     return { success: false }; // TODO: implement
   }
 
-  @MessagePattern('edit_announcement')
+  @MessagePattern(IEventType.EDIT_ANNOUNCEMENT)
   async editAnnouncement() {
     return { success: false }; // TODO: implement
   }
 
-  @MessagePattern('archive_announcements')
+  @MessagePattern(IEventType.ARCHIVE_ANNOUNCEMENT)
   async archiveAnnouncements() {
     return { success: false }; // TODO: implement
   }
 
-  @MessagePattern('delete_announcements')
+  @MessagePattern(IEventType.DELETE_ANNOUNCEMENT)
   async deleteAnnouncements() {
     return { success: false }; // TODO: implement
   }
