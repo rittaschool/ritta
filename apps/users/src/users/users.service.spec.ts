@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersRepository } from './users.repository';
-import { UsersService } from './users.service';
+import { IErrorType, RittaError } from '@rittaschool/shared';
 import encryptUtils from './encrypt';
 import generator from './generator';
-import { RpcException } from '@nestjs/microservices';
+import { UsersRepository } from './users.repository';
+import { UsersService } from './users.service';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -46,7 +46,7 @@ describe('UsersService', () => {
       .spyOn(encryptUtils, 'encodePassword')
       .mockImplementation(async () => 'hashed123');
 
-    it('should encode password correctly', async () => {
+    it('should encrypt password', async () => {
       await service.createUser({
         firstName: 'John',
         lastName: 'Doe',
@@ -57,7 +57,7 @@ describe('UsersService', () => {
       expect(encryptUtils.encodePassword).toHaveBeenCalledWith('12345678');
     });
 
-    it('should call userRepository.findOne with correct params', async () => {
+    it('should check for existing user', async () => {
       await service.createUser({
         firstName: 'John',
         lastName: 'Doe',
@@ -68,7 +68,7 @@ describe('UsersService', () => {
       expect(userRepository.findOne).toHaveBeenCalledWith('john@doe.com');
     });
 
-    it('should call userRepository.create with correct params', async () => {
+    it('should create the database record', async () => {
       jest
         .spyOn(generator, 'generateBackupCode')
         .mockImplementationOnce(async () => {
@@ -116,9 +116,9 @@ describe('UsersService', () => {
       expect(userRepository.findOne).toHaveBeenCalledWith('1');
     });
 
-    it('should call userRepository.findOne with id but it should throw error', async () => {
+    it('should error for user not found', async () => {
       expect(service.getUser('1', true)).rejects.toThrow(
-        new RpcException('User not found.'),
+        new RittaError('User not found.', IErrorType.USER_NOT_FOUND),
       );
     });
   });
