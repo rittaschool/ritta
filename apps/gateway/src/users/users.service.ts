@@ -7,16 +7,13 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import {
   CreateUserDto,
-  IErrorType,
   IEventType,
   IUser,
-  RittaError,
   Permission,
-  Permissions,
   UpdateUserDto,
 } from '@rittaschool/shared';
-import { Permissions as PermDecorator } from '../permissions.decorator';
 import { catchError, of, timeout } from 'rxjs';
+import { Permissions as PermDecorator } from '../permissions.decorator';
 
 @Injectable()
 export class UsersService {
