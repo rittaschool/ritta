@@ -1,10 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
 import {
   generateChallenge,
   IChallengeType,
   IErrorType,
-  IOtpChallengeData,
   ISocialProvider,
   ITokenType,
   LoginOAuthUserDto,
@@ -45,16 +43,17 @@ export class AuthService {
     return await this.generateTokens(user);
   }
 
-  async submitOtpCode(data: IOtpChallengeData, userId: string) {
+  async submitOtpCode(code: string, userId: string) {
     const user = await this.userService.findOne(userId);
 
     if (!user) {
       throw new RittaError('User not found!', IErrorType.USER_NOT_FOUND);
     }
 
-    if (!user.mfa.enabled) throw new RpcException('MFA not enabled');
+    if (!user.mfa.enabled)
+      throw new RittaError('MFA not enabled', IErrorType.UNKNOWN); //TODO: change for IErrorType.MFA_NOT_ENABLED
 
-    const isValid = mfa.checkMfaCode(data.otp, user.mfa.secret);
+    const isValid = mfa.checkMfaCode(code, user.mfa.secret);
 
     if (!isValid) {
       throw new RittaError('Invalid MFA code', IErrorType.INVALID_CODE);

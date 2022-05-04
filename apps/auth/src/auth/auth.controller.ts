@@ -3,7 +3,6 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
   Challenge,
   IEventType,
-  IOtpChallengeData,
   LoginOAuthUserDto,
   LoginOAuthValidationSchema,
 } from '@rittaschool/shared';
@@ -32,7 +31,7 @@ export class AuthController {
   submitOtpCode(@Payload() challenge: Challenge) {
     const { data, userId } = challenge;
 
-    return this.authService.submitOtpCode(data as IOtpChallengeData, userId);
+    return this.authService.submitOtpCode(data.otpData.otp, userId);
   }
 
   @UsePipes(new JoiValidationPipe(LoginOAuthValidationSchema))
