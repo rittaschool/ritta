@@ -1,14 +1,7 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { IErrorType, Permissions, RittaError } from '@rittaschool/shared';
 import { Observable } from 'rxjs';
-import { Permissions } from '@rittaschool/shared';
-
 @Injectable()
 export class PermissionsGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
@@ -23,23 +16,22 @@ export class PermissionsGuard implements CanActivate {
       context.getHandler(),
     );
 
-    //console.log('req', request);
-
-    //console.log('requiredPermissions', requiredPermissions);
-
     if (!requiredPermissions) {
       return true;
     }
 
-    let perms: number;
+    let perms = 0;
 
     if (requiredPermissions instanceof Array) {
-      perms = requiredPermissions[0];
+      requiredPermissions.forEach((permission) => {
+        console.log('perms', perms, permission);
+        perms = Permissions.addPermissions(perms, permission);
+      });
     }
 
     const userPerms = request[0].permissions;
 
-    console.log(userPerms);
+    console.log('uPerms', userPerms, 'perms', perms);
 
     const doesUserHavePermission = Permissions.checkHasPermission(
       perms,
@@ -47,7 +39,10 @@ export class PermissionsGuard implements CanActivate {
     );
 
     if (!doesUserHavePermission) {
-      throw new UnauthorizedException('Invalid permissions.');
+      throw new RittaError(
+        'Invalid permissions.',
+        IErrorType.INVALID_PERMISSION,
+      );
     }
 
     return doesUserHavePermission;

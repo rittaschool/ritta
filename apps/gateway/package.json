@@ -41,7 +41,9 @@
     "@rittaschool/shared": "*"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^8.5.8"
+    "@types/jsonwebtoken": "^8.5.8",
+    "@golevelup/nestjs-testing": "^0.1.2",
+    "@golevelup/ts-jest": "^0.3.2"
   },
   "jest": {
     "moduleFileExtensions": [
