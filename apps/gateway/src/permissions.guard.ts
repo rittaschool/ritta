@@ -24,14 +24,11 @@ export class PermissionsGuard implements CanActivate {
 
     if (requiredPermissions instanceof Array) {
       requiredPermissions.forEach((permission) => {
-        console.log('perms', perms, permission);
         perms = Permissions.addPermissions(perms, permission);
       });
     }
 
     const userPerms = request[0].permissions;
-
-    console.log('uPerms', userPerms, 'perms', perms);
 
     const doesUserHavePermission = Permissions.checkHasPermission(
       perms,
