@@ -7,6 +7,7 @@ import {
 } from '@rittaschool/shared';
 import { AuthService } from './auth.service';
 import cryptor from './cryptor';
+import mfa from './mfa';
 import tokenizer from './tokenizer';
 
 jest.mock('@rittaschool/shared', () => ({
@@ -120,6 +121,79 @@ describe('AuthService', () => {
 
       expect(
         service.loginWithPassword('12345678', 'testihenkilö@ritta.app'),
+      ).resolves.toEqual({
+        user,
+        tokens: {
+          // snyk warning
+          // file deepcode ignore HardcodedNonCryptoSecret: <please specify a reason of ignoring this>
+          accessToken: 'access-token',
+          refreshToken: 'refresh-token',
+        },
+      });
+    });
+  });
+
+  describe('submitOtpCode', () => {
+    it('should throw an error if user not found', () => {
+      findOneUser.mockResolvedValue(undefined);
+
+      expect(
+        service.submitOtpCode('123456', 'testihenkilö@ritta.app'),
+      ).rejects.toThrowError(
+        new RittaError('User not found!', IErrorType.USER_NOT_FOUND),
+      );
+    });
+
+    it('it should throw an error if mfa is not enabled', () => {
+      findOneUser.mockResolvedValue({
+        email: 'testihenkilö@ritta.app',
+        mfa: {
+          enabled: false,
+        },
+      });
+
+      expect(
+        service.submitOtpCode('123456', 'testihenkilö@ritta.app'),
+      ).rejects.toThrowError(
+        new RittaError('MFA not enabled', IErrorType.UNKNOWN),
+      );
+    });
+
+    it('should throw an error if otp is incorrect', () => {
+      findOneUser.mockResolvedValue({
+        email: 'testihenkilö@ritta.app',
+        mfa: {
+          enabled: true,
+        },
+      });
+
+      jest.spyOn(mfa, 'checkMfaCode').mockImplementation(() => false);
+
+      expect(
+        service.submitOtpCode('123456', 'testihenkilö@ritta.app'),
+      ).rejects.toThrowError(
+        new RittaError('Invalid MFA code', IErrorType.INVALID_CODE),
+      );
+    });
+
+    it('should generate a new token if otp is correct', () => {
+      const user = {
+        email: 'testihenkilö@ritta.app',
+        mfa: {
+          enabled: true,
+        },
+      };
+
+      findOneUser.mockResolvedValue(user);
+
+      jest.spyOn(mfa, 'checkMfaCode').mockImplementation(() => true);
+      jest
+        .spyOn(tokenizer, 'signToken')
+        .mockImplementationOnce(async () => 'refresh-token')
+        .mockImplementationOnce(async () => 'access-token');
+
+      expect(
+        service.submitOtpCode('123456', 'testihenkilö@ritta.app'),
       ).resolves.toEqual({
         user,
         tokens: {

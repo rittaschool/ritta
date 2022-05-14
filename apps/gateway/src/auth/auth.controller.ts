@@ -1,17 +1,16 @@
 import { Body, Controller, Inject, Post, UsePipes } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import {
-  CreateUserDto,
   IEventType,
   LoginMFAUserDto,
   LoginMFAValidationSchema,
   LoginOAuthUserDto,
   LoginOAuthValidationSchema,
   LoginUserDto,
-  LoginValidationSchema,
+  LoginValidationSchema
 } from '@rittaschool/shared';
 import { catchError, of } from 'rxjs';
-import { JoiValidationPipe } from './validation/joi.pipe';
+import { JoiValidationPipe } from '../validation/joi.pipe';
 
 @Controller({
   path: 'auth',

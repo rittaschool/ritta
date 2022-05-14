@@ -8,9 +8,9 @@ import {
   User,
 } from '@rittaschool/shared';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UsersRepository } from './users.repository';
 import encryptUtils from './encrypt';
 import generator from './generator';
+import { UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
@@ -78,7 +78,7 @@ export class UsersService {
     const user = await this.usersRepository.findOne(id);
 
     if (user == null && throwError) {
-      throw new RpcException('User not found.');
+      throw new RittaError('User not found.', IErrorType.USER_NOT_FOUND);
     }
 
     return user;
