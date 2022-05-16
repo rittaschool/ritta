@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateUserDto, NewThreadDto, Thread } from '@rittaschool/shared';
+import { NewThreadDto, Thread } from '@rittaschool/shared';
 import { Model } from 'mongoose';
 import { UpdateThreadDto } from './dto/update-thread.dto';
 import { ThreadDocument } from './entities/thread.entity';

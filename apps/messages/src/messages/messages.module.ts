@@ -4,10 +4,16 @@ import { MessagesController } from './messages.controller';
 import { ConfigModule } from '@nestjs/config';
 import { MessagesRepository } from './messages.repository';
 import { ThreadsRepository } from './threads.repository';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Message } from '@rittaschool/shared';
+import { MessageSchema } from './entities/message.entity';
 
 @Module({
   controllers: [MessagesController],
-  imports: [ConfigModule],
+  imports: [
+    MongooseModule.forFeature([{ name: Message.name, schema: MessageSchema }]),
+    ConfigModule,
+  ],
   providers: [
     {
       provide: 'MESSAGES_SERVICE',

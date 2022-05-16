@@ -3,7 +3,7 @@ import { Schema, Document } from 'mongoose';
 
 export type MessageDocument = Message & Document;
 
-export const ThreadSchema = new Schema({
+export const MessageSchema = new Schema({
   senderId: {
     type: String,
     required: true,
