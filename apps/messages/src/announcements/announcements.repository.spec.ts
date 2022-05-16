@@ -11,7 +11,7 @@ describe('AnnouncementsRepository', () => {
       providers: [
         AnnouncementsRepository,
         {
-          provide: getModelToken('Message'),
+          provide: getModelToken('Announcement'),
           useValue: {},
         },
       ],
