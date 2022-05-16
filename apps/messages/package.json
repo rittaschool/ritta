@@ -21,7 +21,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@rittaschool/shared": "*"
+    "@nestjs/mongoose": "^9.0.3",
+    "@rittaschool/shared": "*",
+    "mongoose": "^6.3.3"
   },
   "jest": {
     "moduleFileExtensions": [
