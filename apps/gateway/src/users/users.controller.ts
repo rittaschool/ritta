@@ -4,21 +4,21 @@ import {
   Controller,
   Delete,
   Get,
-  Headers,
   Inject,
   Logger,
   Param,
   Patch,
   Post,
-  UseFilters,
   UsePipes,
 } from '@nestjs/common';
 import {
   CreateUserDto,
   CreateUserValidationSchema,
   IUser,
+  Permission,
   UpdateUserDto,
 } from '@rittaschool/shared';
+import { Permissions } from '../permissions.decorator';
 import { RID } from '../rid.param';
 import { JoiValidationPipe } from '../validation/joi.pipe';
 import { UsersService } from './users.service';
@@ -42,6 +42,7 @@ export class UsersController {
   }
 
   @Get()
+  @Permissions(Permission.GET_ALL_USERS)
   async getUsers(@RID() rid: string): Promise<IUser[]> {
     return this.usersService.getUsers(rid);
   }
