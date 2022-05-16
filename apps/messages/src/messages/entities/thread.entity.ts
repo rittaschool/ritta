@@ -41,20 +41,17 @@ export const ThreadSchema = new Schema({
     type: [
       {
         type: {
-          type: {
-            type: Number,
-            required: true,
-          },
-          id: {
-            type: String,
-            required: true,
-          },
-          archived: {
-            type: Boolean,
-            default: false,
-          },
+          type: Number,
+          required: true,
         },
-        required: true,
+        id: {
+          type: String,
+          required: true,
+        },
+        archived: {
+          type: Boolean,
+          default: false,
+        },
       },
     ],
     required: true,

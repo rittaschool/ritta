@@ -13,7 +13,7 @@ services:
   gateway:
     build:
       context: ../../
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       args:
         - SCOPE=gateway
         - USER_ID=${USER_ID:-0}
@@ -46,7 +46,7 @@ services:
   core:
     build:
       context: ../../
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       args:
         - SCOPE=core
         - USER_ID=${USER_ID:-0}
@@ -73,7 +73,7 @@ services:
   auth:
     build:
       context: ../../
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       args:
         - SCOPE=auth
         - USER_ID=${USER_ID:-0}
@@ -100,7 +100,7 @@ services:
   users:
     build:
       context: ../../
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       args:
         - SCOPE=users
         - USER_ID=${USER_ID:-0}
@@ -127,7 +127,7 @@ services:
   messages:
     build:
       context: ../../
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       args:
         - SCOPE=messages
         - USER_ID=${USER_ID:-0}

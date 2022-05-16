@@ -11,11 +11,13 @@ RUN turbo prune --scope=${SCOPE} --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM node:lts-alpine AS installer
+ARG SCOPE
 RUN apk update
 WORKDIR /app
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/yarn.lock ./yarn.lock
-RUN yarn install
+COPY --from=builder /app/scripts/rebuild-hasher.sh ./rebuild-hasher.sh
+RUN yarn install && ./rebuild-hasher.sh ${SCOPE}
 
 FROM node:lts-alpine AS sourcer
 ARG SCOPE
