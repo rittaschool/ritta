@@ -1,4 +1,4 @@
-version: "3.6"
+version: '3.6'
 
 networks:
   rabbitmq:
@@ -18,7 +18,7 @@ services:
         - SCOPE=gateway
         - USER_ID=${USER_ID:-0}
         - GROUP_ID=${GROUP_ID:-0}
-    command: /home/app/node_modules/.bin/nest start --watch
+    command: /app/node_modules/.bin/nest start --watch
     environment:
       - NODE_ENV=development
       - PORT=3000
@@ -36,12 +36,12 @@ services:
       - services
       - databases
     volumes:
-      - ../../:/home/app
-      - ../../node_modules:/home/app/node_modules
-      - ../../logs/gateway.log:/home/app/apps/gateway/logs/all.log
-      - ../../apps/gateway:/home/apps/gateway/app
-      - ../../apps/gateway/dist:/home/app/apps/gateway/dist
-      - ../../apps/gateway/node_modules:/home/app/apps/gateway/node_modules
+      - ../../:/app
+      - ../../node_modules:/app/node_modules
+      - ../../logs/gateway.log:/app/apps/gateway/logs/all.log
+      - ../../apps/gateway:/apps/gateway/app
+      - ../../apps/gateway/dist:/app/apps/gateway/dist
+      - ../../apps/gateway/node_modules:/app/apps/gateway/node_modules
 
   core:
     build:
@@ -51,7 +51,7 @@ services:
         - SCOPE=core
         - USER_ID=${USER_ID:-0}
         - GROUP_ID=${GROUP_ID:-0}
-    command: /home/app/node_modules/.bin/nest start --watch
+    command: /app/node_modules/.bin/nest start --watch
     environment:
       - NODE_ENV=development
       - RMQ_HOST=rmq0
@@ -64,11 +64,11 @@ services:
       - rabbitmq
       - services
     volumes:
-      - ../../:/home/app
-      - ../../node_modules:/home/app/node_modules
-      - ../../apps/core:/home/app/apps/core
-      - ../../apps/core/dist:/home/app/apps/core/dist
-      - ../../apps/core/node_modules:/home/app/apps/core/node_modules
+      - ../../:/app
+      - ../../node_modules:/app/node_modules
+      - ../../apps/core:/app/apps/core
+      - ../../apps/core/dist:/app/apps/core/dist
+      - ../../apps/core/node_modules:/app/apps/core/node_modules
 
   auth:
     build:
@@ -78,7 +78,7 @@ services:
         - SCOPE=auth
         - USER_ID=${USER_ID:-0}
         - GROUP_ID=${GROUP_ID:-0}
-    command: /home/app/node_modules/.bin/nest start --watch
+    command: /app/node_modules/.bin/nest start --watch
     environment:
       - NODE_ENV=development
       - RMQ_HOST=rmq0
@@ -90,12 +90,12 @@ services:
       - rabbitmq
       - services
     volumes:
-      - ../../:/home/app
-      - ../../node_modules:/home/app/node_modules
-      - ../../logs/auth.log:/home/app/apps/auth/logs/all.log
-      - ../../apps/auth:/home/apps/auth/app
-      - ../../apps/auth/dist:/home/app/apps/auth/dist
-      - ../../apps/auth/node_modules:/home/app/apps/auth/node_modules
+      - ../../:/app
+      - ../../node_modules:/app/node_modules
+      - ../../logs/auth.log:/app/apps/auth/logs/all.log
+      - ../../apps/auth:/apps/auth/app
+      - ../../apps/auth/dist:/app/apps/auth/dist
+      - ../../apps/auth/node_modules:/app/apps/auth/node_modules
 
   users:
     build:
@@ -105,7 +105,7 @@ services:
         - SCOPE=users
         - USER_ID=${USER_ID:-0}
         - GROUP_ID=${GROUP_ID:-0}
-    command: /home/app/node_modules/.bin/nest start --watch
+    command: /app/node_modules/.bin/nest start --watch
     environment:
       - NODE_ENV=development
       - RMQ_HOST=rmq0
@@ -118,12 +118,12 @@ services:
       - services
       - databases
     volumes:
-      - ../../:/home/app
-      - ../../node_modules:/home/app/node_modules
-      - ../../logs/users.log:/home/app/apps/users/logs/all.log
-      - ../../apps/users:/home/app/apps/users
-      - ../../apps/users/dist:/home/app/apps/users/dist
-      - ../../apps/users/node_modules:/home/app/apps/users/node_modules
+      - ../../:/app
+      - ../../node_modules:/app/node_modules
+      - ../../logs/users.log:/app/apps/users/logs/all.log
+      - ../../apps/users:/app/apps/users
+      - ../../apps/users/dist:/app/apps/users/dist
+      - ../../apps/users/node_modules:/app/apps/users/node_modules
   messages:
     build:
       context: ../../
@@ -132,7 +132,7 @@ services:
         - SCOPE=messages
         - USER_ID=${USER_ID:-0}
         - GROUP_ID=${GROUP_ID:-0}
-    command: /home/app/node_modules/.bin/nest start --watch
+    command: /app/node_modules/.bin/nest start --watch
     environment:
       - NODE_ENV=development
       - RMQ_HOST=rmq0
@@ -145,9 +145,9 @@ services:
       - services
       - databases
     volumes:
-      - ../../:/home/app
-      - ../../node_modules:/home/app/node_modules
-      - ../../logs/messages.log:/home/app/apps/messages/logs/all.log
-      - ../../apps/messages:/home/app/apps/messages
-      - ../../apps/messages/dist:/home/app/apps/messages/dist
-      - ../../apps/messages/node_modules:/home/app/apps/messages/node_modules
+      - ../../:/app
+      - ../../node_modules:/app/node_modules
+      - ../../logs/messages.log:/app/apps/messages/logs/all.log
+      - ../../apps/messages:/app/apps/messages
+      - ../../apps/messages/dist:/app/apps/messages/dist
+      - ../../apps/messages/node_modules:/app/apps/messages/node_modules
