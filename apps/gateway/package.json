@@ -30,6 +30,7 @@
     "@rittaschool/shared": "*",
     "apollo-server-fastify": "^3.6.7",
     "fastify": "^3.27.4",
+    "fastify-swagger": "^5.2.0",
     "graphql": "^16.3.0",
     "graphql-scalars": "^1.17.0",
     "jsonwebtoken": "^8.5.1",
