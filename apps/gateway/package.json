@@ -21,14 +21,15 @@
   },
   "dependencies": {
     "@fastify/cookie": "^6.0.0",
+    "@fastify/swagger": "^6.0.1",
     "@nestjs/apollo": "^10.0.8",
     "@nestjs/graphql": "^10.0.8",
     "@nestjs/platform-fastify": "^8.4.3",
     "@nestjs/swagger": "^5.2.1",
     "@nestjs/terminus": "^8.0.6",
+    "@rittaschool/shared": "*",
     "apollo-server-fastify": "^3.6.7",
     "fastify": "^3.27.4",
-    "fastify-swagger": "^5.1.0",
     "graphql": "^16.3.0",
     "graphql-scalars": "^1.17.0",
     "jsonwebtoken": "^8.5.1",
@@ -37,13 +38,12 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.5",
-    "tslib": "^2.3.1",
-    "@rittaschool/shared": "*"
+    "tslib": "^2.3.1"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^8.5.8",
     "@golevelup/nestjs-testing": "^0.1.2",
-    "@golevelup/ts-jest": "^0.3.2"
+    "@golevelup/ts-jest": "^0.3.2",
+    "@types/jsonwebtoken": "^8.5.8"
   },
   "jest": {
     "moduleFileExtensions": [

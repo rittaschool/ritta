@@ -7,7 +7,7 @@ import {
   LoginOAuthUserDto,
   LoginOAuthValidationSchema,
   LoginUserDto,
-  LoginValidationSchema
+  LoginValidationSchema,
 } from '@rittaschool/shared';
 import { catchError, of } from 'rxjs';
 import { JoiValidationPipe } from '../validation/joi.pipe';

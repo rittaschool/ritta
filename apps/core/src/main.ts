@@ -3,6 +3,9 @@ config();
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
+import { WinstonModule } from 'nest-winston';
+import { transports } from 'winston';
+import { consoleFormat } from './logger.format';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -18,6 +21,15 @@ async function bootstrap() {
           durable: true,
         },
       },
+      logger: WinstonModule.createLogger({
+        defaultMeta: { service: 'users', enviroment: process.env.NODE_ENV },
+        transports: [
+          new transports.Console({
+            format: consoleFormat,
+          }),
+          new transports.File({ filename: 'logs/all.log' }),
+        ],
+      }),
     },
   );
 

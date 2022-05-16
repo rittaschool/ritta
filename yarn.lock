@@ -413,6 +413,31 @@
   resolved "https://registry.yarnpkg.com/@fastify/error/-/error-2.0.0.tgz#a9f94af56eb934f0ab1ce4ef9f0ced6ebf2319dc"
   integrity sha512-wI3fpfDT0t7p8E6dA2eTECzzOd+bZsZCJ2Hcv+Onn2b7ZwK3RwD27uW2QDaMtQhAfWQQP+WNK7nKf0twLsBf9w==
 
+"@fastify/static@^5.0.0":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@fastify/static/-/static-5.0.2.tgz#46cee887393b422f4b10a46a14e970a64dd086d4"
+  integrity sha512-HvyXZ5a7hUHoSBRq9jKUuKIUCkHMkCDcmiAeEmixXlGOx8pEWx3NYOIaiivcjWa6/NLvfdUT+t/jzfVQ2PA7Gw==
+  dependencies:
+    content-disposition "^0.5.3"
+    encoding-negotiator "^2.0.1"
+    fastify-plugin "^3.0.0"
+    glob "^7.1.4"
+    p-limit "^3.1.0"
+    readable-stream "^3.4.0"
+    send "^0.17.1"
+
+"@fastify/swagger@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@fastify/swagger/-/swagger-6.0.1.tgz#91defa72b3bb68265bc67c725800bb01318d21ba"
+  integrity sha512-6STMY44AA3Ks7/CYRSh3ocZCVUAHMO/ochtLkP1R7i0XMjpdKFpAEwdGffocjfeD0BRglC36Y22qLHw+YKMCtg==
+  dependencies:
+    "@fastify/static" "^5.0.0"
+    fastify-plugin "^3.0.0"
+    js-yaml "^4.0.0"
+    json-schema-resolver "^1.3.0"
+    openapi-types "^10.0.0"
+    rfdc "^1.3.0"
+
 "@golevelup/nestjs-testing@^0.1.2":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@golevelup/nestjs-testing/-/nestjs-testing-0.1.2.tgz#314e87e634d581797d086c9f5f45dce802ad919a"
