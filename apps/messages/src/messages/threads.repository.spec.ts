@@ -1,16 +1,15 @@
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import { MessagesRepository } from './messages.repository';
 import { ThreadsRepository } from './threads.repository';
 
-describe('MessagesRepository', () => {
+describe('ThreadsRepository', () => {
   let repository: ThreadsRepository;
 
   beforeEach(async () => {
     // Create nest testing module for dependency injection
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        MessagesRepository,
+        ThreadsRepository,
         {
           provide: getModelToken('Thread'),
           useValue: {},

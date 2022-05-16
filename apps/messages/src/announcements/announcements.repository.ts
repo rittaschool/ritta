@@ -3,10 +3,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import {
   NewMessageDto,
   EditMessageDto,
-  Message,
   DeleteMessageDto,
 } from '@rittaschool/shared';
-import { Announcement } from '@rittaschool/shared/src';
+import { Announcement } from '@rittaschool/shared';
 import { Model } from 'mongoose';
 import { AnnouncementDocument } from './entities/announcement.entity';
 
