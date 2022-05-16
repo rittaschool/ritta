@@ -91,6 +91,7 @@ services:
       - services
     volumes:
       - ../../:/app
+      - /app/node_modules/argon2
       - ../../node_modules:/app/node_modules
       - ../../logs/auth.log:/app/apps/auth/logs/all.log
       - ../../apps/auth:/apps/auth/app
@@ -120,6 +121,7 @@ services:
     volumes:
       - ../../:/app
       - ../../node_modules:/app/node_modules
+      - /app/node_modules/argon2
       - ../../logs/users.log:/app/apps/users/logs/all.log
       - ../../apps/users:/app/apps/users
       - ../../apps/users/dist:/app/apps/users/dist

@@ -15,7 +15,6 @@ RUN apk update
 WORKDIR /app
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/yarn.lock ./yarn.lock
-COPY --from=builder /app/scripts/rebuild-hasher.sh ./rebuild-hasher.sh
 RUN yarn install
 
 FROM node:lts-alpine AS sourcer
@@ -25,7 +24,7 @@ WORKDIR /app
 COPY --from=installer /app/ .
 COPY --from=builder /app/out/full/ .
 COPY .gitignore .gitignore
-RUN yarn turbo run build test --scope=${SCOPE} --include-dependencies --no-deps && ./rebuild-hasher.sh ${SCOPE}
+RUN yarn turbo run build test --scope=${SCOPE} --include-dependencies --no-deps
 
 WORKDIR /app/apps/${SCOPE}
 CMD yarn start
