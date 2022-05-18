@@ -18,6 +18,10 @@ describe('UsersService', () => {
           provide: 'LOGGER',
           useValue: {},
         },
+        {
+          provide: 'TOKENIZER',
+          useValue: {},
+        },
       ],
     }).compile();
 

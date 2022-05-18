@@ -14,10 +14,10 @@ import { MongooseConfigService } from './mongoose';
     ConfigModule.forRoot({
       validate,
     }),
-    UsersModule,
     MongooseModule.forRootAsync({
       useClass: MongooseConfigService,
     }),
+    UsersModule,
     CommonModule,
   ],
   providers: [
