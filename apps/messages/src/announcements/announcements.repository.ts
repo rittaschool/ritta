@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectTenancyModel } from '@needle-innovision/nestjs-tenancy';
+import { InjectModel } from '@nestjs/mongoose';
 import {
   NewMessageDto,
   EditMessageDto,
@@ -12,7 +12,7 @@ import { AnnouncementDocument } from './entities/announcement.entity';
 @Injectable()
 export class AnnouncementsRepository {
   constructor(
-    @InjectTenancyModel(Announcement.name)
+    @InjectModel(Announcement.name)
     private announcementModel: Model<AnnouncementDocument>,
   ) {}
 

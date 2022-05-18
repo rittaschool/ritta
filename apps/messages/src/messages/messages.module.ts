@@ -7,12 +7,12 @@ import { ThreadsRepository } from './threads.repository';
 import { Message } from '@rittaschool/shared';
 import { MessageSchema } from './entities/message.entity';
 import { ThreadSchema } from './entities/thread.entity';
-import { TenancyModule } from '@needle-innovision/nestjs-tenancy';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   controllers: [MessagesController],
   imports: [
-    TenancyModule.forFeature([
+    MongooseModule.forFeature([
       { name: Message.name, schema: MessageSchema },
       { name: 'Thread', schema: ThreadSchema },
     ]),
