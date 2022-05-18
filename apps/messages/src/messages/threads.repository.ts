@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { InjectTenancyModel } from '@needle-innovision/nestjs-tenancy';
 import { NewThreadDto, Thread } from '@rittaschool/shared';
 import { Model } from 'mongoose';
 import { UpdateThreadDto } from './dto/update-thread.dto';
@@ -8,7 +8,7 @@ import { ThreadDocument } from './entities/thread.entity';
 @Injectable()
 export class ThreadsRepository {
   constructor(
-    @InjectModel(Thread.name) private threadModel: Model<ThreadDocument>,
+    @InjectTenancyModel(Thread.name) private threadModel: Model<ThreadDocument>,
   ) {}
 
   async findAll(): Promise<Thread[]> {
@@ -23,15 +23,15 @@ export class ThreadsRepository {
 
   async create(newThreadDto: NewThreadDto): Promise<Thread> {
     try {
-      const createdUser = new this.threadModel(newThreadDto);
-      return createdUser.save();
+      const createdMessage = new this.threadModel(newThreadDto);
+      return createdMessage.save();
     } catch (error) {
       throw new Error('Failed saving user to database');
     }
   }
 
-  async update(id: string, updateThreadDto: UpdateThreadDto): Promise<Thread> {
-    const doc = await this.findOne(id);
+  async update(updateThreadDto: UpdateThreadDto): Promise<Thread> {
+    const doc = await this.findOne(updateThreadDto.id);
     const newDoc = {
       ...doc,
       ...updateThreadDto,

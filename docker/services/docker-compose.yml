@@ -142,7 +142,7 @@ services:
       - RMQ_PORT=5672
       - RMQ_USERNAME=guest
       - RMQ_PASSWORD=guest
-      - MONGO_URI=mongodb://ritta:password@messages_db:27017/ritta?authSource=admin
+      - MONGO_URI=mongodb://ritta:password@messages_db:27017/ritta-{TENANTID}?authSource=admin
     networks:
       - rabbitmq
       - services

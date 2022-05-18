@@ -1,9 +1,16 @@
 import { Announcement } from '@rittaschool/shared';
 import { Schema, Document } from 'mongoose';
+import { v4 } from 'uuid';
 
 export type AnnouncementDocument = Announcement & Document;
 
 export const AnnouncementSchema = new Schema({
+  id: {
+    type: String,
+    required: true,
+    default: v4,
+    index: true,
+  },
   name: {
     type: String,
     required: true,

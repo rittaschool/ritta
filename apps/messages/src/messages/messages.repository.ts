@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { InjectTenancyModel } from '@needle-innovision/nestjs-tenancy';
 import {
   NewMessageDto,
   EditMessageDto,
@@ -12,7 +12,8 @@ import { MessageDocument } from './entities/message.entity';
 @Injectable()
 export class MessagesRepository {
   constructor(
-    @InjectModel(Message.name) private messageModel: Model<MessageDocument>,
+    @InjectTenancyModel(Message.name)
+    private messageModel: Model<MessageDocument>,
   ) {}
 
   async findAll(): Promise<Message[]> {
@@ -25,8 +26,8 @@ export class MessagesRepository {
 
   async create(newMessageDto: NewMessageDto): Promise<Message> {
     try {
-      const createdUser = new this.messageModel(newMessageDto);
-      return createdUser.save();
+      const createdMessage = new this.messageModel(newMessageDto);
+      return createdMessage.save();
     } catch (error) {
       throw new Error('Failed saving message to database: ' + error.message);
     }

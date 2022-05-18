@@ -23,3 +23,4 @@ export { Permissions } from "./Permissions";
 export * from "./Challenge";
 export { Thread, Message } from "./Messages";
 export { Announcement } from "./Announcement"; 
+export * from "./Core";

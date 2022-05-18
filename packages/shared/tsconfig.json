@@ -9,6 +9,7 @@
     "strictFunctionTypes": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
+    "experimentalDecorators": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "alwaysStrict": true,

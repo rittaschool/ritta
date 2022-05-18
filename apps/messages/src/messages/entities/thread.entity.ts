@@ -1,9 +1,16 @@
 import { Thread } from '@rittaschool/shared/src/classes';
 import { Schema, Document } from 'mongoose';
+import { v4 } from 'uuid';
 
 export type ThreadDocument = Thread & Document;
 
 export const ThreadSchema = new Schema({
+  id: {
+    type: String,
+    required: true,
+    default: v4,
+    index: true,
+  },
   name: {
     type: String,
     required: true,

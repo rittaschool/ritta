@@ -13,7 +13,7 @@ export interface IInstance {
 
 export interface ISchool {
   id: string;
-  schoolId: string; // KOSKI-tietojärjestelmän oppilaitosnumero
+  schoolId?: string; // KOSKI-tietojärjestelmän oppilaitosnumero
   name: string;
   email?: string;
   phoneNumber?: string;
@@ -21,7 +21,6 @@ export interface ISchool {
   principals: IContactInfo[];
   secretaries: IContactInfo[];
   educationTypes: EducationType[];
-  featuresEnabled: Feature[];
   allowedAuthMethods: ISocialProvider[];
   features: Feature[];
   lessonInfo?: ILessonInfo;

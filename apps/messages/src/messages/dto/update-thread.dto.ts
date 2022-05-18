@@ -1,4 +1,5 @@
 import { IRecipientType } from '@rittaschool/shared';
+import { Message } from '@rittaschool/shared';
 import { IsUUID } from 'class-validator';
 
 export class UpdateThreadDto {
@@ -11,6 +12,6 @@ export class UpdateThreadDto {
     id: string;
     archived?: boolean | undefined;
   }[];
-  messages?: string[];
+  messages?: Message[];
   removed?: boolean;
 }
