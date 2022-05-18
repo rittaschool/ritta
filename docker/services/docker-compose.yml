@@ -60,6 +60,7 @@ services:
       - RMQ_PASSWORD=guest
       - SIGNING_KEY=RITTATESTSIGNINGKEY
       - INSTANCE_NAME=Ritta Testing
+      - MONGO_URI=mongodb://ritta:password@core_db:27017/ritta?authSource=admin
     networks:
       - rabbitmq
       - services
