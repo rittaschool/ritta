@@ -22,7 +22,7 @@ async function bootstrap() {
         },
       },
       logger: WinstonModule.createLogger({
-        defaultMeta: { service: 'users', enviroment: process.env.NODE_ENV },
+        defaultMeta: { service: 'core', enviroment: process.env.NODE_ENV },
         transports: [
           new transports.Console({
             format: consoleFormat,
@@ -33,6 +33,9 @@ async function bootstrap() {
     },
   );
 
-  app.listen().then(() => console.log(`Core service is online`)).catch(console.error);
+  app
+    .listen()
+    .then(() => console.log(`Core service is online`))
+    .catch(console.error);
 }
 bootstrap();

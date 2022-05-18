@@ -5,16 +5,25 @@ import { validate } from './validation/env.validation';
 import { MessagesModule } from './messages/messages.module';
 import { AnnouncementsModule } from './announcements/announcements.module';
 import { CommonModule } from './common/common.module';
-import { MongooseModule } from '@nestjs/mongoose';
+import { TenancyModule } from '@needle-innovision/nestjs-tenancy';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       validate,
     }),
-    MongooseModule.forRoot(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+    TenancyModule.forRoot({
+      uri: (tenantId: string) =>
+        process.env.MONGO_URI.replace('{TENANTID}', tenantId),
+      options: () => {
+        return {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+        };
+      },
+      getTenant: async () => {
+        return 'TEST';
+      },
     }),
     CommonModule,
     MessagesModule,

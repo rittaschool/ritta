@@ -4,13 +4,13 @@ import { AnnouncementsController } from './announcements.controller';
 import { ConfigModule } from '@nestjs/config';
 import { Announcement } from '@rittaschool/shared';
 import { AnnouncementSchema } from './entities/announcement.entity';
-import { MongooseModule } from '@nestjs/mongoose';
 import { AnnouncementsRepository } from './announcements.repository';
+import { TenancyModule } from '@needle-innovision/nestjs-tenancy';
 
 @Module({
   controllers: [AnnouncementsController],
   imports: [
-    MongooseModule.forFeature([
+    TenancyModule.forFeature([
       { name: Announcement.name, schema: AnnouncementSchema },
     ]),
     ConfigModule,

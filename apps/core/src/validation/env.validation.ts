@@ -26,6 +26,9 @@ class EnviromentVariables {
 
   @IsString()
   INSTANCE_NAME: string;
+
+  @IsString()
+  MONGO_URI: string;
 }
 
 export const validate = (config: Record<string, unknown>) => {
