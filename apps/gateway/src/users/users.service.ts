@@ -9,17 +9,17 @@ import {
   CreateUserDto,
   IEventType,
   IUser,
-  Permission,
   UpdateUserDto,
 } from '@rittaschool/shared';
 import { catchError, of, timeout } from 'rxjs';
-import { Permissions as PermDecorator } from '../permissions.decorator';
+import { Tokenizer } from '../validation/tokenizer';
 
 @Injectable()
 export class UsersService {
   constructor(
     @Inject('USERS_BUS') private client: ClientProxy,
     @Inject('LOGGER') private logger: Logger,
+    @Inject('TOKENIZER') private tokenizer: Tokenizer,
   ) {}
 
   async createUser(createUserDto: CreateUserDto, rid: string): Promise<IUser> {
@@ -47,8 +47,7 @@ export class UsersService {
     }
   }
 
-  @PermDecorator(Permission.GET_ALL_USERS)
-  async getUsers(rid: string): Promise<IUser[]> {
+  async getUsers(rid: string, user: IUser): Promise<IUser[]> {
     this.logger.log({
       rid,
       context: 'UsersService',
@@ -61,7 +60,10 @@ export class UsersService {
     // );
 
     return this.client
-      .send(IEventType.GET_USERS, { rid, permissions: 3 })
+      .send(IEventType.GET_USERS, {
+        rid,
+        token: this.tokenizer.sign({ permissions: user.permissions }),
+      })
       .pipe(timeout(5000)) // timeout
       .toPromise();
   }

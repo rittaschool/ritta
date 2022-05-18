@@ -1,6 +1,11 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { IErrorType, Permissions, RittaError } from '@rittaschool/shared';
+import {
+  IErrorType,
+  IUser,
+  Permissions,
+  RittaError,
+} from '@rittaschool/shared';
 import { Observable } from 'rxjs';
 @Injectable()
 export class PermissionsGuard implements CanActivate {
@@ -28,20 +33,25 @@ export class PermissionsGuard implements CanActivate {
       });
     }
 
-    const userPerms = request[0].permissions;
+    // Got from the request if client has provided a token
+    const userPerms = (request[0].user as IUser).permissions;
 
-    const doesUserHavePermission = Permissions.checkHasPermission(
-      perms,
-      userPerms,
-    );
-
-    if (!doesUserHavePermission) {
-      throw new RittaError(
-        'Invalid permissions.',
-        IErrorType.INVALID_PERMISSION,
+    if (userPerms > 0) {
+      const doesUserHavePermission = Permissions.checkHasPermission(
+        perms,
+        userPerms,
       );
+
+      if (!doesUserHavePermission) {
+        throw new RittaError(
+          'Invalid permissions.',
+          IErrorType.INVALID_PERMISSION,
+        );
+      }
+
+      return doesUserHavePermission;
     }
 
-    return doesUserHavePermission;
+    throw new RittaError('Invalid permissions.', IErrorType.INVALID_PERMISSION);
   }
 }

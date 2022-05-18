@@ -1,6 +1,6 @@
 import { IAccountType } from "../enums";
 import { IOAuth2Identifiers } from "../types";
-import { IMFAOptions, IFidoOptions } from "./auth";
+import { IFidoOptions, IMFAOptions } from "./auth";
 
 export interface IUser {
   id: string;
@@ -22,6 +22,7 @@ export interface IUser {
   isPasswordChangeRequired: boolean;
   createdAt: Date;
   updatedAt: Date;
+  permissions: number;
 }
 
 export type IAPIUser = Omit<IUser, "password">;

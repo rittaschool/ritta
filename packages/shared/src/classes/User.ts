@@ -1,4 +1,4 @@
-import { ILocation, IMFAOptions, IUser, IFidoOptions } from "../interfaces";
+import { IFidoOptions, ILocation, IMFAOptions, IUser } from "../interfaces";
 import { IOAuth2Identifiers } from "../types";
 
 //TODO: remove omit when making accounts
@@ -23,6 +23,7 @@ export class User implements Omit<IUser, "accounts"> {
   isPasswordChangeRequired: boolean; // Prompts user to change his password
   createdAt: Date;
   updatedAt: Date;
+  permissions: number;
 
   constructor(
     id: string,
@@ -41,7 +42,8 @@ export class User implements Omit<IUser, "accounts"> {
     fido?: IFidoOptions,
     oauth2Identifiers?: IOAuth2Identifiers,
     latestLogin?: Date,
-    latestPasswordChange?: Date
+    latestPasswordChange?: Date,
+    permissions?: number
   ) {
     this.id = id;
     this.firstName = firstName;
@@ -62,5 +64,6 @@ export class User implements Omit<IUser, "accounts"> {
     this.isPasswordChangeRequired = isPasswordChangeRequired;
     this.createdAt = new Date(Date.now());
     this.updatedAt = new Date(Date.now());
+    this.permissions = permissions || 0;
   }
 }
