@@ -1,10 +1,10 @@
 import { User } from '@rittaschool/shared';
 import { Document, Schema } from 'mongoose';
 import { v4 } from 'uuid';
+import { FidoSchema } from './fido.entity';
 import { LocationSchema } from './location.entity';
 import { MFASchema } from './mfa.entity';
 import { Oauth2Schema } from './oauth2.entity';
-import { FidoSchema } from './fido.entity';
 
 export type UserDocument = User & Document;
 
@@ -48,4 +48,5 @@ export const UserSchema = new Schema({
   isPasswordChangeRequired: { type: Boolean, default: true },
   createdAt: { type: Number, default: Math.floor(new Date().getTime() / 1000) },
   updatedAt: { type: Number, default: Math.floor(new Date().getTime() / 1000) },
+  permissions: { type: Number, default: 0 },
 });

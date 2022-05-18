@@ -31,7 +31,9 @@ describe('PermissionsGuard', () => {
 
     it('should return true if no perms needed but user has some', () => {
       const context = createMock<ExecutionContext>();
-      context.getArgs = jest.fn().mockReturnValue([{ permissions: 1 }]);
+      context.getArgs = jest
+        .fn()
+        .mockReturnValue([{ user: { permissions: 1 } }]);
 
       expect(guard.canActivate(context)).toBe(true);
     });
@@ -45,7 +47,9 @@ describe('PermissionsGuard', () => {
           Permission.DISABLE_LOGIN,
           Permission.DISABLE_REGISTER,
         ]);
-      context.getArgs = jest.fn().mockReturnValue([{ permissions: 7 }]);
+      context.getArgs = jest
+        .fn()
+        .mockReturnValue([{ user: { permissions: 7 } }]);
 
       expect(guard.canActivate(context)).toBe(true);
     });
@@ -59,7 +63,9 @@ describe('PermissionsGuard', () => {
           Permission.DISABLE_LOGIN,
           Permission.DISABLE_REGISTER,
         ]);
-      context.getArgs = jest.fn().mockReturnValue([{ permissions: 3 }]);
+      context.getArgs = jest
+        .fn()
+        .mockReturnValue([{ user: { permissions: 3 } }]);
 
       // () => some jest thing
       expect(() => guard.canActivate(context)).toThrow(

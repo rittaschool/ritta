@@ -1,19 +1,18 @@
-import { VersioningType } from '@nestjs/common';
 import fastifyCookie from '@fastify/cookie';
+import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ClientProxy } from '@nestjs/microservices';
 import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { config } from 'dotenv';
 import { WinstonModule } from 'nest-winston';
 import { transports } from 'winston';
 import { AppModule } from './app.module';
+import { ChallengeService } from './challenge/challenge.service';
 import { consoleFormat, fileFormat } from './logger.format';
 import { LoggingInterceptor } from './logging.interceptor';
-import { ChallengeService } from './challenge/challenge.service';
 config();
 
 async function bootstrap() {
@@ -71,15 +70,15 @@ async function bootstrap() {
   app.useGlobalInterceptors(new LoggingInterceptor(app.get('LOGGER')));
 
   // Swagger documentation
-  const config = new DocumentBuilder()
-    .setTitle('Ritta')
-    .setDescription('Ritta Description')
-    .setVersion('0.0.1')
-    .addTag('ritta')
-    .build();
+  // const config = new DocumentBuilder()
+  //   .setTitle('Ritta')
+  //   .setDescription('Ritta Description')
+  //   .setVersion('0.0.1')
+  //   .addTag('ritta')
+  //   .build();
 
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document);
+  //const document = SwaggerModule.createDocument(app, config);
+  //SwaggerModule.setup('docs', app, document);
 
   // Start server
   await app.listen(process.env.PORT, process.env.SERVER_IP || '0.0.0.0', () =>
