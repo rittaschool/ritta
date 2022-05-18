@@ -8,6 +8,7 @@ networks:
 volumes:
   users-db: null
   messages-db: null
+  core-db: null
 
 services:
   users_db:
@@ -53,7 +54,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=ritta
       - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
-      - messages-db:/data/msg-db
+      - core-db:/data/core-db
     ports:
       - "27020:27017"
     networks:
