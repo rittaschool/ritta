@@ -13,6 +13,10 @@ describe('UsersResolver', () => {
           provide: 'LOGGER',
           useValue: {},
         },
+        {
+          provide: 'TOKENIZER',
+          useValue: {},
+        },
       ],
     }).compile();
 

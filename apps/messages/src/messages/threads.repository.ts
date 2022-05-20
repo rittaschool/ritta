@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectTenancyModel } from '@needle-innovision/nestjs-tenancy';
+import { InjectModel } from '@nestjs/mongoose';
 import { NewThreadDto, Thread } from '@rittaschool/shared';
 import { Model } from 'mongoose';
 import { UpdateThreadDto } from './dto/update-thread.dto';
@@ -8,7 +8,7 @@ import { ThreadDocument } from './entities/thread.entity';
 @Injectable()
 export class ThreadsRepository {
   constructor(
-    @InjectTenancyModel(Thread.name) private threadModel: Model<ThreadDocument>,
+    @InjectModel(Thread.name) private threadModel: Model<ThreadDocument>,
   ) {}
 
   async findAll(): Promise<Thread[]> {

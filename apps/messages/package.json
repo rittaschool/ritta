@@ -23,7 +23,6 @@
   "dependencies": {
     "@nestjs/mongoose": "^9.0.3",
     "@rittaschool/shared": "*",
-    "@needle-innovision/nestjs-tenancy": "^1.0.21",
     "mongoose": "^6.3.3"
   },
   "jest": {

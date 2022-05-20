@@ -7,17 +7,17 @@ import { UsersModule } from './users/users.module';
 import { CommonModule } from './common/common.module';
 import { APP_GUARD } from '@nestjs/core';
 import { PermissionsGuard } from './auth.guard';
+import { MongooseConfigService } from './mongoose';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       validate,
     }),
-    UsersModule,
-    MongooseModule.forRoot(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+    MongooseModule.forRootAsync({
+      useClass: MongooseConfigService,
     }),
+    UsersModule,
     CommonModule,
   ],
   providers: [
