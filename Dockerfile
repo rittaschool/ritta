@@ -6,7 +6,7 @@ RUN apk update && apk add curl
 # Set working directory
 WORKDIR /app
 RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
-RUN yarn add -g turbo
+RUN pnpm add -g turbo
 COPY . .
 RUN turbo prune --scope=${SCOPE} --docker
 
