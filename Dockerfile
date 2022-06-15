@@ -1,11 +1,12 @@
 FROM node:lts-alpine AS builder
 ARG SCOPE
 ENV SCOPE=${SCOPE}
-RUN apk update
+RUN apk update && apk add curl
 
 # Set working directory
 WORKDIR /app
-RUN yarn global add turbo
+RUN curl -fsSL https://get.pnpm.io/install.sh | sh -
+RUN yarn add -g turbo
 COPY . .
 RUN turbo prune --scope=${SCOPE} --docker
 
@@ -14,8 +15,8 @@ FROM node:lts-alpine AS installer
 RUN apk update
 WORKDIR /app
 COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/yarn.lock ./yarn.lock
-RUN yarn install
+COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+RUN pnpm install
 
 FROM node:lts-alpine AS sourcer
 ARG SCOPE
@@ -24,7 +25,7 @@ WORKDIR /app
 COPY --from=installer /app/ .
 COPY --from=builder /app/out/full/ .
 COPY .gitignore .gitignore
-RUN yarn turbo run build test --scope=${SCOPE} --include-dependencies --no-deps
+RUN pnpm turbo run build test --scope=${SCOPE} --include-dependencies --no-deps
 
 WORKDIR /app/apps/${SCOPE}
-CMD yarn start
+CMD pnpm start
