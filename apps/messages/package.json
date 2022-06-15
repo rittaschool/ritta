@@ -22,8 +22,9 @@
   },
   "dependencies": {
     "@nestjs/mongoose": "^9.0.3",
-    "@rittaschool/shared": "*",
-    "mongoose": "^6.3.3"
+    "@rittaschool/shared": "workspace:*",
+    "mongoose": "^6.3.3",
+    "logform": "2.4.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -41,6 +42,5 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "packageManager": "yarn@3.0.2"
+  }
 }

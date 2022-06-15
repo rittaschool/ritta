@@ -12,7 +12,6 @@
     "build": "rollup -c",
     "test": "jest"
   },
-  "packageManager": "yarn@3.0.2",
   "devDependencies": {
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.6",
@@ -28,6 +27,7 @@
   ],
   "dependencies": {
     "joi": "^17.4.2",
-    "mongoose": "^6.0.12"
+    "mongoose": "^6.0.12",
+    "tslib": "^2.3.1"
   }
 }

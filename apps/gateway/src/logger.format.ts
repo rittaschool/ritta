@@ -1,8 +1,9 @@
+import { Format as SomeFormat } from 'logform';
 import { format } from 'winston';
 
 const { printf, combine, timestamp, colorize, json } = format;
 
-export const loggerFormat = combine(
+export const loggerFormat: SomeFormat = combine(
   timestamp(),
   printf(({ level, message, context, timestamp, rid }) => {
     let msg = message;
@@ -17,6 +18,6 @@ export const loggerFormat = combine(
   }),
 );
 
-export const consoleFormat = combine(colorize(), loggerFormat);
+export const consoleFormat: SomeFormat = combine(colorize(), loggerFormat);
 
-export const fileFormat = combine(timestamp(), json());
+export const fileFormat: SomeFormat = combine(timestamp(), json());

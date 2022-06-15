@@ -27,7 +27,7 @@
     "@nestjs/platform-fastify": "^8.4.3",
     "@nestjs/swagger": "^5.2.1",
     "@nestjs/terminus": "^8.0.6",
-    "@rittaschool/shared": "*",
+    "@rittaschool/shared": "workspace:*",
     "apollo-server-fastify": "^3.6.7",
     "fastify": "^3.27.4",
     "fastify-swagger": "^5.2.0",
@@ -44,7 +44,8 @@
   "devDependencies": {
     "@golevelup/nestjs-testing": "^0.1.2",
     "@golevelup/ts-jest": "^0.3.2",
-    "@types/jsonwebtoken": "^8.5.8"
+    "@types/jsonwebtoken": "^8.5.8",
+    "logform": "2.4.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -62,6 +63,5 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "packageManager": "yarn@3.0.2"
+  }
 }
