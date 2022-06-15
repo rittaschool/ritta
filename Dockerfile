@@ -1,12 +1,11 @@
 FROM node:lts-alpine AS builder
 ARG SCOPE
 ENV SCOPE=${SCOPE}
-RUN apk update && apk add curl
+RUN apk update && apk add curl git
 
 # Set working directory
 WORKDIR /app
-RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
-RUN pnpm setup && pnpm add -g turbo
+RUN npm install -g turbo pnpm
 COPY . .
 RUN turbo prune --scope=${SCOPE} --docker
 
