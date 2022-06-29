@@ -1,0 +1,28 @@
+{
+  "configurations": [
+    {
+      "name": "GATEWAY",
+      "request": "launch",
+      "runtimeArgs": ["run-script", "start"],
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/apps/gateway",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
+    },
+    {
+      "name": "GATEWAY - DEV",
+      "request": "launch",
+      "runtimeArgs": ["run-script", "start:dev"],
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/apps/gateway",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "-- FULL DEV ENV --",
+      "configurations": ["GATEWAY - DEV"]
+    }
+  ]
+}
