@@ -17,12 +17,30 @@
       "cwd": "${workspaceFolder}/apps/gateway",
       "skipFiles": ["<node_internals>/**"],
       "type": "pwa-node"
+    },
+    {
+      "name": "AUTH",
+      "request": "launch",
+      "runtimeArgs": ["run-script", "start"],
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/apps/auth",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
+    },
+    {
+      "name": "AUTH - DEV",
+      "request": "launch",
+      "runtimeArgs": ["run-script", "start:dev"],
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/apps/auth",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
     }
   ],
   "compounds": [
     {
       "name": "-- FULL DEV ENV --",
-      "configurations": ["GATEWAY - DEV"]
+      "configurations": ["GATEWAY - DEV", "AUTH - DEV"]
     }
   ]
 }
