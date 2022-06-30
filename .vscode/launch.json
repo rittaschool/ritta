@@ -35,6 +35,24 @@
       "cwd": "${workspaceFolder}/apps/auth",
       "skipFiles": ["<node_internals>/**"],
       "type": "pwa-node"
+    },
+    {
+      "name": "USERS",
+      "request": "launch",
+      "runtimeArgs": ["run-script", "start"],
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/apps/users",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
+    },
+    {
+      "name": "USERS - DEV",
+      "request": "launch",
+      "runtimeArgs": ["run-script", "start:dev"],
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/apps/users",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
     }
   ],
   "compounds": [

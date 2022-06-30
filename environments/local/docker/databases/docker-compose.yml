@@ -18,7 +18,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=ritta
       - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
-      - users-db:/data/usr-db
+      - users-db:/data/db
     ports:
       - "27018:27017"
     networks:
@@ -36,7 +36,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=ritta
       - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
-      - messages-db:/data/msg-db
+      - messages-db:/data/db
     ports:
       - "27019:27017"
     networks:
@@ -54,7 +54,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=ritta
       - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
-      - core-db:/data/core-db
+      - core-db:/data/db
     ports:
       - "27020:27017"
     networks:
@@ -64,10 +64,10 @@ services:
       interval: 5s
       timeout: 10s
       retries: 12
-  
+
   gateway-db:
     image: redislabs/rejson:latest
-    networks: 
+    networks:
       - databases
     ports:
       - "6380:6379"
