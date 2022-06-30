@@ -58,7 +58,7 @@
   "compounds": [
     {
       "name": "-- FULL DEV ENV --",
-      "configurations": ["GATEWAY - DEV", "AUTH - DEV"]
+      "configurations": ["GATEWAY - DEV", "AUTH - DEV", "USERS - DEV"]
     }
   ]
 }
