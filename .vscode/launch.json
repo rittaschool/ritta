@@ -53,12 +53,35 @@
       "cwd": "${workspaceFolder}/apps/users",
       "skipFiles": ["<node_internals>/**"],
       "type": "pwa-node"
+    },
+    {
+      "name": "MESSAGES",
+      "request": "launch",
+      "runtimeArgs": ["run-script", "start"],
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/apps/messages",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
+    },
+    {
+      "name": "MESSAGES - DEV",
+      "request": "launch",
+      "runtimeArgs": ["run-script", "start:dev"],
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/apps/messages",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
     }
   ],
   "compounds": [
     {
       "name": "-- FULL DEV ENV --",
-      "configurations": ["GATEWAY - DEV", "AUTH - DEV", "USERS - DEV"]
+      "configurations": [
+        "GATEWAY - DEV",
+        "AUTH - DEV",
+        "USERS - DEV",
+        "MESSAGES - DEV"
+      ]
     }
   ]
 }
