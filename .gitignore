@@ -56,3 +56,6 @@ config/*.toml
 # Docker stuff
 .env
 !.env.example
+
+# snyk
+.dccache
