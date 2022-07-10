@@ -71,6 +71,24 @@
       "cwd": "${workspaceFolder}/apps/messages",
       "skipFiles": ["<node_internals>/**"],
       "type": "pwa-node"
+    },
+    {
+      "name": "CORE",
+      "request": "launch",
+      "runtimeArgs": ["run-script", "start"],
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/apps/core",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
+    },
+    {
+      "name": "CORE - DEV",
+      "request": "launch",
+      "runtimeArgs": ["run-script", "start:dev"],
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/apps/core",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "pwa-node"
     }
   ],
   "compounds": [
@@ -80,7 +98,8 @@
         "GATEWAY - DEV",
         "AUTH - DEV",
         "USERS - DEV",
-        "MESSAGES - DEV"
+        "MESSAGES - DEV",
+        "CORE - DEV"
       ]
     }
   ]
