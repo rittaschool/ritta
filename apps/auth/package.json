@@ -28,7 +28,8 @@
     "jsonwebtoken": "^8.5.1",
     "nest-winston": "^1.6.2",
     "otplib": "^12.0.1",
-    "@rittaschool/shared": "*"
+    "@rittaschool/shared": "*",
+    "framework": "*"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.6"

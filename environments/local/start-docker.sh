@@ -12,6 +12,6 @@ done
 
 for i in "rmq" "grafana" "databases"; do
   echo "Starting $i..."
-  docker-compose -f "docker/$i/docker-compose.yml" up -d &
+  docker-compose -f "environments/local/docker/$i/docker-compose.yml" up -d &
   echo "Started $i"
 done
