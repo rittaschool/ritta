@@ -10,10 +10,10 @@ import {
 } from "@mantine/core";
 import {
   Icon as TablerIcon,
-  CalendarStats,
   ChevronLeft,
   ChevronRight,
 } from "tabler-icons-react";
+import { Link } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   control: {
@@ -63,39 +63,74 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface LinksGroupProps {
+export interface LinksGroupProps {
   icon: TablerIcon;
   label: string;
   initiallyOpened?: boolean;
-  links?: { label: string; link: string }[];
+  forceOpen?: boolean;
+  forceChevron?: boolean;
+  link?: string;
+  links?: { label: string; link: string; icon?: TablerIcon }[];
 }
 
 export function LinksGroup({
   icon: Icon,
   label,
   initiallyOpened,
+  forceOpen,
   links,
+  link,
+  forceChevron,
 }: LinksGroupProps) {
   const { classes, theme } = useStyles();
   const hasLinks = Array.isArray(links);
-  const [opened, setOpened] = useState(initiallyOpened || false);
+  const [opened, setOpened] = useState(forceOpen || initiallyOpened || false);
   const ChevronIcon = theme.dir === "ltr" ? ChevronRight : ChevronLeft;
-  const items = (hasLinks ? links : []).map((link) => (
-    <Text<"a">
-      component="a"
-      className={classes.link}
-      href={link.link}
-      key={link.label}
-      onClick={(event) => event.preventDefault()}
-    >
-      {link.label}
-    </Text>
-  ));
+  const items = (hasLinks ? links : []).map((link) => {
+    return (
+      <Text
+        component={Link}
+        className={classes.link}
+        to={link.link}
+        key={link.label}
+        style={{ display: "flex", alignItems: "center" }}
+      >
+        {link.icon && <link.icon height={20} />}
+        {link.label}
+      </Text>
+    );
+  });
+
+  if (link) {
+    return (
+      <UnstyledButton component={Link} to={link} className={classes.control}>
+        <Group position="apart" spacing={0}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <ThemeIcon size={30} color="teal">
+              <Icon size={18} />
+            </ThemeIcon>
+            <Box ml="md">{label}</Box>
+          </Box>
+          {forceChevron && (
+            <ChevronIcon
+              className={classes.chevron}
+              size={14}
+              style={{
+                transform: opened
+                  ? `rotate(${theme.dir === "rtl" ? -90 : 90}deg)`
+                  : "none",
+              }}
+            />
+          )}
+        </Group>
+      </UnstyledButton>
+    );
+  }
 
   return (
     <>
       <UnstyledButton
-        onClick={() => setOpened((o) => !o)}
+        onClick={() => forceOpen || setOpened((o) => !o)}
         className={classes.control}
       >
         <Group position="apart" spacing={0}>
@@ -120,30 +155,5 @@ export function LinksGroup({
       </UnstyledButton>
       {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
     </>
-  );
-}
-
-const mockdata = {
-  label: "Releases",
-  icon: CalendarStats,
-  links: [
-    { label: "Upcoming releases", link: "/" },
-    { label: "Previous releases", link: "/" },
-    { label: "Releases schedule", link: "/" },
-  ],
-};
-
-export function NavbarLinksGroup() {
-  return (
-    <Box
-      sx={(theme) => ({
-        minHeight: 220,
-        padding: theme.spacing.md,
-        backgroundColor:
-          theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
-      })}
-    >
-      <LinksGroup {...mockdata} />
-    </Box>
   );
 }

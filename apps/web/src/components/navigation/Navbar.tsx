@@ -7,58 +7,12 @@ import {
   Center,
   Button,
 } from "@mantine/core";
-import {
-  Notes,
-  CalendarStats,
-  Gauge,
-  PresentationAnalytics,
-  FileAnalytics,
-  Adjustments,
-  Lock,
-  Link,
-  Selector,
-  Logout,
-} from "tabler-icons-react";
+import { Selector, Logout } from "tabler-icons-react";
 import { UserButton } from "./UserButton";
 import { LinksGroup } from "./NavbarLinksGroup";
 // @ts-ignore
 import Logo from "../../../static/logo.svg?component";
-
-const mockdata = [
-  { label: "Dashboard", icon: Gauge },
-  {
-    label: "Market news",
-    icon: Notes,
-    initiallyOpened: true,
-    links: [
-      { label: "Overview", link: "/" },
-      { label: "Forecasts", link: "/" },
-      { label: "Outlook", link: "/" },
-      { label: "Real time", link: "/" },
-    ],
-  },
-  {
-    label: "Releases",
-    icon: CalendarStats,
-    links: [
-      { label: "Upcoming releases", link: "/" },
-      { label: "Previous releases", link: "/" },
-      { label: "Releases schedule", link: "/" },
-    ],
-  },
-  { label: "Analytics", icon: PresentationAnalytics },
-  { label: "Contracts", icon: FileAnalytics },
-  { label: "Settings", icon: Adjustments },
-  {
-    label: "Security",
-    icon: Lock,
-    links: [
-      { label: "Enable 2FA", link: "/" },
-      { label: "Change password", link: "/" },
-      { label: "Recovery codes", link: "/" },
-    ],
-  },
-];
+import { getNavigation } from "./navigation";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -102,7 +56,7 @@ const useStyles = createStyles((theme) => ({
 
 export function NavbarNested({ hidden }: { hidden: boolean }) {
   const { classes } = useStyles();
-  const links = mockdata.map((item) => (
+  const links = getNavigation().map((item) => (
     <LinksGroup {...item} key={item.label} />
   ));
 
