@@ -1,45 +1,43 @@
 import {
   AppShell,
   Burger,
+  Center,
   Header,
   MediaQuery,
   Navbar,
-  Popover,
   useMantineTheme,
-} from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
-import Link from 'next/link';
-import { ReactNode, useState } from 'react';
-import { Calendar, File, GitMerge, Home } from 'react-feather';
-import { Messages } from 'tabler-icons-react';
-import useBuildId from '../hooks/useBuildId';
-import { HeaderUser } from './HeaderUser';
-import LayoutLink from './LayoutLink';
-import Logo from './Logo';
+} from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+import { ReactNode, useState } from "react";
+import { Calendar, File, GitMerge, Home } from "react-feather";
+import { Messages } from "tabler-icons-react";
+import { HeaderLogout } from "./HeaderLogout";
+import { HeaderUser } from "./HeaderUser";
+import LayoutLink from "./LayoutLink";
+import Logo from "./Logo";
 
 // Links
 const links = [
-  { icon: <Home size={16} />, color: 'teal', label: 'Koti', to: '/home' },
+  { icon: <Home size={16} />, color: "teal", label: "Koti", to: "/" },
   {
     icon: <Messages size={16} />,
-    color: 'orange',
-    label: 'Viestit',
-    to: '/messages',
+    color: "orange",
+    label: "Viestit",
+    to: "/messages",
   },
   {
     icon: <Calendar size={16} />,
-    color: 'red',
-    label: 'Työjärjestys',
-    to: '/schedule',
+    color: "red",
+    label: "Työjärjestys",
+    to: "/schedule",
   },
-  { icon: <File size={16} />, color: 'grape', label: 'Kokeet', to: '/tests' },
+  { icon: <File size={16} />, color: "grape", label: "Kokeet", to: "/tests" },
 ];
 
 export default function Layout({ children }: { children: ReactNode }) {
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
-  const buildId = useBuildId();
-  const isMobile = useMediaQuery('(max-width: 768px)');
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   return (
     <AppShell
@@ -61,11 +59,15 @@ export default function Layout({ children }: { children: ReactNode }) {
         >
           {/* First section with normal height (depends on section content) */}
           {/* <Navbar.Section>First section</Navbar.Section> */}
-          { !isMobile ? ( <Navbar.Section>
-            <Link href="/" passHref>
-              <Logo isLink />
-            </Link>
-          </Navbar.Section> ) : <></> }
+          {!isMobile ? (
+            <Navbar.Section>
+              <a href="/">
+                <Logo />
+              </a>
+            </Navbar.Section>
+          ) : (
+            <></>
+          )}
           <Navbar.Section grow>
             {links.map((ele) => (
               <LayoutLink key={ele.label} {...ele} />
@@ -75,40 +77,47 @@ export default function Layout({ children }: { children: ReactNode }) {
             <span
               style={{ display: "inline-flex", alignItems: "center" }}
               className="legend-label"
-              >
-              <GitMerge style={{ marginRight: '5px' }} /> {buildId}
+            >
+              <GitMerge style={{ marginRight: "5px" }} /> {__COMMIT_HASH__}
             </span>
             <HeaderUser />
-            <Popover position="bottom" placement="end" gutter={10} />
+            <HeaderLogout />
           </Navbar.Section>
         </Navbar>
       }
       header={
-        <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+        <MediaQuery largerThan="sm" styles={{ display: "none" }}>
           <Header height={isMobile ? 70 : 0}>
             {/* Handle other responsive styles with MediaQuery component or createStyles function */}
             <div
-              style={{ display: 'flex', alignItems: 'center', height: '100%' }}
+              style={{ display: "flex", alignItems: "center", height: "100%" }}
             >
-                <Burger
-                  opened={opened}
-                  onClick={() => setOpened((o) => !o)}
-                  size="sm"
-                  color={theme.colors.gray[6]}
-                  sx={{ marginLeft: '16px'}}
-                  mr="xl"
-                />
-                { isMobile ? ( <Navbar.Section>
-                  <Link href="/" passHref>
-                    <Logo isLink />
-                  </Link>
-                </Navbar.Section> ) : <></> }
+              <Burger
+                opened={opened}
+                onClick={() => setOpened((o) => !o)}
+                size="sm"
+                color={theme.colors.gray[6]}
+                sx={{ marginLeft: "16px" }}
+                mr="xl"
+              />
+              {isMobile ? (
+                <Navbar.Section grow>
+                  <Center>
+                    <a href="/">
+                      <Logo />
+                    </a>
+                  </Center>
+                </Navbar.Section>
+              ) : (
+                <></>
+              )}
+              <div style={{ width: "63px" }} />
             </div>
           </Header>
         </MediaQuery>
       }
       sx={{
-        paddingLeft: '20px'
+        paddingLeft: "20px",
       }}
     >
       {children}

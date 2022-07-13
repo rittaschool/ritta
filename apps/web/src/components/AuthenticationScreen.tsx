@@ -1,7 +1,8 @@
-import { FC } from 'react';
+import { FC, ReactElement } from "react";
 
 interface AuthenticationScreenProps {
   title: string;
+  children: ReactElement[];
 }
 
 const AuthenticationScreen: FC<AuthenticationScreenProps> = ({

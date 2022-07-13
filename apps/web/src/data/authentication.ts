@@ -1,7 +1,6 @@
-import { gql } from '@apollo/client';
-import { Challenge, IUser } from '@rittaschool/shared';
-import { GraphQLError } from 'graphql';
-import { graphqlClient as client } from './baseClient';
+import { gql } from "@apollo/client";
+import { Challenge, IUser } from "@rittaschool/shared";
+import { graphqlClient as client } from "./baseClient";
 
 export const startLoginQuery = gql`
   query startLogin($identifier: String!) {
@@ -124,7 +123,7 @@ export const submitChallenge = async (
       },
     };
   } catch (error) {
-    console.log('auth', error);
+    console.log("auth", error);
 
     return {
       errors: [error],

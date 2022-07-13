@@ -1,45 +1,32 @@
-import { FC } from 'react';
-import { createStyles } from '@mantine/core';
-import rittaSvg from '../assets/Ritta.svg';
+import { FC } from "react";
+import { Center, createStyles } from "@mantine/core";
+// @ts-ignore
+import rittaSvg from "../../static/logo.svg?component";
 
 interface LogoProps {
   color?: string;
   SVG?: any;
-  isLink?: boolean;
 }
 
 const useStyles = createStyles((theme) => ({
   logo: {
-    alignItems: 'center',
-    display: 'flex',
-    height: '60px',
-    width: '100%',
-    [`@media (min-width: ${theme.breakpoints.sm}px)`]: {
-      marginLeft: '32px'
-    },
+    height: "70px",
+    width: "100%",
   },
 
   svg: {
-    height: '40%',
+    height: "50%",
   },
 }));
 
 // #1abc9c is ritta primary color (green)
-const Logo: FC<LogoProps> = ({
-  color = '#1abc9c',
-  SVG = rittaSvg,
-  isLink,
-}) => {
+const Logo: FC<LogoProps> = ({ color = "#1abc9c", SVG = rittaSvg }) => {
   const { classes } = useStyles();
 
-  return isLink ? (
-    <a className={classes.logo}>
+  return (
+    <Center className={classes.logo}>
       <SVG fill={color} className={classes.svg} />
-    </a>
-  ) : (
-    <div className={classes.logo}>
-      <SVG fill={color} className={classes.svg} />
-    </div>
+    </Center>
   );
 };
 

@@ -1,6 +1,6 @@
-import { Group, Text, ThemeIcon, UnstyledButton } from '@mantine/core';
-import Link from 'next/link';
-import { ReactNode } from 'react';
+import { Anchor, Group, Text, ThemeIcon, UnstyledButton } from "@mantine/core";
+import { ReactNode } from "react";
+import { Link } from "react-router-dom";
 
 interface Props {
   icon: ReactNode;
@@ -13,32 +13,39 @@ function LayoutLink({ color, label, icon, to }: Props) {
   return (
     <UnstyledButton
       sx={(theme) => ({
-        display: 'block',
-        width: '100%',
+        display: "block",
+        width: "100%",
         padding: theme.spacing.xs,
         borderRadius: theme.radius.sm,
         color:
-          theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+          theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
 
-        '&:hover': {
+        "&:hover": {
           backgroundColor:
-            theme.colorScheme === 'dark'
+            theme.colorScheme === "dark"
               ? theme.colors.dark[6]
               : theme.colors.gray[0],
         },
       })}
     >
-      <Link href={to} passHref>
+      <Anchor
+        component={Link}
+        to={to}
+        sx={{
+          color: "black",
+          ":hover": {
+            textDecoration: "none",
+          },
+        }}
+      >
         <Group>
           <ThemeIcon color={color} variant="light">
             {icon}
           </ThemeIcon>
 
-          <Text size="sm" component="a">
-            {label}
-          </Text>
+          <Text size="sm">{label}</Text>
         </Group>
-      </Link>
+      </Anchor>
     </UnstyledButton>
   );
 }

@@ -25,8 +25,16 @@
       "path": "apps/messages"
     },
     {
-      "name": "🌐 @ritta/web",
+      "name": "📱 @ritta/web",
       "path": "apps/web"
+    },
+    {
+      "name": "📦 @ritta/framework",
+      "path": "packages/framework"
+    },
+    {
+      "name": "📦 @ritta/shared",
+      "path": "packages/shared"
     }
   ],
   "settings": {
@@ -34,7 +42,7 @@
     "typescript.enablePromptUseWorkspaceTsdk": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
-    "editor.formatOnPaste": true,
+    "editor.formatOnPaste": true
   },
   "extensions": {
     "recommendations": [
