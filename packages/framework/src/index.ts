@@ -6,7 +6,6 @@ import {
 } from "@nestjs/microservices";
 import { WinstonModule } from "nest-winston";
 import { transports } from "winston";
-import { LoggingInterceptor } from "./interceptors/LoggingInterceptor";
 import { App, CreateServiceProps } from "./interfaces";
 import { consoleFormat } from "./logger.format";
 
@@ -43,9 +42,6 @@ export const createService = async ({
     }
   );
 
-  // Bind Logging interceptor
-  app.useGlobalInterceptors(new LoggingInterceptor(app.get("LOGGER")));
-
   // Connect to message broker
   const bus = app.get<ClientProxy>("EVENT_BUS");
   try {
@@ -70,3 +66,5 @@ export const createService = async ({
         ),
   };
 };
+
+export { LoggerModule } from "./logger/logger.module";
