@@ -1,5 +1,5 @@
-import { Avatar, Button, Group, PasswordInput, Title } from '@mantine/core';
-import { UseFormReturnType } from '@mantine/form/lib/use-form';
+import { Avatar, Button, Group, PasswordInput, Title } from "@mantine/core";
+import { UseFormReturnType } from "@mantine/form";
 
 export interface PasswordStepValues {
   password: string;
@@ -19,7 +19,7 @@ function SecondStep({ form, user, error }: Props) {
   return (
     <>
       {user && (
-        <Group direction="column" align="center">
+        <Group align="center">
           <Avatar size="lg" src={user.photoUri} />
           <Title order={1}>Hei, {user.firstName}</Title>
         </Group>
@@ -31,7 +31,7 @@ function SecondStep({ form, user, error }: Props) {
         label="Salasana"
         placeholder="*******"
         error={error}
-        {...form.getInputProps('password')}
+        {...form.getInputProps("password")}
       />
 
       <Group position="center" mt="xl" grow>

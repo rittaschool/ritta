@@ -8,7 +8,7 @@ import {
   Center,
   Text,
 } from "@mantine/core";
-import { useForm } from "@mantine/hooks";
+import { useForm } from "@mantine/form";
 import { useEffect, useRef, useState } from "react";
 import Logo from "../components/Logo";
 import useAuthentication from "../hooks/useAuthentication";
@@ -41,7 +41,7 @@ const Login = () => {
         })}
       >
         <Logo />
-        <Group mt={50} direction="column">
+        <Group mt={50}>
           <Title order={2}>Tervetuloa käyttämään Rittaa</Title>
           <Text>
             Ritta on helppokäyttöinen ja monipuolinen koulujärjestelmä. <br />
@@ -80,7 +80,7 @@ const Login = () => {
           Kirjaudu Sisään
         </Title>
         <Box mt="lg">
-          <form onSubmit={form.onSubmit((values) => console.log(values))}>
+          <form onSubmit={form.onSubmit((values: any) => console.log(values))}>
             <TextInput
               size="md"
               required

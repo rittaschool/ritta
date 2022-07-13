@@ -1,22 +1,22 @@
-import { Group } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { UseFormReturnType } from '@mantine/form/lib/use-form';
-import { useState } from 'react';
-import useAuthentication from '../../../hooks/useAuthentication';
-import Form from '../../Form';
-import ThemeToggle from '../../ThemeToggle';
-import EmailStep, { EmailStepValues } from './EmailStep';
-import FidoStep from './FidoStep';
-import OtpStep from './OtpStep';
-import PasswordStep, { PasswordStepValues } from './PasswordStep';
-import Success from './Success';
+import { Group } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { UseFormReturnType } from "@mantine/form";
+import { useState } from "react";
+import useAuthentication from "../../../hooks/useAuthentication";
+import Form from "../../Form";
+import ThemeToggle from "../../ThemeToggle";
+import EmailStep, { EmailStepValues } from "./EmailStep";
+import FidoStep from "./FidoStep";
+import OtpStep from "./OtpStep";
+import PasswordStep, { PasswordStepValues } from "./PasswordStep";
+import Success from "./Success";
 
-type LoginSteps = 'email' | 'password' | 'fido' | 'otp' | 'success';
+type LoginSteps = "email" | "password" | "fido" | "otp" | "success";
 
 type Props = {};
 
 function LoginForm({}: Props) {
-  const [currentStep, setCurrentStep] = useState<LoginSteps>('email');
+  const [currentStep, setCurrentStep] = useState<LoginSteps>("email");
   const [error, setError] = useState<string>();
   const [user, setUser] = useState(null);
   const { startLoginProcess } = useAuthentication();
@@ -24,27 +24,27 @@ function LoginForm({}: Props) {
   const formsList = [
     useForm<EmailStepValues>({
       initialValues: {
-        email: '',
+        email: "",
       },
     }),
     useForm<PasswordStepValues>({
       initialValues: {
-        password: '',
+        password: "",
       },
     }),
     useForm<PasswordStepValues>({
       initialValues: {
-        password: '',
+        password: "",
       },
     }),
     useForm<PasswordStepValues>({
       initialValues: {
-        password: '',
+        password: "",
       },
     }),
     useForm<PasswordStepValues>({
       initialValues: {
-        password: '',
+        password: "",
       },
     }),
   ];
@@ -67,7 +67,7 @@ function LoginForm({}: Props) {
 
   const handleSubmit = async (values: EmailStepValues | PasswordStepValues) => {
     switch (currentStep) {
-      case 'email':
+      case "email":
         const { email } = values as EmailStepValues;
         const res = await startLoginProcess(email);
 
@@ -94,13 +94,11 @@ function LoginForm({}: Props) {
       <Form
         onSubmit={forms[currentStep].onSubmit((values) => handleSubmit(values))}
       >
-        <Group direction="column" grow>
-          <Group grow direction="column">
-            {steps[currentStep]}
-          </Group>
+        <Group grow>
+          <Group grow>{steps[currentStep]}</Group>
           <Group
             sx={(theme) => ({
-              position: 'absolute',
+              position: "absolute",
               right: theme.spacing.lg,
               bottom: theme.spacing.md,
             })}

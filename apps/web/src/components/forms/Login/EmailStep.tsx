@@ -1,6 +1,6 @@
-import { Button, Group, TextInput } from '@mantine/core';
-import { UseFormReturnType } from '@mantine/form/lib/use-form';
-import { At } from 'tabler-icons-react';
+import { Button, Group, TextInput } from "@mantine/core";
+import { UseFormReturnType } from "@mantine/form";
+import { At } from "tabler-icons-react";
 
 export interface EmailStepValues {
   email: string;
@@ -21,7 +21,7 @@ function FirstStep({ form, error }: Props) {
         label="Käyttäjätunnus"
         placeholder="etunimi.sukunimi"
         error={error}
-        {...form.getInputProps('email')}
+        {...form.getInputProps("email")}
       />
 
       <Group position="center" mt="xl" grow>
