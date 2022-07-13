@@ -46,10 +46,6 @@ config/*.toml
 !.yarn/sdks
 !.yarn/versions
 
-# code-workspace
-
-*.code-workspace
-
 # TURBOREPO
 .turbo
 
