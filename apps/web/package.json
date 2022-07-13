@@ -20,7 +20,8 @@
     "react-dom": "^18.0.0",
     "react-feather": "^2.0.10",
     "react-router-dom": "6",
-    "tabler-icons-react": "^1.52.0"
+    "tabler-icons-react": "^1.52.0",
+    "@rittaschool/shared": "*"
   },
   "devDependencies": {
     "@honkhonk/vite-plugin-svgr": "^1.1.0",
