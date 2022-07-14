@@ -39,7 +39,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.5",
-    "tslib": "^2.3.1"
+    "tslib": "^2.3.1",
+    "class-validator": "^0.13.2"
   },
   "devDependencies": {
     "@golevelup/nestjs-testing": "^0.1.2",
