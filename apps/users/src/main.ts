@@ -5,9 +5,9 @@ config();
 
 async function bootstrap() {
   const app = await createService({
-    name: 'messages',
+    name: 'users',
     queue: {
-      name: 'messages',
+      name: 'users',
       url: `amqp://${process.env.RMQ_PASSWORD}:${process.env.RMQ_USERNAME}@${process.env.RMQ_HOST}:${process.env.RMQ_PORT}/`,
       options: {
         durable: true,
