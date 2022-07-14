@@ -25,7 +25,8 @@
     "argon2": "^0.28.5",
     "mongoose": "^6.2.9",
     "otplib": "^12.0.1",
-    "@rittaschool/shared": "*"
+    "@rittaschool/shared": "*",
+    "framework": "*"
   },
   "jest": {
     "moduleFileExtensions": [
