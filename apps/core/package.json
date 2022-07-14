@@ -28,7 +28,8 @@
     "@nestjs/common": "9.0.3",
     "@rittaschool/shared": "*",
     "mongoose": "^6.3.3",
-    "class-validator": "^0.13.2"
+    "class-validator": "^0.13.2",
+    "reflect-metadata": "^0.1.13"
   },
   "jest": {
     "moduleFileExtensions": [
