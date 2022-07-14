@@ -23,7 +23,8 @@
   "dependencies": {
     "@nestjs/mongoose": "^9.0.3",
     "@rittaschool/shared": "*",
-    "mongoose": "^6.3.3"
+    "mongoose": "^6.3.3",
+    "framework": "*"
   },
   "jest": {
     "moduleFileExtensions": [
