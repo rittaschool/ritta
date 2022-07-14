@@ -46,7 +46,7 @@ async function bootstrap() {
   //       .log({ message: `Auth service is online`, context: 'Main' }),
   //   );
 
-  const app = createService({
+  const app = await createService({
     name: 'auth',
     queue: {
       name: 'auth',
@@ -58,6 +58,6 @@ async function bootstrap() {
     appModule: AppModule,
   });
 
-  (await app).start();
+  app.start();
 }
 bootstrap();
