@@ -1,6 +1,6 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 export const graphqlClient = new ApolloClient({
-  uri: "https://devapp.midka.dev/graphql",
+  uri: "http://localhost:3000/graphql",
   cache: new InMemoryCache({ addTypename: false }),
 });

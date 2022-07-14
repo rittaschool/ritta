@@ -1,5 +1,5 @@
 import { Controller, Inject, UsePipes } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import {
   Challenge,
   IEventType,
@@ -20,24 +20,35 @@ export class AuthController {
   async loginWithPassword(@Payload() challenge: Challenge) {
     const { data, userId } = challenge;
 
-    return await this.authService.loginWithPassword(
-      data.passwordData.password,
-      userId,
-    );
+    try {
+      return await this.authService.loginWithPassword(
+        data.passwordData.password,
+        userId,
+      );
+    } catch (e) {
+      throw new RpcException('User was not found');
+    }
   }
 
   // TODO: add validation schema
   @MessagePattern('user_login_otp')
-  submitOtpCode(@Payload() challenge: Challenge) {
+  async submitOtpCode(@Payload() challenge: Challenge) {
     const { data, userId } = challenge;
-
-    return this.authService.submitOtpCode(data.otpData.otp, userId);
+    try {
+      return await this.authService.submitOtpCode(data.otpData.otp, userId);
+    } catch (e) {
+      throw new RpcException(e.message);
+    }
   }
 
   @UsePipes(new JoiValidationPipe(LoginOAuthValidationSchema))
   @MessagePattern(IEventType.USER_OAUTH_LOGIN)
-  loginOAuth(loginOauthUserDto: LoginOAuthUserDto) {
-    return this.authService.loginOAuth(loginOauthUserDto);
+  async loginOAuth(loginOauthUserDto: LoginOAuthUserDto) {
+    try {
+      return await this.authService.loginOAuth(loginOauthUserDto);
+    } catch (e) {
+      throw new RpcException(e.message);
+    }
   }
 
   // @UsePipes(new JoiValidationPipe(LoginMFAValidationSchema))

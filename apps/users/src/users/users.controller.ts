@@ -26,19 +26,33 @@ export class UsersController {
 
   @UsePipes(new JoiValidationPipe(CreateUserValidationSchema))
   @MessagePattern(IEventType.USER_CREATED)
-  create(@Payload() createUserDto: CreateUserDto) {
-    return this.usersService.createUser(createUserDto);
+  async create(@Payload() createUserDto: CreateUserDto) {
+    try {
+      return await this.usersService.createUser(createUserDto);
+    } catch (e) {
+      throw new RpcException(e.message);
+    }
   }
 
   @Permissions(Permission.GET_ALL_USERS)
   @MessagePattern(IEventType.GET_USERS)
-  getUsers() {
-    return this.usersService.getUsers();
+  async getUsers() {
+    try {
+      return await this.usersService.getUsers();
+    } catch (err) {
+      throw new RpcException(err.message);
+    }
   }
 
   @MessagePattern(IEventType.GET_USER)
-  getUser(@Payload() { id, throwError }: { id: string; throwError: boolean }) {
-    return this.usersService.getUser(id, throwError);
+  async getUser(
+    @Payload() { id, throwError }: { id: string; throwError: boolean },
+  ) {
+    try {
+      return await this.usersService.getUser(id, throwError);
+    } catch (e) {
+      throw new RpcException('User not found');
+    }
   }
 
   @MessagePattern(IEventType.USER_UPDATED)
