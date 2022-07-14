@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { AuthenticationScreen, Button, Form } from "../components";
-import useAuthentication from "../hooks/useAuthentication";
+import { AuthenticationScreen, Button, Form } from "../../components";
+import useAuthentication from "../../hooks/useAuthentication";
 
-const Login = () => {
+const OldLogin = () => {
   const {
     startLoginProcess,
     submitPassword,
@@ -98,4 +98,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default OldLogin;

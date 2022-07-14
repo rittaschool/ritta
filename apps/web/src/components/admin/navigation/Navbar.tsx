@@ -11,10 +11,9 @@ import { Selector, Logout, Settings } from "tabler-icons-react";
 import { UserButton } from "./UserButton";
 import { LinksGroup } from "./NavbarLinksGroup";
 // @ts-ignore
-import Logo from "../../../static/logo.svg?component";
+import Logo from "../../../../static/logo.svg?component";
 import { getNavigation } from "./navigation";
 import { Link, useLocation } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -90,9 +89,9 @@ export function NavbarNested({ hidden }: { hidden: boolean }) {
       <Navbar.Section className={classes.user}>
         <UserButton
           image="https://i.imgur.com/fGxgcDF.png"
-          name="Olli Opettaja"
-          title="Opettaja"
-          schoolName="Rittalan yhteiskoulu"
+          name="Antti Allapitäjä"
+          title="Ylläpitäjä"
+          schoolName="Rittalan opetustoimi"
           icon={<Selector size={14} />}
         />
       </Navbar.Section>

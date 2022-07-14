@@ -1,13 +1,14 @@
-import { useState } from 'react';
-import { startLogin, submitChallenge } from '../data/authentication';
-import { Challenge, IUser } from '@rittaschool/shared';
-import { startFido2Setup, respondToFido2Setup } from '../data/fido2';
+import { useState } from "react";
+import { startLogin, submitChallenge } from "../data/authentication";
+import { Challenge, IUser } from "@rittaschool/shared";
+import { startFido2Setup, respondToFido2Setup } from "../data/fido2";
 
 interface UseAuthentication {
   authenticated: boolean;
   loading: boolean;
   user: IUser | null;
   challenge: Challenge | null;
+  logOut: () => Promise<void>;
   startLoginProcess: (identifier?: string | null) => Promise<{
     nextScreen: string;
     errors?: readonly unknown[];
@@ -26,10 +27,10 @@ interface UseAuthentication {
 const screens: {
   [key: string]: string;
 } = {
-  EMAIL_NEEDED: 'email',
-  PASSWORD_NEEDED: 'password',
-  FIDO2_NEEDED: 'fido',
-  OTP_NEEDED: 'otp',
+  EMAIL_NEEDED: "email",
+  PASSWORD_NEEDED: "password",
+  FIDO2_NEEDED: "fido",
+  OTP_NEEDED: "otp",
 };
 
 const useAuthentication = (): UseAuthentication => {
@@ -48,7 +49,7 @@ const useAuthentication = (): UseAuthentication => {
       firstName: string;
     } | null;
   }> => {
-    if (!identifier) console.log('No identifier');
+    if (!identifier) console.log("No identifier");
 
     const { loading, errors, data } = await startLogin(identifier!);
 
@@ -56,13 +57,13 @@ const useAuthentication = (): UseAuthentication => {
 
     if (errors || !data) {
       return {
-        nextScreen: screens['EMAIL_NEEDED'],
+        nextScreen: screens["EMAIL_NEEDED"],
         errors: errors,
         user: null,
       };
     }
 
-    if (!data!.challenge) throw new Error('No challenge');
+    if (!data!.challenge) throw new Error("No challenge");
 
     setChallenge(data!.challenge);
 
@@ -76,9 +77,9 @@ const useAuthentication = (): UseAuthentication => {
   };
 
   const submitPassword = async (password: string, challenge: Challenge) => {
-    if (!challenge.userId) return console.log('Challenge has no userId');
+    if (!challenge.userId) return console.log("Challenge has no userId");
 
-    console.log('chal', challenge);
+    console.log("chal", challenge);
 
     const { errors, loading, data } = await submitChallenge({
       ...challenge,
@@ -89,7 +90,7 @@ const useAuthentication = (): UseAuthentication => {
       },
     });
 
-    console.log('data', data);
+    console.log("data", data);
 
     setLoading(loading);
 
@@ -114,12 +115,12 @@ const useAuthentication = (): UseAuthentication => {
 
       const result = await navigator.credentials
         .create({ publicKey: data })
-        .catch((err) => console.log('FAIL err: ', err));
+        .catch((err) => console.log("FAIL err: ", err));
 
       return result;
     },
     finishSetup: async (data: any) => {
-      console.log('data', data);
+      console.log("data", data);
       const { errors, data: resultData } = await respondToFido2Setup(data);
 
       if (errors || !resultData) {
@@ -133,6 +134,14 @@ const useAuthentication = (): UseAuthentication => {
     },
   };
 
+  const logOut = async () => {
+    setChallenge(null);
+    setUser(null);
+    setLoading(false);
+    setAuthenticated(false);
+    // TODO: Terminate refresh token/session?
+  };
+
   return {
     authenticated,
     loading,
@@ -141,6 +150,7 @@ const useAuthentication = (): UseAuthentication => {
     submitPassword,
     challenge,
     fido2,
+    logOut,
   };
 };
 

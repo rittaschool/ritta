@@ -9,10 +9,8 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { ReactNode, useState } from "react";
-import { Calendar, File, GitMerge, Home } from "react-feather";
-import { Messages } from "tabler-icons-react";
 import { NavbarNested as Navbar } from "./navigation/Navbar";
-import Logo from "./Logo";
+import Logo from "../Logo";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const [opened, setOpened] = useState(false);

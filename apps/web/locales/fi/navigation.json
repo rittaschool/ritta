@@ -1,0 +1,11 @@
+{
+  "home": "Koti",
+  "messages": {
+    "messages": "Viestit",
+    "inbox": "Saapuneet",
+    "sent": "Lähetetyt",
+    "drafts": "Luonnokset",
+    "archive": "Arkisto"
+  },
+  "schedule": "Työjärjestys"
+}

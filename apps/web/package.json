@@ -18,9 +18,13 @@
     "@mantine/rte": "^5.0.0-alpha.19",
     "@rittaschool/shared": "*",
     "dayjs": "^1.11.3",
+    "i18next": "^21.8.14",
+    "i18next-browser-languagedetector": "^6.1.4",
+    "i18next-http-backend": "^1.4.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-feather": "^2.0.10",
+    "react-i18next": "^11.18.1",
     "react-router-dom": "6",
     "tabler-icons-react": "^1.52.0"
   },
