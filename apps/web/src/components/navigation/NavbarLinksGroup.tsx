@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Group,
   Box,
@@ -68,6 +68,7 @@ export interface LinksGroupProps {
   label: string;
   initiallyOpened?: boolean;
   forceOpen?: boolean;
+  forceClose?: boolean;
   forceChevron?: boolean;
   link?: string;
   links?: { label: string; link: string; icon?: TablerIcon }[];
@@ -78,13 +79,19 @@ export function LinksGroup({
   label,
   initiallyOpened,
   forceOpen,
+  forceClose,
   links,
   link,
   forceChevron,
 }: LinksGroupProps) {
   const { classes, theme } = useStyles();
   const hasLinks = Array.isArray(links);
-  const [opened, setOpened] = useState(forceOpen || initiallyOpened || false);
+  const [opened, setOpened] = useState(initiallyOpened || false);
+
+  useEffect(() => {
+    setOpened(forceClose ? false : forceOpen || false);
+  }, [forceOpen, forceClose]);
+
   const ChevronIcon = theme.dir === "ltr" ? ChevronRight : ChevronLeft;
   const items = (hasLinks ? links : []).map((link) => {
     return (
@@ -103,27 +110,30 @@ export function LinksGroup({
 
   if (link) {
     return (
-      <UnstyledButton component={Link} to={link} className={classes.control}>
-        <Group position="apart" spacing={0}>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <ThemeIcon size={30} color="teal">
-              <Icon size={18} />
-            </ThemeIcon>
-            <Box ml="md">{label}</Box>
-          </Box>
-          {forceChevron && (
-            <ChevronIcon
-              className={classes.chevron}
-              size={14}
-              style={{
-                transform: opened
-                  ? `rotate(${theme.dir === "rtl" ? -90 : 90}deg)`
-                  : "none",
-              }}
-            />
-          )}
-        </Group>
-      </UnstyledButton>
+      <>
+        <UnstyledButton component={Link} to={link} className={classes.control}>
+          <Group position="apart" spacing={0}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <ThemeIcon size={30} color="teal">
+                <Icon size={18} />
+              </ThemeIcon>
+              <Box ml="md">{label}</Box>
+            </Box>
+            {forceChevron && (
+              <ChevronIcon
+                className={classes.chevron}
+                size={14}
+                style={{
+                  transform: opened
+                    ? `rotate(${theme.dir === "rtl" ? -90 : 90}deg)`
+                    : "none",
+                }}
+              />
+            )}
+          </Group>
+        </UnstyledButton>
+        {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
+      </>
     );
   }
 

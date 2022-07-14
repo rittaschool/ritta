@@ -62,9 +62,6 @@ export function NavbarNested({ hidden }: { hidden: boolean }) {
     <LinksGroup {...item} key={item.label} />
   ));
 
-  console.log(location.pathname.startsWith("/messages"));
-  console.log(links);
-
   return (
     <Navbar
       width={{ sm: 300 }}
