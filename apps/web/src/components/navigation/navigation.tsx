@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { Location } from "react-router-dom";
 import {
   Adjustments,
   CalendarStats,
@@ -14,8 +14,8 @@ import {
 } from "tabler-icons-react";
 import { LinksGroupProps } from "./NavbarLinksGroup";
 
-export function getNavigation(): LinksGroupProps[] {
-  const location = useLocation();
+export function getNavigation(location: Location): LinksGroupProps[] {
+  console.log("redraw navigation");
 
   return [
     { label: "Etusivu", icon: Home, link: "/" },

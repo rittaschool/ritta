@@ -13,6 +13,7 @@ import { LinksGroup } from "./NavbarLinksGroup";
 // @ts-ignore
 import Logo from "../../../static/logo.svg?component";
 import { getNavigation } from "./navigation";
+import { useLocation } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -56,7 +57,8 @@ const useStyles = createStyles((theme) => ({
 
 export function NavbarNested({ hidden }: { hidden: boolean }) {
   const { classes } = useStyles();
-  const links = getNavigation().map((item) => (
+  const location = useLocation();
+  const links = getNavigation(location).map((item) => (
     <LinksGroup {...item} key={item.label} />
   ));
 
