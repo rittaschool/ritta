@@ -24,6 +24,8 @@
     "@nestjs/mongoose": "^9.0.3",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/testing": "^9.0.3",
+    "@nestjs/core": "9.0.3",
+    "@nestjs/common": "9.0.3",
     "@rittaschool/shared": "*",
     "mongoose": "^6.3.3",
     "class-validator": "^0.13.2"
