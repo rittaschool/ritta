@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@nestjs/mongoose": "^9.0.3",
+    "@nestjs/cli": "^9.0.0",
     "@rittaschool/shared": "*",
     "mongoose": "^6.3.3",
     "class-validator": "^0.13.2"
