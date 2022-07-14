@@ -29,6 +29,7 @@
     "@nestjs/terminus": "^8.0.6",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/testing": "^9.0.3",
+    "@nestjs/microservices": "9.0.3",
     "@rittaschool/shared": "*",
     "apollo-server-fastify": "^3.6.7",
     "fastify": "^3.27.4",

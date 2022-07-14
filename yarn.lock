@@ -909,6 +909,15 @@
     webpack "5.73.0"
     webpack-node-externals "3.0.0"
 
+"@nestjs/common@9.0.3":
+  version "9.0.3"
+  resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-9.0.3.tgz#f955e7ff42a5d86c33a55022f00a349bc54666f3"
+  integrity sha512-QPUdWb6srXmJeRlnavLa0FHFXtgajm/WsyYn/MlHpzqTv7VRfB/zLicwPofdH+CozVvzoZp+c63Khuysg9uasw==
+  dependencies:
+    iterare "1.2.1"
+    tslib "2.4.0"
+    uuid "8.3.2"
+
 "@nestjs/common@^8.4.7":
   version "8.4.7"
   resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-8.4.7.tgz#fc4a575b797e230bb5a0bcab6da8b796aa88d605"
@@ -927,6 +936,19 @@
     dotenv "16.0.1"
     dotenv-expand "8.0.3"
     lodash "4.17.21"
+    uuid "8.3.2"
+
+"@nestjs/core@9.0.3":
+  version "9.0.3"
+  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-9.0.3.tgz#c3686c92329cbd1fcfcba1c9fe98edc4d19e3b01"
+  integrity sha512-TFXCfcqt1FqN/54hrrfdLZgAroDjqbkJ8mDcFiD4JFuQGIHkgofXXEtjfwPAEfR41RLxB8612Pf0UjI4bag4Vw==
+  dependencies:
+    "@nuxtjs/opencollective" "0.3.2"
+    fast-safe-stringify "2.1.1"
+    iterare "1.2.1"
+    object-hash "3.0.0"
+    path-to-regexp "3.2.0"
+    tslib "2.4.0"
     uuid "8.3.2"
 
 "@nestjs/core@^8.4.7":
@@ -966,6 +988,14 @@
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@nestjs/mapped-types/-/mapped-types-1.0.1.tgz#78b62041c7a407db4a90eb140567321602bed18e"
   integrity sha512-NFvofzSinp00j5rzUd4tf+xi9od6383iY0JP7o0Bnu1fuItAUkWBgc4EKuIQ3D+c2QI3i9pG1kDWAeY27EMGtg==
+
+"@nestjs/microservices@9.0.3":
+  version "9.0.3"
+  resolved "https://registry.yarnpkg.com/@nestjs/microservices/-/microservices-9.0.3.tgz#f38f924c4ec8472bebbd45a78e0850b40e811292"
+  integrity sha512-yi4DEihLcFa16tiWSyJo6SyNT3LfQRfAvd78D22hqRDe4bf9L9DHE1lIa7hPFYWc0+/z7sxelEino6ruvrqDLA==
+  dependencies:
+    iterare "1.2.1"
+    tslib "2.4.0"
 
 "@nestjs/microservices@^8.4.7":
   version "8.4.7"
@@ -1038,6 +1068,13 @@
   dependencies:
     optional "0.1.4"
     tslib "2.3.1"
+
+"@nestjs/testing@^9.0.3":
+  version "9.0.3"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-9.0.3.tgz#bad065fc377091531dbfe651c6bb3415abde5a75"
+  integrity sha512-6pLtQLblbBOukiABR6ty2HOpW2Z1lUJmP3mqKVFc11n7ZoF5kDxYaDTxdbMlcynye8eH7ehRvzsGnNJJmLlaSA==
+  dependencies:
+    tslib "2.4.0"
 
 "@node-redis/bloom@1.0.1":
   version "1.0.1"
