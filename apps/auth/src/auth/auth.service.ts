@@ -9,7 +9,7 @@ import {
   RittaError,
   User,
 } from '@rittaschool/shared';
-import { UserService } from '../common/user.service';
+import { UserService } from '../services/user.service';
 import cryptor from './cryptor';
 import mfa from './mfa';
 import tokenizer from './tokenizer';

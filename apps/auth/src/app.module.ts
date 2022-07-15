@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { LoggerModule } from 'framework';
+import { CommonModule } from 'framework';
 
 import { AuthModule } from './auth/auth.module';
 import { Fido2Module } from './fido2/fido2.module';
+import { ServicesModule } from './services/services.module';
 import { validate } from './validation/env.validation';
 
 @Module({
@@ -13,7 +14,8 @@ import { validate } from './validation/env.validation';
     }),
     AuthModule,
     Fido2Module,
-    LoggerModule,
+    CommonModule,
+    ServicesModule,
   ],
   providers: [],
 })
