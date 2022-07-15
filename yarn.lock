@@ -1380,19 +1380,6 @@
     tslib "2.4.0"
     uuid "8.3.2"
 
-"@nestjs/core@9.0.3":
-  version "9.0.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-9.0.3.tgz#c3686c92329cbd1fcfcba1c9fe98edc4d19e3b01"
-  integrity sha512-TFXCfcqt1FqN/54hrrfdLZgAroDjqbkJ8mDcFiD4JFuQGIHkgofXXEtjfwPAEfR41RLxB8612Pf0UjI4bag4Vw==
-  dependencies:
-    "@nuxtjs/opencollective" "0.3.2"
-    fast-safe-stringify "2.1.1"
-    iterare "1.2.1"
-    object-hash "3.0.0"
-    path-to-regexp "3.2.0"
-    tslib "2.4.0"
-    uuid "8.3.2"
-
 "@nestjs/graphql@^10.0.8":
   version "10.0.10"
   resolved "https://registry.yarnpkg.com/@nestjs/graphql/-/graphql-10.0.10.tgz#e96463dd272cb384bf75c89622587dc2eefa6954"
