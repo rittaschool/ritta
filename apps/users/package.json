@@ -28,6 +28,7 @@
     "@nestjs/mongoose": "^9.0.3",
     "@rittaschool/shared": "*",
     "argon2": "^0.28.5",
+    "class-transformer": "^0.5.1",
     "framework": "*",
     "mongoose": "^6.2.9",
     "nest-winston": "^1.6.2",
