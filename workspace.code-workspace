@@ -1,0 +1,55 @@
+{
+  "folders": [
+    {
+      "name": "✨ root",
+      "path": "."
+    },
+    {
+      "name": "🚀 @ritta/gateway",
+      "path": "apps/gateway"
+    },
+    {
+      "name": "🚀 @ritta/core",
+      "path": "apps/core"
+    },
+    {
+      "name": "🚀 @ritta/auth",
+      "path": "apps/auth"
+    },
+    {
+      "name": "🚀 @ritta/users",
+      "path": "apps/users"
+    },
+    {
+      "name": "🚀 @ritta/messages",
+      "path": "apps/messages"
+    },
+    {
+      "name": "📱 @ritta/web",
+      "path": "apps/web"
+    },
+    {
+      "name": "📦 @ritta/framework",
+      "path": "packages/framework"
+    },
+    {
+      "name": "📦 @ritta/shared",
+      "path": "packages/shared"
+    }
+  ],
+  "settings": {
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
+  },
+  "extensions": {
+    "recommendations": [
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "DavidAnson.vscode-markdownlint",
+      "aaron-bond.better-comments"
+    ]
+  }
+}
