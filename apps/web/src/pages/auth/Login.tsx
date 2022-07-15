@@ -1,6 +1,15 @@
-import { Group, TextInput, Button, PasswordInput, Anchor } from "@mantine/core";
+import {
+  Group,
+  TextInput,
+  Button,
+  PasswordInput,
+  Anchor,
+  Divider,
+  Grid,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useTranslation } from "react-i18next";
+import { GoogleButton } from "../../components/SocialButtons";
 
 const Login = () => {
   const form = useForm({
@@ -37,6 +46,12 @@ const Login = () => {
       <Button fullWidth mt="xl" type="submit">
         {t("auth:login")}
       </Button>
+      <Divider label={t("auth:or_use")} labelPosition="center" my="lg" />
+      <Grid grow mb="md" mt="md" gutter="md">
+        <Grid.Col span={2}>
+          <GoogleButton radius="xl">Google</GoogleButton>
+        </Grid.Col>
+      </Grid>
     </form>
   );
 };

@@ -11,10 +11,9 @@ import { Selector, Logout, Settings } from "tabler-icons-react";
 import { UserButton } from "./UserButton";
 import { LinksGroup } from "./NavbarLinksGroup";
 // @ts-ignore
-import Logo from "../../../static/logo.svg?component";
+import Logo from "/public/logo.svg?component";
 import { getNavigation } from "./navigation";
 import { Link, useLocation } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -80,7 +79,7 @@ export function NavbarNested({ hidden }: { hidden: boolean }) {
     >
       <Navbar.Section className={classes.header}>
         <Group position="apart">
-          <Logo center={true} width={120} />
+          <Logo width={120} />
           <Code sx={{ fontWeight: 700 }}>
             {import.meta.env.DEV ? "DEV " : "PROD "} {__COMMIT_HASH__}
           </Code>

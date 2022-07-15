@@ -1,12 +1,12 @@
 import React, { FC } from "react";
 import { Center, createStyles } from "@mantine/core";
 // @ts-ignore
-import rittaSvg from "../../static/logo.svg?component";
+import rittaSvg from "/public/logo.svg?component";
 
 interface LogoProps {
   color?: string;
   SVG?: any;
-  center: boolean;
+  center?: boolean;
 }
 
 const useStyles = createStyles((theme) => ({

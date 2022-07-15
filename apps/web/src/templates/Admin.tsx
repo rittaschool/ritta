@@ -3,7 +3,12 @@ import {
   ColorSchemeProvider,
   MantineProvider,
 } from "@mantine/core";
-import { useColorScheme, useHotkeys, useLocalStorage } from "@mantine/hooks";
+import {
+  useColorScheme,
+  useHotkeys,
+  useInterval,
+  useLocalStorage,
+} from "@mantine/hooks";
 import { Outlet, useNavigate } from "react-router-dom";
 import { theme } from "../theme";
 import "../styles/App.css";
@@ -27,7 +32,7 @@ function App() {
     ["mod+K", () => console.log("huut")],
   ]);
 
-  const { authenticated } = useAuthentication();
+  /*const { authenticated } = useAuthentication();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,7 +43,85 @@ function App() {
 
   if (!authenticated) {
     return <></>;
-  }
+  }*/
+
+  const interval = useInterval(() => {
+    console.log("\n\n\n\n\n");
+    console.log(
+      "%c VAROITUS! WARNING! ",
+      "background: #000000; color: red; font-size: 3em;"
+    );
+    console.log(
+      "%cJos joku pyysi/käski sinua liittämään tänne tekstiä, hän 110% on huijari.",
+      "font-size: 2em;"
+    );
+    console.log(
+      "%cTänne tuntemattomien koodinpätkien liitäminen voi johtaa tilisi hakkerointiin.",
+      "font-size: 2em;color:red;font-weight: bold;"
+    );
+    console.log(
+      "%cEllet ole TÄYSIN VARMA että tiedät mitä teet, sulje tämä ikkuna välittömästi.",
+      "font-size: 2em;"
+    );
+    console.log(
+      "%c WARNING! WARNING! ",
+      "background: #000000; color: red; font-size: 3em;"
+    );
+    console.log(
+      "%cIf someone asked you to paste something here, theres a 110% chance that you are being scammed.",
+      "font-size: 2em;"
+    );
+    console.log(
+      "%cPasting unknown text here could lead to your account getting hacked.",
+      "font-size: 2em;color:red;font-weight: bold;"
+    );
+    console.log(
+      "%cIf you do not know what you are doing, CLOSE THIS WINDOW IMMEDIATELY.",
+      "font-size: 2em;"
+    );
+    console.log("\n\n\n\n\n");
+  }, 10000);
+
+  useEffect(() => {
+    if (import.meta.env.PROD) {
+      console.log("\n\n\n\n\n");
+      console.log(
+        "%c VAROITUS! WARNING! ",
+        "background: #000000; color: red; font-size: 3em;"
+      );
+      console.log(
+        "%cJos joku pyysi/käski sinua liittämään tänne tekstiä, hän 110% on huijari.",
+        "font-size: 2em;"
+      );
+      console.log(
+        "%cTänne tuntemattomien koodinpätkien liitäminen voi johtaa tilisi hakkerointiin.",
+        "font-size: 2em;color:red;font-weight: bold;"
+      );
+      console.log(
+        "%cEllet ole TÄYSIN VARMA että tiedät mitä teet, sulje tämä ikkuna välittömästi.",
+        "font-size: 2em;"
+      );
+      console.log(
+        "%c WARNING! WARNING! ",
+        "background: #000000; color: red; font-size: 3em;"
+      );
+      console.log(
+        "%cIf someone asked you to paste something here, theres a 110% chance that you are being scammed.",
+        "font-size: 2em;"
+      );
+      console.log(
+        "%cPasting unknown text here could lead to your account getting hacked.",
+        "font-size: 2em;color:red;font-weight: bold;"
+      );
+      console.log(
+        "%cIf you do not know what you are doing, CLOSE THIS WINDOW IMMEDIATELY.",
+        "font-size: 2em;"
+      );
+      console.log("\n\n\n\n\n");
+      interval.start();
+      return interval.stop;
+    }
+  }, []);
 
   return (
     <ColorSchemeProvider

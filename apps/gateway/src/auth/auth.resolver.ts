@@ -27,6 +27,8 @@ export class AuthResolver {
     @Args('challenge') challenge: Challenge,
     @Context() ctx: CustomContext,
   ) {
-    return await this.authService.handleLoginRequest(challenge, ctx.reply);
+    const res = await this.authService.handleLoginRequest(challenge, ctx.reply);
+    console.log(res);
+    return res;
   }
 }

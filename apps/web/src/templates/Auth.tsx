@@ -27,7 +27,7 @@ function App() {
     ["mod+K", () => console.log("huut")],
   ]);
 
-  const { authenticated } = useAuthentication();
+  /*const { authenticated } = useAuthentication();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,7 +38,7 @@ function App() {
 
   if (authenticated) {
     return <></>;
-  }
+  }*/
 
   return (
     <ColorSchemeProvider

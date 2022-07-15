@@ -15,7 +15,7 @@ import {
 } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import Logo from "./Logo";
-import Languages from "../../locales/locales.json";
+import Languages from "../../public/locales/locales.json";
 import { ReactElement, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 
