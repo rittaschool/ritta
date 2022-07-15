@@ -8,6 +8,7 @@ import { WinstonModule } from "nest-winston";
 import { transports } from "winston";
 import { App, CreateServiceProps } from "./interfaces";
 import { consoleFormat } from "./logger.format";
+import { LoggingInterceptor } from "./logger/LoggingInterceptor";
 
 export const createService = async ({
   appModule,
@@ -50,6 +51,9 @@ export const createService = async ({
     app.get("LOGGER").error(error);
   }
 
+  // Use logging interceptor
+  app.useGlobalInterceptors(new LoggingInterceptor(app.get("LOGGER")));
+
   // Send INIT event
 
   // Confirm service is able to start
@@ -67,4 +71,5 @@ export const createService = async ({
   };
 };
 
+export { CommonModule } from "./common/common.module";
 export { LoggerModule } from "./logger/logger.module";
