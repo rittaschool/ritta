@@ -19,9 +19,10 @@ services:
     networks:
       - "rabbitmq-prometheus"
       - "rabbitmq"
-    ports: 
+    ports:
       - "15673:15672" # commented out for security, remove if you want to expose the port
       - "15693:15692" # commented out for security, remove if you want to expose the port
+      - "5672:5672"
       # https://unix.stackexchange.com/questions/71940/killing-tcp-connection-in-linux
       # https://en.wikipedia.org/wiki/Tcpkill
       # https://www.digitalocean.com/community/tutorials/iptables-essentials-common-firewall-rules-and-commands#block-an-ip-address

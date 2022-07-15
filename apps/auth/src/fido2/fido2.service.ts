@@ -1,7 +1,7 @@
 import base64 from '@hexagon/base64';
 import { Inject, Injectable } from '@nestjs/common';
 import { IErrorType, RittaError } from '@rittaschool/shared';
-import { UserService } from '../common/user.service';
+import { UserService } from '../services/user.service';
 import { Fido2 } from './fido2.utils';
 
 @Injectable()

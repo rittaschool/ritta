@@ -6,9 +6,9 @@ import {
 } from "@nestjs/microservices";
 import { WinstonModule } from "nest-winston";
 import { transports } from "winston";
-import { LoggingInterceptor } from "./interceptors/LoggingInterceptor";
 import { App, CreateServiceProps } from "./interfaces";
 import { consoleFormat } from "./logger.format";
+import { LoggingInterceptor } from "./logger/LoggingInterceptor";
 
 export const createService = async ({
   appModule,
@@ -43,9 +43,6 @@ export const createService = async ({
     }
   );
 
-  // Bind Logging interceptor
-  app.useGlobalInterceptors(new LoggingInterceptor(app.get("LOGGER")));
-
   // Connect to message broker
   const bus = app.get<ClientProxy>("EVENT_BUS");
   try {
@@ -53,6 +50,9 @@ export const createService = async ({
   } catch (error) {
     app.get("LOGGER").error(error);
   }
+
+  // Use logging interceptor
+  app.useGlobalInterceptors(new LoggingInterceptor(app.get("LOGGER")));
 
   // Send INIT event
 
@@ -70,3 +70,6 @@ export const createService = async ({
         ),
   };
 };
+
+export { CommonModule } from "./common/common.module";
+export { LoggerModule } from "./logger/logger.module";

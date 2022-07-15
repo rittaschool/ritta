@@ -21,11 +21,20 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/config": "^2.2.0",
+    "@nestjs/core": "8.4.7",
+    "@nestjs/mapped-types": "1.0.1",
+    "@nestjs/microservices": "8.4.7",
     "@nestjs/mongoose": "^9.0.3",
+    "@rittaschool/shared": "*",
     "argon2": "^0.28.5",
+    "class-transformer": "^0.5.1",
+    "framework": "*",
     "mongoose": "^6.2.9",
+    "nest-winston": "^1.6.2",
     "otplib": "^12.0.1",
-    "@rittaschool/shared": "*"
+    "rxjs": "7.5.5",
+    "winston": "^3.7.2"
   },
   "jest": {
     "moduleFileExtensions": [

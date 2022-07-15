@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
 import {
   CreateUserDto,
   IErrorType,
@@ -23,7 +22,10 @@ export class UsersService {
 
     // Checking that user has email or username
     if (!tmpUser.email && !tmpUser.username) {
-      throw new RpcException('Email or username is required');
+      throw new RittaError(
+        'Email or username is required',
+        IErrorType.EMAIL_OR_USERNAME_REQUIRED,
+      );
     }
 
     if (!tmpUser.username && tmpUser.email) {
@@ -34,12 +36,10 @@ export class UsersService {
     const possibleUser = await this.getUser(tmpUser.username, false);
 
     if (possibleUser) {
-      return {
-        error: new RittaError(
-          'Käyttäjä on jo olemassa',
-          IErrorType.USER_ALREADY_EXISTS,
-        ),
-      };
+      throw new RittaError(
+        'User already exists',
+        IErrorType.USER_ALREADY_EXISTS,
+      );
     }
 
     // Hash the password
@@ -59,7 +59,7 @@ export class UsersService {
       newUser = await this.usersRepository.create(createUserDto);
     } catch (error) {
       error = new RittaError(
-        'Käyttäjä on jo olemassa',
+        'User already exists',
         IErrorType.USER_ALREADY_EXISTS,
       );
     }

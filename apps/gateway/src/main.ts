@@ -36,6 +36,7 @@ async function bootstrap() {
   app.enableShutdownHooks();
 
   // Register cookie handler
+  // @ts-ignore
   app.register(fastifyCookie, {
     // deepcode ignore HardcodedNonCryptoSecret: it is TODO
     secret: 'my-secret', // for cookies signature //TODO: move to env @raikasdev
