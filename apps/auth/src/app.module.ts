@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CommonModule } from 'framework';
-
 import { AuthModule } from './auth/auth.module';
 import { Fido2Module } from './fido2/fido2.module';
 import { ServicesModule } from './services/services.module';

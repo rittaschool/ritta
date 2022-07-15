@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
+import { ServicesModule } from '../services/services.module';
 import { Fido2Controller } from './fido2.controller';
 import { Fido2Service } from './fido2.service';
 import { Fido2 } from './fido2.utils';
 
 @Module({
-  imports: [],
+  imports: [ServicesModule],
   providers: [
     {
       provide: 'FIDO2_SERVICE',
