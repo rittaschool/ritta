@@ -35,17 +35,20 @@
     "@nestjs/testing": "8.4.7",
     "@rittaschool/shared": "*",
     "apollo-server-fastify": "^3.6.7",
+    "class-transformer": "0.5.1",
     "class-validator": "^0.13.2",
     "fastify": "3.29.1",
     "graphql": "^16.3.0",
     "graphql-scalars": "^1.17.0",
     "jsonwebtoken": "^8.5.1",
     "nest-graphql-scalar-adapter": "^1.1.2",
+    "nest-winston": "^1.6.2",
     "redis-om": "^0.2.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "7.5.5",
-    "tslib": "^2.3.1"
+    "tslib": "^2.3.1",
+    "winston": "^3.7.2"
   },
   "devDependencies": {
     "@golevelup/nestjs-testing": "^0.1.2",
