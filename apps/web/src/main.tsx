@@ -48,26 +48,26 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route path="new" element={<CreateMessage />} />
               <Route index element={<MessagesList box={MailBox.INBOX} />} />
             </Route>
-          </Route>
-          <Route path="settings">
-            <Route
-              index
-              element={
-                <PageWithTitle title="Asetukset">
-                  <h2>Settings placeholder</h2>
-                </PageWithTitle>
-              }
-            />
-          </Route>
-          <Route path="schedule">
-            <Route
-              index
-              element={
-                <PageWithTitle title="Lukujärjestys">
-                  <h2>Schedule placeholder</h2>
-                </PageWithTitle>
-              }
-            />
+            <Route path="settings">
+              <Route
+                index
+                element={
+                  <PageWithTitle title="Asetukset">
+                    <h2>Settings placeholder</h2>
+                  </PageWithTitle>
+                }
+              />
+            </Route>
+            <Route path="schedule">
+              <Route
+                index
+                element={
+                  <PageWithTitle title="Lukujärjestys">
+                    <h2>Schedule placeholder</h2>
+                  </PageWithTitle>
+                }
+              />
+            </Route>
           </Route>
           <Route path="/auth" element={<Auth />}>
             <Route index element={<Navigate to="/auth/login" />} />
