@@ -3,12 +3,13 @@ import {
   Paper,
   Title,
   Text,
-  Container,
   Badge,
-  Stack,
-  Space,
   Select,
+  Stack,
+  Container,
+  Space,
 } from "@mantine/core";
+
 import { useTranslation } from "react-i18next";
 import Logo from "./Logo";
 import Languages from "../../static/locales.json";
@@ -30,7 +31,7 @@ export default function App({ children }: { children: JSX.Element }) {
 
   return (
     <>
-      <Container size={420} my={40}>
+      <Container size={500} my={40}>
         <Title
           align="center"
           sx={(theme) => ({
@@ -59,11 +60,20 @@ export default function App({ children }: { children: JSX.Element }) {
           </Anchor>
         </Text>
 
-        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+        <Paper
+          withBorder
+          shadow="md"
+          p={30}
+          mt={30}
+          radius="md"
+          sx={{
+            minHeight: "400px",
+          }}
+        >
           {children}
         </Paper>
       </Container>
-      <Container size={420} my={20}>
+      <Container size={500} my={20}>
         <Paper withBorder shadow="md" p={30} pt={25} mt={30} radius="md">
           <Select
             label={"Change language"}
