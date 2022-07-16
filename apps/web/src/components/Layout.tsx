@@ -52,6 +52,11 @@ export default function Layout({ children }: { children: ReactNode }) {
                 color={theme.colors.gray[6]}
                 sx={{ marginLeft: "16px" }}
                 mr="xl"
+                aria-label={t(
+                  opened
+                    ? "navigation:aria_close_navigation"
+                    : "navigation:aria_open_navigation"
+                )}
               />
               {isMobile ? (
                 <MantineNavbar.Section grow>

@@ -11,5 +11,7 @@
   "user_button": {
     "aria_label": "Valitse käyttäjä, tällä hetkellä valittuna {{name}} roolilla {{role}} oppilaitoksessa {{school}}"
   },
-  "navigation:aria_logo": "Siirry kotisivulle"
+  "aria_logo": "Siirry kotisivulle",
+  "aria_open_navigation": "Avaa navigaatio",
+  "aria_close_navigation": "Sulje navigaatio"
 }
