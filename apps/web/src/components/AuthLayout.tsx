@@ -1,13 +1,9 @@
 import {
-  TextInput,
-  PasswordInput,
   Anchor,
   Paper,
   Title,
   Text,
   Container,
-  Group,
-  Button,
   Badge,
   Stack,
   Space,
@@ -15,9 +11,8 @@ import {
 } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import Logo from "./Logo";
-import Languages from "../../public/locales/locales.json";
-import { ReactElement, useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import Languages from "../../static/locales.json";
+import { useEffect, useState } from "react";
 
 export default function App({ children }: { children: JSX.Element }) {
   const languages: {

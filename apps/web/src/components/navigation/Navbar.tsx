@@ -11,7 +11,7 @@ import { Selector, Logout, Settings } from "tabler-icons-react";
 import { UserButton } from "./UserButton";
 import { LinksGroup } from "./NavbarLinksGroup";
 // @ts-ignore
-import Logo from "/public/logo.svg?component";
+import Logo from "/static/logo.svg?component";
 import { getNavigation } from "./navigation";
 import { Link, useLocation } from "react-router-dom";
 
@@ -20,6 +20,8 @@ const useStyles = createStyles((theme) => ({
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
     paddingBottom: 0,
+    borderRight: 0,
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.03)",
   },
 
   header: {

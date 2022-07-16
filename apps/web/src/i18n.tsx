@@ -11,7 +11,7 @@ i18n
     load: "languageOnly",
     supportedLngs: ["fi", "en"],
 
-    ns: ["common", "navigation", "auth", "messages"],
+    ns: ["common", "navigation", "auth", "messages", "home"],
 
     interpolation: {
       escapeValue: false, // react already safes from xss

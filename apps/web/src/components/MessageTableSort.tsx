@@ -9,15 +9,11 @@ import {
   Center,
   TextInput,
   Badge,
+  Anchor,
 } from "@mantine/core";
-import {
-  Selector,
-  ChevronDown,
-  ChevronUp,
-  Search,
-  MessagePlus,
-} from "tabler-icons-react";
+import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -45,7 +41,7 @@ const useStyles = createStyles((theme) => ({
 
 export interface RowData {
   id: string;
-  newMessages: boolean;
+  newMessages: number;
   name: string;
   createdAt: string;
   author: string;
@@ -140,20 +136,23 @@ export function MessageTableSort({ data }: TableSortProps) {
   const rows = sortedData.map((row) => (
     <tr key={row.name}>
       <td>
-        {row.newMessages ? (
-          <b>
-            {row.name}{" "}
-            <Badge
-              variant="filled"
-              color="teal"
-              title={t("messages:new_messages")}
-            >
-              <b>!</b>
-            </Badge>
-          </b>
-        ) : (
-          <>{row.name}</>
-        )}
+        <Anchor component={Link} to={`/messages/${row.id}`}>
+          {0 < row.newMessages ? (
+            <b>
+              {row.name}{" "}
+              <Badge
+                variant="filled"
+                color="teal"
+                title={t("messages:new_messages", { count: row.newMessages })}
+                sx={{ padding: "0px 7px" }}
+              >
+                <b>{row.newMessages}</b>
+              </Badge>
+            </b>
+          ) : (
+            <>{row.name}</>
+          )}
+        </Anchor>
       </td>
       <td>{row.author}</td>
       <td>{row.createdAt}</td>
@@ -163,7 +162,7 @@ export function MessageTableSort({ data }: TableSortProps) {
   return (
     <ScrollArea>
       <TextInput
-        placeholder="Search by any field"
+        placeholder="Hae viestiä nimen tai lähettäjän perusteella"
         mb="md"
         icon={<Search size={14} />}
         value={search}
@@ -173,7 +172,7 @@ export function MessageTableSort({ data }: TableSortProps) {
         horizontalSpacing="md"
         verticalSpacing="xs"
         striped
-        sx={{ tableLayout: "fixed", minWidth: 700 }}
+        sx={{ tableLayout: "auto" }}
       >
         <thead>
           <tr>

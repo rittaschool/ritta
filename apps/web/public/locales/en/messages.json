@@ -4,5 +4,8 @@
   "sent": "Sent",
   "drafts": "Drafts",
   "archive": "Archive",
-  "new_messages": "New messages"
+  "new_messages_one": "{{count}} new message",
+  "new_messages_other": "{{count}} new messages",
+  "reply": "Reply to thread",
+  "send_reply": "Send reply"
 }

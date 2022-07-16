@@ -19,6 +19,7 @@ import LogOut from "./pages/auth/LogOut";
 import AdminHome from "./pages/admin/Home";
 import OldLogin from "./pages/auth/OldLogin";
 import CreateMessage from "./pages/CreateMessage";
+import ThreadView from "./pages/ThreadView";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -27,6 +28,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Route path="/" element={<Dashboard />}>
           <Route index element={<Home />} />
           <Route path="messages">
+            <Route path=":id" element={<ThreadView />} />
             <Route path="sent" element={<MessagesList box={MailBox.SENT} />} />
             <Route
               path="drafts"
@@ -39,11 +41,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="new" element={<CreateMessage />} />
             <Route index element={<MessagesList box={MailBox.INBOX} />} />
           </Route>
-          {/* <Route path="teams" element={<Teams />}>
-            <Route path=":teamId" element={<Team />} />
-            <Route path="new" element={<NewTeamForm />} />
-            <Route index element={<LeagueStandings />} />
-          </Route> */}
         </Route>
         <Route path="/auth" element={<Auth />}>
           <Route index element={<Navigate to="/auth/login" />} />

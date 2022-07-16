@@ -1,5 +1,12 @@
+import { Text } from "@mantine/core";
+import PageWithTitle from "../components/PageWithTitle";
+
 const Home = () => {
-  return <h1>Home page</h1>;
+  return (
+    <PageWithTitle title="Kotisivu">
+      <Text>Home page</Text>
+    </PageWithTitle>
+  );
 };
 
 export default Home;

@@ -11,7 +11,7 @@ import { Selector, Logout, Settings } from "tabler-icons-react";
 import { UserButton } from "./UserButton";
 import { LinksGroup } from "./NavbarLinksGroup";
 // @ts-ignore
-import Logo from "/public/logo.svg?component";
+import Logo from "/static/logo.svg?component";
 import { getNavigation } from "./navigation";
 import { Link, useLocation } from "react-router-dom";
 
