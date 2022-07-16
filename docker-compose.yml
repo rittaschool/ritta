@@ -117,7 +117,7 @@ services:
   gateway-db:
     image: redislabs/rejson:latest
     networks:
-      - databases
+      - ritta
     ports:
       - "6380:6379"
 
