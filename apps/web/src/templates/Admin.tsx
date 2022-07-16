@@ -9,11 +9,10 @@ import {
   useInterval,
   useLocalStorage,
 } from "@mantine/hooks";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { theme } from "../theme";
 import "../styles/App.css";
 import Layout from "../components/admin/Layout";
-import useAuthentication from "../hooks/useAuthentication";
 import { useEffect } from "react";
 
 function App() {
@@ -31,19 +30,6 @@ function App() {
     ["mod+J", () => toggleColorScheme()],
     ["mod+K", () => console.log("huut")],
   ]);
-
-  /*const { authenticated } = useAuthentication();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!authenticated) {
-      navigate("/auth/login");
-    }
-  }, []);
-
-  if (!authenticated) {
-    return <></>;
-  }*/
 
   const interval = useInterval(() => {
     console.log("\n\n\n\n\n");
