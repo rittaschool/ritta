@@ -6,9 +6,6 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-    volumes:
-      - ~/.docker-vols/ritta/rabbitmq/data:/var/lib/rabbitmq/
-      - ~/.docker-vols/ritta/rabbitmq/log:/var/log/rabbitmq/
     networks:
       - ritta
     healthcheck:
@@ -18,12 +15,7 @@ services:
       retries: 12
 
   gateway:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - BUILD_CONTEXT=gateway
-    command: yarn workspace gateway run start:prod
+    image: ghcr.io/rittaschool/ritta:master-gateway
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -34,38 +26,15 @@ services:
       - RMQ_PORT=5672
       - RMQ_USERNAME=guest
       - RMQ_PASSWORD=guest
-      - BUILD_CONTEXT=gateway
+      - REDIS_URI=redis://gateway-db:6379
+      - JWT_SIGNING_SECRET=RITTATESTSIGNINGKEY
+      - FRONTEND_PUBLIC_URL=http://localhost:3002
     ports:
       - '3000:3000'
     networks:
       - ritta
-
-  core:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - BUILD_CONTEXT=core
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    environment:
-      - NODE_ENV=production
-      - RMQ_HOST=rabbitmq
-      - RMQ_PORT=5672
-      - RMQ_USERNAME=core
-      - RMQ_PASSWORD=core
-      - BUILD_CONTEXT=core
-    networks:
-      - ritta
-
   auth:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - BUILD_CONTEXT=auth
-    command: yarn workspace auth run start:prod
+    image: ghcr.io/rittaschool/ritta:master-auth
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -73,20 +42,14 @@ services:
       - NODE_ENV=production
       - RMQ_HOST=rabbitmq
       - RMQ_PORT=5672
-      - RMQ_USERNAME=auth
-      - RMQ_PASSWORD=auth
+      - RMQ_USERNAME=guest
+      - RMQ_PASSWORD=guest
       - SIGNING_KEY=RITTATESTSIGNINGKEY
-      - BUILD_CONTEXT=auth
     networks:
       - ritta
 
   users:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - BUILD_CONTEXT=users
-    command: yarn workspace users run start:prod
+    image: ghcr.io/rittaschool/ritta:master-users
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -96,20 +59,14 @@ services:
       - NODE_ENV=production
       - RMQ_HOST=rabbitmq
       - RMQ_PORT=5672
-      - RMQ_USERNAME=users
-      - RMQ_PASSWORD=users
+      - RMQ_USERNAME=guest
+      - RMQ_PASSWORD=guest
       - MONGO_URI=mongodb://ritta:password@users_db:27017/ritta?authSource=admin
-      - BUILD_CONTEXT=users
     networks:
       - ritta
 
   messages:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - BUILD_CONTEXT=messages
-    command: yarn workspace messages run start:prod
+    image: ghcr.io/rittaschool/ritta:master-messages
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -119,10 +76,9 @@ services:
       - NODE_ENV=production
       - RMQ_HOST=rabbitmq
       - RMQ_PORT=5672
-      - RMQ_USERNAME=messages
-      - RMQ_PASSWORD=messages
+      - RMQ_USERNAME=guest
+      - RMQ_PASSWORD=guest
       - MONGO_URI=mongodb://ritta:password@messages_db:27019/ritta?authSource=admin
-      - BUILD_CONTEXT=messages
     networks:
       - ritta
 
@@ -132,8 +88,6 @@ services:
       - MONGO_INITDB_DATABASE=ritta
       - MONGO_INITDB_ROOT_USERNAME=ritta
       - MONGO_INITDB_ROOT_PASSWORD=password
-    volumes:
-      - ~/.docker-vols/ritta/users_db:/data/db
     networks:
       - ritta
     ports:
@@ -150,8 +104,6 @@ services:
       - MONGO_INITDB_DATABASE=ritta
       - MONGO_INITDB_ROOT_USERNAME=ritta
       - MONGO_INITDB_ROOT_PASSWORD=password
-    volumes:
-      - ~/.docker-vols/ritta/messages_db:/data/db
     networks:
       - ritta
     ports:
@@ -161,6 +113,13 @@ services:
       interval: 5s
       timeout: 10s
       retries: 12
+      
+  gateway-db:
+    image: redislabs/rejson:latest
+    networks:
+      - databases
+    ports:
+      - "6380:6379"
 
   loki:
     image: grafana/loki:2.4.0
