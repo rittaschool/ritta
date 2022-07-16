@@ -7,7 +7,7 @@
     "drafts": "Luonnokset",
     "archive": "Arkisto"
   },
-  "schedule": "Työjärjestys",
+  "schedule": "Lukujärjestys",
   "user_button": {
     "aria_label": "Valitse käyttäjä, tällä hetkellä valittuna {{name}} roolilla {{role}} oppilaitoksessa {{school}}"
   },

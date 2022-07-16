@@ -22,6 +22,7 @@ import CreateMessage from "./pages/CreateMessage";
 import Home from "./pages/Home";
 import MessagesList, { MailBox } from "./pages/MessagesList";
 import ThreadView from "./pages/ThreadView";
+import PageWithTitle from "./components/PageWithTitle";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -47,6 +48,26 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route path="new" element={<CreateMessage />} />
               <Route index element={<MessagesList box={MailBox.INBOX} />} />
             </Route>
+          </Route>
+          <Route path="settings">
+            <Route
+              index
+              element={
+                <PageWithTitle title="Asetukset">
+                  <h2>Settings placeholder</h2>
+                </PageWithTitle>
+              }
+            />
+          </Route>
+          <Route path="schedule">
+            <Route
+              index
+              element={
+                <PageWithTitle title="Lukujärjestys">
+                  <h2>Schedule placeholder</h2>
+                </PageWithTitle>
+              }
+            />
           </Route>
           <Route path="/auth" element={<Auth />}>
             <Route index element={<Navigate to="/auth/login" />} />

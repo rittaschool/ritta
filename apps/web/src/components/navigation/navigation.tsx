@@ -34,18 +34,6 @@ export function getNavigation(location: Location): LinksGroupProps[] {
       icon: CalendarStats,
       link: "/schedule",
     },
-    { label: "Analytics", icon: PresentationAnalytics },
-    { label: "Contracts", icon: FileAnalytics },
-    { label: "Settings", icon: Adjustments },
-    {
-      label: "Security",
-      icon: Lock,
-      links: [
-        { label: "Enable 2FA", link: "/" },
-        { label: "Change password", link: "/" },
-        { label: "Recovery codes", link: "/" },
-      ],
-    },
   ];
 }
 
