@@ -73,7 +73,7 @@ export function NavbarNested({ hidden }: { hidden: boolean }) {
 
   return (
     <Navbar
-      width={{ sm: 300 }}
+      width={{ md: 300 }}
       pt="md"
       px="md"
       className={classes.navbar}
