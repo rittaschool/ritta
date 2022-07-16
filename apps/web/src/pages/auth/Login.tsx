@@ -13,11 +13,12 @@ import { useLoginStart } from '../../data/authentication';
 import { EmailRegEx } from '../../utils/email.regex';
 
 const Login = () => {
+  const loginStartMutation = useLoginStart();
   const [active, setActive] = useState(0);
   const nextStep = () => {
     if (active == 0) {
       // make request starting login
-      useLoginStart(email);
+      loginStartMutation.mutate(email);
 
       const canContinue = true;
 
