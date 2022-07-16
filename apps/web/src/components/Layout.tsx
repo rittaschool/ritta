@@ -11,16 +11,24 @@ import {
   Stack,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { NavbarNested as Navbar } from "./navigation/Navbar";
 import Logo from "./Logo";
 import { DashboardFooter } from "./DashboardFooter";
+import { useLocation } from "react-router-dom";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery("(max-width: 992px)");
   const colorScheme = useMantineColorScheme();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (opened === true) setTimeout(() => setOpened(false), 100);
+  }, [location]);
+
   return (
     <AppShell
       // navbarOffsetBreakpoint controls when navbar should no longer be offset with padding-left
