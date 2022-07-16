@@ -59,7 +59,16 @@ export default function App({ children }: { children: JSX.Element }) {
           </Anchor>
         </Text>
 
-        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+        <Paper
+          withBorder
+          shadow="md"
+          p={30}
+          mt={30}
+          radius="md"
+          sx={{
+            minHeight: '400px',
+          }}
+        >
           {children}
         </Paper>
       </Container>

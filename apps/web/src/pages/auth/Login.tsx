@@ -1,12 +1,31 @@
-import { Avatar, Button, Group, Stepper, TextInput } from '@mantine/core';
+import {
+  Avatar,
+  Button,
+  Group,
+  Stack,
+  Stepper,
+  Text,
+  TextInput,
+} from '@mantine/core';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLoginStart } from '../../data/authentication';
 import { EmailRegEx } from '../../utils/email.regex';
 
 const Login = () => {
-  const [active, setActive] = useState(1);
-  const nextStep = () =>
+  const [active, setActive] = useState(0);
+  const nextStep = () => {
+    if (active == 0) {
+      // make request starting login
+      useLoginStart(email);
+
+      const canContinue = true;
+
+      if (!canContinue) return;
+      return setActive((current) => (current < 2 ? current + 1 : current));
+    }
     setActive((current) => (current < 2 ? current + 1 : current));
+  };
   const prevStep = () =>
     setActive((current) => (current > 0 ? current - 1 : current));
   const { t } = useTranslation();
@@ -34,8 +53,18 @@ const Login = () => {
           description="Authenticate"
           allowStepSelect={active > 1}
         >
-          <Avatar alt="your profile picture" />
-          Authenticate with password or security key or push notification
+          <Stack align="center">
+            <Avatar
+              alt="your profile picture"
+              size="xl"
+              src="https://sndp.mediadelivery.fi/img/468/3a200fc3623944052600a6368c938066.jpg"
+              sx={{
+                borderRadius: 999,
+              }}
+            />
+            <Text size={23}>Welcome, Roni Äikäs</Text>
+            <Text>Please authenticate with</Text>
+          </Stack>
         </Stepper.Step>
         <Stepper.Completed>
           Successfully logged in. Continue to dashboard

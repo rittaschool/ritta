@@ -1,15 +1,33 @@
-import { gql } from 'graphql-request';
+import request, { gql } from 'graphql-request';
+import { useQuery } from 'react-query';
 
-export const startLoginQuery = gql`
-  query startLogin($identifier: String!) {
-    startLoginProcess(email: $identifier) {
-      challenge {
-        type
-        id
-        userId
+const ENDPOINT = 'http://localhost:3000/graphql';
+
+export const useLoginStart = (identifier: string) => {
+  return useQuery(
+    ['startLogin', identifier],
+    async () => {
+      const data = await request(
+        ENDPOINT,
+        gql`
+      query {
+        startLoginProcess(email: ${identifier}) {
+          challenge {
+            type
+            id
+            userId
+          }
+          userFirstName
+          userPhotoUri
+        }
       }
-      userFirstName
-      userPhotoUri
+    `
+      );
+
+      console.log(data);
+    },
+    {
+      enabled: !!identifier,
     }
-  }
-`;
+  );
+};
