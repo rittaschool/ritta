@@ -1,4 +1,12 @@
-import { createStyles, Anchor, Group, ActionIcon } from "@mantine/core";
+import {
+  createStyles,
+  Anchor,
+  Group,
+  ActionIcon,
+  useMantineColorScheme,
+} from "@mantine/core";
+import { useColorScheme } from "@mantine/hooks";
+import { ReactElement, useEffect, useState } from "react";
 import { BrandTwitter, BrandYoutube, BrandInstagram } from "tabler-icons-react";
 // @ts-ignore
 import Logo from "/static/logo.svg?component";
@@ -36,18 +44,27 @@ interface DashboardFooterProps {
 
 export function DashboardFooter({ links }: DashboardFooterProps) {
   const { classes } = useStyles();
-  const items = links.map((link) => (
-    <Anchor<"a">
-      color="dimmed"
-      key={link.label}
-      href={link.link}
-      sx={{ lineHeight: 1 }}
-      onClick={(event) => event.preventDefault()}
-      size="sm"
-    >
-      {link.label}
-    </Anchor>
-  ));
+  const scheme = useMantineColorScheme();
+  const [items, setItems] = useState<ReactElement[]>([]);
+
+  useEffect(() => {
+    setItems(
+      links.map((link) => (
+        <Anchor<"a">
+          key={link.label}
+          href={link.link}
+          sx={{
+            lineHeight: 1,
+            color: scheme.colorScheme === "dark" ? "white" : "black",
+          }}
+          onClick={(event) => event.preventDefault()}
+          size="sm"
+        >
+          {link.label}
+        </Anchor>
+      ))
+    );
+  }, [scheme]);
 
   return (
     <div className={classes.footer}>

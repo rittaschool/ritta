@@ -7,5 +7,9 @@
     "drafts": "Drafts",
     "archive": "Archive"
   },
-  "schedule": "Schedule"
+  "schedule": "Schedule",
+  "user_button": {
+    "aria_label": "Select account, currently selected {{name}} with role {{role}} at {{school}}"
+  },
+  "navigation:aria_logo": "Navigate to home"
 }

@@ -8,6 +8,7 @@ import {
   createStyles,
 } from "@mantine/core";
 import { ChevronRight } from "tabler-icons-react";
+import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles((theme) => ({
   user: {
@@ -42,9 +43,18 @@ export function UserButton({
   ...others
 }: UserButtonProps) {
   const { classes } = useStyles();
+  const { t } = useTranslation();
 
   return (
-    <UnstyledButton className={classes.user} {...others}>
+    <UnstyledButton
+      className={classes.user}
+      aria-label={t("navigation:user_button.aria_label", {
+        name,
+        school: schoolName,
+        role: title,
+      })}
+      {...others}
+    >
       <Group>
         <Avatar src={image} radius="xl" />
 

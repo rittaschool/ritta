@@ -16,6 +16,7 @@ import { NavbarNested as Navbar } from "./navigation/Navbar";
 import Logo from "./Logo";
 import { DashboardFooter } from "./DashboardFooter";
 import { useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const [opened, setOpened] = useState(false);
@@ -25,6 +26,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   const location = useLocation();
 
+  const { t } = useTranslation();
   useEffect(() => {
     if (opened === true) setTimeout(() => setOpened(false), 100);
   }, [location]);
@@ -54,7 +56,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               {isMobile ? (
                 <MantineNavbar.Section grow>
                   <Center>
-                    <a href="/">
+                    <a href="/" aria-label={t("navigation:aria_logo")}>
                       <Logo center={true} />
                     </a>
                   </Center>
