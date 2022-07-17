@@ -2,11 +2,12 @@ version: "3.6"
 
 networks:
   grafana:
-    external:
-      name: ritta-grafana
+    name: ritta-grafana
+    external: true
 
 volumes:
   grafana-data:
+
 
 services:
   grafana:
