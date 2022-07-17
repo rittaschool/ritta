@@ -15,12 +15,23 @@ import { EmailRegEx } from '../../utils/email.regex';
 const Login = () => {
   const loginStartMutation = useLoginStart();
   const [active, setActive] = useState(0);
-  const nextStep = () => {
+  const [emailError, setEmailError] = useState('');
+  const nextStep = async () => {
     if (active == 0) {
       // make request starting login
-      loginStartMutation.mutate(email);
+      try {
+        await loginStartMutation.mutateAsync(email);
+      } catch (error) {}
 
-      const canContinue = true;
+      console.log('NOT HERE', loginStartMutation);
+      if (loginStartMutation.isError) {
+        setEmailError(
+          (loginStartMutation.error as any).response.errors[0].message ||
+            'Something went wrong'
+        );
+      }
+
+      const canContinue = loginStartMutation.data.startLoginProcess != null;
 
       if (!canContinue) return;
       return setActive((current) => (current < 2 ? current + 1 : current));
@@ -39,6 +50,7 @@ const Login = () => {
           label="Step 1"
           description={t('auth:username')}
           allowStepSelect={active > 0}
+          loading={loginStartMutation.isLoading}
         >
           <TextInput
             required
@@ -46,7 +58,10 @@ const Login = () => {
             placeholder="etunimi.sukunimi@ritta.app"
             value={email}
             onChange={(event) => setEmail(event.currentTarget.value)}
-            error={!EmailRegEx.test(email) && email && 'Invalid email'}
+            error={
+              emailError ||
+              (!EmailRegEx.test(email) && email && 'Invalid email')
+            }
           />
         </Stepper.Step>
         <Stepper.Step
