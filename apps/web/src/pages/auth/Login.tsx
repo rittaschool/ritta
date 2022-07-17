@@ -37,6 +37,8 @@ const Login = () => {
 
       if (!canContinue) return;
 
+      setEmailError('');
+
       setUserInfo({
         firstName: loginStartMutation.data.startLoginProcess.userFirstName,
         photo: loginStartMutation.data.startLoginProcess.userPhotoUri,
