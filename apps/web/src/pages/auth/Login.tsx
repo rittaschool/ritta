@@ -31,9 +31,17 @@ const Login = () => {
         );
       }
 
-      const canContinue = loginStartMutation.data.startLoginProcess != null;
+      const canContinue =
+        loginStartMutation.data &&
+        loginStartMutation.data.startLoginProcess != null;
 
       if (!canContinue) return;
+
+      setUserInfo({
+        firstName: loginStartMutation.data.startLoginProcess.userFirstName,
+        photo: loginStartMutation.data.startLoginProcess.userPhotoUri,
+      });
+
       return setActive((current) => (current < 2 ? current + 1 : current));
     }
     setActive((current) => (current < 2 ? current + 1 : current));
@@ -42,6 +50,10 @@ const Login = () => {
     setActive((current) => (current > 0 ? current - 1 : current));
   const { t } = useTranslation();
   const [email, setEmail] = useState('');
+  const [userInfo, setUserInfo] = useState<{
+    firstName?: string;
+    photo?: string;
+  }>({});
 
   return (
     <>
@@ -57,7 +69,10 @@ const Login = () => {
             label={t('auth:username')}
             placeholder="etunimi.sukunimi@ritta.app"
             value={email}
-            onChange={(event) => setEmail(event.currentTarget.value)}
+            onChange={(event) => {
+              setEmailError('');
+              setEmail(event.currentTarget.value);
+            }}
             error={
               emailError ||
               (!EmailRegEx.test(email) && email && 'Invalid email')
@@ -73,12 +88,12 @@ const Login = () => {
             <Avatar
               alt="your profile picture"
               size="xl"
-              src="https://sndp.mediadelivery.fi/img/468/3a200fc3623944052600a6368c938066.jpg"
+              src={userInfo.photo}
               sx={{
                 borderRadius: 999,
               }}
             />
-            <Text size={23}>Welcome, Roni Äikäs</Text>
+            <Text size={23}>Welcome, {userInfo.firstName || ''}</Text>
             <Text>Please authenticate with</Text>
           </Stack>
         </Stepper.Step>
