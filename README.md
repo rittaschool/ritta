@@ -1,53 +1,53 @@
-# <img src="https://raw.githubusercontent.com/rittaschool/info/master/Ritta.png" height="100px" alt="ritta-server" />
+<div align="center">
+  <img src="https://raw.githubusercontent.com/rittaschool/info/master/Ritta.png" height="100px" alt="ritta-server" />
+  
+## Modern and easy to use school information system
 
-[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/)
+Strengthening home-school communication and simplifying everyday school life
+
+[![AGPLv3 License](https://img.shields.io/badge/License-AGPL%20v3-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/)
 [![GitHub last commit](https://img.shields.io/github/last-commit/rittaschool/ritta-server.svg?color=orange&style=for-the-badge&logo=git)](https://github.com/rittaschool/ritta-server/commits/master)
-[![Discord Channel](https://img.shields.io/discord/718870928498360463.svg?color=blue&style=for-the-badge&logo=discord)](https://discord.gg/KwpZGyvX3Q)
-[![Tests](https://github.com/rittaschool/ritta-server/actions/workflows/testing-workflow.yml/badge.svg)](https://github.com/rittaschool/ritta-server/actions/workflows/testing-workflow.yml)
+[![Discord Channel](https://img.shields.io/discord/718870928498360463.svg?color=blue&style=for-the-badge&logo=discord)](https://discord.gg/KwpZGyvX3Q) \
+ [![Tests](https://github.com/rittaschool/ritta-server/actions/workflows/testing-workflow.yml/badge.svg)](https://github.com/rittaschool/ritta-server/actions/workflows/testing-workflow.yml)
 [![Docker](https://github.com/rittaschool/ritta-server/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/rittaschool/ritta-server/actions/workflows/docker-publish.yml)
 
-Hello, and thank you for showing interest in Ritta! 👋
-We here at Ritta are creating new platforms to support the future of education.
+</div>
+  
+Ritta is a modular student information system developed using modern technologies. With Ritta schools can communicate to parents and students easily and have one place where to find information, eg. exams, grades, schedules and room & device reservations.
 
-We think current solutions aren't good enough for today's needs.
-Current solutions available in Finland are old, difficult to use and not responsive. The education space changes every year, and new solutions are needed.
+Current solutions available in Finland are old, difficult to use and don't adapt easily to special needs. The education space changes every year, and new solutions are needed. Ritta plans to integrate to existing ecosystems (Moodle, Google Workspace, [DigiOne](https://digione.fi)), but also create it's own for schools that aren't part of a existing ecosystem, but still want to easily integrate to other systems.
 
-That's why we are creating Ritta.
-Ritta is an open source student management system designed for making life easier.
-Our team currently consists of four talented young developers and/or designers.
+## Getting started
 
-## How does Ritta work?
+For running Ritta you must have NodeJS **16**, Yarn **Classic**, Docker and docker-compose installed.
 
-We are trying to use modern technologies and following best practices.
-_(psst: from now on this will be pretty much technical stuff.)_
+### Starting dependencies (RabbitMQ, databases)
 
-We use Microservice architecture provided by the [NestJS](https://nestjs.com) framework, which allows Ritta to be horizontally scalable.
-For development and production we use Docker and docker-compose. For dependency management we use [Yarn](https://yarnpkg.com), especially Yarn Workspaces.
-For client application development we provide REST and GraphQL APIs.
+Easiest way to start the dependencies is to run `environments/local/start-docker.sh` in the root of the project.
 
-You also might be interested in our official frontend, [ritta-next](https://github.com/rittaschool/ritta-next).
+### Building and running Ritta
+
+First, install the dependencies by running `yarn install`.
+Then, you can start the project by opening a shell in each of the directories in the `apps` directory, and then run the `yarn start:dev` command, or the `yarn dev` for the frontend.
+Alternatively, you can run `npx turbo run start:dev` to start the backend, and go then start the frontend by going to `apps/web` and running `yarn dev`.
+
+## Architecture
+
+We use Microservice architecture and the [NestJS](https://nestjs.com) framework for the backend, and for databases we primarily use MongoDB. Other databases may be used for specific microservices.
+We are going to use [Novu](https://novu.co) for notification management and [PostHog](https://posthog.com) for product analytics in the future.
+Our frontend is built using [Vite](https://vitejs.dev) and [Mantine](https://mantine.dev).
+For dependency management we use [Yarn](https://yarnpkg.com) with Yarn Workspaces.
+We provide REST and GraphQL APIs for developers.
 
 ## API Documentation
 
-The instance specific API documentation can be viewed by going to `https://<ritta-server url>/docs` or to `https://api.demo.ritta.fi/docs` (most addons enabled).
+API documentation can be viewed by going to `https://<ritta-server url>/docs`.
 
 ## Bugs and suggestions
 
 Found something or got an idea you would like to share? \
 For minor bugs and suggestions use [issues](https://github.com/rittaschool/ritta-server/issues). \
 For security problems and bigger bugs, please follow procedures in [`SECURITY.md`](https://github.com/rittaschool/ritta-server/blob/master/SECURITY.md)
-
-## Running
-
-For running Ritta you must have NodeJS **16**, Yarn, Docker and docker-compose installed.
-Easiest way to run Ritta then is to run `docker-compose up` in the root directory of the project.
-
-## Official Development environment
-
-The Ritta development environment is a docker-compose environment where your code is linked to the containers using volumes. \
-For development, run `./scripts/start-docker.sh` to start with the development configuration. \
-You can stop the containers with `./scripts/stop-docker.sh`. \
-And if you want you can remove all of the networks and containers with `./scripts/remove-docker.sh`.
 
 ## Contributing
 
