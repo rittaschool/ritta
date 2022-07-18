@@ -1,7 +1,7 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/rittaschool/info/master/Ritta.png" height="100px" alt="ritta-server" />
   
-## Joku slogan tähän
+## Modern and easy to use school information system
 
 Strengthening home-school communication and simplifying everyday school life
 
