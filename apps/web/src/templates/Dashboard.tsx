@@ -41,19 +41,6 @@ function App() {
     ],
   ]);
 
-  /*const { authenticated } = useAuthentication();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!authenticated) {
-      navigate("/auth/login");
-    }
-  }, []);
-
-  if (!authenticated) {
-    return <></>;
-  }*/
-
   const interval = useInterval(() => {
     console.log("\n\n\n\n\n");
     console.log(
