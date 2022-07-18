@@ -23,7 +23,7 @@ For running Ritta you must have NodeJS **16**, Yarn **Classic**, Docker and dock
 
 ### Starting dependencies (RabbitMQ, databases)
 
-Easiest way to start the dependencies is to run `environments/local/start-dodcker.sh` in the root of the project.
+Easiest way to start the dependencies is to run `environments/local/start-docker.sh` in the root of the project.
 
 ### Building and running Ritta
 
