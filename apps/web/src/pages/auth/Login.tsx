@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
 } from '@mantine/core';
+import { Challenge } from '@rittaschool/shared';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLoginStart } from '../../data/authentication';
@@ -23,12 +24,31 @@ const Login = () => {
         await loginStartMutation.mutateAsync(email);
       } catch (error) {}
 
+      const {
+        data,
+        isError,
+        error: { response },
+      } = loginStartMutation as {
+        data?: {
+          startLoginProcess: {
+            userFirstName: string;
+            userPhotoUri: string;
+            challenge: Challenge;
+          };
+        };
+        isError: boolean;
+        error: {
+          response: {
+            errors: {
+              message: string;
+            }[];
+          };
+        };
+      };
+
       console.log('NOT HERE', loginStartMutation);
-      if (loginStartMutation.isError) {
-        setEmailError(
-          (loginStartMutation.error as any).response.errors[0].message ||
-            'Something went wrong'
-        );
+      if (isError) {
+        setEmailError(response.errors[0].message || 'Something went wrong');
       }
 
       const canContinue =
