@@ -25,18 +25,19 @@ const Login = () => {
 
       const { data, isError, error } = loginStartMutation;
 
-      console.log('NOT HERE', loginStartMutation);
       if (isError) {
         if (error.message === 'Network request failed')
           return setEmailError('Network Request failed. Check connection...');
         if (!error.response)
           return setEmailError('Not GraphQL error... Report to staff');
 
+        // Set the error returned from api
         setEmailError(
           error.response.errors[0].message || 'Something went wrong'
         );
       }
 
+      // Check if request was successful and required data is there
       const canContinue = data && data.startLoginProcess != null;
 
       if (!canContinue) return;
@@ -101,7 +102,7 @@ const Login = () => {
                 borderRadius: 999,
               }}
             />
-            <Text size={23}>Welcome, {userInfo.firstName || ''}</Text>
+            <Text size={23}>Welcome, {userInfo.firstName}</Text>
             <Text>Please authenticate with</Text>
           </Stack>
         </Stepper.Step>
