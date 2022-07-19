@@ -43,9 +43,11 @@ const Login = () => {
 
       setEmailError('');
 
+      const { userFirstName, userPhotoUri } = data.startLoginProcess;
+
       setUserInfo({
-        firstName: data.startLoginProcess.userFirstName,
-        photo: data.startLoginProcess.userPhotoUri,
+        firstName: userFirstName,
+        photo: userPhotoUri,
       });
 
       return setActive((current) => (current < 2 ? current + 1 : current));

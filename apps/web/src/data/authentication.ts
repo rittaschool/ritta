@@ -17,7 +17,7 @@ export const useLoginStart = () => {
     GraphQLError,
     string,
     unknown
-  >(async (identifier: string) => {
+  >(async identifier => {
     return await request(
       ENDPOINT,
       gql`
