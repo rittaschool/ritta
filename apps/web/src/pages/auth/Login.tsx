@@ -7,7 +7,6 @@ import {
   Text,
   TextInput,
 } from '@mantine/core';
-import { Challenge } from '@rittaschool/shared';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLoginStart } from '../../data/authentication';
@@ -24,44 +23,29 @@ const Login = () => {
         await loginStartMutation.mutateAsync(email);
       } catch (error) {}
 
-      const {
-        data,
-        isError,
-        error: { response },
-      } = loginStartMutation as {
-        data?: {
-          startLoginProcess: {
-            userFirstName: string;
-            userPhotoUri: string;
-            challenge: Challenge;
-          };
-        };
-        isError: boolean;
-        error: {
-          response: {
-            errors: {
-              message: string;
-            }[];
-          };
-        };
-      };
+      const { data, isError, error } = loginStartMutation;
 
       console.log('NOT HERE', loginStartMutation);
       if (isError) {
-        setEmailError(response.errors[0].message || 'Something went wrong');
+        if (error.message === 'Network request failed')
+          return setEmailError('Network Request failed. Check connection...');
+        if (!error.response)
+          return setEmailError('Not GraphQL error... Report to staff');
+
+        setEmailError(
+          error.response.errors[0].message || 'Something went wrong'
+        );
       }
 
-      const canContinue =
-        loginStartMutation.data &&
-        loginStartMutation.data.startLoginProcess != null;
+      const canContinue = data && data.startLoginProcess != null;
 
       if (!canContinue) return;
 
       setEmailError('');
 
       setUserInfo({
-        firstName: loginStartMutation.data.startLoginProcess.userFirstName,
-        photo: loginStartMutation.data.startLoginProcess.userPhotoUri,
+        firstName: data.startLoginProcess.userFirstName,
+        photo: data.startLoginProcess.userPhotoUri,
       });
 
       return setActive((current) => (current < 2 ? current + 1 : current));
