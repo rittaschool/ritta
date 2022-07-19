@@ -1,6 +1,7 @@
 import { Challenge } from '@rittaschool/shared';
 import request, { gql } from 'graphql-request';
 import { useMutation } from 'react-query';
+import { GraphQLError } from '../utils/graphql.error';
 
 const ENDPOINT = 'http://localhost:3000/graphql';
 
@@ -13,22 +14,7 @@ export const useLoginStart = () => {
         challenge: Challenge;
       };
     },
-    {
-      message?: string
-      response?: {
-        errors: {
-          message: string
-          extensions: {
-            code: string
-            response: {
-              statusCode: string
-              message: string
-              error: string
-            }
-          }
-        }[]
-      }
-    },
+    GraphQLError,
     string,
     unknown
   >(async (identifier: string) => {
