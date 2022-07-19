@@ -19,9 +19,9 @@ const Login = () => {
   const nextStep = async () => {
     if (active == 0) {
       // make request starting login
-      try {
-        await loginStartMutation.mutateAsync(email);
-      } catch (error) {}
+      await loginStartMutation
+        .mutateAsync(email)
+        .catch(() => console.log('BRUH'));
 
       const { data, isError, error } = loginStartMutation;
 
