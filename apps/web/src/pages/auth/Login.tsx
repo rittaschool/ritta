@@ -8,14 +8,13 @@ import {
   Stepper,
   Text,
   TextInput,
-  Title,
+  Title
 } from '@mantine/core';
 import { Challenge } from '@rittaschool/shared';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthenticateInput from '../../components/AuthenticateInput';
 import { useLoginStart } from '../../data/authentication';
-import { EmailRegEx } from '../../utils/email.regex';
 
 const Login = () => {
   const loginStartMutation = useLoginStart();
@@ -101,8 +100,7 @@ const Login = () => {
               setEmail(event.currentTarget.value);
             }}
             error={
-              emailError ||
-              (!EmailRegEx.test(email) && email && 'Invalid email')
+              emailError
             }
           />
         </Stepper.Step>
