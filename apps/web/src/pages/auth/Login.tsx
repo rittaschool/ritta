@@ -7,8 +7,10 @@ import {
   Text,
   TextInput,
 } from '@mantine/core';
+import { Challenge } from '@rittaschool/shared';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import AuthenticateInput from '../../components/AuthenticateInput';
 import { useLoginStart } from '../../data/authentication';
 import { EmailRegEx } from '../../utils/email.regex';
 
@@ -19,9 +21,9 @@ const Login = () => {
   const nextStep = async () => {
     if (active == 0) {
       // make request starting login
-      await loginStartMutation
-        .mutateAsync(email)
-        .catch(() => console.log('BRUH'));
+      try {
+        await loginStartMutation.mutateAsync(email);
+      } catch (error) {}
 
       const { data, isError, error } = loginStartMutation;
 
@@ -44,11 +46,12 @@ const Login = () => {
 
       setEmailError('');
 
-      const { userFirstName, userPhotoUri } = data.startLoginProcess;
+      const { userFirstName, userPhotoUri, challenge } = data.startLoginProcess;
 
       setUserInfo({
         firstName: userFirstName,
         photo: userPhotoUri,
+        challenge,
       });
 
       return setActive((current) => (current < 2 ? current + 1 : current));
@@ -62,6 +65,7 @@ const Login = () => {
   const [userInfo, setUserInfo] = useState<{
     firstName?: string;
     photo?: string;
+    challenge?: Challenge;
   }>({});
 
   return (
@@ -104,6 +108,7 @@ const Login = () => {
             />
             <Text size={23}>Welcome, {userInfo.firstName}</Text>
             <Text>Please authenticate with</Text>
+            <AuthenticateInput challengeType={userInfo.challenge?.type} />
           </Stack>
         </Stepper.Step>
         <Stepper.Completed>
