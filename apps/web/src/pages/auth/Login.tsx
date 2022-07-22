@@ -8,7 +8,7 @@ import {
   Stepper,
   Text,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import { Challenge } from '@rittaschool/shared';
 import { useState } from 'react';
@@ -72,6 +72,8 @@ const Login = () => {
       sx={{
         position: 'relative',
         flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       <LoadingOverlay visible={loginStartMutation.isLoading} />
@@ -84,6 +86,9 @@ const Login = () => {
           steps: {
             display: 'none',
           },
+        }}
+        sx={{
+          flex: '1',
         }}
       >
         <Stepper.Step allowStepSelect={active > 0}>
@@ -99,9 +104,7 @@ const Login = () => {
               setEmailError('');
               setEmail(event.currentTarget.value);
             }}
-            error={
-              emailError
-            }
+            error={emailError}
           />
         </Stepper.Step>
         <Stepper.Step allowStepSelect={active > 1}>
