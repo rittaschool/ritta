@@ -21,42 +21,39 @@ const Login = () => {
   const nextStep = async () => {
     if (active == 0) {
       // make request starting login
-      try {
-        await loginStartMutation.mutateAsync(email);
-      } catch (error) {}
+      await loginStartMutation.mutateAsync(email, {
+        onSuccess: (data) => {
+          // Check if request was successful and required data is there
+          const canContinue = data && data.startLoginProcess != null;
 
-      const { data, isError, error } = loginStartMutation;
+          if (!canContinue) return;
 
-      if (isError) {
-        if (error.message === 'Network request failed')
-          return setEmailError('Network Request failed. Check connection...');
-        if (!error.response)
-          return setEmailError('Not GraphQL error... Report to staff');
+          setEmailError('');
 
-        // Set the error returned from api
-        setEmailError(
-          error.response.errors[0].message || 'Something went wrong'
-        );
-      }
+          const { userFirstName, userPhotoUri, challenge } =
+            data.startLoginProcess;
 
-      // Check if request was successful and required data is there
-      const canContinue = data && data.startLoginProcess != null;
+          setUserInfo({
+            firstName: userFirstName,
+            photo: userPhotoUri,
+            challenge,
+          });
 
-      if (!canContinue) return;
+          return setActive((current) => (current < 2 ? current + 1 : current));
+        },
+        onError: (error) => {
+          if (error.message === 'Network request failed')
+            return setEmailError('Network Request failed. Check connection...');
+          if (!error.response)
+            return setEmailError('Not GraphQL error... Report to staff');
 
-      setEmailError('');
-
-      const { userFirstName, userPhotoUri, challenge } = data.startLoginProcess;
-
-      setUserInfo({
-        firstName: userFirstName,
-        photo: userPhotoUri,
-        challenge,
+          // Set the error returned from api
+          setEmailError(
+            error.response.errors[0].message || 'Something went wrong'
+          );
+        },
       });
-
-      return setActive((current) => (current < 2 ? current + 1 : current));
     }
-    setActive((current) => (current < 2 ? current + 1 : current));
   };
   const prevStep = () =>
     setActive((current) => (current > 0 ? current - 1 : current));
