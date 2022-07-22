@@ -10,14 +10,18 @@ const AuthenticateInput = ({ challengeType }: Props) => {
   switch (challengeType) {
     case IChallengeType.PASSWORD_NEEDED:
       return (
-        <PasswordInput
-          label="Password"
-          placeholder="Change visibility toggle icon"
-          defaultValue=""
-          visibilityToggleIcon={({ reveal, size }) =>
-            reveal ? <EyeOff size={size} /> : <EyeCheck size={size} />
-          }
-        />
+        <>
+          <Text>Please authenticate with your password.</Text>
+          <PasswordInput
+            label="Password"
+            placeholder="Change visibility toggle icon"
+            defaultValue=""
+            sx={{ width: '300px' }}
+            visibilityToggleIcon={({ reveal, size }) =>
+              reveal ? <EyeOff size={size} /> : <EyeCheck size={size} />
+            }
+          />
+        </>
       );
 
     default:

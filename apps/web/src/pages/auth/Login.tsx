@@ -104,7 +104,7 @@ const Login = () => {
               }}
             />
             <Text size={23}>Welcome, {userInfo.firstName}</Text>
-            <Text>Please authenticate with</Text>
+
             <AuthenticateInput challengeType={userInfo.challenge?.type} />
           </Stack>
         </Stepper.Step>
