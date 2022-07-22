@@ -14,7 +14,7 @@ const AuthenticateInput = ({ challengeType }: Props) => {
           <Text>Please authenticate with your password.</Text>
           <PasswordInput
             label="Password"
-            placeholder="Change visibility toggle icon"
+            placeholder="Password"
             defaultValue=""
             sx={{ width: '300px' }}
             visibilityToggleIcon={({ reveal, size }) =>

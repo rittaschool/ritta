@@ -1,11 +1,14 @@
 import {
   Avatar,
+  Box,
   Button,
   Group,
+  LoadingOverlay,
   Stack,
   Stepper,
   Text,
   TextInput,
+  Title,
 } from '@mantine/core';
 import { Challenge } from '@rittaschool/shared';
 import { useState } from 'react';
@@ -66,14 +69,28 @@ const Login = () => {
   }>({});
 
   return (
-    <>
-      <Stepper active={active} onStepClick={setActive} breakpoint="sm">
-        <Stepper.Step
-          label="Step 1"
-          description={t('auth:username')}
-          allowStepSelect={active > 0}
-          loading={loginStartMutation.isLoading}
-        >
+    <Box
+      sx={{
+        position: 'relative',
+        flex: 1,
+      }}
+    >
+      <LoadingOverlay visible={loginStartMutation.isLoading} />
+
+      <Stepper
+        active={active}
+        onStepClick={setActive}
+        breakpoint="sm"
+        styles={{
+          steps: {
+            display: 'none',
+          },
+        }}
+      >
+        <Stepper.Step allowStepSelect={active > 0}>
+          <Title order={3} align="center" mb="md">
+            Login with email
+          </Title>
           <TextInput
             required
             label={t('auth:username')}
@@ -89,11 +106,7 @@ const Login = () => {
             }
           />
         </Stepper.Step>
-        <Stepper.Step
-          label="Step 2"
-          description="Authenticate"
-          allowStepSelect={active > 1}
-        >
+        <Stepper.Step allowStepSelect={active > 1}>
           <Stack align="center">
             <Avatar
               alt="your profile picture"
@@ -119,7 +132,7 @@ const Login = () => {
         </Button>
         <Button onClick={nextStep}>Continue</Button>
       </Group>
-    </>
+    </Box>
   );
 };
 
