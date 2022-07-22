@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import { v4 } from "uuid";
 
 export interface Challenge {
   id: string;
@@ -18,7 +18,7 @@ export const generateChallenge = (
   userId: string
 ): Challenge => {
   const challenge: Challenge = {
-    id: `challenge-${randomUUID()}`,
+    id: `challenge-${v4()}`,
     type,
     data: null,
     userId,
