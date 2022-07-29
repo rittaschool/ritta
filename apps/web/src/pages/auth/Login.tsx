@@ -14,10 +14,12 @@ import { Challenge } from '@rittaschool/shared';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AuthenticateInput from '../../components/AuthenticateInput';
-import { useLoginStart } from '../../data/authentication';
+import { submitChallenge, useLoginStart } from '../../data/authentication';
 
 const Login = () => {
   const loginStartMutation = useLoginStart();
+  const challengeMutation = submitChallenge();
+  const [passwordInput, setPasswordInput] = useState('');
   const [active, setActive] = useState(0);
   const [emailError, setEmailError] = useState('');
   const nextStep = async () => {
@@ -55,6 +57,23 @@ const Login = () => {
           );
         },
       });
+    } else if (active == 1) {
+      if (!userInfo.challenge) return console.error('NO CHALLENGE');
+
+      await challengeMutation.mutateAsync(
+        {
+          ...userInfo.challenge,
+          data: {
+            passwordData: {
+              password: passwordInput,
+            },
+          },
+        },
+        {
+          onSuccess: (data) => console.log(data),
+          onError: (err) => console.log('ERROR', err),
+        }
+      );
     }
   };
   const prevStep = () =>
@@ -119,7 +138,11 @@ const Login = () => {
             />
             <Text size={23}>Welcome, {userInfo.firstName}</Text>
 
-            <AuthenticateInput challengeType={userInfo.challenge?.type} />
+            <AuthenticateInput
+              passwordInput={passwordInput}
+              setPasswordInput={setPasswordInput}
+              challenge={userInfo.challenge}
+            />
           </Stack>
         </Stepper.Step>
         <Stepper.Completed>

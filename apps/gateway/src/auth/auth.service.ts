@@ -1,17 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import {
-  RittaError,
-  IErrorType,
   Challenge,
-  IChallengeType,
   generateChallenge,
-  IUser,
-  User,
+  IChallengeType,
+  IErrorType,
   ILoginResponse,
+  IUser,
+  RittaError,
 } from '@rittaschool/shared';
 import { FastifyReply } from 'fastify';
-import { timeout, catchError, of } from 'rxjs';
+import { catchError, of, timeout } from 'rxjs';
 import { ChallengeService } from '../challenge/challenge.service';
 import { UsersService } from '../users/users.service';
 
@@ -87,12 +86,18 @@ export class AuthService {
       );
     }
 
+    console.log('HERE?????? ----');
     switch (challenge.type) {
       case IChallengeType.PASSWORD_NEEDED:
         res = (await this.client
           .send('user_login_password', challenge)
           .pipe(timeout(10000))
-          .pipe(catchError((val) => of({ error: val.message })))
+          .pipe(
+            catchError((val) => {
+              console.log('val', val);
+              return of({ error: val.message });
+            }),
+          )
           .toPromise()) as SuccessfulLoginResponse;
         break;
       case IChallengeType.FIDO2_NEEDED:
@@ -121,20 +126,14 @@ export class AuthService {
     const response: {
       user?: IUser;
       challenge?: Challenge;
-      accessToken?: string;
+      access_token?: string;
+      refresh_token?: string;
     } = {};
-
-    console.log('res', res);
 
     if (res.user && res.tokens) {
       response.user = res.user;
-      response.accessToken = res.tokens.accessToken;
-
-      reply.setCookie('rif', res.tokens.refreshToken, {
-        httpOnly: true,
-        //domain: ".ritta.fi" . means every subdomain //TODO: use in production
-        maxAge: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, //30 days
-      });
+      response.access_token = res.tokens.accessToken;
+      response.refresh_token = res.tokens.refreshToken;
     } else if (res.challenge) {
       response.challenge = res.challenge;
       await this.challengeService.storeChallenge(res.challenge);

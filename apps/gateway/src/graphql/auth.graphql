@@ -50,6 +50,8 @@ input OtpDataInput {
 type SubmitChallengeResponse {
   user: User
   challenge: Challenge
+  access_token: String
+  refresh_token: String
 }
 
 type StartFidoSetupResponse {
