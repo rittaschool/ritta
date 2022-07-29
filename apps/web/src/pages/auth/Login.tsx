@@ -70,7 +70,15 @@ const Login = () => {
           },
         },
         {
-          onSuccess: (data) => console.log(data),
+          onSuccess: (data) => {
+            const { access_token, refresh_token } = data.submitChallenge;
+            if (access_token) {
+              sessionStorage.setItem('access_token', access_token);
+            }
+            if (refresh_token) {
+              sessionStorage.setItem('refresh_token', refresh_token);
+            }
+          },
           onError: (err) => console.log('ERROR', err),
         }
       );

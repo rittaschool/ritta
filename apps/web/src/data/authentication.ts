@@ -1,9 +1,8 @@
 import { Challenge } from '@rittaschool/shared';
-import request, { gql } from 'graphql-request';
+import { gql } from 'graphql-request';
 import { useMutation } from 'react-query';
 import { GraphQLError } from '../utils/graphql.error';
-
-const ENDPOINT = 'http://localhost:3000/graphql';
+import { client } from './graphql-client';
 
 export const useLoginStart = () => {
   return useMutation<
@@ -18,8 +17,7 @@ export const useLoginStart = () => {
     string,
     unknown
   >(async (identifier) => {
-    return await request(
-      ENDPOINT,
+    return await client.request(
       gql`
       query {
         startLoginProcess(email: "${identifier}") {
@@ -41,16 +39,17 @@ export const submitChallenge = () => {
   return useMutation<
     {
       submitChallenge: {
-        user: any;
-        challenge: Challenge;
+        user?: any;
+        challenge?: Challenge;
+        access_token?: string;
+        refresh_token?: string;
       };
     },
     GraphQLError,
     Challenge,
     unknown
   >(async (challenge) => {
-    return await request(
-      ENDPOINT,
+    return await client.request(
       gql`
         query SubmitChallenge($challenge: ChallengeInput!) {
           submitChallenge(challenge: $challenge) {
