@@ -1,16 +1,20 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
 import {
-  IErrorType,
-  IUser,
-  Permissions,
-  RittaError,
-} from '@rittaschool/shared';
+  CanActivate,
+  ExecutionContext,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { IErrorType, Permissions, RittaError } from '@rittaschool/shared';
 import { Observable } from 'rxjs';
+import { Tokenizer } from './tokenizer';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(
+    private reflector: Reflector,
+    @Inject('TOKENIZER') private tokenizer: Tokenizer,
+  ) {}
 
   // Return true if the request is allowed to passthrough
   canActivate(
@@ -35,7 +39,12 @@ export class PermissionsGuard implements CanActivate {
     }
 
     // Got from the request if client has provided a token
-    const userPerms = (request[0].user as IUser).permissions;
+    const userPerms = (
+      this.tokenizer.verify(request[0].token) as {
+        permissions: number;
+        uid: string;
+      }
+    ).permissions;
 
     if (userPerms > 0) {
       const doesUserHavePermission = Permissions.checkHasPermission(
