@@ -2,8 +2,8 @@ version: "3.6"
 
 networks:
   databases:
-    external:
-      name: ritta-databases
+    name: ritta-databases
+    external: true
 
 volumes:
   users-db: null

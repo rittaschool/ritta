@@ -3,11 +3,11 @@ version: '3.6'
 networks:
   rabbitmq-prometheus: null
   grafana:
-    external:
-      name: ritta-grafana
+    name: ritta-grafana
+    external: true
   rabbitmq:
-    external:
-      name: ritta-rmq
+    name: ritta-rmq
+    external: true
 
 volumes:
   rabbitmq-prometheus_prometheus: null
