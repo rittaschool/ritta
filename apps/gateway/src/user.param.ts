@@ -1,8 +1,9 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { IUser } from '@rittaschool/shared';
 
 export const User = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
-    let user: string;
+    let user: IUser;
 
     switch (ctx.getType() as any) {
       case 'http':
