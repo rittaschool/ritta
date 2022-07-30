@@ -1,14 +1,8 @@
-import {
-  createParamDecorator,
-  ExecutionContext,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { IUser } from '@rittaschool/shared';
-import jwt from 'jsonwebtoken';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 export const User = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
-    let user: IUser;
+    let user: string;
 
     switch (ctx.getType() as any) {
       case 'http':
@@ -16,18 +10,7 @@ export const User = createParamDecorator(
         break;
 
       case 'graphql':
-        const access_token = ctx
-          .getArgByIndex(2)
-          .request.headers.authorization.split(' ')[1];
-        const decoded = jwt.verify(
-          access_token,
-          process.env.JWT_SIGNING_SECRET,
-        );
-
-        if (!decoded) throw new UnauthorizedException('Not logged in...');
-
-        user = decoded as any; //TODO: fix, doesnt work, you need to get users service here somehow to get user
-
+        user = ctx.getArgByIndex(2).req.user;
         break;
 
       default:
