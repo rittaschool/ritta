@@ -1,6 +1,7 @@
 import { PasswordInput, Text } from '@mantine/core';
 import { Challenge, IChallengeType } from '@rittaschool/shared';
 import { Dispatch, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { EyeCheck, EyeOff } from 'tabler-icons-react';
 
 type Props = {
@@ -14,16 +15,18 @@ const AuthenticateInput = ({
   passwordInput,
   setPasswordInput,
 }: Props) => {
-  if (!challenge) return <Text>Invalid Challenge</Text>;
+  const { t } = useTranslation();
+
+  if (!challenge) return <Text>{t("auth:error.invalid_challenge")}</Text>;
 
   switch (challenge.type) {
     case IChallengeType.PASSWORD_NEEDED:
       return (
         <>
-          <Text>Please authenticate with your password.</Text>
+          <Text>{t("auth:login_method.password.prompt")}</Text>
           <PasswordInput
-            label="Password"
-            placeholder="Password"
+            label={t("auth:password")}
+            placeholder={t("auth:password")}
             value={passwordInput}
             onChange={(event) => setPasswordInput(event.target.value)}
             sx={{ width: '300px' }}
@@ -35,7 +38,7 @@ const AuthenticateInput = ({
       );
 
     default:
-      return <Text>Invalid Challenge Type</Text>;
+      return <Text>{t("auth:error.invalid_challenge_type")}</Text>;
   }
 };
 
