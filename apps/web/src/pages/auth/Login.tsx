@@ -46,15 +46,23 @@ const Login = () => {
           return setActive((current) => (current < 2 ? current + 1 : current));
         },
         onError: (error) => {
+          // TODO: set email error based on the error code (not message)
           if (error.message === 'Network request failed')
-            return setEmailError('Network Request failed. Check connection...');
+            return setEmailError(t("auth:error.network"));
           if (!error.response)
-            return setEmailError('Not GraphQL error... Report to staff');
+            return setEmailError(t("auth:error.not_graphql"));
 
-          // Set the error returned from api
-          setEmailError(
-            error.response.errors[0].message || 'Something went wrong'
-          );
+          const errors = error.response.errors;
+          if (errors && errors.length > 0 && errors[0]) {
+            const errorCode = errors[0].extensions.code;
+            if (errorCode === "BAD_USER_INPUT") {
+              return setEmailError(t("auth:error.bad_user_input"));
+            }
+
+            return setEmailError(errors[0].message);
+          }
+
+          return setEmailError(t("auth:error.unknown"));
         },
       });
     } else if (active == 1) {
@@ -120,12 +128,12 @@ const Login = () => {
       >
         <Stepper.Step allowStepSelect={active > 0}>
           <Title order={3} align="center" mb="md">
-            Login with email
+            {t("auth:login_method.email")}
           </Title>
           <TextInput
             required
             label={t('auth:username')}
-            placeholder="etunimi.sukunimi@ritta.app"
+            placeholder={t("auth:placeholder.username")}
             value={email}
             onChange={(event) => {
               setEmailError('');
@@ -137,14 +145,14 @@ const Login = () => {
         <Stepper.Step allowStepSelect={active > 1}>
           <Stack align="center">
             <Avatar
-              alt="your profile picture"
+              alt={t("profile_picture_alt_text")}
               size="xl"
               src={userInfo.photo}
               sx={{
                 borderRadius: 999,
               }}
             />
-            <Text size={23}>Welcome, {userInfo.firstName}</Text>
+            <Text size={23}>{t("auth:greeting", { firstName: userInfo.firstName })}</Text>
 
             <AuthenticateInput
               passwordInput={passwordInput}
@@ -154,15 +162,15 @@ const Login = () => {
           </Stack>
         </Stepper.Step>
         <Stepper.Completed>
-          Successfully logged in. Continue to dashboard
+          {t("auth:login_success")}
         </Stepper.Completed>
       </Stepper>
 
       <Group position="center" mt="xl">
         <Button variant="default" onClick={prevStep}>
-          Back
+          {t("auth:button.back")}
         </Button>
-        <Button onClick={nextStep}>Continue</Button>
+        <Button onClick={nextStep}>{t("auth:button.continue")}</Button>
       </Group>
     </Box>
   );
