@@ -1,8 +1,8 @@
 import { Box, Group, Stack, Text, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import React from "react";
-import { inverseLerp } from "../utils/numberUtils";
-import { unixSinceMidnight } from "../utils/timeUtils";
+import { inverseLerp } from "../../utils/numberUtils";
+import { unixSinceMidnight } from "../../utils/timeUtils";
 
 interface Lesson {
   id: number;

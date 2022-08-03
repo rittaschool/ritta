@@ -23,7 +23,7 @@ import Home from "./pages/Home";
 import MessagesList, { MailBox } from "./pages/MessagesList";
 import ThreadView from "./pages/ThreadView";
 import PageWithTitle from "./components/PageWithTitle";
-import Schedule from "./components/Schedule";
+import Schedule from "./components/schedule/Schedule";
 import { unixSinceMidnight } from "./utils/timeUtils";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
