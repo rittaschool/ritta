@@ -1,7 +1,8 @@
-import { Group, Stack, Title } from "@mantine/core";
+import { Group } from "@mantine/core";
 import dayjs from "dayjs";
 import { unixSinceMidnight } from "../../utils/timeUtils";
-import SingleScheduleEntry, { Lesson } from "./SingleScheduleEntry";
+import ScheduleDay from "./ScheduleDay";
+import { Lesson } from "./SingleScheduleEntry";
 
 interface ScheduleProps {
   lessons?: Lesson[],
@@ -62,22 +63,15 @@ export default ({ lessons: allLessons = defaultProps.lessons, minStartTime, minE
   const latestEndTime = minEndTime === undefined ? lessonsLatestEndTime : Math.max(lessonsLatestEndTime, minEndTime);
 
   return <Group>
-    {Array.from({ length: dayCount }).map((_, i) => {
-      const day = weekStart.add(i, "day");
-
-      const dayLessons = lessons.filter(l => dayjs(l.startTime).isSame(day, "day"));
-
-      return <Stack sx={{ flex: 1 }} key={i}>
-        <Title order={2}>{weekStart.add(i, "day").format("D.M.YYYY")}</Title>
-        <div style={{ height: 550, backgroundColor: "#24262D", position: "relative" }}>
-          {dayLessons.map(lesson => <SingleScheduleEntry
-            key={lesson.id}
-            dayStart={earliestStartTime}
-            dayEnd={latestEndTime}
-            lesson={lesson}
-          />)}
-        </div>
-      </Stack>;
-    })}
+    {Array
+      .from({ length: dayCount }, (_, i) => weekStart.add(i, "day"))
+      .map(columnDay =>
+        <ScheduleDay
+          key={columnDay.unix()}
+          day={columnDay}
+          dayStart={earliestStartTime}
+          dayEnd={latestEndTime}
+          lessons={lessons.filter(lesson => columnDay.isSame(lesson.startTime, "day"))}
+        />)}
   </Group>
 };
