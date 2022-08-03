@@ -1,6 +1,5 @@
 import { Group, Stack, Title } from "@mantine/core";
 import dayjs from "dayjs";
-import React from "react";
 import { unixSinceMidnight } from "../../utils/timeUtils";
 import SingleScheduleEntry, { Lesson } from "./SingleScheduleEntry";
 
@@ -63,19 +62,17 @@ export default ({ lessons: allLessons = defaultProps.lessons, minStartTime, minE
 
       const dayLessons = lessons.filter(l => dayjs(l.startTime).isSame(day, "day"));
 
-      return <React.Fragment key={i}>
-        <Stack sx={{ flex: 1 }}>
-          <Title order={2}>{weekStart.add(i, "day").format("D.M.YYYY")}</Title>
-          <div style={{ height: 550, backgroundColor: "#24262D", position: "relative" }}>
-            {dayLessons.map(lesson => <SingleScheduleEntry
-              key={lesson.id}
-              dayStart={earliestStartTime}
-              dayEnd={latestEndTime}
-              lesson={lesson}
-            />)}
-          </div>
-        </Stack>
-      </React.Fragment>;
+      return <Stack sx={{ flex: 1 }} key={i}>
+        <Title order={2}>{weekStart.add(i, "day").format("D.M.YYYY")}</Title>
+        <div style={{ height: 550, backgroundColor: "#24262D", position: "relative" }}>
+          {dayLessons.map(lesson => <SingleScheduleEntry
+            key={lesson.id}
+            dayStart={earliestStartTime}
+            dayEnd={latestEndTime}
+            lesson={lesson}
+          />)}
+        </div>
+      </Stack>;
     })}
   </Group>
 };
