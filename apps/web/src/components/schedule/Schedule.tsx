@@ -1,15 +1,8 @@
-import { Box, Group, Stack, Text, Title } from "@mantine/core";
+import { Group, Stack, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import React from "react";
-import { inverseLerp } from "../../utils/numberUtils";
 import { unixSinceMidnight } from "../../utils/timeUtils";
-
-interface Lesson {
-  id: number;
-  courseName: string;
-  startTime: Date;
-  endTime: Date;
-}
+import SingleScheduleEntry, { Lesson } from "./SingleScheduleEntry";
 
 interface ScheduleProps {
   lessons?: Lesson[],
@@ -35,30 +28,6 @@ const defaultProps = {
     startTime: new Date(2022, 7, 4, 10, 30, 0),
     endTime: new Date(2022, 7, 4, 11, 45, 0),
   }]
-}
-
-const ScheduleEntry = ({ dayStart, dayEnd, lesson }: {
-  dayStart: number, // seconds since midnight
-  dayEnd: number, // seconds since midnight
-  lesson: Lesson
-}) => {
-  const startPercentage = inverseLerp(dayStart, dayEnd, unixSinceMidnight(lesson.startTime)) * 100;
-  const endPercentage = (1 - inverseLerp(dayStart, dayEnd, unixSinceMidnight(lesson.endTime))) * 100;
-
-  const startTimeFormatted = dayjs(lesson.startTime).format("HH:mm");
-  const endTimeFormatted = dayjs(lesson.endTime).format("HH:mm");
-
-  return <Box sx={{
-    border: "1px solid #ccc",
-    padding: "0.5rem",
-    position: "absolute",
-    top: `${startPercentage}%`,
-    bottom: `${endPercentage}%`,
-    backgroundColor: "",
-    width: "100%",
-  }}>
-    <Text>{lesson.courseName} ({startTimeFormatted} to {endTimeFormatted})</Text>
-  </Box>;
 }
 
 export default ({ lessons: allLessons = defaultProps.lessons, minStartTime, minEndTime }: ScheduleProps) => {
@@ -98,7 +67,7 @@ export default ({ lessons: allLessons = defaultProps.lessons, minStartTime, minE
         <Stack sx={{ flex: 1 }}>
           <Title order={2}>{weekStart.add(i, "day").format("D.M.YYYY")}</Title>
           <div style={{ height: 550, backgroundColor: "#24262D", position: "relative" }}>
-            {dayLessons.map(lesson => <ScheduleEntry
+            {dayLessons.map(lesson => <SingleScheduleEntry
               key={lesson.id}
               dayStart={earliestStartTime}
               dayEnd={latestEndTime}
