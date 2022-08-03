@@ -1,5 +1,6 @@
 import { Group } from "@mantine/core";
 import dayjs from "dayjs";
+import { useState } from "react";
 import { unixSinceMidnight } from "../../utils/timeUtils";
 import ScheduleDay from "./ScheduleDay";
 import { Lesson } from "./SingleScheduleEntry";
@@ -14,6 +15,15 @@ interface ScheduleProps {
 const defaultLessons: Lesson[] = [
   {
     id: 0,
+    courseCode: "MAT-2",
+    courseName: "Maths",
+    startTime: new Date(2022, 7, 2, 9, 30, 0),
+    endTime: new Date(2022, 7, 2, 10, 30, 0),
+    room: "A2",
+    teacher: "Minna Muuttuja"
+  },
+  {
+    id: 1,
     courseCode: "MAT-1",
     courseName: "Maths",
     startTime: new Date(2022, 7, 3, 9, 0, 0),
@@ -22,16 +32,16 @@ const defaultLessons: Lesson[] = [
     teacher: "Matti Matemaatikko"
   },
   {
-    id: 1,
+    id: 2,
     courseCode: "MAT-2",
     courseName: "Maths",
-    startTime: new Date(2022, 7, 3, 9, 30, 0),
-    endTime: new Date(2022, 7, 3, 10, 30, 0),
+    startTime: new Date(2022, 7, 3, 13, 30, 0),
+    endTime: new Date(2022, 7, 3, 14, 30, 0),
     room: "A2",
     teacher: "Minna Muuttuja"
   },
   {
-    id: 2,
+    id: 3,
     courseCode: "PHY-1",
     courseName: "Physics",
     startTime: new Date(2022, 7, 4, 8, 30, 0),
@@ -40,17 +50,37 @@ const defaultLessons: Lesson[] = [
     teacher: "Frans Fyysikko"
   },
   {
-    id: 3,
+    id: 4,
     courseCode: "CHE-1",
     courseName: "Chemistry",
-    startTime: new Date(2022, 7, 4, 10, 30, 0),
-    endTime: new Date(2022, 7, 4, 11, 45, 0),
+    startTime: new Date(2022, 7, 3, 9, 30, 0),
+    endTime: new Date(2022, 7, 3, 10, 45, 0),
     room: "A4",
     teacher: "Kaisa Kemisti"
-  }
+  },
+  {
+    id: 5,
+    courseCode: "CHE-1",
+    courseName: "Chemistry",
+    startTime: new Date(2022, 7, 1, 11, 30, 0),
+    endTime: new Date(2022, 7, 1, 12, 45, 0),
+    room: "A4",
+    teacher: "Kaisa Kemisti"
+  },
+  {
+    id: 6,
+    courseCode: "PHY-1",
+    courseName: "Physics",
+    startTime: new Date(2022, 7, 5, 11, 30, 0),
+    endTime: new Date(2022, 7, 5, 12, 45, 0),
+    room: "A3",
+    teacher: "Frans Fyysikko"
+  },
 ];
 
 export default ({ lessons: allLessons = defaultLessons, minStartTime, minEndTime }: ScheduleProps) => {
+  const [hoveredCourseCode, setHoveredCourseCode] = useState<string | null>(null);
+
   const dayCount = 5;
   const weekStart = dayjs()
     .startOf("week")
@@ -87,6 +117,8 @@ export default ({ lessons: allLessons = defaultLessons, minStartTime, minEndTime
           dayStart={earliestStartTime}
           dayEnd={latestEndTime}
           lessons={lessons.filter(lesson => columnDay.isSame(lesson.startTime, "day"))}
+          hoveredCourseCode={hoveredCourseCode}
+          setHoveredCourseCode={setHoveredCourseCode}
         />)}
   </Group>
 };

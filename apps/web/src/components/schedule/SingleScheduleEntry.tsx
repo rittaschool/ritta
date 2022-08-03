@@ -19,9 +19,19 @@ export interface SingleScheduleEntryProps {
   lesson: Lesson,
   columnCount: number,
   column: number,
+  hoveredCourseCode: string | null,
+  setHoveredCourseCode: (courseCode: string | null) => void,
 }
 
-export default ({ dayStart, dayEnd, lesson, columnCount, column }: SingleScheduleEntryProps) => {
+export default ({
+  dayStart,
+  dayEnd,
+  lesson,
+  columnCount,
+  column,
+  hoveredCourseCode,
+  setHoveredCourseCode
+}: SingleScheduleEntryProps) => {
   const startPercentage = inverseLerp(dayStart, dayEnd, unixSinceMidnight(lesson.startTime)) * 100;
   const endPercentage = (1 - inverseLerp(dayStart, dayEnd, unixSinceMidnight(lesson.endTime))) * 100;
 
@@ -31,16 +41,20 @@ export default ({ dayStart, dayEnd, lesson, columnCount, column }: SingleSchedul
 
   return <HoverCard width={300} openDelay={500}>
     <HoverCard.Target>
-      <Box sx={{
-        border: "1px solid #ccc",
-        padding: "0.5rem",
-        position: "absolute",
-        top: `${startPercentage}%`,
-        bottom: `${endPercentage}%`,
-        backgroundColor: "",
-        width: `${100 / columnCount}%`,
-        left: `${column * 100 / columnCount}%`,
-      }}>
+      <Box
+        onMouseOver={() => setHoveredCourseCode(lesson.courseCode)}
+        onMouseOut={() => setHoveredCourseCode(null)}
+        sx={{
+          border: "1px solid #ccc",
+          padding: "0.5rem",
+          position: "absolute",
+          top: `${startPercentage}%`,
+          bottom: `${endPercentage}%`,
+          backgroundColor: "#FFFFFF" + (hoveredCourseCode === lesson.courseCode ? "22" : "00"),
+          width: `${100 / columnCount}%`,
+          left: `${column * 100 / columnCount}%`,
+        }}
+      >
         <Text>{lesson.courseName}</Text>
       </Box>
     </HoverCard.Target>

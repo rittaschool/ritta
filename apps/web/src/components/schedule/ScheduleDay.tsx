@@ -8,13 +8,17 @@ export interface ScheduleDayProps {
   dayStart: number,
   dayEnd: number,
   lessons: Lesson[],
+  hoveredCourseCode: string | null,
+  setHoveredCourseCode: (courseCode: string | null) => void,
 }
 
 export default ({
   day,
   dayStart,
   dayEnd,
-  lessons
+  lessons,
+  hoveredCourseCode,
+  setHoveredCourseCode
 }: ScheduleDayProps) => {
   const lessonsWithColumn = calculateColumns(lessons);
   const columnCount = Math.max(...lessonsWithColumn.map(o => o.column)) + 1;
@@ -29,6 +33,8 @@ export default ({
         lesson={lesson}
         columnCount={columnCount}
         column={lesson.column}
+        hoveredCourseCode={hoveredCourseCode}
+        setHoveredCourseCode={setHoveredCourseCode}
       />)}
     </div>
   </Stack>;
