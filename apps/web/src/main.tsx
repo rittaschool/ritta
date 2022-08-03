@@ -23,6 +23,8 @@ import Home from "./pages/Home";
 import MessagesList, { MailBox } from "./pages/MessagesList";
 import ThreadView from "./pages/ThreadView";
 import PageWithTitle from "./components/PageWithTitle";
+import Schedule from "./components/Schedule";
+import { unixSinceMidnight } from "./utils/timeUtils";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -63,7 +65,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 index
                 element={
                   <PageWithTitle title="Lukujärjestys">
-                    <h2>Schedule placeholder</h2>
+                    <Schedule
+                      minStartTime={unixSinceMidnight(new Date().setHours(7, 30))}
+                      minEndTime={unixSinceMidnight(new Date().setHours(13, 0))}
+                    />
                   </PageWithTitle>
                 }
               />
