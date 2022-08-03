@@ -3,26 +3,24 @@ import { Lesson } from "../components/schedule/SingleScheduleEntry";
 export const getColumns = (lessons: Lesson[]) => {
   const sortedLessons = [...lessons].sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
 
-  let result: (Lesson & { column: number })[] = [];
-
-  while (result.length < lessons.length) {
-    const nextToInsert = sortedLessons.shift()!;
-
+  const result = sortedLessons.reduce<(Lesson & { column: number })[]>((acc, lesson) => {
     let currentCheckColumn = 0;
+
     while (true) {
-      const canFitInColumn = result.filter(r => r.column === currentCheckColumn).every(r => r.endTime.getTime() < nextToInsert.startTime.getTime());
+      const canFitInColumn = acc
+        .filter(r => r.column === currentCheckColumn)
+        .every(r => r.endTime.getTime() < lesson.startTime.getTime());
+
       if (canFitInColumn) {
-        result.push({
-          ...nextToInsert,
-          column: currentCheckColumn
-        })
-        break;
+        return [
+          ...acc,
+          { ...lesson, column: currentCheckColumn }
+        ];
       }
-      else {
-        currentCheckColumn++;
-      }
+
+      currentCheckColumn++;
     }
-  }
+  }, []);
 
   return result;
 };
