@@ -11,31 +11,46 @@ interface ScheduleProps {
 }
 
 // TODO: Remove these default props, they are only for development
-const defaultProps = {
-  lessons: [{
+const defaultLessons: Lesson[] = [
+  {
     id: 0,
+    courseCode: "MAT-1",
     courseName: "Maths",
     startTime: new Date(2022, 7, 3, 9, 0, 0),
     endTime: new Date(2022, 7, 3, 10, 0, 0),
-  }, {
+    room: "A1",
+    teacher: "Matti Matemaatikko"
+  },
+  {
     id: 1,
+    courseCode: "MAT-2",
     courseName: "Maths",
     startTime: new Date(2022, 7, 3, 9, 30, 0),
     endTime: new Date(2022, 7, 3, 10, 30, 0),
-  }, {
+    room: "A2",
+    teacher: "Minna Muuttuja"
+  },
+  {
     id: 2,
+    courseCode: "PHY-1",
     courseName: "Physics",
     startTime: new Date(2022, 7, 4, 8, 30, 0),
     endTime: new Date(2022, 7, 4, 9, 45, 0),
-  }, {
+    room: "A3",
+    teacher: "Frans Fyysikko"
+  },
+  {
     id: 3,
+    courseCode: "CHE-1",
     courseName: "Chemistry",
     startTime: new Date(2022, 7, 4, 10, 30, 0),
     endTime: new Date(2022, 7, 4, 11, 45, 0),
-  }]
-}
+    room: "A4",
+    teacher: "Kaisa Kemisti"
+  }
+];
 
-export default ({ lessons: allLessons = defaultProps.lessons, minStartTime, minEndTime }: ScheduleProps) => {
+export default ({ lessons: allLessons = defaultLessons, minStartTime, minEndTime }: ScheduleProps) => {
   const dayCount = 5;
   const weekStart = dayjs()
     .startOf("week")
