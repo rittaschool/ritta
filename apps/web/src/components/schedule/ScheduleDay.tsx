@@ -1,5 +1,6 @@
 import { Stack, Title } from "@mantine/core";
 import { Dayjs } from "dayjs";
+import { getColumns as calculateColumns } from "../../utils/scheduleUtils";
 import SingleScheduleEntry, { Lesson } from "./SingleScheduleEntry";
 
 export interface ScheduleDayProps {
@@ -15,14 +16,19 @@ export default ({
   dayEnd,
   lessons
 }: ScheduleDayProps) => {
+  const lessonsWithColumn = calculateColumns(lessons);
+  const columnCount = Math.max(...lessonsWithColumn.map(o => o.column)) + 1;
+
   return <Stack sx={{ flex: 1 }}>
     <Title order={2}>{day.format("D.M.YYYY")}</Title>
     <div style={{ height: 550, backgroundColor: "#24262D", position: "relative" }}>
-      {lessons.map(lesson => <SingleScheduleEntry
+      {lessonsWithColumn.map(lesson => <SingleScheduleEntry
         key={lesson.id}
         dayStart={dayStart}
         dayEnd={dayEnd}
         lesson={lesson}
+        columnCount={columnCount}
+        column={lesson.column}
       />)}
     </div>
   </Stack>;

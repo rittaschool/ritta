@@ -13,10 +13,12 @@ export interface Lesson {
 export interface SingleScheduleEntryProps {
   dayStart: number, // seconds since midnight
   dayEnd: number, // seconds since midnight
-  lesson: Lesson
+  lesson: Lesson,
+  columnCount: number,
+  column: number,
 }
 
-export default ({ dayStart, dayEnd, lesson }: SingleScheduleEntryProps) => {
+export default ({ dayStart, dayEnd, lesson, columnCount, column }: SingleScheduleEntryProps) => {
   const startPercentage = inverseLerp(dayStart, dayEnd, unixSinceMidnight(lesson.startTime)) * 100;
   const endPercentage = (1 - inverseLerp(dayStart, dayEnd, unixSinceMidnight(lesson.endTime))) * 100;
 
@@ -30,7 +32,8 @@ export default ({ dayStart, dayEnd, lesson }: SingleScheduleEntryProps) => {
     top: `${startPercentage}%`,
     bottom: `${endPercentage}%`,
     backgroundColor: "",
-    width: "100%",
+    width: `${100 / columnCount}%`,
+    left: `${column * 100 / columnCount}%`,
   }}>
     <Text>{lesson.courseName} ({startTimeFormatted} to {endTimeFormatted})</Text>
   </Box>;
