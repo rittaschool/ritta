@@ -5,11 +5,6 @@ export const getColumns = (lessons: Lesson[]) => {
 
   let result: (Lesson & { column: number })[] = [];
 
-  result.push({
-    ...sortedLessons.shift()!,
-    column: 0
-  });
-
   while (result.length < lessons.length) {
     const nextToInsert = sortedLessons.shift()!;
 
