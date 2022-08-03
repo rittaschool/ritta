@@ -18,11 +18,16 @@ const defaultProps = {
     endTime: new Date(2022, 7, 3, 10, 0, 0),
   }, {
     id: 1,
+    courseName: "Maths",
+    startTime: new Date(2022, 7, 3, 9, 30, 0),
+    endTime: new Date(2022, 7, 3, 10, 30, 0),
+  }, {
+    id: 2,
     courseName: "Physics",
     startTime: new Date(2022, 7, 4, 8, 30, 0),
     endTime: new Date(2022, 7, 4, 9, 45, 0),
   }, {
-    id: 2,
+    id: 3,
     courseName: "Chemistry",
     startTime: new Date(2022, 7, 4, 10, 30, 0),
     endTime: new Date(2022, 7, 4, 11, 45, 0),
