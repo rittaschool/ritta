@@ -20,41 +20,41 @@ import { ThreadMessage } from "../components/ThreadMessage";
 const messageData =
   Math.random() < 0.5
     ? {
-        title: "Thread viesti title",
-        quickReply: false,
-        messages: [
-          {
-            author: "Luukas Lähettäjä",
-            avatarUrl:
-              "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80",
-            date: "16.8.2022 klo. 69:69",
-            content:
-              "<h2>Hei, sinä threadin lukija!</h2><p>Mursu <b>kävi</b> haminassa <i>eilen</i>. Refreshaappa sivua niin saatat saada toisenlaisen testiviestin!",
-          },
-        ],
-      }
+      title: "Thread viesti title",
+      quickReply: false,
+      messages: [
+        {
+          author: "Luukas Lähettäjä",
+          avatarUrl:
+            "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80",
+          date: "16.8.2022 klo. 69:69",
+          content:
+            "<h2>Hei, sinä threadin lukija!</h2><p>Mursu <b>kävi</b> haminassa <i>eilen</i>. Refreshaappa sivua niin saatat saada toisenlaisen testiviestin!",
+        },
+      ],
+    }
     : {
-        title: "Thread viesti title",
-        quickReply: true,
-        messages: [
-          {
-            author: "Luukas Lähettäjä",
-            avatarUrl:
-              "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80",
-            date: "16.8.2022 klo. 69:69",
-            content:
-              "<h2>Hei, sinä threadin lukija!</h2><p>Mursu <b>kävi</b> haminassa <i>eilen</i>",
-          },
-          {
-            author: "Arto Agree",
-            avatarUrl:
-              "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80",
-            date: "17.8.2022 klo. 42:42",
-            content:
-              "Juuri niin! Todella hyvä viesti. Tämä viesti on vastaus. Refreshaappa sivu niin saatat nähdä toisenlaisen testiviestin!",
-          },
-        ],
-      };
+      title: "Thread viesti title",
+      quickReply: true,
+      messages: [
+        {
+          author: "Luukas Lähettäjä",
+          avatarUrl:
+            "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80",
+          date: "16.8.2022 klo. 69:69",
+          content:
+            "<h2>Hei, sinä threadin lukija!</h2><p>Mursu <b>kävi</b> haminassa <i>eilen</i>",
+        },
+        {
+          author: "Arto Agree",
+          avatarUrl:
+            "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80",
+          date: "17.8.2022 klo. 42:42",
+          content:
+            "Juuri niin! Todella hyvä viesti. Tämä viesti on vastaus. Refreshaappa sivu niin saatat nähdä toisenlaisen testiviestin!",
+        },
+      ],
+    };
 
 const ThreadView = () => {
   const { id } = useParams();
@@ -67,11 +67,11 @@ const ThreadView = () => {
     { title: messageData.title },
   ].map((item, index) =>
     item.href ? (
-      <Anchor component={Link} to={item.href} key={index}>
+      <Anchor component={Link} to={item.href} key={item.title}>
         {item.title}
       </Anchor>
     ) : (
-      <Text color="dimmed">{item.title}</Text>
+      <Text color="dimmed" key={item.title}>{item.title}</Text>
     )
   );
 
@@ -85,7 +85,7 @@ const ThreadView = () => {
       </Group>
       <Card shadow="sm" p="lg" mt="16px">
         {messageData.messages.map((msg, index) => (
-          <Card.Section p="lg">
+          <Card.Section p="lg" key={msg.author + "." + msg.content + "." + msg.date.toString()}>
             <ThreadMessage
               author={{ image: msg.avatarUrl, name: msg.author }}
               body={msg.content}
