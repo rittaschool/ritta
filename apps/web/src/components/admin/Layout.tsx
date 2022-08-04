@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { ReactNode, useState } from "react";
-import { NavbarNested as Navbar } from "./navigation/Navbar";
+import { NavbarNested as Navbar } from "../navigation/Navbar";
 import Logo from "../Logo";
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -23,7 +23,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       navbarOffsetBreakpoint="sm"
       // fixed prop on AppShell will be automatically added to Header and Navbar
       fixed
-      navbar={<Navbar hidden={!opened} />}
+      navbar={<Navbar hidden={!opened} isAdmin />}
       header={
         <MediaQuery largerThan="sm" styles={{ display: "none" }}>
           <Header height={isMobile ? 70 : 0}>
