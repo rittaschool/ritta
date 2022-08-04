@@ -15,6 +15,8 @@ import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
+const isDate = (value: unknown): value is Date => value instanceof Date;
+
 const useStyles = createStyles((theme) => ({
   th: {
     padding: "0 !important",
@@ -78,40 +80,37 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
 }
 
 function filterData(data: RowData[], search: string) {
-  const keys = Object.keys(data[0]);
-  const query = search.toLowerCase().trim();
-  return data.filter((item: RowData) =>
-    keys.some((key: string) => (item as any)[key].toLowerCase().includes(query))
-  );
+  return data.filter((row) =>
+    Object.values(row).some((value) =>
+      value.toString().toLowerCase().includes(search.toLowerCase())));
 }
 
 function sortData(
   data: RowData[],
-  payload: { sortBy: keyof RowData; reversed: boolean; search: string }
+  payload: { sortBy: keyof RowData | null; reversed: boolean; search: string }
 ) {
-  if (!payload.sortBy) {
-    return filterData(data, payload.search);
+  const sortBy = payload.sortBy;
+  const filtered = filterData(data, payload.search);
+  if (!sortBy) {
+    return filtered;
   }
 
-  return filterData(
-    [...data].sort((a, b) => {
-      if (payload.reversed) {
-        return b[payload.sortBy]
-          .toString()
-          .localeCompare(a[payload.sortBy].toString());
-      }
+  const sorted = [...filtered].sort((a, b) => {
+    const aSort = a[sortBy];
+    const bSort = b[sortBy];
+    if (isDate(aSort) && isDate(bSort)) {
+      return aSort.getTime() - bSort.getTime();
+    }
+    return aSort.toString().localeCompare(bSort.toString());
+  });
 
-      return a[payload.sortBy]
-        .toString()
-        .localeCompare(b[payload.sortBy].toString());
-    }),
-    payload.search
-  );
+  if (payload.reversed) sorted.reverse();
+
+  return sorted;
 }
 
 export function MessageTableSort({ data }: TableSortProps) {
   const [search, setSearch] = useState("");
-  const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
@@ -119,17 +118,9 @@ export function MessageTableSort({ data }: TableSortProps) {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
     setSortBy(field);
-    setSortedData(sortData(data, { sortBy: field, reversed, search }));
   };
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.currentTarget;
-    setSearch(value);
-    if (!sortBy) return;
-    setSortedData(
-      sortData(data, { sortBy, reversed: reverseSortDirection, search: value })
-    );
-  };
+  const sortedData = sortData(data, { sortBy, reversed: reverseSortDirection, search });
 
   const { t, i18n } = useTranslation();
 
@@ -171,7 +162,7 @@ export function MessageTableSort({ data }: TableSortProps) {
         mb="md"
         icon={<Search size={14} />}
         value={search}
-        onChange={handleSearchChange}
+        onChange={e => setSearch(e.currentTarget.value)}
       />
       <Table
         horizontalSpacing="md"
