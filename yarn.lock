@@ -2045,14 +2045,14 @@
   dependencies:
     parchment "^1.1.2"
 
-"@types/react-dom@^18.0.0":
+"@types/react-dom@^18.0.6":
   version "18.0.6"
-  resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-18.0.6.tgz"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.0.6.tgz#36652900024842b74607a17786b6662dd1e103a1"
   integrity sha512-/5OFZgfIPSwy+YuIBP/FgJnQnsxhZhjjrnxudMddeblOouIodEQ75X14Rr4wGSG/bknL+Omy9iWlLo1u/9GzAA==
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^18.0.0":
+"@types/react@*", "@types/react@^18.0.15":
   version "18.0.15"
   resolved "https://registry.npmjs.org/@types/react/-/react-18.0.15.tgz"
   integrity sha512-iz3BtLuIYH1uWdsv6wXYdhozhqj20oD4/Hk2DNXIn1kFsmp9x8d9QB6FnPhfkbhd2PgEONt9Q1x/ebkwjfFLow==
@@ -3416,10 +3416,10 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
-dayjs@^1.11.3:
-  version "1.11.3"
-  resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.3.tgz"
-  integrity sha512-xxwlswWOlGhzgQ4TKzASQkUhqERI3egRNqgV4ScR8wlANA/A9tZ7miXa44vTTKEq5l7vWoL5G57bG3zA+Kow0A==
+dayjs@^1.11.4:
+  version "1.11.4"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.4.tgz#3b3c10ca378140d8917e06ebc13a4922af4f433e"
+  integrity sha512-Zj/lPM5hOvQ1Bf7uAvewDaUcsJoI6JmNqmHhHl3nyumwe0XHwt8sWdOVAPACJzCebL8gQCi+K49w7iKWnGwX9g==
 
 debug@2.6.9, debug@~2.6.9:
   version "2.6.9"
@@ -4886,10 +4886,10 @@ i18next-http-backend@^1.4.1:
   dependencies:
     cross-fetch "3.1.5"
 
-i18next@^21.8.14:
-  version "21.8.14"
-  resolved "https://registry.npmjs.org/i18next/-/i18next-21.8.14.tgz"
-  integrity sha512-4Yi+DtexvMm/Yw3Q9fllzY12SgLk+Mcmar+rCAccsOPul/2UmnBzoHbTGn/L48IPkFcmrNaH7xTLboBWIbH6pw==
+i18next@^21.8.16:
+  version "21.8.16"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-21.8.16.tgz#31fe4682e4e2077dbf229a88e5a58b7020e4ddc8"
+  integrity sha512-acJLCk38YMfEPjBR/1vS13SFY7rBQLs9E5m1tSRnWc9UW3f+SZszgH+NP1fZRA1+O+CdG2eLGGmuUMJW52EwzQ==
   dependencies:
     "@babel/runtime" "^7.17.2"
 
@@ -6833,10 +6833,10 @@ react-feather@^2.0.10:
   dependencies:
     prop-types "^15.7.2"
 
-react-i18next@^11.18.1:
-  version "11.18.1"
-  resolved "https://registry.npmjs.org/react-i18next/-/react-i18next-11.18.1.tgz"
-  integrity sha512-S8cl4mvIOSA7OQCE5jNy2yhv705Vwi+7PinpqKIYcBmX/trJtHKqrf6CL67WJSA8crr2JU+oxE9jn9DQIrQezg==
+react-i18next@^11.18.3:
+  version "11.18.3"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.18.3.tgz#50211810bcc9fdea2d70c8aefdfff5f1eb39a923"
+  integrity sha512-EttTX31HbqzZymUM3SIrMPuvamfSXFZVsDHm/ZAqoDfTLjhzlwyxqfbDNxcKNAGOi2mjZaXfR7hSNMlvLNpB/g==
   dependencies:
     "@babel/runtime" "^7.14.5"
     html-parse-stringify "^3.0.1"
@@ -7597,10 +7597,10 @@ table@^6.0.9:
     string-width "^4.2.3"
     strip-ansi "^6.0.1"
 
-tabler-icons-react@^1.52.0:
-  version "1.52.0"
-  resolved "https://registry.npmjs.org/tabler-icons-react/-/tabler-icons-react-1.52.0.tgz"
-  integrity sha512-WLsTMiIS7ERdpOX0xH3fPjL3XLjkLCpxXG0SipV6e4T7TLU2ZhdpBeTnAx4DYw7oM3zPDSphDVfP2MfqgIIfog==
+tabler-icons-react@^1.54.0:
+  version "1.54.0"
+  resolved "https://registry.yarnpkg.com/tabler-icons-react/-/tabler-icons-react-1.54.0.tgz#c0ce4348b306eac443416bf691200690a7525377"
+  integrity sha512-k+OlS1qm4Ab0RaSapBG3cyMTd2sFJOaBAhzXHek+Y7wZayoACYTOUtcNAtkD/Y+MmFM1DTs0dqOKGan3VXKyPA==
 
 tapable@^2.1.1, tapable@^2.2.0, tapable@^2.2.1:
   version "2.2.1"
@@ -7971,7 +7971,7 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@4.7.4, typescript@^4.5.2, typescript@^4.6.3:
+typescript@4.7.4, typescript@^4.5.2, typescript@^4.7.4:
   version "4.7.4"
   resolved "https://registry.npmjs.org/typescript/-/typescript-4.7.4.tgz"
   integrity sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==
