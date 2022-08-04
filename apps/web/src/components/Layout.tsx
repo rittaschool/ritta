@@ -83,19 +83,19 @@ export default function Layout({ children }: { children: ReactNode }) {
         <DashboardFooter
           links={[
             {
-              label: "Tietosuojaseloste",
+              label: t("common:privacy_policy"),
               link: "https://ritta.fi/privacy",
             },
             {
-              label: "Käyttöehdot",
+              label: t("common:terms_of_service"),
               link: "https://ritta.fi/tos",
             },
             {
-              label: "Saavutettavuusseloste",
+              label: t("common:accessibility_statement"),
               link: "https://ritta.fi/accesibility",
             },
             {
-              label: "Tuki",
+              label: t("common:support"),
               link: "https://ritta.fi/",
             },
           ]}

@@ -162,7 +162,7 @@ export function MessageTableSort({ data }: TableSortProps) {
   return (
     <ScrollArea>
       <TextInput
-        placeholder="Hae viestiä nimen tai lähettäjän perusteella"
+        placeholder={t("messages:search_message")}
         mb="md"
         icon={<Search size={14} />}
         value={search}
@@ -181,21 +181,21 @@ export function MessageTableSort({ data }: TableSortProps) {
               reversed={reverseSortDirection}
               onSort={() => setSorting("name")}
             >
-              Viestin nimi
+              {t("messages:message_subject")}
             </Th>
             <Th
               sorted={sortBy === "author"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("author")}
             >
-              Lähettäjä
+              {t("messages:message_author")}
             </Th>
             <Th
               sorted={sortBy === "createdAt"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("createdAt")}
             >
-              Lähetetty
+              {t("messages:message_time")}
             </Th>
           </tr>
         </thead>
@@ -206,7 +206,7 @@ export function MessageTableSort({ data }: TableSortProps) {
             <tr>
               <td colSpan={Object.keys(data[0]).length}>
                 <Text weight={500} align="center">
-                  Nothing found
+                  {t("messages:no_results")}
                 </Text>
               </td>
             </tr>

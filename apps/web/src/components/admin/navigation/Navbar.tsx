@@ -14,6 +14,7 @@ import { LinksGroup } from "./NavbarLinksGroup";
 import Logo from "/static/logo.svg?component";
 import { getNavigation } from "./navigation";
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -64,6 +65,7 @@ const useStyles = createStyles((theme) => ({
 export function NavbarNested({ hidden }: { hidden: boolean }) {
   const { classes } = useStyles();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const links = getNavigation(location).map((item) => (
     <LinksGroup {...item} key={item.label} />
@@ -108,7 +110,7 @@ export function NavbarNested({ hidden }: { hidden: boolean }) {
             color="gray"
             sx={{ width: "80%" }}
           >
-            <Settings style={{ marginRight: "5px" }} /> Asetukset
+            <Settings style={{ marginRight: "5px" }} /> {t("navigation:settings")}
           </Button>
         </Center>
       </Navbar.Section>
@@ -121,7 +123,7 @@ export function NavbarNested({ hidden }: { hidden: boolean }) {
             color="red"
             sx={{ width: "80%" }}
           >
-            <Logout style={{ marginRight: "5px" }} /> Kirjaudu ulos
+            <Logout style={{ marginRight: "5px" }} /> {t("auth:log_out")}
           </Button>
         </Center>
       </Navbar.Section>

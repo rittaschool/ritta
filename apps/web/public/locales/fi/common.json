@@ -1,3 +1,8 @@
 {
-  "test": "Testi :)"
+  "test": "Testi :)",
+  "privacy_policy": "Tietosuojaseloste",
+  "terms_of_service": "Käyttöehdot",
+  "accessibility_statement": "Saavutettavuusseloste",
+  "support": "Tuki",
+  "change_language": "Vaihda kieli"
 }
