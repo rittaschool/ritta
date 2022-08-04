@@ -1,1 +1,4 @@
-{}
+{
+  "minutes_one": "{{count}} minute",
+  "minutes_other": "{{count}} minutes"
+}

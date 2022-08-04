@@ -1,3 +1,5 @@
 {
-  "test": "Testi :)"
+  "test": "Testi :)",
+  "minutes_one": "{{count}} minuutti",
+  "minutes_other": "{{count}} minuuttia"
 }

@@ -1,5 +1,6 @@
 import { Box, HoverCard, Text, Title, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 import { inverseLerp } from "../../utils/numberUtils";
 import { unixSinceMidnight } from "../../utils/timeUtils";
 
@@ -34,6 +35,7 @@ export default ({
 }: SingleScheduleEntryProps) => {
   const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
+  const { t } = useTranslation();
 
   const startPercentage = inverseLerp(dayStart, dayEnd, unixSinceMidnight(lesson.startTime)) * 100;
   const endPercentage = (1 - inverseLerp(dayStart, dayEnd, unixSinceMidnight(lesson.endTime))) * 100;
@@ -65,7 +67,7 @@ export default ({
     </HoverCard.Target>
     <HoverCard.Dropdown>
       <Title order={3}>{lesson.courseName} ({lesson.courseCode})</Title>
-      <Text>{startTimeFormatted} to {endTimeFormatted} ({durationMinutes} minutes)</Text>
+      <Text>{startTimeFormatted} to {endTimeFormatted} ({t("common:minutes", { count: durationMinutes })})</Text>
       <Text>{lesson.room}</Text>
       <Text>{lesson.teacher}</Text>
     </HoverCard.Dropdown>
