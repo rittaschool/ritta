@@ -43,7 +43,7 @@ export interface RowData {
   id: string;
   newMessages: number;
   name: string;
-  createdAt: string;
+  createdAt: Date;
   author: string;
 }
 
@@ -131,7 +131,7 @@ export function MessageTableSort({ data }: TableSortProps) {
     );
   };
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const rows = sortedData.map((row) => (
     <tr key={row.name}>
@@ -155,7 +155,12 @@ export function MessageTableSort({ data }: TableSortProps) {
         </Anchor>
       </td>
       <td>{row.author}</td>
-      <td>{row.createdAt}</td>
+      <td>{row.createdAt.toLocaleDateString(i18n.language, {
+        weekday: "short",
+        year: "numeric",
+        month: "2-digit",
+        day: "numeric",
+      })}</td>
     </tr>
   ));
 
