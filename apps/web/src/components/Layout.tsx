@@ -18,7 +18,7 @@ import { DashboardFooter } from "./DashboardFooter";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function Layout({ children, isAdmin }: { children: ReactNode, isAdmin: boolean }) {
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery("(max-width: 992px)");
@@ -37,7 +37,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       navbarOffsetBreakpoint="md"
       // fixed prop on AppShell will be automatically added to Header and Navbar
       fixed
-      navbar={<Navbar hidden={!opened} />}
+      navbar={<Navbar hidden={!opened} isAdmin={isAdmin} />}
       header={
         <MediaQuery largerThan="md" styles={{ display: "none" }}>
           <Header height={isMobile ? 70 : 0}>
