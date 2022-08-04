@@ -16,7 +16,7 @@ import Layout from "../components/Layout";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-function App() {
+function App({ isAdmin }: { isAdmin: boolean }) {
   // Save colorScheme to localStorage and the default value is the preferred colorScheme
   const preferredColorScheme = useColorScheme();
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -130,7 +130,7 @@ function App() {
         withNormalizeCSS
       >
         <div className="App">
-          <Layout>
+          <Layout isAdmin={isAdmin}>
             <Outlet />
           </Layout>
         </div>

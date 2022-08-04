@@ -1,8 +1,11 @@
-import { useTranslation } from "react-i18next";
+import PageWithTitle from "../../components/PageWithTitle";
 
 const AdminHome = () => {
-  const { t } = useTranslation();
-  return <h1>{t("admin:home_page_title")}</h1>;
+  return (
+    <PageWithTitle title="Admin Home Page">
+      <p></p>
+    </PageWithTitle>
+  );
 };
 
 export default AdminHome;
