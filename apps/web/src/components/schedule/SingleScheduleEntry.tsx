@@ -1,4 +1,4 @@
-import { Box, HoverCard, Text, Title } from "@mantine/core";
+import { Box, HoverCard, Text, Title, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import dayjs from "dayjs";
 import { inverseLerp } from "../../utils/numberUtils";
 import { unixSinceMidnight } from "../../utils/timeUtils";
@@ -32,6 +32,9 @@ export default ({
   hoveredCourseCode,
   setHoveredCourseCode
 }: SingleScheduleEntryProps) => {
+  const { colorScheme } = useMantineColorScheme();
+  const theme = useMantineTheme();
+
   const startPercentage = inverseLerp(dayStart, dayEnd, unixSinceMidnight(lesson.startTime)) * 100;
   const endPercentage = (1 - inverseLerp(dayStart, dayEnd, unixSinceMidnight(lesson.endTime))) * 100;
 
@@ -45,12 +48,14 @@ export default ({
         onMouseOver={() => setHoveredCourseCode(lesson.courseCode)}
         onMouseOut={() => setHoveredCourseCode(null)}
         sx={{
-          border: "1px solid #ccc",
+          borderWidth: 1,
+          borderStyle: "solid",
+          borderColor: colorScheme === "light" ? theme.colors.gray[5] : theme.colors.dark[1],
           padding: "0.5rem",
           position: "absolute",
           top: `${startPercentage}%`,
           bottom: `${endPercentage}%`,
-          backgroundColor: "#FFFFFF" + (hoveredCourseCode === lesson.courseCode ? "22" : "00"),
+          backgroundColor: theme.fn.rgba(colorScheme === "light" ? "#555555" : "#FFFFFF", hoveredCourseCode === lesson.courseCode ? 0.15 : 0.03),
           width: `${100 / columnCount}%`,
           left: `${column * 100 / columnCount}%`,
         }}

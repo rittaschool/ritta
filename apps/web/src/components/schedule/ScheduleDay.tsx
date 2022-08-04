@@ -1,4 +1,4 @@
-import { Stack, Title } from "@mantine/core";
+import { Paper, Stack, Title, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import dayjs, { Dayjs } from "dayjs";
 import { getColumns as calculateColumns } from "../../utils/scheduleUtils";
 import DayTimeIndicator from "./DayTimeIndicator";
@@ -21,6 +21,9 @@ export default ({
   hoveredCourseCode,
   setHoveredCourseCode
 }: ScheduleDayProps) => {
+  const theme = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+
   const lessonsWithColumn = calculateColumns(lessons);
   const columnCount = Math.max(...lessonsWithColumn.map(o => o.column)) + 1;
 
@@ -28,18 +31,23 @@ export default ({
 
   return <Stack sx={{ flex: 1 }}>
     <Title order={2}>{day.format("D.M.YYYY")}</Title>
-    <div style={{ height: 550, backgroundColor: "#24262D", position: "relative" }}>
-      {lessonsWithColumn.map(lesson => <SingleScheduleEntry
-        key={lesson.id}
-        dayStart={dayStart}
-        dayEnd={dayEnd}
-        lesson={lesson}
-        columnCount={columnCount}
-        column={lesson.column}
-        hoveredCourseCode={hoveredCourseCode}
-        setHoveredCourseCode={setHoveredCourseCode}
-      />)}
-      {isToday && <DayTimeIndicator dayStart={dayStart} dayEnd={dayEnd} />}
-    </div>
+    <Paper sx={{
+      backgroundColor: colorScheme === "light" ? theme.colors.gray[1] : theme.colors.dark[6],
+      padding: 5
+    }}>
+      <div style={{ height: 550, position: "relative" }}>
+        {lessonsWithColumn.map(lesson => <SingleScheduleEntry
+          key={lesson.id}
+          dayStart={dayStart}
+          dayEnd={dayEnd}
+          lesson={lesson}
+          columnCount={columnCount}
+          column={lesson.column}
+          hoveredCourseCode={hoveredCourseCode}
+          setHoveredCourseCode={setHoveredCourseCode}
+        />)}
+        {isToday && <DayTimeIndicator dayStart={dayStart} dayEnd={dayEnd} />}
+      </div>
+    </Paper>
   </Stack>;
 }
