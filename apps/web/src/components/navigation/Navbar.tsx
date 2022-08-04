@@ -112,7 +112,7 @@ export function NavbarNested({ hidden }: { hidden: boolean }) {
             color="gray"
             sx={{ width: "80%" }}
           >
-            <Settings style={{ marginRight: "5px" }} /> Asetukset
+            <Settings style={{ marginRight: "5px" }} /> {t("navigation:settings")}
           </Button>
         </Center>
       </Navbar.Section>
