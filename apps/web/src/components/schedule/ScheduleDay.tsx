@@ -1,6 +1,7 @@
 import { Stack, Title } from "@mantine/core";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { getColumns as calculateColumns } from "../../utils/scheduleUtils";
+import DayTimeIndicator from "./DayTimeIndicator";
 import SingleScheduleEntry, { Lesson } from "./SingleScheduleEntry";
 
 export interface ScheduleDayProps {
@@ -23,6 +24,8 @@ export default ({
   const lessonsWithColumn = calculateColumns(lessons);
   const columnCount = Math.max(...lessonsWithColumn.map(o => o.column)) + 1;
 
+  const isToday = day.isSame(dayjs(), "day");
+
   return <Stack sx={{ flex: 1 }}>
     <Title order={2}>{day.format("D.M.YYYY")}</Title>
     <div style={{ height: 550, backgroundColor: "#24262D", position: "relative" }}>
@@ -36,6 +39,7 @@ export default ({
         hoveredCourseCode={hoveredCourseCode}
         setHoveredCourseCode={setHoveredCourseCode}
       />)}
+      {isToday && <DayTimeIndicator dayStart={dayStart} dayEnd={dayEnd} />}
     </div>
   </Stack>;
 }
