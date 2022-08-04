@@ -9,7 +9,7 @@ export const CreateUserValidationSchema = joi.object({
   phoneNumber: joi
     .string()
     .pattern(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/),
-  email: joi.string().email(),
+  email: joi.string().email({ tlds: false }),
   username: joi.string().lowercase().min(3).max(30),
   alias: joi.string().min(3).max(200),
   home: LocationSchema,
@@ -24,7 +24,7 @@ export const UpdateUserValidationSchema = joi.object({
   phoneNumber: joi
     .string()
     .pattern(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/),
-  email: joi.string().email(),
+  email: joi.string().email({ tlds: false }),
   username: joi.string().lowercase().min(3).max(30),
   alias: joi.string().min(3).max(200),
   home: LocationSchema,

@@ -27,6 +27,7 @@
     "@nestjs/microservices": "8.4.7",
     "@nestjs/mongoose": "^9.0.3",
     "@rittaschool/shared": "*",
+    "jsonwebtoken": "^8.5.1",
     "argon2": "^0.28.5",
     "class-transformer": "^0.5.1",
     "framework": "*",

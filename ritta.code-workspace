@@ -13,12 +13,12 @@
       "path": "apps/core"
     },
     {
-      "name": "🚀 @ritta/auth",
-      "path": "apps/auth"
-    },
-    {
       "name": "🚀 @ritta/users",
       "path": "apps/users"
+    },
+    {
+      "name": "🚀 @ritta/auth",
+      "path": "apps/auth"
     },
     {
       "name": "🚀 @ritta/messages",

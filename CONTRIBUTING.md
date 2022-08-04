@@ -1,21 +1,21 @@
-# Thank you for thinking about contributing to the Ritta project!
+# Contributing
 
-We're happy to see you wanting to contibute to this project, and here's some guidelines and tips to make contributing easy.
-If you want more information about what is currently needed, you can contact the head development team via email (roni@ritta.fi), and we'll be happy to help!
+When contributing to this repository, please first discuss the change you wish to make via issue,
+email, or any other method with the owners of this repository before making a change.
+
 Please note we have a code of conduct, please follow it in all your interactions with the project.
-
-## Contribution requirements
-
-To ensure the best possible quality of our software, we would want you to at least meet the following requirements before posting a pull request:
-
-* Your code is linted (using the provided eslint configuration)
-* Your code uses ES6 arrow functions instead function() unless 100% required. (Tell us why in the pull request description)
-* Don't use the "any" type.
 
 ## Pull Request Process
 
-After making sure that your contribution meets our requirements, you can move on to creating the pull request itself!
+1. Ensure any install or build dependencies are removed before the end of the layer when doing a
+   build.
+2. Update the related documentation with details of changes to the interface, this includes new environment
+   variables, exposed ports, useful file locations and container parameters.
+3. Increase the version numbers in any examples files and the README.md to the new version that this
+   Pull Request would represent. The versioning scheme we use is [SemVer](http://semver.org/).
+4. You may merge the Pull Request in once you have the sign-off of one other developer, or if you
+   do not have permission to do that, you may request the reviewer to merge it for you.
 
-1. Go to the Github repo's "Pull Requests" page and press "New pull request"
-2. List your changes in the pull request comments
-3. Create the pull request and wait! A head developer will review your pull request soon, and if it gets approved it will be merged soon after that.
+## Code of Conduct
+
+Please consult the [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md) file for our code of conduct!
