@@ -1,4 +1,4 @@
-import { Group, Stack, Text, Title } from "@mantine/core";
+import { Group, Stack, Text, Title, useMantineColorScheme } from "@mantine/core";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -92,6 +92,8 @@ export default ({
   const [hoveredCourseCode, setHoveredCourseCode] = useState<string | null>(null);
   const { i18n } = useTranslation();
 
+  const { colorScheme } = useMantineColorScheme();
+
   const dayCount = 5;
   const weekStart = dayjs()
     .startOf("week")
@@ -149,7 +151,7 @@ export default ({
           </Stack>
         </Title>)}
     </Group>
-    <Group sx={{ flex: 1, position: "relative", marginLeft: TIME_WIDTH }}>
+    <Group sx={{ flex: 1, position: "relative", marginLeft: TIME_WIDTH }} spacing={0}>
       {Array
         .from({ length: hourLineCount }, (_, i) => i + startHour)
         .map((hour, i) => (i % (minorHourLines + 1) === 0)
@@ -164,6 +166,19 @@ export default ({
             isMajor={false}
             lineIndex={i}
             lineCount={hourLineCount} />)}
+      {Array
+        .from({ length: dayCount - 1 }, () => 0)
+        .map((_, i) => <div
+          key={i}
+          style={{
+            position: "absolute",
+            height: "100%",
+            width: 2,
+            backgroundColor: colorScheme === "light" ? "#CCC" : "#888",
+            left: `${100 * (i + 1) / (dayCount)}%`,
+            zIndex: 10
+          }}
+        />)}
       {Array
         .from({ length: dayCount }, (_, i) => weekStart.add(i, "day"))
         .map(columnDay => <ScheduleDay
