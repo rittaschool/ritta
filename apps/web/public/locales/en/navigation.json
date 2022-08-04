@@ -14,5 +14,13 @@
   "aria_logo": "Navigate to home",
   "aria_open_navigation": "Open navigation",
   "aria_close_navigation": "Close navigation",
-  "settings": "Settings"
+  "settings": "Settings",
+  "analytics": "Analytics",
+  "contracts": "Contracts",
+  "security": {
+    "title": "Security",
+    "2fa": "Enable 2FA",
+    "change_password": "Change password",
+    "recovery_codes": "Recovery codes"
+  }
 }

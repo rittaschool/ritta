@@ -14,5 +14,13 @@
   "aria_logo": "Siirry kotisivulle",
   "aria_open_navigation": "Avaa navigaatio",
   "aria_close_navigation": "Sulje navigaatio",
-  "settings": "Asetukset"
+  "settings": "Settings",
+  "analytics": "Tilastot",
+  "contracts": "Sopimukset",
+  "security": {
+    "title": "Turvallisuus",
+    "2fa": "Kaksivaiheinen tunnistautuminen",
+    "change_password": "Vaihda salasana",
+    "recovery_codes": "Palautuskoodit"
+  }
 }
