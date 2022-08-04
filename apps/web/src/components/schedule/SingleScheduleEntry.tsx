@@ -67,7 +67,7 @@ export default ({
     </HoverCard.Target>
     <HoverCard.Dropdown>
       <Title order={3}>{lesson.courseName} ({lesson.courseCode})</Title>
-      <Text>{startTimeFormatted} to {endTimeFormatted} ({t("common:minutes", { count: durationMinutes })})</Text>
+      <Text>{startTimeFormatted}-{endTimeFormatted} ({t("common:minutes", { count: durationMinutes })})</Text>
       <Text>{lesson.room}</Text>
       <Text>{lesson.teacher}</Text>
     </HoverCard.Dropdown>
