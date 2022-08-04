@@ -10,6 +10,7 @@ const queryClient = new QueryClient();
 import "./i18n";
 
 // Import templates
+import Admin from "./templates/Admin";
 import Auth from "./templates/Auth";
 import Dashboard from "./templates/Dashboard";
 
@@ -28,7 +29,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Dashboard isAdmin={false} />}>
+          <Route path="/" element={<Dashboard />}>
             <Route index element={<Home />} />
             <Route path="messages">
               <Route path=":id" element={<ThreadView />} />
@@ -78,7 +79,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route index element={<LeagueStandings />} />
           </Route> */}
           </Route>
-          <Route path="/admin" element={<Dashboard isAdmin={true} />}>
+          <Route path="/admin" element={<Admin />}>
             <Route index element={<AdminHome />} />
 
             {/* <Route path="teams" element={<Teams />}>

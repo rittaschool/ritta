@@ -110,7 +110,7 @@ export function LinksGroup({
         <UnstyledButton component={Link} to={link} className={classes.control}>
           <Group position="apart" spacing={0}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <ThemeIcon size={30} color="teal">
+              <ThemeIcon size={30} variant="light" color="red">
                 <Icon size={18} />
               </ThemeIcon>
               <Box ml="md">{label}</Box>
@@ -141,7 +141,7 @@ export function LinksGroup({
       >
         <Group position="apart" spacing={0}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <ThemeIcon size={30} color="teal">
+            <ThemeIcon size={30} variant="light" color="red">
               <Icon size={18} />
             </ThemeIcon>
             <Box ml="md">{label}</Box>

@@ -6,40 +6,26 @@ import {
   MediaQuery,
   useMantineTheme,
   Navbar as MantineNavbar,
-  useMantineColorScheme,
-  Box,
-  Stack,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import { NavbarNested as Navbar } from "./navigation/Navbar";
-import Logo from "./Logo";
-import { DashboardFooter } from "./DashboardFooter";
-import { useLocation } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import Logo from "../Logo";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
-  const isMobile = useMediaQuery("(max-width: 992px)");
-  const colorScheme = useMantineColorScheme();
-
-  const location = useLocation();
-
-  const { t } = useTranslation();
-  useEffect(() => {
-    if (opened === true) setTimeout(() => setOpened(false), 100);
-  }, [location]);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   return (
     <AppShell
       // navbarOffsetBreakpoint controls when navbar should no longer be offset with padding-left
-      navbarOffsetBreakpoint="md"
+      navbarOffsetBreakpoint="sm"
       // fixed prop on AppShell will be automatically added to Header and Navbar
       fixed
       navbar={<Navbar hidden={!opened} />}
       header={
-        <MediaQuery largerThan="md" styles={{ display: "none" }}>
+        <MediaQuery largerThan="sm" styles={{ display: "none" }}>
           <Header height={isMobile ? 70 : 0}>
             {/* Handle other responsive styles with MediaQuery component or createStyles function */}
             <div
@@ -52,16 +38,11 @@ export default function Layout({ children }: { children: ReactNode }) {
                 color={theme.colors.gray[6]}
                 sx={{ marginLeft: "16px" }}
                 mr="xl"
-                aria-label={t(
-                  opened
-                    ? "navigation:aria_close_navigation"
-                    : "navigation:aria_open_navigation"
-                )}
               />
               {isMobile ? (
                 <MantineNavbar.Section grow>
                   <Center>
-                    <a href="/" aria-label={t("navigation:aria_logo")}>
+                    <a href="/">
                       <Logo center={true} />
                     </a>
                   </Center>
@@ -75,32 +56,10 @@ export default function Layout({ children }: { children: ReactNode }) {
         </MediaQuery>
       }
       sx={{
-        backgroundColor: colorScheme.colorScheme === "dark" ? "" : "#fafdfb",
+        paddingLeft: "20px",
       }}
     >
-      <Stack justify="space-between" sx={{ height: "100%" }}>
-        <Box>{children}</Box>
-        <DashboardFooter
-          links={[
-            {
-              label: "Tietosuojaseloste",
-              link: "https://ritta.fi/privacy",
-            },
-            {
-              label: "Käyttöehdot",
-              link: "https://ritta.fi/tos",
-            },
-            {
-              label: "Saavutettavuusseloste",
-              link: "https://ritta.fi/accesibility",
-            },
-            {
-              label: "Tuki",
-              link: "https://ritta.fi/",
-            },
-          ]}
-        />
-      </Stack>
+      {children}
     </AppShell>
   );
 }

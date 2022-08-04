@@ -1,9 +1,5 @@
-import PageWithTitle from "../../components/PageWithTitle";
-
 const AdminHome = () => {
-  return <PageWithTitle title="Admin Home Page">
-
-  </PageWithTitle>;
+  return <h1>Admin Home Page</h1>;
 };
 
 export default AdminHome;

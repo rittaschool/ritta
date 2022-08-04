@@ -20,8 +20,6 @@ const useStyles = createStyles((theme) => ({
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
     paddingBottom: 0,
-    borderRight: 0,
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.03)",
   },
 
   header: {
@@ -73,7 +71,7 @@ export function NavbarNested({ hidden }: { hidden: boolean }) {
 
   return (
     <Navbar
-      width={{ md: 300 }}
+      width={{ sm: 300 }}
       pt="md"
       px="md"
       className={classes.navbar}
@@ -91,9 +89,9 @@ export function NavbarNested({ hidden }: { hidden: boolean }) {
       <Navbar.Section className={classes.user}>
         <UserButton
           image="https://i.imgur.com/fGxgcDF.png"
-          name="Olli Opettaja"
-          title="Opettaja"
-          schoolName="Rittalan yhteiskoulu"
+          name="Antti Allapitäjä"
+          title="Ylläpitäjä"
+          schoolName="Rittalan opetustoimi"
           icon={<Selector size={14} />}
         />
       </Navbar.Section>

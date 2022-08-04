@@ -12,9 +12,8 @@ import {
 import { Outlet } from "react-router-dom";
 import { theme } from "../theme";
 import "../styles/App.css";
-import Layout from "../components/Layout";
+import Layout from "../components/admin/Layout";
 import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
 
 function App() {
   // Save colorScheme to localStorage and the default value is the preferred colorScheme
@@ -24,35 +23,13 @@ function App() {
     defaultValue: preferredColorScheme,
   });
 
-  const { i18n } = useTranslation();
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
   useHotkeys([
     ["mod+J", () => toggleColorScheme()],
-    [
-      "mod+K",
-      () => {
-        const langs = ["fi", "en"];
-        i18n.changeLanguage(
-          langs[langs.indexOf(i18n.language) + 1] || langs[0]
-        );
-      },
-    ],
+    ["mod+K", () => console.log("huut")],
   ]);
-
-  /*const { authenticated } = useAuthentication();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!authenticated) {
-      navigate("/auth/login");
-    }
-  }, []);
-
-  if (!authenticated) {
-    return <></>;
-  }*/
 
   const interval = useInterval(() => {
     console.log("\n\n\n\n\n");
