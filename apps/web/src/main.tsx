@@ -23,6 +23,7 @@ import Home from "./pages/Home";
 import MessagesList, { MailBox } from "./pages/MessagesList";
 import ThreadView from "./pages/ThreadView";
 import PageWithTitle from "./components/PageWithTitle";
+import SettingsPage from "./pages/SettingsPage";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -51,11 +52,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="settings">
               <Route
                 index
-                element={
-                  <PageWithTitle title="Asetukset">
-                    <h2>Settings placeholder</h2>
-                  </PageWithTitle>
-                }
+                element={<SettingsPage />}
               />
             </Route>
             <Route path="schedule">
