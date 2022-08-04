@@ -18,7 +18,7 @@
   "analytics": "Tilastot",
   "contracts": "Sopimukset",
   "security": {
-    "title": "Turvallisuus",
+    "title": "Tietoturva",
     "2fa": "Kaksivaiheinen tunnistautuminen",
     "change_password": "Vaihda salasana",
     "recovery_codes": "Palautuskoodit"
