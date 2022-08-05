@@ -25,7 +25,7 @@ export interface IThread {
     id: string;
     archived?: boolean; // This value are only available for the thread sender or if the recipient is the client.
   }[];
-  messages: IMessage[];
+  messages: IMessage[] | string[];
   created: number; // Timestamp
 }
 

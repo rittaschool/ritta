@@ -1,0 +1,54 @@
+type Thread {
+  id: ID!
+  name: String!
+  removed: Boolean!
+  showNames: Boolean!
+  canReply: Boolean!
+  draft: Boolean!
+  created: Int!
+  recipients: [Recipient]!
+  messages: [Message!]!
+}
+
+type Message {
+  id: ID!
+  senderId: String!
+  created: Int!
+  content: String
+  seenBy: [String!]!
+  removed: Boolean!
+}
+
+enum RecipientType {
+  ACCOUNT
+  CLASS
+  GROUP
+}
+
+type Recipient {
+  type: RecipientType!
+  id: String!
+  archived: Boolean
+}
+
+input RecipientInput {
+  type: RecipientType!
+  id: String!
+}
+
+input CreateThreadInput {
+  name: String!
+  content: String!
+  showNames: Boolean!
+  canReply: Boolean!
+  draft: Boolean!
+  recipients: [RecipientInput!]!
+}
+
+type Query {
+  messages: [Thread!]!
+}
+
+type Mutation {
+  createThread(createThreadInput: CreateThreadInput!): Thread
+}

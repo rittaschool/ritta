@@ -1,7 +1,17 @@
 import { Controller, Inject } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import {
+  Ctx,
+  MessagePattern,
+  Payload,
+  RmqContext,
+} from '@nestjs/microservices';
 import { MessagesService } from './messages.service';
-import { GetThreadsDto, IEventType } from '@rittaschool/shared';
+import {
+  GetThreadsDto,
+  IEventType,
+  NewThreadDto,
+  RequestDto,
+} from '@rittaschool/shared';
 @Controller()
 export class MessagesController {
   constructor(
@@ -10,12 +20,13 @@ export class MessagesController {
   ) {}
 
   @MessagePattern(IEventType.GET_THREADS)
-  async getThreads(@Payload() getThreadsDto: GetThreadsDto) {
-    return this.messagesService.getThreads(getThreadsDto);
+  async getThreads(@Payload() request: RequestDto<GetThreadsDto>) {
+    return this.messagesService.getThreads(request.token, request.data);
   }
 
   @MessagePattern(IEventType.NEW_THREAD)
-  async createNewThread() {
+  async createNewThread(@Payload() request: RequestDto<NewThreadDto>) {
+    await this.messagesService.createThread(request.token, request.data);
     return {
       success: false,
     };

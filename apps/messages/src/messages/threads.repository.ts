@@ -26,7 +26,7 @@ export class ThreadsRepository {
       const createdMessage = new this.threadModel(newThreadDto);
       return createdMessage.save();
     } catch (error) {
-      throw new Error('Failed saving user to database');
+      throw new Error('Failed saving thread to database');
     }
   }
 
@@ -47,7 +47,7 @@ export class ThreadsRepository {
     const doc = await this.findOne(id);
 
     if (!doc) {
-      throw new Error('User not found!');
+      throw new Error('Thread not found!');
     }
 
     try {

@@ -48,7 +48,7 @@ export const ThreadSchema = new Schema({
     type: [
       {
         type: {
-          type: Number,
+          type: String,
           required: true,
         },
         id: {

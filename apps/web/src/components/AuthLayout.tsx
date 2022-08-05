@@ -8,11 +8,11 @@ import {
   Stack,
   Text,
   Title,
-} from '@mantine/core';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Languages from '../../static/locales.json';
-import Logo from './Logo';
+} from "@mantine/core";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Languages from "../../static/locales.json";
+import Logo from "./Logo";
 
 export default function App({ children }: { children: JSX.Element }) {
   const languages: {
@@ -20,10 +20,10 @@ export default function App({ children }: { children: JSX.Element }) {
   } = Languages;
 
   const { t, i18n } = useTranslation();
-  const [lang, setLang] = useState('');
+  const [lang, setLang] = useState("");
 
   useEffect(() => {
-    if (lang || lang !== '') {
+    if (lang || lang !== "") {
       i18n.changeLanguage(lang);
     }
   }, [lang]);
@@ -36,26 +36,26 @@ export default function App({ children }: { children: JSX.Element }) {
           sx={(theme) => ({
             fontFamily: `Greycliff CF, ${theme.fontFamily}`,
             fontWeight: 900,
-            marginBottom: '25px',
+            marginBottom: "25px",
           })}
         >
           <Stack spacing="sm">
             <Logo center={true} />
             <Badge color="teal" size="xl" variant="filled">
-              {t('auth:stage')}
+              {t("auth:stage")}
             </Badge>
           </Stack>
         </Title>
         <Text color="dimmed" size="sm" align="center" mt={5}>
-          {t('auth:info.operated', { name: 'Rittalan yhtenäiskoulu' })}
+          {t("auth:info.operated", { name: "Rittalan yhtenäiskoulu" })}
           <Space />
-          {t('auth:info.for_support')}{' '}
-          <Anchor<'a'>
+          {t("auth:info.for_support")}{" "}
+          <Anchor<"a">
             href="https://ritta.fi"
             size="sm"
             onClick={(event) => event.preventDefault()}
           >
-            {t('auth:info.support_center')}
+            {t("auth:info.support_center")}
           </Anchor>
         </Text>
 
@@ -66,8 +66,8 @@ export default function App({ children }: { children: JSX.Element }) {
           mt={30}
           radius="md"
           sx={{
-            minHeight: '400px',
-            display: 'flex',
+            minHeight: "400px",
+            display: "flex",
           }}
         >
           {children}
@@ -76,13 +76,13 @@ export default function App({ children }: { children: JSX.Element }) {
       <Container size={500} my={20}>
         <Paper withBorder shadow="md" p={30} pt={25} mt={30} radius="md">
           <Select
-            label={t('common:change_language')}
-            value={lang || i18n.language}
+            label={t("common:change_language")}
+            value={lang || i18n.language || "en"}
             data={Object.keys(languages).map((languageId) => ({
               value: languageId,
               label: languages[languageId],
             }))}
-            onChange={(lang) => setLang(lang || 'fi')}
+            onChange={(lang) => setLang(lang || "fi")}
           />
         </Paper>
       </Container>

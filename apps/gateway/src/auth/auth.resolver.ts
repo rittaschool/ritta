@@ -1,6 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { Args, Context, Query, Resolver } from '@nestjs/graphql';
-import { Challenge } from '@rittaschool/shared';
+import { Challenge, RittaError } from '@rittaschool/shared';
+import rittaToNestError from 'src/common/error';
 import { CustomContext } from '../graphql-ctx';
 import { RID } from '../rid.param';
 import { AuthService } from './auth.service';
@@ -17,8 +18,11 @@ export class AuthResolver {
   // }
 
   @Query()
-  startLoginProcess(@Args('email') identifier: string, @RID() rid: string) {
-    return this.authService.startLoginProcess(identifier, rid);
+  async startLoginProcess(
+    @Args('email') identifier: string,
+    @RID() rid: string,
+  ) {
+    return await this.authService.startLoginProcess(identifier, rid);
   }
 
   @Query()
@@ -26,7 +30,14 @@ export class AuthResolver {
     @Args('challenge') challenge: Challenge,
     @Context() ctx: CustomContext,
   ) {
-    const res = await this.authService.handleLoginRequest(challenge, ctx.reply);
-    return res;
+    try {
+      return await this.authService.handleLoginRequest(challenge, ctx.reply);
+    } catch (e) {
+      if ((e as Error).name === 'RittaException') {
+        throw rittaToNestError(e);
+      } else {
+        throw e;
+      }
+    }
   }
 }

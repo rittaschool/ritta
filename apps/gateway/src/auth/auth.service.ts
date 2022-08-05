@@ -39,7 +39,7 @@ export class AuthService {
     console.log(user);
 
     if ((user as any).error) {
-      throw new RittaError('User not found!', IErrorType.USER_NOT_FOUND);
+      throw new RittaError('User not found', IErrorType.USER_NOT_FOUND);
     }
 
     let challenge: Challenge;

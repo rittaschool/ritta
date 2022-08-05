@@ -50,7 +50,7 @@ export class MessagesRepository {
     const doc = await this.findOne(deleteMessageDto.messageId);
 
     if (!doc) {
-      throw new Error('User not found!');
+      throw new Error('Message not found!');
     }
 
     try {

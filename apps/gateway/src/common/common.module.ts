@@ -75,6 +75,27 @@ import {
       },
       inject: [ConfigService],
     },
+    {
+      provide: 'MESSAGES_BUS',
+      useFactory: (configService: ConfigService) => {
+        const host = configService.get<string>('RMQ_HOST');
+        const port = configService.get<string>('RMQ_PORT');
+        const user = configService.get<string>('RMQ_USERNAME');
+        const pass = configService.get<string>('RMQ_PASSWORD');
+
+        const url = `amqp://${user}:${pass}@${host}:${port}`;
+
+        return ClientProxyFactory.create({
+          options: {
+            queue: 'messages',
+            queueOptions: { durable: true },
+            urls: [url],
+          },
+          transport: Transport.RMQ,
+        });
+      },
+      inject: [ConfigService],
+    },
     DateScalar,
     EmailAddressScalar,
     PhoneNumberScalar,
@@ -84,6 +105,6 @@ import {
       useClass: Logger,
     },
   ],
-  exports: ['USERS_BUS', 'AUTH_BUS', 'CORE_BUS', 'LOGGER'],
+  exports: ['USERS_BUS', 'AUTH_BUS', 'CORE_BUS', 'LOGGER', 'MESSAGES_BUS'],
 })
 export class CommonModule {}
