@@ -12,6 +12,7 @@ interface ScheduleProps {
   lessons?: Lesson[],
   minStartTime?: number, // seconds since midnight
   minEndTime?: number, // seconds since midnight
+  minorHourLines?: number // how many minor hour lines are between each major hour line
 }
 
 // TODO: Remove these default props, they are only for development
@@ -81,7 +82,12 @@ const defaultLessons: Lesson[] = [
   },
 ];
 
-export default ({ lessons: allLessons = defaultLessons, minStartTime, minEndTime }: ScheduleProps) => {
+export default ({
+  lessons: allLessons = defaultLessons,
+  minStartTime,
+  minEndTime,
+  minorHourLines = 3
+}: ScheduleProps) => {
   const [hoveredCourseCode, setHoveredCourseCode] = useState<string | null>(null);
 
   const dayCount = 5;
@@ -113,7 +119,7 @@ export default ({ lessons: allLessons = defaultLessons, minStartTime, minEndTime
   const startHour = Math.floor(earliestStartTimeUnix / 3600);
   const endHour = Math.ceil(latestEndTime / 3600);
 
-  const hourLineCount = endHour - startHour;
+  const hourLineCount = (minorHourLines + 1) * (endHour - startHour) - minorHourLines;
 
   return <Stack
     mb={12.4} // Needed to ensure the last hour text doesn't overflow outside the component
@@ -126,25 +132,29 @@ export default ({ lessons: allLessons = defaultLessons, minStartTime, minEndTime
     <Group sx={{ flex: 1, position: "relative", marginLeft: TIME_WIDTH }}>
       {Array
         .from({ length: hourLineCount }, (_, i) => i + startHour)
-        .map((hour, i) => <HourLine
-          key={hour}
-          isMajor
-          lineIndex={i}
-          lineCount={hourLineCount}
-          text={hour + ":00"}
-        />)}
+        .map((hour, i) => (i % (minorHourLines + 1) === 0)
+          ? <HourLine
+            key={hour}
+            isMajor={true}
+            lineCount={hourLineCount}
+            lineIndex={i}
+            text={(startHour + (i / (minorHourLines + 1))).toString() + ":00 "} />
+          : <HourLine
+            key={hour}
+            isMajor={false}
+            lineIndex={i}
+            lineCount={hourLineCount} />)}
       {Array
         .from({ length: dayCount }, (_, i) => weekStart.add(i, "day"))
-        .map(columnDay =>
-          <ScheduleDay
-            key={columnDay.unix()}
-            day={columnDay}
-            dayStart={earliestStartTimeUnix}
-            dayEnd={latestEndTime}
-            lessons={lessons.filter(lesson => columnDay.isSame(lesson.startTime, "day"))}
-            hoveredCourseCode={hoveredCourseCode}
-            setHoveredCourseCode={setHoveredCourseCode}
-          />)}
+        .map(columnDay => <ScheduleDay
+          key={columnDay.unix()}
+          day={columnDay}
+          dayStart={earliestStartTimeUnix}
+          dayEnd={latestEndTime}
+          lessons={lessons.filter(lesson => columnDay.isSame(lesson.startTime, "day"))}
+          hoveredCourseCode={hoveredCourseCode}
+          setHoveredCourseCode={setHoveredCourseCode}
+        />)}
     </Group>
   </Stack>;
 };

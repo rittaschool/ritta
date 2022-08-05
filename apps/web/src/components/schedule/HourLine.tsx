@@ -34,5 +34,14 @@ export default (props: HourLineProps) => {
     </div>
   }
 
-  throw new Error("Minor hour lines are not implemented yet")
+  return <div style={{
+    position: "absolute",
+    width: "100%",
+    top: `${percentageFromTop}%`,
+    margin: 0,
+    zIndex: 3,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "#EEE"
+  }} />;
 }
