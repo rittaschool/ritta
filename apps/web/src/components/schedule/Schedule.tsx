@@ -1,4 +1,4 @@
-import { Group } from "@mantine/core";
+import { Box, Group, Stack, Text, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { unixSinceMidnight } from "../../utils/timeUtils";
@@ -98,7 +98,7 @@ export default ({ lessons: allLessons = defaultLessons, minStartTime, minEndTime
     const secondStart = dayjs(b.startTime).unix() - dayjs(b.startTime).startOf("day").unix();
     return firstStart - secondStart;
   })[0].startTime);
-  const earliestStartTime = minStartTime === undefined ? lessonsEarliestStartTime : Math.min(lessonsEarliestStartTime, minStartTime);
+  const earliestStartTimeUnix = minStartTime === undefined ? lessonsEarliestStartTime : Math.min(lessonsEarliestStartTime, minStartTime);
 
   const lessonsLatestEndTime = unixSinceMidnight([...lessons].sort((a, b) => {
     const firstEnd = dayjs(a.endTime).unix() - dayjs(a.endTime).startOf("day").unix();
@@ -107,18 +107,54 @@ export default ({ lessons: allLessons = defaultLessons, minStartTime, minEndTime
   })[lessons.length - 1].endTime);
   const latestEndTime = minEndTime === undefined ? lessonsLatestEndTime : Math.max(lessonsLatestEndTime, minEndTime);
 
-  return <Group>
-    {Array
-      .from({ length: dayCount }, (_, i) => weekStart.add(i, "day"))
-      .map(columnDay =>
-        <ScheduleDay
-          key={columnDay.unix()}
-          day={columnDay}
-          dayStart={earliestStartTime}
-          dayEnd={latestEndTime}
-          lessons={lessons.filter(lesson => columnDay.isSame(lesson.startTime, "day"))}
-          hoveredCourseCode={hoveredCourseCode}
-          setHoveredCourseCode={setHoveredCourseCode}
-        />)}
-  </Group>
+  const startHour = Math.floor(earliestStartTimeUnix / 3600);
+  const endHour = Math.ceil(latestEndTime / 3600);
+
+  const timeWidth = 50;
+
+  const hourLineCount = endHour - startHour;
+
+  return <Stack>
+    <Group ml={timeWidth}>
+      {Array
+        .from({ length: dayCount }, (_, i) => weekStart.add(i, "day"))
+        .map(columnDay => <Title key={columnDay.unix()} sx={{ flex: 1 }} align="center">{columnDay.format("D.M.YYYY")}</Title>)}
+    </Group>
+    <Group sx={{ flex: 1, position: "relative", marginLeft: timeWidth }}>
+      {Array
+        .from({ length: hourLineCount }, (_, i) => i + startHour)
+        .map((hour, i) => {
+          const percentageFromTop = 100 * i / (hourLineCount - 1);
+          return <div
+            key={hour}
+            style={{
+              position: "absolute",
+              width: "100%",
+              top: `${percentageFromTop}%`,
+              margin: 0,
+              zIndex: 3
+            }}
+          >
+            <Text sx={{
+              position: "absolute",
+              transform: "translateX(calc(-100% - 10px))",
+              top: -10
+            }}>{hour}:00</Text>
+            <hr style={{ margin: 0 }} />
+          </div>;
+        })}
+      {Array
+        .from({ length: dayCount }, (_, i) => weekStart.add(i, "day"))
+        .map(columnDay =>
+          <ScheduleDay
+            key={columnDay.unix()}
+            day={columnDay}
+            dayStart={earliestStartTimeUnix}
+            dayEnd={latestEndTime}
+            lessons={lessons.filter(lesson => columnDay.isSame(lesson.startTime, "day"))}
+            hoveredCourseCode={hoveredCourseCode}
+            setHoveredCourseCode={setHoveredCourseCode}
+          />)}
+    </Group>
+  </Stack>;
 };
