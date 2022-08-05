@@ -76,7 +76,7 @@ export default function App({ children }: { children: JSX.Element }) {
       <Container size={500} my={20}>
         <Paper withBorder shadow="md" p={30} pt={25} mt={30} radius="md">
           <Select
-            label={'Change language'}
+            label={t('common:change_language')}
             value={lang || i18n.language}
             data={Object.keys(languages).map((languageId) => ({
               value: languageId,

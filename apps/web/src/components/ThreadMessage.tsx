@@ -3,11 +3,11 @@ import {
   Text,
   Avatar,
   Group,
-  Timeline,
   Divider,
   Box,
   TypographyStylesProvider,
 } from "@mantine/core";
+import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles((theme) => ({
   body: {
@@ -17,7 +17,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface ThreadMessageProps {
-  postedAt: string;
+  postedAt: Date;
   body: string;
   author: {
     name: string;
@@ -33,6 +33,8 @@ export function ThreadMessage({
   isFirst,
 }: ThreadMessageProps) {
   const { classes } = useStyles();
+  const { i18n } = useTranslation();
+
   return (
     <div>
       {!isFirst && <Divider mb={40} />}
@@ -41,7 +43,7 @@ export function ThreadMessage({
         <div>
           <Text size="sm">{author.name}</Text>
           <Text size="xs" color="dimmed">
-            {postedAt}
+            {postedAt.toLocaleDateString(i18n.language)}
           </Text>
         </div>
       </Group>

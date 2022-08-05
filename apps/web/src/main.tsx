@@ -10,7 +10,6 @@ const queryClient = new QueryClient();
 import "./i18n";
 
 // Import templates
-import Admin from "./templates/Admin";
 import Auth from "./templates/Auth";
 import Dashboard from "./templates/Dashboard";
 
@@ -22,15 +21,15 @@ import CreateMessage from "./pages/CreateMessage";
 import Home from "./pages/Home";
 import MessagesList, { MailBox } from "./pages/MessagesList";
 import ThreadView from "./pages/ThreadView";
-import PageWithTitle from "./components/PageWithTitle";
 import SchedulePage from "./pages/SchedulePage";
+import SettingsPage from "./pages/SettingsPage";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Dashboard />}>
+          <Route path="/" element={<Dashboard isAdmin={false} />}>
             <Route index element={<Home />} />
             <Route path="messages">
               <Route path=":id" element={<ThreadView />} />
@@ -52,11 +51,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="settings">
               <Route
                 index
-                element={
-                  <PageWithTitle title="Asetukset">
-                    <h2>Settings placeholder</h2>
-                  </PageWithTitle>
-                }
+                element={<SettingsPage />}
               />
             </Route>
             <Route path="schedule">
@@ -76,7 +71,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route index element={<LeagueStandings />} />
           </Route> */}
           </Route>
-          <Route path="/admin" element={<Admin />}>
+          <Route path="/admin" element={<Dashboard isAdmin={true} />}>
             <Route index element={<AdminHome />} />
 
             {/* <Route path="teams" element={<Teams />}>

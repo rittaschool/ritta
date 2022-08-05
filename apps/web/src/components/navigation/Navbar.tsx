@@ -14,6 +14,7 @@ import { LinksGroup } from "./NavbarLinksGroup";
 import Logo from "/static/logo.svg?component";
 import { getNavigation } from "./navigation";
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -41,9 +42,7 @@ const useStyles = createStyles((theme) => ({
     marginLeft: -theme.spacing.md,
     marginRight: -theme.spacing.md,
     marginBottom: theme.spacing.md,
-    borderBottom: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
+    borderBottom: `1px solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]}`,
   },
 
   settings: {
@@ -51,9 +50,7 @@ const useStyles = createStyles((theme) => ({
     marginRight: -theme.spacing.md,
     paddingTop: theme.spacing.md,
     paddingBottom: theme.spacing.sm,
-    borderTop: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
+    borderTop: `1px solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]}`,
   },
 
   logOut: {
@@ -63,13 +60,16 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function NavbarNested({ hidden }: { hidden: boolean }) {
+export function NavbarNested({ hidden, isAdmin = false }: { hidden: boolean, isAdmin?: boolean }) {
   const { classes } = useStyles();
   const location = useLocation();
+  const { t } = useTranslation();
 
-  const links = getNavigation(location).map((item) => (
-    <LinksGroup {...item} key={item.label} />
-  ));
+  const links = getNavigation(location)
+    .filter(link => isAdmin ? true : !link.requiresAdmin)
+    .map((item) => (
+      <LinksGroup {...item} isInAdminNavbar={isAdmin} key={item.label} />
+    ));
 
   return (
     <Navbar
@@ -91,9 +91,9 @@ export function NavbarNested({ hidden }: { hidden: boolean }) {
       <Navbar.Section className={classes.user}>
         <UserButton
           image="https://i.imgur.com/fGxgcDF.png"
-          name="Olli Opettaja"
-          title="Opettaja"
-          schoolName="Rittalan yhteiskoulu"
+          name={isAdmin ? "Antti Ylläpitäjä" : "Olli Opettaja"}
+          title={isAdmin ? "Ylläpitäjä" : "Opettaja"}
+          schoolName={isAdmin ? "Rittalan opetustoimi" : "Rittalan yhteiskoulu"}
           icon={<Selector size={14} />}
         />
       </Navbar.Section>
@@ -110,7 +110,7 @@ export function NavbarNested({ hidden }: { hidden: boolean }) {
             color="gray"
             sx={{ width: "80%" }}
           >
-            <Settings style={{ marginRight: "5px" }} /> Asetukset
+            <Settings style={{ marginRight: "5px" }} /> {t("navigation:settings")}
           </Button>
         </Center>
       </Navbar.Section>
@@ -123,7 +123,7 @@ export function NavbarNested({ hidden }: { hidden: boolean }) {
             color="red"
             sx={{ width: "80%" }}
           >
-            <Logout style={{ marginRight: "5px" }} /> Kirjaudu ulos
+            <Logout style={{ marginRight: "5px" }} /> {t("auth:log_out")}
           </Button>
         </Center>
       </Navbar.Section>
