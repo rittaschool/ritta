@@ -1,9 +1,12 @@
-import { Box, Group, Stack, Text, Title } from "@mantine/core";
+import { Group, Stack, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { unixSinceMidnight } from "../../utils/timeUtils";
+import HourLine from "./HourLine";
 import ScheduleDay from "./ScheduleDay";
 import { Lesson } from "./SingleScheduleEntry";
+
+const TIME_WIDTH = 50;
 
 interface ScheduleProps {
   lessons?: Lesson[],
@@ -110,41 +113,26 @@ export default ({ lessons: allLessons = defaultLessons, minStartTime, minEndTime
   const startHour = Math.floor(earliestStartTimeUnix / 3600);
   const endHour = Math.ceil(latestEndTime / 3600);
 
-  const timeWidth = 50;
-
   const hourLineCount = endHour - startHour;
 
   return <Stack
     mb={12.4} // Needed to ensure the last hour text doesn't overflow outside the component
   >
-    <Group ml={timeWidth}>
+    <Group ml={TIME_WIDTH}>
       {Array
         .from({ length: dayCount }, (_, i) => weekStart.add(i, "day"))
         .map(columnDay => <Title key={columnDay.unix()} sx={{ flex: 1 }} align="center">{columnDay.format("D.M.YYYY")}</Title>)}
     </Group>
-    <Group sx={{ flex: 1, position: "relative", marginLeft: timeWidth }}>
+    <Group sx={{ flex: 1, position: "relative", marginLeft: TIME_WIDTH }}>
       {Array
         .from({ length: hourLineCount }, (_, i) => i + startHour)
-        .map((hour, i) => {
-          const percentageFromTop = 100 * i / (hourLineCount - 1);
-          return <div
-            key={hour}
-            style={{
-              position: "absolute",
-              width: "100%",
-              top: `${percentageFromTop}%`,
-              margin: 0,
-              zIndex: 3
-            }}
-          >
-            <Text sx={{
-              position: "absolute",
-              transform: "translateX(calc(-100% - 10px))",
-              top: -10
-            }}>{hour}:00</Text>
-            <hr style={{ margin: 0 }} />
-          </div>;
-        })}
+        .map((hour, i) => <HourLine
+          key={hour}
+          isMajor
+          lineIndex={i}
+          lineCount={hourLineCount}
+          text={hour + ":00"}
+        />)}
       {Array
         .from({ length: dayCount }, (_, i) => weekStart.add(i, "day"))
         .map(columnDay =>
