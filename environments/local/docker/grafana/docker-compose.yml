@@ -48,3 +48,12 @@ services:
     command: -config.file=/etc/promtail/config.yml
     networks:
       - grafana
+  tempo:
+    image: grafana/tempo:latest
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    ports:
+      - "3200" # tempo
+    networks:
+      - "grafana"
+    volumes:
+      - ./tempo-local.yaml:/etc/tempo.yaml

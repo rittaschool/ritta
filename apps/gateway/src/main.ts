@@ -13,9 +13,11 @@ import { AppModule } from './app.module';
 import { ChallengeService } from './challenge/challenge.service';
 import { consoleFormat, fileFormat } from './logger.format';
 import { LoggingInterceptor } from './logging.interceptor';
+import tracer from './tracing';
 config();
 
 async function bootstrap() {
+  tracer('gateway');
   // Initialize APP with fastify framework (default: express)
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
