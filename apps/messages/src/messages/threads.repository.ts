@@ -24,9 +24,18 @@ export class ThreadsRepository {
   }
 
   async findOne(id: string, dereference = true): Promise<Thread> {
-    let thread = await this.threadModel
-      .findOne({ $or: [{ id }, { email: id }, { username: id }] })
-      .exec();
+    let thread = await this.threadModel.findOne({ id }).exec();
+
+    if (dereference) {
+      thread = thread.toObject();
+      delete thread._id;
+      delete thread.__v;
+    }
+    return thread as unknown as Thread;
+  }
+
+  async findOneByMessage(id: string, dereference = true): Promise<Thread> {
+    let thread = await this.threadModel.findOne({ messages: id }).exec();
 
     if (dereference) {
       thread = thread.toObject();

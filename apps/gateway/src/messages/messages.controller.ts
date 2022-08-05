@@ -32,28 +32,4 @@ export class MessagesController {
     @Inject('MESSAGES_SERVICE') private messagesService: MessagesService,
     @Inject('LOGGER') private logger: Logger,
   ) {}
-
-  @Post()
-  @UsePipes(new JoiValidationPipe(CreateUserValidationSchema)) // Validates that the body is right
-  async createUser(
-    @Body() createUserDto: NewThreadDto,
-    @RID() rid: string,
-    @User() user: IUser,
-  ) {
-    return this.messagesService
-      .createThread(createUserDto, rid, user)
-      .catch((err) => {
-        throw new BadRequestException(err);
-      });
-  }
-
-  @Get()
-  async getMessages(@RID() rid: string, @User() user: IUser): Promise<IUser[]> {
-    return this.messagesService.getMessages(rid, user);
-  }
-
-  @Get('/:id')
-  async getUser(@Param('id') id: string, @RID() rid: string): Promise<IUser> {
-    return this.messagesService.getUser(id, true, rid);
-  }
 }

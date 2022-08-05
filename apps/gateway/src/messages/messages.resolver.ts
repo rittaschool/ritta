@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
-  CreateUserDto,
+  EditMessageDto,
   IUser,
   NewMessageDto,
   NewThreadDto,
@@ -17,10 +17,9 @@ export class MessagesResolver {
   ) {}
 
   @Query()
-  async messages(@RID() rid: string, @User() user: IUser) {
-    const messages = await this.messagesService.getMessages(rid, user);
-    console.log(messages);
-    return messages;
+  async threads(@RID() rid: string, @User() user: IUser) {
+    const threads = await this.messagesService.getThreads(rid, user);
+    return threads;
   }
 
   @Mutation()
@@ -47,6 +46,21 @@ export class MessagesResolver {
   ) {
     const data = await this.messagesService.newMessage(
       createMessageInput,
+      user,
+      rid,
+    );
+    return data;
+  }
+
+  @Mutation()
+  //@UsePipes(new JoiValidationPipe(CreateUserValidationSchema))
+  async editMessage(
+    @Args('editMessageInput') editMessageDto: EditMessageDto,
+    @RID() rid: string,
+    @User() user: IUser,
+  ) {
+    const data = await this.messagesService.editMessage(
+      editMessageDto,
       user,
       rid,
     );

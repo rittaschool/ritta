@@ -54,8 +54,13 @@ input CreateMessageInput {
   content: String!
 }
 
+input EditMessageInput {
+  messageId: String!
+  newContent: String!
+}
+
 type Query {
-  messages: [Thread!]!
+  threads: [Thread!]!
 }
 
 type Mutation {
@@ -63,4 +68,5 @@ type Mutation {
   markAsRead(threadId: String!): Success
   markAsUnread(threadId: String!): Success
   newMessage(createMessageInput: CreateMessageInput!): Message
+  editMessage(editMessageInput: EditMessageInput!): Success
 }

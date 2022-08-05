@@ -1,13 +1,8 @@
 import { Controller, Inject } from '@nestjs/common';
-import {
-  Ctx,
-  MessagePattern,
-  Payload,
-  RmqContext,
-  RpcException,
-} from '@nestjs/microservices';
+import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 import { MessagesService } from './messages.service';
 import {
+  EditMessageDto,
   GetThreadsDto,
   IErrorType,
   IEventType,
@@ -69,9 +64,18 @@ export class MessagesController {
   }
 
   @MessagePattern(IEventType.EDIT_MESSAGE)
-  async editMessage() {
+  async editMessage(@Payload() request: RequestDto<EditMessageDto>) {
+    if (!request.data.messageId) {
+      throw new RittaError('Message ID missing', IErrorType.UNKNOWN);
+    }
+    if (!request.data.newContent) {
+      throw new RittaError('New content missing', IErrorType.UNKNOWN);
+    }
     return {
-      success: false,
+      success: await this.messagesService.editMessage(
+        request.token,
+        request.data,
+      ),
     };
   }
 
@@ -80,9 +84,11 @@ export class MessagesController {
     if (!request.data.threadId) {
       throw new RittaError('Thread ID missing', IErrorType.UNKNOWN);
     }
-    this.messagesService.markThreadAsRead(request.token, request.data.threadId);
     return {
-      success: true,
+      success: await this.messagesService.markThreadAsRead(
+        request.token,
+        request.data.threadId,
+      ),
     };
   }
 
@@ -91,12 +97,12 @@ export class MessagesController {
     if (!request.data.threadId) {
       throw new RittaError('Thread ID missing', IErrorType.UNKNOWN);
     }
-    this.messagesService.markThreadAsUnread(
-      request.token,
-      request.data.threadId,
-    );
+
     return {
-      success: true,
+      success: await this.messagesService.markThreadAsUnread(
+        request.token,
+        request.data.threadId,
+      ),
     };
   }
 

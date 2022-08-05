@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import {
+  EditMessageDto,
   IEventType,
   IUser,
   NewMessageDto,
@@ -59,11 +60,11 @@ export class MessagesService {
     }
   }
 
-  async getMessages(rid: string, user: IUser): Promise<IUser[]> {
+  async getThreads(rid: string, user: IUser): Promise<IUser[]> {
     this.logger.log({
       rid,
       context: 'MessagesService',
-      message: 'getMessages',
+      message: 'getThreads',
     });
     // const perms = Permissions.addPermissions(
     //   0,
@@ -172,6 +173,32 @@ export class MessagesService {
           uid: user.id,
         }),
         data: newMessageDto,
+      })
+      .pipe(timeout(10000)) // increased timeout
+      .pipe(catchError((val) => of({ error: val.message })))
+      .toPromise(); // converting observable to promise
+
+    if (res.error) {
+      this.logger.error({
+        rid,
+        context: 'MessagesService',
+        message: res.error, //TODO: fix because it returns RittaError
+      });
+      throw new BadRequestException(res.error);
+    } else {
+      return res;
+    }
+  }
+
+  async editMessage(editMessageDto: EditMessageDto, user: IUser, rid: string) {
+    const res = await this.client
+      .send(IEventType.EDIT_MESSAGE, {
+        rid,
+        token: await this.tokenizer.sign({
+          permissions: user.permissions,
+          uid: user.id,
+        }),
+        data: editMessageDto,
       })
       .pipe(timeout(10000)) // increased timeout
       .pipe(catchError((val) => of({ error: val.message })))

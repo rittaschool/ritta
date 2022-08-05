@@ -66,10 +66,7 @@ export class MessagesRepository {
       ...editMessageDto,
       content: editMessageDto.newContent || doc.content,
     };
-    console.log(doc);
-    console.log(newDoc);
     const res = await this.messageModel.updateOne(doc, newDoc).exec();
-    console.log(res);
     return {
       ...doc,
       ...res,

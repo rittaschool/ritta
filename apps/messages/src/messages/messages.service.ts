@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import {
+  EditMessageDto,
   GetThreadsDto,
   IErrorType,
   IMessage,
@@ -15,6 +16,7 @@ import { Tokenizer } from 'src/tokenizer';
 import { MessagesRepository } from './messages.repository';
 import { ThreadsRepository } from './threads.repository';
 import { v4 } from 'uuid';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class MessagesService {
@@ -210,5 +212,23 @@ export class MessagesService {
     });
 
     return newMessage;
+  }
+
+  async editMessage(token: string, editMessageDto: EditMessageDto) {
+    const userId = await this.getUserId(token);
+    const message = await this.messagesRepository.findOne(
+      editMessageDto.messageId,
+    );
+
+    if (message.senderId !== userId) {
+      throw new RpcException('You are not the author of the message');
+    }
+
+    await this.messagesRepository.update(
+      editMessageDto.messageId,
+      editMessageDto,
+    );
+
+    return true;
   }
 }
