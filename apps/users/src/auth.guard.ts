@@ -17,9 +17,7 @@ export class PermissionsGuard implements CanActivate {
   ) {}
 
   // Return true if the request is allowed to passthrough
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.getArgs();
     const requiredPermissions = this.reflector.get<number[] | number>(
       'permissions',
@@ -37,31 +35,38 @@ export class PermissionsGuard implements CanActivate {
         perms = Permissions.addPermissions(perms, permission);
       });
     }
+    try {
+      // Got from the request if client has provided a token
+      const userPerms = (
+        (await this.tokenizer.verify(request[0].token)) as {
+          permissions: number;
+          uid: string;
+        }
+      ).permissions;
 
-    // Got from the request if client has provided a token
-    const userPerms = (
-      this.tokenizer.verify(request[0].token) as {
-        permissions: number;
-        uid: string;
-      }
-    ).permissions;
-
-    if (userPerms > 0) {
-      const doesUserHavePermission = Permissions.checkHasPermission(
-        perms,
-        userPerms,
-      );
-
-      if (!doesUserHavePermission) {
-        throw new RittaError(
-          'Invalid permissions.',
-          IErrorType.INVALID_PERMISSION,
+      if (userPerms > 0) {
+        const doesUserHavePermission = Permissions.checkHasPermission(
+          perms,
+          userPerms,
         );
+
+        if (!doesUserHavePermission) {
+          throw new RittaError(
+            'Invalid permissions.',
+            IErrorType.INVALID_PERMISSION,
+          );
+        }
+
+        return doesUserHavePermission;
       }
 
-      return doesUserHavePermission;
+      throw new RittaError(
+        'Invalid permissions.',
+        IErrorType.INVALID_PERMISSION,
+      );
+    } catch (e) {
+      if (e.name === 'RittaException') throw e;
+      throw new RittaError('Invalid token', IErrorType.INVALID_TOKEN);
     }
-
-    throw new RittaError('Invalid permissions.', IErrorType.INVALID_PERMISSION);
   }
 }

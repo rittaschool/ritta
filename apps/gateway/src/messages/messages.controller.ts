@@ -56,20 +56,4 @@ export class MessagesController {
   async getUser(@Param('id') id: string, @RID() rid: string): Promise<IUser> {
     return this.messagesService.getUser(id, true, rid);
   }
-
-  @Patch()
-  async updateUser(
-    @Body() updateUserDto: UpdateUserDto,
-    @RID() rid: string,
-  ): Promise<IUser> {
-    return this.messagesService.updateUser(updateUserDto, rid);
-  }
-
-  @Delete('/:id')
-  async deleteUser(
-    @Param('id') id: string,
-    @RID() rid: string,
-  ): Promise<IUser> {
-    return this.messagesService.deleteUser(id, rid);
-  }
 }

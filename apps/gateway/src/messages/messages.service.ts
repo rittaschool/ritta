@@ -10,6 +10,7 @@ import {
   IEventType,
   IUser,
   NewThreadDto,
+  ThreadActionDto,
   UpdateUserDto,
 } from '@rittaschool/shared';
 import { catchError, of, timeout } from 'rxjs';
@@ -55,7 +56,7 @@ export class MessagesService {
       });
       throw new BadRequestException(res.error);
     } else {
-      return res.data;
+      return res;
     }
   }
 
@@ -107,29 +108,59 @@ export class MessagesService {
     }
   }
 
-  async updateUser(updateUserDto: UpdateUserDto, rid: string): Promise<IUser> {
-    this.logger.log({
-      rid,
-      context: 'MessagesService',
-      message: `updateUser with id ${updateUserDto.email} `,
-    });
-    return this.client
-      .send(IEventType.USER_UPDATED, updateUserDto)
-      .pipe(catchError((val) => of({ error: val.message }))) // error handling
-      .pipe(timeout(5000)) // timeout
+  async markAsRead(threadActionDto: ThreadActionDto, user: IUser, rid: string) {
+    const res = await this.client
+      .send(IEventType.MARK_THREAD_AS_READ, {
+        rid,
+        token: this.tokenizer.sign({
+          permissions: user.permissions,
+          uid: user.id,
+        }),
+        data: threadActionDto,
+      })
+      .pipe(timeout(10000)) // increased timeout
+      .pipe(catchError((val) => of({ error: val.message })))
       .toPromise(); // converting observable to promise
+
+    if (res.error) {
+      this.logger.error({
+        rid,
+        context: 'MessagesService',
+        message: res.error, //TODO: fix because it returns RittaError
+      });
+      throw new BadRequestException(res.error);
+    } else {
+      return res;
+    }
   }
 
-  async deleteUser(id: string, rid: string): Promise<IUser> {
-    this.logger.log({
-      rid,
-      context: 'MessagesService',
-      message: `deleteUser with id ${id} `,
-    });
-    return this.client
-      .send(IEventType.USER_REMOVED, { id })
-      .pipe(catchError((val) => of({ error: val.message }))) // error handling
-      .pipe(timeout(5000)) // timeout
+  async markAsUnread(
+    threadActionDto: ThreadActionDto,
+    user: IUser,
+    rid: string,
+  ) {
+    const res = await this.client
+      .send(IEventType.MARK_THREAD_AS_UNREAD, {
+        rid,
+        token: this.tokenizer.sign({
+          permissions: user.permissions,
+          uid: user.id,
+        }),
+        data: threadActionDto,
+      })
+      .pipe(timeout(10000)) // increased timeout
+      .pipe(catchError((val) => of({ error: val.message })))
       .toPromise(); // converting observable to promise
+
+    if (res.error) {
+      this.logger.error({
+        rid,
+        context: 'MessagesService',
+        message: res.error, //TODO: fix because it returns RittaError
+      });
+      throw new BadRequestException(res.error);
+    } else {
+      return res;
+    }
   }
 }

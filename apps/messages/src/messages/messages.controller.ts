@@ -4,13 +4,17 @@ import {
   MessagePattern,
   Payload,
   RmqContext,
+  RpcException,
 } from '@nestjs/microservices';
 import { MessagesService } from './messages.service';
 import {
   GetThreadsDto,
+  IErrorType,
   IEventType,
   NewThreadDto,
   RequestDto,
+  RittaError,
+  ThreadActionDto,
 } from '@rittaschool/shared';
 @Controller()
 export class MessagesController {
@@ -20,16 +24,20 @@ export class MessagesController {
   ) {}
 
   @MessagePattern(IEventType.GET_THREADS)
-  async getThreads(@Payload() request: RequestDto<GetThreadsDto>) {
+  getThreads(@Payload() request: RequestDto<GetThreadsDto>) {
     return this.messagesService.getThreads(request.token, request.data);
   }
 
   @MessagePattern(IEventType.NEW_THREAD)
   async createNewThread(@Payload() request: RequestDto<NewThreadDto>) {
-    await this.messagesService.createThread(request.token, request.data);
-    return {
-      success: false,
-    };
+    try {
+      return await this.messagesService.createThread(
+        request.token,
+        request.data,
+      );
+    } catch (e) {
+      throw new RpcException(e.message);
+    }
   }
 
   @MessagePattern(IEventType.NEW_MESSAGE)
@@ -54,16 +62,27 @@ export class MessagesController {
   }
 
   @MessagePattern(IEventType.MARK_THREAD_AS_READ)
-  async markThreadRead() {
+  async markThreadRead(@Payload() request: RequestDto<ThreadActionDto>) {
+    if (!request.data.threadId) {
+      throw new RittaError('Thread ID missing', IErrorType.UNKNOWN);
+    }
+    this.messagesService.markThreadAsRead(request.token, request.data.threadId);
     return {
-      success: false,
+      success: true,
     };
   }
 
   @MessagePattern(IEventType.MARK_THREAD_AS_UNREAD)
-  async markThreadUnread() {
+  async markThreadUnread(@Payload() request: RequestDto<ThreadActionDto>) {
+    if (!request.data.threadId) {
+      throw new RittaError('Thread ID missing', IErrorType.UNKNOWN);
+    }
+    this.messagesService.markThreadAsUnread(
+      request.token,
+      request.data.threadId,
+    );
     return {
-      success: false,
+      success: true,
     };
   }
 

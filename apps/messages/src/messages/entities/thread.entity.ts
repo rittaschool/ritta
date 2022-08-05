@@ -73,4 +73,5 @@ export const ThreadSchema = new Schema({
     required: true,
   },
   created: { type: Number, default: Date.now },
+  deletedAt: Number,
 });

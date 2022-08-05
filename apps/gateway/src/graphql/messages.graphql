@@ -31,6 +31,10 @@ type Recipient {
   archived: Boolean
 }
 
+type Success {
+  success: Boolean!
+}
+
 input RecipientInput {
   type: RecipientType!
   id: String!
@@ -51,4 +55,6 @@ type Query {
 
 type Mutation {
   createThread(createThreadInput: CreateThreadInput!): Thread
+  markAsRead(threadId: String!): Success
+  markAsUnread(threadId: String!): Success
 }

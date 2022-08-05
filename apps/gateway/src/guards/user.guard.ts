@@ -1,10 +1,13 @@
 import {
   CanActivate,
   ExecutionContext,
+  ForbiddenException,
   Inject,
   Injectable,
   Logger,
+  UnauthorizedException,
 } from '@nestjs/common';
+import { IErrorType, RittaError } from '@rittaschool/shared';
 import { UsersService } from '../users/users.service';
 import { Tokenizer } from '../validation/tokenizer';
 
@@ -36,30 +39,34 @@ export class UserGuard implements CanActivate {
 
     // Return true because we want this to be always run
     if (!token) return true;
+    try {
+      const data = await this.tokenizer.verify<{
+        type: 'access' | 'refresh';
+        uid: string;
+        exp: number;
+        iat: number;
+      }>(token);
 
-    const data = this.tokenizer.verify<{
-      type: 'access' | 'refresh';
-      uid: string;
-      exp: number;
-      iat: number;
-    }>(token);
+      // Return true because we want this to be always run, even if the token is invalid
+      if (!data) return true;
 
-    // Return true because we want this to be always run, even if the token is invalid
-    if (!data) return true;
+      const user = await this.userService.getUser(data.uid, false, rid);
 
-    const user = await this.userService.getUser(data.uid, false, rid);
+      if (user == null || !user) {
+        this.logger.error({
+          context: 'UserGuard',
+          message: `User not found for token ${token.substring(0, 10)}...`,
+        });
+        return true;
+      }
 
-    if (user == null || !user) {
-      this.logger.error({
-        context: 'UserGuard',
-        message: `User not found for token ${token.substring(0, 10)}...`,
-      });
+      request.user = user;
+
       return true;
+    } catch (e) {
+      if (e.name === 'RittaException') throw e;
+      throw new UnauthorizedException('Invalid token');
     }
-
-    request.user = user;
-
-    return true;
   }
 }
 

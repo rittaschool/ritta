@@ -5,6 +5,7 @@ import {
   IMessage,
   IThread,
   IThreadFolders,
+  Message,
   NewMessageDto,
   NewThreadDto,
   RittaError,
@@ -24,9 +25,9 @@ export class MessagesService {
     private messagesRepository: MessagesRepository,
   ) {}
 
-  getUserId(token) {
+  async getUserId(token) {
     return (
-      this.tokenizer.verify(token) as {
+      (await this.tokenizer.verify(token)) as {
         permissions: number;
         uid: string;
       }
@@ -37,33 +38,61 @@ export class MessagesService {
     token: string,
     getThreadsDto: GetThreadsDto,
   ): Promise<Thread[]> {
-    const userId = this.getUserId(token);
+    const userId = await this.getUserId(token);
     // TODO: do after auth and decorators have been finished.
     const allThreads = await this.threadsRepository.findAll();
-    let threads = [];
+    let threads: Thread[] = [];
     switch (getThreadsDto?.folder || IThreadFolders.INBOX) {
       case IThreadFolders.OUTBOX:
-        threads = allThreads.filter((thread) => {
-          return false;
-        });
+        threads = allThreads.filter(
+          (thread) =>
+            !thread.removed &&
+            !thread.sender.archived &&
+            thread.sender.id === userId,
+        );
         break;
       case IThreadFolders.DRAFTS:
-        threads = allThreads.filter((thread) => {
-          return false;
-        });
+        threads = allThreads.filter(
+          (thread) =>
+            !thread.removed && thread.sender.id === userId && thread.draft,
+        );
         break;
+      // TODO: add support for groups
       case IThreadFolders.ARCHIVE:
         threads = allThreads.filter((thread) => {
+          if (thread.removed) return false;
+          if (thread.sender.id === userId) return thread.sender.archived;
+          if (thread.recipients.find((r) => r.id === userId))
+            return thread.recipients.find((r) => r.id === userId).archived;
           return false;
         });
         break;
       case IThreadFolders.INBOX:
       default:
         threads = allThreads.filter((thread) => {
-          return true;
+          if (thread.removed) return false;
+          if (thread.sender.id === userId) return !thread.sender.archived;
+          if (thread.recipients.find((r) => r.id === userId))
+            return !thread.recipients.find((r) => r.id === userId).archived;
+          return false;
         });
         break;
     }
+    // Because the DB Schema only includes message id's, we translate them to Message objects
+    threads = await Promise.all(
+      threads.map(async (thread) => {
+        thread.messages = await Promise.all(
+          thread.messages.map(
+            async (messageId: Message | string): Promise<Message> => {
+              return messageId instanceof Message
+                ? messageId
+                : await this.messagesRepository.findOne(messageId);
+            },
+          ),
+        );
+        return thread;
+      }),
+    );
     return threads;
   }
 
@@ -71,15 +100,13 @@ export class MessagesService {
     token: string,
     createThreadDto: NewThreadDto,
   ): Promise<Thread> {
-    const userId = this.getUserId(token);
+    const userId = await this.getUserId(token);
     const tmpThread: Partial<IThread> = createThreadDto;
 
     tmpThread.sender = {
       id: userId,
       archived: false,
     };
-    tmpThread.removed = false;
-    tmpThread.created = Date.now();
     tmpThread.id = v4();
 
     // Checking message has necessary stuff
@@ -123,6 +150,41 @@ export class MessagesService {
       throw new RittaError('Error saving thread', IErrorType.UNKNOWN);
     }
 
-    return newThread;
+    return { ...newThread, messages: [newMessage] };
+  }
+
+  async markThreadAsRead(token: string, threadId: string) {
+    const userId = await this.getUserId(token);
+    const thread = await this.threadsRepository.findOne(threadId);
+    await Promise.all(
+      thread.messages.map(async (messageId: Message | string) => {
+        const message = await this.messagesRepository.findOne(
+          messageId instanceof Message ? messageId.id : messageId,
+        );
+        await this.messagesRepository.update(message.id, {
+          seenBy: Array.from(new Set(message.seenBy.concat([userId]))),
+        } as any);
+      }),
+    );
+    return true;
+  }
+
+  async markThreadAsUnread(token: string, threadId: string) {
+    const userId = await this.getUserId(token);
+    const thread = await this.threadsRepository.findOne(threadId);
+    await Promise.all(
+      thread.messages.map(async (messageId: Message | string) => {
+        const message = await this.messagesRepository.findOne(
+          messageId instanceof Message ? messageId.id : messageId,
+        );
+        await this.messagesRepository.update(message.id, {
+          seenBy: Array.from(
+            new Set(message.seenBy.filter((seenById) => seenById !== userId)),
+          ),
+          messageId,
+        } as any);
+      }),
+    );
+    return true;
   }
 }

@@ -71,31 +71,7 @@ export class DeleteMessageDto {
   }
 }
 
-export class DeleteThreadDto {
-  threadId: string;
-
-  constructor(threadId: string) {
-    this.threadId = threadId;
-  }
-}
-
-export class ArchiveThreadDto {
-  threadId: string;
-
-  constructor(threadId: string) {
-    this.threadId = threadId;
-  }
-}
-
-export class MarkThreadAsReadDto {
-  threadId: string;
-
-  constructor(threadId: string) {
-    this.threadId = threadId;
-  }
-}
-
-export class MarkThreadAsUnreadDto {
+export class ThreadActionDto {
   threadId: string;
 
   constructor(threadId: string) {

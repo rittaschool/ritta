@@ -13,7 +13,9 @@ export class MessagesResolver {
 
   @Query()
   async messages(@RID() rid: string, @User() user: IUser) {
-    return await this.messagesService.getMessages(rid, user);
+    const messages = await this.messagesService.getMessages(rid, user);
+    console.log(messages);
+    return messages;
   }
 
   @Mutation()
@@ -27,6 +29,32 @@ export class MessagesResolver {
       createThreadDto,
       rid,
       user,
+    );
+    return data;
+  }
+
+  @Mutation()
+  //@UsePipes(new JoiValidationPipe(CreateUserValidationSchema))
+  async markAsRead(
+    @Args('threadId') threadId: string,
+    @RID() rid: string,
+    @User() user: IUser,
+  ) {
+    const data = await this.messagesService.markAsRead({ threadId }, user, rid);
+    return data;
+  }
+
+  @Mutation()
+  //@UsePipes(new JoiValidationPipe(CreateUserValidationSchema))
+  async markAsUnread(
+    @Args('threadId') threadId: string,
+    @RID() rid: string,
+    @User() user: IUser,
+  ) {
+    const data = await this.messagesService.markAsUnread(
+      { threadId },
+      user,
+      rid,
     );
     return data;
   }
