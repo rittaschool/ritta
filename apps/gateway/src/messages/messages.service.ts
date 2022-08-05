@@ -14,8 +14,8 @@ import {
   ThreadActionDto,
 } from '@rittaschool/shared';
 import { catchError, of, timeout } from 'rxjs';
+import sanitize from 'sanitize-html';
 import { Tokenizer } from '../validation/tokenizer';
-
 @Injectable()
 export class MessagesService {
   constructor(
@@ -34,7 +34,18 @@ export class MessagesService {
       context: 'MessagesService',
       message: `createThread with name ${createThreadDto.name} `,
     });
-
+    createThreadDto.content = sanitize(createThreadDto.content, {
+      allowedTags: sanitize.defaults.allowedTags.concat(['img']),
+      allowedAttributes: {
+        img: ['src', 'srcset', 'alt', 'title', 'width', 'height', 'loading'],
+      },
+    });
+    createThreadDto.name = sanitize(createThreadDto.name, {
+      allowedTags: sanitize.defaults.allowedTags.concat(['img']),
+      allowedAttributes: {
+        img: ['src', 'srcset', 'alt', 'title', 'width', 'height', 'loading'],
+      },
+    });
     const res = await this.client
       .send(IEventType.NEW_THREAD, {
         rid,
@@ -83,29 +94,6 @@ export class MessagesService {
       .pipe(catchError((val) => of({ error: val.message })))
       .pipe(timeout(5000)) // timeout
       .toPromise();
-  }
-
-  async getUser(id: string, throwError = true, rid: string): Promise<IUser> {
-    this.logger.log({
-      rid,
-      context: 'MessagesService',
-      message: `getUser with id ${id} `,
-    });
-    const user = await this.client
-      .send(IEventType.GET_USER, { id, rid, throwError }) // get user with id
-      .pipe(catchError((val) => of({ error: val.message }))) // error handling
-      .pipe(timeout(5000)) // timeout
-      .toPromise(); // converting observable to promise
-
-    if (throwError && !user) {
-      throw new BadRequestException('User not found');
-    }
-
-    if (throwError && user.error) {
-      throw new BadRequestException(user.error);
-    } else {
-      return user;
-    }
   }
 
   async markAsRead(threadActionDto: ThreadActionDto, user: IUser, rid: string) {
@@ -165,6 +153,14 @@ export class MessagesService {
   }
 
   async newMessage(newMessageDto: NewMessageDto, user: IUser, rid: string) {
+    // Sanitize
+    newMessageDto.content = sanitize(newMessageDto.content, {
+      allowedTags: sanitize.defaults.allowedTags.concat(['img']),
+      allowedAttributes: {
+        img: ['src', 'srcset', 'alt', 'title', 'width', 'height', 'loading'],
+      },
+    });
+
     const res = await this.client
       .send(IEventType.NEW_MESSAGE, {
         rid,
