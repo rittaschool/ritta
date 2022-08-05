@@ -114,7 +114,9 @@ export default ({ lessons: allLessons = defaultLessons, minStartTime, minEndTime
 
   const hourLineCount = endHour - startHour;
 
-  return <Stack>
+  return <Stack
+    mb={12.4} // Needed to ensure the last hour text doesn't overflow outside the component
+  >
     <Group ml={timeWidth}>
       {Array
         .from({ length: dayCount }, (_, i) => weekStart.add(i, "day"))
