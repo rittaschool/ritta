@@ -1,4 +1,4 @@
-import { Box, HoverCard, Text, Title, useMantineColorScheme, useMantineTheme } from "@mantine/core";
+import { HoverCard, Paper, Text, Title, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 import { inverseLerp } from "../../utils/numberUtils";
@@ -46,7 +46,7 @@ export default ({
 
   return <HoverCard width={300} openDelay={500}>
     <HoverCard.Target>
-      <Box
+      <Paper
         onMouseOver={() => setHoveredCourseCode(lesson.courseCode)}
         onMouseOut={() => setHoveredCourseCode(null)}
         sx={{
@@ -63,9 +63,15 @@ export default ({
         }}
       >
         <Text>{lesson.courseName}</Text>
-      </Box>
+      </Paper>
     </HoverCard.Target>
-    <HoverCard.Dropdown>
+    <HoverCard.Dropdown sx={{
+      backgroundColor: theme.fn.rgba(colorScheme === "light" ? theme.colors.gray[1] : "#2c2d32", 0.5),
+      boxShadow: theme.shadows.xl,
+      borderLeft: `4px solid ${theme.colors.teal[6]}`,
+      backdropFilter: "blur(16px)",
+      padding: 15
+    }}>
       <Title order={3}>{lesson.courseName} ({lesson.courseCode})</Title>
       <Text>{startTimeFormatted}-{endTimeFormatted} ({t("common:minutes", { count: durationMinutes })})</Text>
       <Text>{lesson.room}</Text>

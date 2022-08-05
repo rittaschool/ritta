@@ -31,10 +31,12 @@ export default ({
 
   return <Stack sx={{ flex: 1 }}>
     <Title order={2}>{day.format("D.M.YYYY")}</Title>
-    <Paper sx={{
-      backgroundColor: colorScheme === "light" ? theme.colors.gray[1] : theme.colors.dark[6],
-      padding: 5
-    }}>
+    <Paper
+      sx={{
+        backgroundColor: colorScheme === "light" ? "white" : theme.colors.dark[6],
+        padding: 5,
+        boxShadow: colorScheme === "light" ? "0 4px 8px rgba(0, 0, 0, 0.03)" : "none"
+      }}>
       <div style={{ height: 550, position: "relative" }}>
         {lessonsWithColumn.map(lesson => <SingleScheduleEntry
           key={lesson.id}
