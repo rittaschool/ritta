@@ -11,6 +11,7 @@ import {
   GetThreadsDto,
   IErrorType,
   IEventType,
+  NewMessageDto,
   NewThreadDto,
   RequestDto,
   RittaError,
@@ -30,6 +31,7 @@ export class MessagesController {
 
   @MessagePattern(IEventType.NEW_THREAD)
   async createNewThread(@Payload() request: RequestDto<NewThreadDto>) {
+    console.log(request);
     try {
       return await this.messagesService.createThread(
         request.token,
@@ -40,11 +42,23 @@ export class MessagesController {
     }
   }
 
-  @MessagePattern(IEventType.NEW_MESSAGE)
-  async newMessage() {
+  @MessagePattern(IEventType.PUBLISH_DRAFT)
+  async publishDraft() {
     return {
       success: false,
     };
+  }
+
+  @MessagePattern(IEventType.NEW_MESSAGE)
+  async newMessage(@Payload() request: RequestDto<NewMessageDto>) {
+    try {
+      return await this.messagesService.createMessage(
+        request.token,
+        request.data,
+      );
+    } catch (e) {
+      throw new RpcException(e.message);
+    }
   }
 
   @MessagePattern(IEventType.DELETE_MESSAGE)

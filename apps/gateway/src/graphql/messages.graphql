@@ -5,7 +5,7 @@ type Thread {
   showNames: Boolean!
   canReply: Boolean!
   draft: Boolean!
-  created: Int!
+  created: Timestamp!
   recipients: [Recipient]!
   messages: [Message!]!
 }
@@ -13,7 +13,7 @@ type Thread {
 type Message {
   id: ID!
   senderId: String!
-  created: Int!
+  created: Timestamp!
   content: String
   seenBy: [String!]!
   removed: Boolean!
@@ -49,6 +49,11 @@ input CreateThreadInput {
   recipients: [RecipientInput!]!
 }
 
+input CreateMessageInput {
+  threadId: String!
+  content: String!
+}
+
 type Query {
   messages: [Thread!]!
 }
@@ -57,4 +62,5 @@ type Mutation {
   createThread(createThreadInput: CreateThreadInput!): Thread
   markAsRead(threadId: String!): Success
   markAsUnread(threadId: String!): Success
+  newMessage(createMessageInput: CreateMessageInput!): Message
 }

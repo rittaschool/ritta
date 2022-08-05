@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 import {
   DateScalar,
+  TimestampScalar,
   EmailAddressScalar,
   JSONScalar,
   PhoneNumberScalar,
@@ -97,6 +98,7 @@ import {
       inject: [ConfigService],
     },
     DateScalar,
+    TimestampScalar,
     EmailAddressScalar,
     PhoneNumberScalar,
     JSONScalar,

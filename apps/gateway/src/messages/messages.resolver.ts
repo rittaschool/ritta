@@ -1,6 +1,11 @@
 import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CreateUserDto, IUser, NewThreadDto } from '@rittaschool/shared';
+import {
+  CreateUserDto,
+  IUser,
+  NewMessageDto,
+  NewThreadDto,
+} from '@rittaschool/shared';
 import { RID } from '../rid.param';
 import { User } from '../user.param';
 import { MessagesService } from './messages.service';
@@ -29,6 +34,21 @@ export class MessagesResolver {
       createThreadDto,
       rid,
       user,
+    );
+    return data;
+  }
+
+  @Mutation()
+  //@UsePipes(new JoiValidationPipe(CreateUserValidationSchema))
+  async newMessage(
+    @Args('createMessageInput') createMessageInput: NewMessageDto,
+    @RID() rid: string,
+    @User() user: IUser,
+  ) {
+    const data = await this.messagesService.newMessage(
+      createMessageInput,
+      user,
+      rid,
     );
     return data;
   }

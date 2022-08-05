@@ -39,7 +39,7 @@ export class Thread implements IThread {
     id: string;
     archived?: boolean | undefined;
   }[];
-  messages: Message[] | string[];
+  messages: (Message | string)[];
   created: number;
 
   constructor(

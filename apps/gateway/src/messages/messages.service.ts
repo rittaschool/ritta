@@ -6,12 +6,11 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import {
-  CreateUserDto,
   IEventType,
   IUser,
+  NewMessageDto,
   NewThreadDto,
   ThreadActionDto,
-  UpdateUserDto,
 } from '@rittaschool/shared';
 import { catchError, of, timeout } from 'rxjs';
 import { Tokenizer } from '../validation/tokenizer';
@@ -38,7 +37,7 @@ export class MessagesService {
     const res = await this.client
       .send(IEventType.NEW_THREAD, {
         rid,
-        token: this.tokenizer.sign({
+        token: await this.tokenizer.sign({
           permissions: user.permissions,
           uid: user.id,
         }),
@@ -75,7 +74,7 @@ export class MessagesService {
     return this.client
       .send(IEventType.GET_THREADS, {
         rid,
-        token: this.tokenizer.sign({
+        token: await this.tokenizer.sign({
           permissions: user.permissions,
           uid: user.id,
         }),
@@ -112,7 +111,7 @@ export class MessagesService {
     const res = await this.client
       .send(IEventType.MARK_THREAD_AS_READ, {
         rid,
-        token: this.tokenizer.sign({
+        token: await this.tokenizer.sign({
           permissions: user.permissions,
           uid: user.id,
         }),
@@ -142,11 +141,37 @@ export class MessagesService {
     const res = await this.client
       .send(IEventType.MARK_THREAD_AS_UNREAD, {
         rid,
-        token: this.tokenizer.sign({
+        token: await this.tokenizer.sign({
           permissions: user.permissions,
           uid: user.id,
         }),
         data: threadActionDto,
+      })
+      .pipe(timeout(10000)) // increased timeout
+      .pipe(catchError((val) => of({ error: val.message })))
+      .toPromise(); // converting observable to promise
+
+    if (res.error) {
+      this.logger.error({
+        rid,
+        context: 'MessagesService',
+        message: res.error, //TODO: fix because it returns RittaError
+      });
+      throw new BadRequestException(res.error);
+    } else {
+      return res;
+    }
+  }
+
+  async newMessage(newMessageDto: NewMessageDto, user: IUser, rid: string) {
+    const res = await this.client
+      .send(IEventType.NEW_MESSAGE, {
+        rid,
+        token: await this.tokenizer.sign({
+          permissions: user.permissions,
+          uid: user.id,
+        }),
+        data: newMessageDto,
       })
       .pipe(timeout(10000)) // increased timeout
       .pipe(catchError((val) => of({ error: val.message })))

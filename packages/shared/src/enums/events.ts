@@ -21,7 +21,8 @@ export enum IEventType {
   CREATE_ANNOUNCEMENT = "create_announcement",
   EDIT_ANNOUNCEMENT = "edit_announcement",
   ARCHIVE_ANNOUNCEMENT = "archive_announcements",
-  DELETE_ANNOUNCEMENT = "delete_announcement"
+  DELETE_ANNOUNCEMENT = "delete_announcement",
+  PUBLISH_DRAFT = "publish_draft",
 }
 
 export enum IErrorType {

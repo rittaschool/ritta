@@ -187,4 +187,28 @@ export class MessagesService {
     );
     return true;
   }
+
+  async createMessage(token: string, newMessageDto: NewMessageDto) {
+    const userId = await this.getUserId(token);
+    const thread = await this.threadsRepository.findOne(newMessageDto.threadId);
+    const tmpMessage: Partial<IMessage> = newMessageDto;
+    tmpMessage.senderId = userId;
+    tmpMessage.seenBy = [userId];
+
+    let newMessage: IMessage;
+
+    try {
+      newMessage = await this.messagesRepository.create(newMessageDto);
+    } catch (error) {
+      throw new RittaError('Error saving message', IErrorType.UNKNOWN);
+    }
+
+    thread.messages.push(newMessage.id);
+
+    await this.threadsRepository.update(newMessageDto.threadId, {
+      messages: thread.messages,
+    });
+
+    return newMessage;
+  }
 }
