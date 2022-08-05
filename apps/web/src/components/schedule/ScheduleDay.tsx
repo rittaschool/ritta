@@ -33,7 +33,7 @@ export default ({
     sx={{
       flex: 1,
       backgroundColor: colorScheme === "light" ? "white" : theme.colors.dark[6],
-      padding: 5,
+      padding: "0px 5px",
       boxShadow: colorScheme === "light" ? "0 4px 8px rgba(0, 0, 0, 0.03)" : "none"
     }}>
     <div style={{ height: 550, position: "relative" }}>
