@@ -86,7 +86,7 @@ export default ({
   lessons: allLessons = defaultLessons,
   minStartTime,
   minEndTime,
-  minorHourLines = 3
+  minorHourLines = 1
 }: ScheduleProps) => {
   const [hoveredCourseCode, setHoveredCourseCode] = useState<string | null>(null);
 
