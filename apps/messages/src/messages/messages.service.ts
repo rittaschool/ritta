@@ -11,6 +11,7 @@ import {
   NewThreadDto,
   RittaError,
   Thread,
+  ThreadActionDto,
 } from '@rittaschool/shared';
 import { Tokenizer } from 'src/tokenizer';
 import { MessagesRepository } from './messages.repository';
@@ -158,6 +159,9 @@ export class MessagesService {
   async markThreadAsRead(token: string, threadId: string) {
     const userId = await this.getUserId(token);
     const thread = await this.threadsRepository.findOne(threadId);
+    if (thread.removed) {
+      throw new RpcException('Thread has been deleted');
+    }
     await Promise.all(
       thread.messages.map(async (messageId: Message | string) => {
         const message = await this.messagesRepository.findOne(
@@ -174,6 +178,9 @@ export class MessagesService {
   async markThreadAsUnread(token: string, threadId: string) {
     const userId = await this.getUserId(token);
     const thread = await this.threadsRepository.findOne(threadId);
+    if (thread.removed) {
+      throw new RpcException('Thread has been deleted');
+    }
     await Promise.all(
       thread.messages.map(async (messageId: Message | string) => {
         const message = await this.messagesRepository.findOne(
@@ -193,6 +200,9 @@ export class MessagesService {
   async createMessage(token: string, newMessageDto: NewMessageDto) {
     const userId = await this.getUserId(token);
     const thread = await this.threadsRepository.findOne(newMessageDto.threadId);
+    if (thread.removed) {
+      throw new RpcException('Thread has been deleted');
+    }
     const tmpMessage: Partial<IMessage> = newMessageDto;
     tmpMessage.senderId = userId;
     tmpMessage.seenBy = [userId];
@@ -228,6 +238,56 @@ export class MessagesService {
       editMessageDto.messageId,
       editMessageDto,
     );
+
+    return true;
+  }
+
+  async publishDraft(token: string, publishDraftDto: ThreadActionDto) {
+    const userId = await this.getUserId(token);
+    const thread = await this.threadsRepository.findOne(
+      publishDraftDto.threadId,
+    );
+
+    if (thread.sender.id !== userId) {
+      throw new RpcException('You are not the author of the thread');
+    }
+
+    if (thread.removed) {
+      throw new RpcException('Thread has been deleted');
+    }
+
+    if (!thread.draft) {
+      throw new RpcException('Thread is not a draft');
+    }
+
+    await this.threadsRepository.update(publishDraftDto.threadId, {
+      draft: false,
+    });
+
+    return true;
+  }
+
+  async deleteThread(token: string, deleteThreadDto: ThreadActionDto) {
+    const userId = await this.getUserId(token);
+    const thread = await this.threadsRepository.findOne(
+      deleteThreadDto.threadId,
+    );
+
+    if (thread.sender.id !== userId) {
+      throw new RpcException('You are not the author of the thread');
+    }
+
+    if (thread.removed) {
+      throw new RpcException('Thread has been deleted');
+    }
+
+    if (thread.messages.length > 1) {
+      throw new RpcException('Thread has other messages');
+    }
+
+    await this.threadsRepository.update(deleteThreadDto.threadId, {
+      removed: true,
+    });
 
     return true;
   }

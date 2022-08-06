@@ -26,22 +26,30 @@ export class MessagesController {
 
   @MessagePattern(IEventType.NEW_THREAD)
   async createNewThread(@Payload() request: RequestDto<NewThreadDto>) {
-    console.log(request);
     try {
       return await this.messagesService.createThread(
         request.token,
         request.data,
       );
+      // TODO: If not draft, send notifications
     } catch (e) {
       throw new RpcException(e.message);
     }
   }
 
   @MessagePattern(IEventType.PUBLISH_DRAFT)
-  async publishDraft() {
-    return {
-      success: false,
-    };
+  async publishDraft(@Payload() request: RequestDto<ThreadActionDto>) {
+    // TODO: send notifications
+    try {
+      return {
+        success: await this.messagesService.publishDraft(
+          request.token,
+          request.data,
+        ),
+      };
+    } catch (e) {
+      throw new RpcException(e.message);
+    }
   }
 
   @MessagePattern(IEventType.NEW_MESSAGE)
@@ -54,13 +62,6 @@ export class MessagesController {
     } catch (e) {
       throw new RpcException(e.message);
     }
-  }
-
-  @MessagePattern(IEventType.DELETE_MESSAGE)
-  async deleteMessage() {
-    return {
-      success: false,
-    };
   }
 
   @MessagePattern(IEventType.EDIT_MESSAGE)
@@ -113,14 +114,28 @@ export class MessagesController {
     };
   }
 
-  /**
-   * Removes the thread if it is only the starting message and request by author, otherwise removes only the copy from the user
-   */
-  @MessagePattern(IEventType.DELETE_THREAD)
-  async deleteThread() {
+  @MessagePattern(IEventType.UNARCHIVE_THREAD)
+  async unarchiveThread() {
     return {
       success: false,
     };
+  }
+
+  /**
+   * Removes the thread if it is only the starting message and request by author
+   */
+  @MessagePattern(IEventType.DELETE_THREAD)
+  async deleteThread(@Payload() request: RequestDto<ThreadActionDto>) {
+    try {
+      return {
+        success: await this.messagesService.deleteThread(
+          request.token,
+          request.data,
+        ),
+      };
+    } catch (e) {
+      throw new RpcException(e.message);
+    }
   }
 
   @MessagePattern(IEventType.STATUS)
