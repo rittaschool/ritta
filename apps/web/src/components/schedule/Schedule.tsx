@@ -1,6 +1,7 @@
-import { Group, Stack, Title, useMantineTheme } from "@mantine/core";
+import { Group, Stack, Text, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { unixSinceMidnight } from "../../utils/timeUtils";
 import HourLine from "./HourLine";
 import ScheduleDay from "./ScheduleDay";
@@ -89,7 +90,7 @@ export default ({
   minorHourLines = 1
 }: ScheduleProps) => {
   const [hoveredCourseCode, setHoveredCourseCode] = useState<string | null>(null);
-  const theme = useMantineTheme();
+  const { i18n } = useTranslation();
 
   const dayCount = 5;
   const weekStart = dayjs()
@@ -131,19 +132,17 @@ export default ({
         .map(columnDay => <Title
           key={columnDay.unix()}
           order={2}
-          sx={{
-            flex: 1,
-            fontSize: "1.2rem",
-            [theme.fn.smallerThan("sm")]: {
-              fontSize: "1rem",
-            },
-            [theme.fn.smallerThan("xs")]: {
-              fontSize: "0.8rem"
-            },
-          }}
+          sx={{ flex: 1 }}
           align="center"
         >
-          {columnDay.format("D.M.YYYY")}
+          <Stack spacing={0}>
+            <Text size={34} sx={{ lineHeight: 1 }}>
+              {columnDay.format("D")}
+            </Text>
+            <Text size="sm">
+              {columnDay.toDate().toLocaleDateString(i18n.language, { weekday: "long" })}
+            </Text>
+          </Stack>
         </Title>)}
     </Group>
     <Group sx={{ flex: 1, position: "relative", marginLeft: TIME_WIDTH }}>
