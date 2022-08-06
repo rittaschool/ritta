@@ -1,4 +1,4 @@
-import { Text } from "@mantine/core"
+import { Text, useMantineColorScheme } from "@mantine/core"
 
 export type SharedLineProps = {
   lineIndex: number,
@@ -15,6 +15,8 @@ export type HourLineProps = SharedLineProps & ({
 export default (props: HourLineProps) => {
   const percentageFromTop = 100 * props.lineIndex / (props.lineCount - 1);
 
+  const { colorScheme } = useMantineColorScheme();
+
   if (props.isMajor) {
     return <div
       style={{
@@ -30,7 +32,16 @@ export default (props: HourLineProps) => {
         transform: "translateX(calc(-100% - 10px))",
         top: -10
       }}>{props.text}</Text>
-      <hr style={{ margin: 0 }} />
+      <div style={{
+        position: "absolute",
+        width: "100%",
+        top: `${percentageFromTop}%`,
+        margin: 0,
+        zIndex: 3,
+        borderWidth: 1,
+        borderStyle: "solid",
+        borderColor: colorScheme === "light" ? "#CCC" : "#888"
+      }} />
     </div>
   }
 
@@ -42,6 +53,6 @@ export default (props: HourLineProps) => {
     zIndex: 3,
     borderWidth: 1,
     borderStyle: "solid",
-    borderColor: "#EEE"
+    borderColor: colorScheme === "light" ? "#EEE" : "#444"
   }} />;
 }

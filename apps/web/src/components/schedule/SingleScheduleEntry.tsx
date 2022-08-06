@@ -57,9 +57,12 @@ export default ({
           position: "absolute",
           top: `${startPercentage}%`,
           bottom: `${endPercentage}%`,
-          backgroundColor: theme.fn.rgba(colorScheme === "light" ? "#555555" : "#FFFFFF", hoveredCourseCode === lesson.courseCode ? 0.15 : 0.03),
+          backgroundColor: colorScheme === "light" ?
+            (hoveredCourseCode === lesson.courseCode ? "#E6E6E6" : "#f9f9f9") :
+            (hoveredCourseCode === lesson.courseCode ? "#45464B" : "#2c2d32"),
           width: `${100 / columnCount}%`,
           left: `${column * 100 / columnCount}%`,
+          zIndex: 10
         }}
       >
         <Text>{lesson.courseName}</Text>
