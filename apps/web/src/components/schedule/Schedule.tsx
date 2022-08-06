@@ -11,8 +11,8 @@ const TIME_WIDTH = 50;
 
 interface ScheduleProps {
   lessons?: Lesson[],
-  minStartTime?: number, // seconds since midnight
-  minEndTime?: number, // seconds since midnight
+  minStartTime: number, // seconds since midnight
+  minEndTime: number, // seconds since midnight
   minorHourLines?: number // how many minor hour lines are between each major hour line
 }
 
@@ -104,22 +104,26 @@ export default ({
     return startTime.isSame(weekStart, "week") && startTime.isSame(endTime, "day");
   });
 
-  const lessonsEarliestStartTime = unixSinceMidnight([...lessons].sort((a, b) => {
+  const sortedStartTime = [...lessons].sort((a, b) => {
     const firstStart = dayjs(a.startTime).unix() - dayjs(a.startTime).startOf("day").unix();
     const secondStart = dayjs(b.startTime).unix() - dayjs(b.startTime).startOf("day").unix();
     return firstStart - secondStart;
-  })[0].startTime);
-  const earliestStartTimeUnix = minStartTime === undefined ? lessonsEarliestStartTime : Math.min(lessonsEarliestStartTime, minStartTime);
+  });
 
-  const lessonsLatestEndTime = unixSinceMidnight([...lessons].sort((a, b) => {
+  const firstLessonStart = sortedStartTime.length > 0 ? sortedStartTime[0].startTime : undefined;
+  const earliestStartTimeUnix = firstLessonStart === undefined ? minStartTime : Math.min(unixSinceMidnight(firstLessonStart), minStartTime);
+
+  const sortedEndTime = [...lessons].sort((a, b) => {
     const firstEnd = dayjs(a.endTime).unix() - dayjs(a.endTime).startOf("day").unix();
     const secondEnd = dayjs(b.endTime).unix() - dayjs(b.endTime).startOf("day").unix();
     return firstEnd - secondEnd;
-  })[lessons.length - 1].endTime);
-  const latestEndTime = minEndTime === undefined ? lessonsLatestEndTime : Math.max(lessonsLatestEndTime, minEndTime);
+  });
+
+  const lastLessonEnd = sortedEndTime.length > 0 ? sortedEndTime[sortedEndTime.length - 1].endTime : undefined;
+  const latestEndTimeUnix = lastLessonEnd === undefined ? minEndTime : Math.max(unixSinceMidnight(lastLessonEnd), minEndTime);
 
   const startHour = Math.floor(earliestStartTimeUnix / 3600);
-  const endHour = Math.ceil(latestEndTime / 3600);
+  const endHour = Math.ceil(latestEndTimeUnix / 3600);
 
   const hourLineCount = (minorHourLines + 1) * (endHour - startHour) - minorHourLines;
 
