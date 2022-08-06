@@ -65,7 +65,23 @@ export default ({
           zIndex: 10
         }}
       >
-        <Text>{lesson.courseName}</Text>
+        <Text sx={{
+          [theme.fn.smallerThan("xl")]: {
+            fontSize: "1.1rem"
+          },
+          [theme.fn.smallerThan("lg")]: {
+            fontSize: "1rem"
+          },
+          [theme.fn.smallerThan("md")]: {
+            fontSize: "0.9rem"
+          },
+          [theme.fn.smallerThan("sm")]: {
+            fontSize: "0.8rem"
+          },
+          [theme.fn.smallerThan("xs")]: {
+            fontSize: "0.7rem"
+          },
+        }}>{lesson.courseName}</Text>
       </Paper>
     </HoverCard.Target>
     <HoverCard.Dropdown sx={{

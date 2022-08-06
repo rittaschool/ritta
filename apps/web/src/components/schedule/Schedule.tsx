@@ -1,4 +1,4 @@
-import { Group, Stack, Title } from "@mantine/core";
+import { Group, Stack, Title, useMantineTheme } from "@mantine/core";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { unixSinceMidnight } from "../../utils/timeUtils";
@@ -89,6 +89,7 @@ export default ({
   minorHourLines = 1
 }: ScheduleProps) => {
   const [hoveredCourseCode, setHoveredCourseCode] = useState<string | null>(null);
+  const theme = useMantineTheme();
 
   const dayCount = 5;
   const weekStart = dayjs()
@@ -127,7 +128,23 @@ export default ({
     <Group ml={TIME_WIDTH}>
       {Array
         .from({ length: dayCount }, (_, i) => weekStart.add(i, "day"))
-        .map(columnDay => <Title key={columnDay.unix()} sx={{ flex: 1 }} align="center">{columnDay.format("D.M.YYYY")}</Title>)}
+        .map(columnDay => <Title
+          key={columnDay.unix()}
+          order={2}
+          sx={{
+            flex: 1,
+            fontSize: "1.2rem",
+            [theme.fn.smallerThan("sm")]: {
+              fontSize: "1rem",
+            },
+            [theme.fn.smallerThan("xs")]: {
+              fontSize: "0.8rem"
+            },
+          }}
+          align="center"
+        >
+          {columnDay.format("D.M.YYYY")}
+        </Title>)}
     </Group>
     <Group sx={{ flex: 1, position: "relative", marginLeft: TIME_WIDTH }}>
       {Array
