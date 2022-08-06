@@ -1,4 +1,4 @@
-import { Paper, Stack, Title, useMantineColorScheme, useMantineTheme } from "@mantine/core";
+import { Paper, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import dayjs, { Dayjs } from "dayjs";
 import { getColumns as calculateColumns } from "../../utils/scheduleUtils";
 import DayTimeIndicator from "./DayTimeIndicator";
