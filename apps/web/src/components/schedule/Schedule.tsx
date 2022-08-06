@@ -149,8 +149,8 @@ export default ({
         .map(columnDay => <ScheduleDay
           key={columnDay.unix()}
           day={columnDay}
-          dayStart={earliestStartTimeUnix}
-          dayEnd={latestEndTime}
+          dayStart={startHour * 3600}
+          dayEnd={(endHour - 1) * 3600}
           lessons={lessons.filter(lesson => columnDay.isSame(lesson.startTime, "day"))}
           hoveredCourseCode={hoveredCourseCode}
           setHoveredCourseCode={setHoveredCourseCode}
