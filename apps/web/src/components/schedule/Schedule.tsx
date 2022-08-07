@@ -16,14 +16,18 @@ interface ScheduleProps {
   minorHourLines?: number // how many minor hour lines are between each major hour line
 }
 
+const startOfWeek = dayjs().startOf("week").add(1, "day");
+
+const getTime = (dayOffset: number, hour: number, minute: number) => startOfWeek.add(dayOffset, "day").add(hour, "hour").add(minute, "minute").toDate();
+
 // TODO: Remove these default props, they are only for development
 const defaultLessons: Lesson[] = [
   {
     id: 0,
     courseCode: "MAT-2",
     courseName: "Maths",
-    startTime: new Date(2022, 7, 2, 9, 30, 0),
-    endTime: new Date(2022, 7, 2, 10, 30, 0),
+    startTime: getTime(0, 9, 30),
+    endTime: getTime(0, 10, 30),
     room: "A2",
     teacher: "Minna Muuttuja"
   },
@@ -31,8 +35,8 @@ const defaultLessons: Lesson[] = [
     id: 1,
     courseCode: "MAT-1",
     courseName: "Maths",
-    startTime: new Date(2022, 7, 3, 9, 0, 0),
-    endTime: new Date(2022, 7, 3, 10, 0, 0),
+    startTime: getTime(1, 9, 0),
+    endTime: getTime(1, 10, 0),
     room: "A1",
     teacher: "Matti Matemaatikko"
   },
@@ -40,8 +44,8 @@ const defaultLessons: Lesson[] = [
     id: 2,
     courseCode: "MAT-2",
     courseName: "Maths",
-    startTime: new Date(2022, 7, 3, 13, 30, 0),
-    endTime: new Date(2022, 7, 3, 14, 30, 0),
+    startTime: startOfWeek.add(2, "day").set("hour", 13).set("minute", 30).toDate(),
+    endTime: startOfWeek.add(2, "day").set("hour", 14).set("minute", 30).toDate(),
     room: "A2",
     teacher: "Minna Muuttuja"
   },
@@ -49,8 +53,8 @@ const defaultLessons: Lesson[] = [
     id: 3,
     courseCode: "PHY-1",
     courseName: "Physics",
-    startTime: new Date(2022, 7, 4, 8, 30, 0),
-    endTime: new Date(2022, 7, 4, 9, 45, 0),
+    startTime: getTime(3, 8, 30),
+    endTime: getTime(3, 9, 45),
     room: "A3",
     teacher: "Frans Fyysikko"
   },
@@ -58,8 +62,8 @@ const defaultLessons: Lesson[] = [
     id: 4,
     courseCode: "CHE-1",
     courseName: "Chemistry",
-    startTime: new Date(2022, 7, 3, 9, 30, 0),
-    endTime: new Date(2022, 7, 3, 10, 45, 0),
+    startTime: getTime(3, 9, 30),
+    endTime: getTime(3, 10, 45),
     room: "A4",
     teacher: "Kaisa Kemisti"
   },
@@ -67,8 +71,8 @@ const defaultLessons: Lesson[] = [
     id: 5,
     courseCode: "CHE-1",
     courseName: "Chemistry",
-    startTime: new Date(2022, 7, 1, 11, 30, 0),
-    endTime: new Date(2022, 7, 1, 12, 45, 0),
+    startTime: getTime(1, 11, 30),
+    endTime: getTime(1, 12, 45),
     room: "A4",
     teacher: "Kaisa Kemisti"
   },
@@ -76,8 +80,8 @@ const defaultLessons: Lesson[] = [
     id: 6,
     courseCode: "PHY-1",
     courseName: "Physics",
-    startTime: new Date(2022, 7, 5, 11, 30, 0),
-    endTime: new Date(2022, 7, 5, 12, 45, 0),
+    startTime: getTime(4, 11, 30),
+    endTime: getTime(4, 12, 45),
     room: "A3",
     teacher: "Frans Fyysikko"
   },
