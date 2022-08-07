@@ -1,5 +1,7 @@
 {
   "test": "Testi :)",
+  "minutes_one": "{{count}} minuutti",
+  "minutes_other": "{{count}} minuuttia",
   "privacy_policy": "Tietosuojaseloste",
   "terms_of_service": "Käyttöehdot",
   "accessibility_statement": "Saavutettavuusseloste",

@@ -1,4 +1,6 @@
 {
+  "minutes_one": "{{count}} minute",
+  "minutes_other": "{{count}} minutes",
   "privacy_policy": "Privacy policy",
   "terms_of_service": "Terms of Service",
   "accessibility_statement": "Accessibility statement",
