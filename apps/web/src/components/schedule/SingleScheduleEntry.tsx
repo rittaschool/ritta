@@ -88,7 +88,12 @@ export default ({
       backgroundColor: theme.fn.rgba(colorScheme === "light" ? theme.colors.gray[1] : "#2c2d32", 0.5),
       boxShadow: theme.shadows.xl,
       borderLeft: `4px solid ${theme.colors.teal[6]}`,
-      backdropFilter: "blur(16px)",
+      ["@supports (backdrop-filter: blur(16px))"]: {
+        backdropFilter: "blur(16px)",
+      },
+      ["@supports not (backdrop-filter: blur(16px))"]: {
+        backgroundColor: colorScheme === "light" ? theme.colors.gray[1] : "#2c2d32"
+      },
       padding: 15
     }}>
       <Title order={3}>{lesson.courseName} ({lesson.courseCode})</Title>
