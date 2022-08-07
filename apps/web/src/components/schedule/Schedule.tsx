@@ -143,9 +143,9 @@ export default ({
         >
           <Stack spacing={0}>
             <Text size={34} sx={{ lineHeight: 1 }}>
-              {columnDay.format("D")}
+              {columnDay.toDate().toLocaleDateString(i18n.language, { day: "numeric", month: "short" })}
             </Text>
-            <Text size="sm">
+            <Text size="md">
               {columnDay.toDate().toLocaleDateString(i18n.language, { weekday: "long" })}
             </Text>
           </Stack>
