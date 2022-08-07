@@ -1,4 +1,3 @@
-import { Paper, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import dayjs, { Dayjs } from "dayjs";
 import { getColumns as calculateColumns } from "../../utils/scheduleUtils";
 import DayTimeIndicator from "./DayTimeIndicator";
@@ -21,20 +20,12 @@ export default ({
   hoveredCourseCode,
   setHoveredCourseCode
 }: ScheduleDayProps) => {
-  const theme = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-
   const lessonsWithColumn = calculateColumns(lessons);
   const columnCount = Math.max(...lessonsWithColumn.map(o => o.column)) + 1;
 
   const isToday = day.isSame(dayjs(), "day");
 
-  return <Paper
-    sx={{
-      flex: 1,
-      padding: "0px 16px",
-      boxShadow: colorScheme === "light" ? "0 4px 8px rgba(0, 0, 0, 0.03)" : "none"
-    }}>
+  return <div style={{ flex: 1, padding: "0px 16px", }}>
     <div style={{ height: 550, position: "relative" }}>
       {lessonsWithColumn.map(lesson => <SingleScheduleEntry
         key={lesson.id}
@@ -48,5 +39,5 @@ export default ({
       />)}
       {isToday && <DayTimeIndicator dayStart={dayStart} dayEnd={dayEnd} />}
     </div>
-  </Paper>;
+  </div>;
 }
