@@ -1,10 +1,10 @@
-import { Group, Stack, Text, Title, useMantineColorScheme } from "@mantine/core";
+import { Group, Stack, useMantineColorScheme } from "@mantine/core";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { unixSinceMidnight } from "../../utils/timeUtils";
 import HourLine from "./HourLine";
 import ScheduleDay from "./ScheduleDay";
+import ScheduleWeekdayTitle from "./ScheduleWeekdayTitle";
 import { Lesson } from "./SingleScheduleEntry";
 
 const TIME_WIDTH = 50;
@@ -90,7 +90,6 @@ export default ({
   minorHourLines = 1
 }: ScheduleProps) => {
   const [hoveredCourseCode, setHoveredCourseCode] = useState<string | null>(null);
-  const { i18n } = useTranslation();
 
   const { colorScheme } = useMantineColorScheme();
 
@@ -132,24 +131,10 @@ export default ({
   return <Stack
     mb={12.4} // Needed to ensure the last hour text doesn't overflow outside the component
   >
-    <Group ml={TIME_WIDTH}>
+    <Group ml={TIME_WIDTH} spacing={0}>
       {Array
         .from({ length: dayCount }, (_, i) => weekStart.add(i, "day"))
-        .map(columnDay => <Title
-          key={columnDay.unix()}
-          order={2}
-          sx={{ flex: 1 }}
-          align="center"
-        >
-          <Stack spacing={0}>
-            <Text size={34} sx={{ lineHeight: 1 }}>
-              {columnDay.toDate().toLocaleDateString(i18n.language, { day: "numeric", month: "short" })}
-            </Text>
-            <Text size="md">
-              {columnDay.toDate().toLocaleDateString(i18n.language, { weekday: "long" })}
-            </Text>
-          </Stack>
-        </Title>)}
+        .map(columnDay => <ScheduleWeekdayTitle key={columnDay.unix()} day={columnDay} />)}
     </Group>
     <Group sx={{ flex: 1, position: "relative", marginLeft: TIME_WIDTH }} spacing={0}>
       {Array
