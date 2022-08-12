@@ -16,7 +16,6 @@ type Message {
   created: Timestamp!
   content: String
   seenBy: [String!]!
-  removed: Boolean!
 }
 
 enum RecipientType {
@@ -67,6 +66,8 @@ type Mutation {
   createThread(createThreadInput: CreateThreadInput!): Thread
   markAsRead(threadId: String!): Success
   markAsUnread(threadId: String!): Success
+  publishDraft(threadId: String!): Success
+  deleteThread(threadId: String!): Success
   newMessage(createMessageInput: CreateMessageInput!): Message
   editMessage(editMessageInput: EditMessageInput!): Success
 }

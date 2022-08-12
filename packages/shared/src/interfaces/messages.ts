@@ -7,7 +7,6 @@ export interface IMessage {
   created: number;
   content: string;
   seenBy: string[]; // uid[]
-  removed: boolean;
 }
 
 export interface IThread {

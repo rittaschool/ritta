@@ -7,22 +7,19 @@ export class Message implements IMessage {
   created: number;
   content: string;
   seenBy: string[];
-  removed: boolean;
 
   constructor(
     id: string,
     senderId: string,
     created: number,
     content: string,
-    seenBy: string[],
-    removed: boolean
+    seenBy: string[]
   ) {
     this.id = id;
     this.senderId = senderId;
     this.created = created;
     this.content = content;
     this.seenBy = seenBy;
-    this.removed = removed;
   }
 }
 

@@ -92,4 +92,34 @@ export class MessagesResolver {
     );
     return data;
   }
+
+  @Mutation()
+  //@UsePipes(new JoiValidationPipe(CreateUserValidationSchema))
+  async publishDraft(
+    @Args('threadId') threadId: string,
+    @RID() rid: string,
+    @User() user: IUser,
+  ) {
+    const data = await this.messagesService.publishDraft(
+      { threadId },
+      user,
+      rid,
+    );
+    return data;
+  }
+
+  @Mutation()
+  //@UsePipes(new JoiValidationPipe(CreateUserValidationSchema))
+  async deleteThread(
+    @Args('threadId') threadId: string,
+    @RID() rid: string,
+    @User() user: IUser,
+  ) {
+    const data = await this.messagesService.deleteThread(
+      { threadId },
+      user,
+      rid,
+    );
+    return data;
+  }
 }

@@ -211,4 +211,64 @@ export class MessagesService {
       return res;
     }
   }
+
+  async publishDraft(
+    threadActionDto: ThreadActionDto,
+    user: IUser,
+    rid: string,
+  ) {
+    const res = await this.client
+      .send(IEventType.PUBLISH_DRAFT, {
+        rid,
+        token: await this.tokenizer.sign({
+          permissions: user.permissions,
+          uid: user.id,
+        }),
+        data: threadActionDto,
+      })
+      .pipe(timeout(10000)) // increased timeout
+      .pipe(catchError((val) => of({ error: val.message })))
+      .toPromise(); // converting observable to promise
+
+    if (res.error) {
+      this.logger.error({
+        rid,
+        context: 'MessagesService',
+        message: res.error, //TODO: fix because it returns RittaError
+      });
+      throw new BadRequestException(res.error);
+    } else {
+      return res;
+    }
+  }
+
+  async deleteThread(
+    threadActionDto: ThreadActionDto,
+    user: IUser,
+    rid: string,
+  ) {
+    const res = await this.client
+      .send(IEventType.DELETE_THREAD, {
+        rid,
+        token: await this.tokenizer.sign({
+          permissions: user.permissions,
+          uid: user.id,
+        }),
+        data: threadActionDto,
+      })
+      .pipe(timeout(10000)) // increased timeout
+      .pipe(catchError((val) => of({ error: val.message })))
+      .toPromise(); // converting observable to promise
+
+    if (res.error) {
+      this.logger.error({
+        rid,
+        context: 'MessagesService',
+        message: res.error, //TODO: fix because it returns RittaError
+      });
+      throw new BadRequestException(res.error);
+    } else {
+      return res;
+    }
+  }
 }
