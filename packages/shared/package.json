@@ -28,6 +28,6 @@
   ],
   "dependencies": {
     "joi": "^17.4.2",
-    "mongoose": "^6.0.12"
+    "mongoose": "^6.4.6"
   }
 }

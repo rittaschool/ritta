@@ -32,7 +32,7 @@
     "@rittaschool/shared": "*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
-    "mongoose": "^6.3.3",
+    "mongoose": "^6.4.6",
     "nest-winston": "^1.6.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "7.5.5",
