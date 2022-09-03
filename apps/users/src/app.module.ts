@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CommonModule } from 'framework';
 import { PermissionsGuard } from './auth.guard';
 import { MongooseConfigService } from './mongoose';
+import { Tokenizer } from './tokenizer';
 import { UsersModule } from './users/users.module';
 import { validate } from './validation/env.validation';
 
@@ -23,6 +24,10 @@ import { validate } from './validation/env.validation';
     {
       provide: APP_GUARD,
       useClass: PermissionsGuard,
+    },
+    {
+      provide: 'TOKENIZER',
+      useClass: Tokenizer,
     },
   ],
 })

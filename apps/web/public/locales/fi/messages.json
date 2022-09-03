@@ -1,0 +1,16 @@
+{
+  "title": "Viestit",
+  "inbox": "Saapuneet",
+  "sent": "Lähetetyt",
+  "drafts": "Luonnokset",
+  "archive": "Arkisto",
+  "new_messages_one": "{{count}} uusi viesti",
+  "new_messages_other": "{{count}} uutta viestiä",
+  "reply": "Vastaa viestiin",
+  "send_reply": "Lähetä vastaus",
+  "search_message": "Hae viestiä nimen tai lähettäjän perusteella",
+  "message_subject": "Otsikko",
+  "message_author": "Lähettäjä",
+  "message_time": "Lähetetty",
+  "no_results": "Ei tuloksia"
+}

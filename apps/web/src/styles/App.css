@@ -1,0 +1,5 @@
+.mantine-AppShell-main {
+  padding-top: calc(var(--mantine-header-height, 0px));
+  padding-left: calc(var(--mantine-navbar-width, 0px));
+  padding-right: calc(var(--mantine-aside-width, 0px));
+}

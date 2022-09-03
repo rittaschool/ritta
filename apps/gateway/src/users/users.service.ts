@@ -62,7 +62,10 @@ export class UsersService {
     return this.client
       .send(IEventType.GET_USERS, {
         rid,
-        token: this.tokenizer.sign({ permissions: user.permissions }),
+        token: this.tokenizer.sign({
+          permissions: user.permissions,
+          uid: user.id,
+        }),
       })
       .pipe(timeout(5000)) // timeout
       .toPromise();

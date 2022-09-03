@@ -1,0 +1,26 @@
+{
+  "home": "Home",
+  "messages": {
+    "messages": "Messages",
+    "inbox": "Inbox",
+    "sent": "Sent",
+    "drafts": "Drafts",
+    "archive": "Archive"
+  },
+  "schedule": "Schedule",
+  "user_button": {
+    "aria_label": "Select account, currently selected {{name}} with role {{role}} at {{school}}"
+  },
+  "aria_logo": "Navigate to home",
+  "aria_open_navigation": "Open navigation",
+  "aria_close_navigation": "Close navigation",
+  "settings": "Settings",
+  "analytics": "Analytics",
+  "contracts": "Contracts",
+  "security": {
+    "title": "Security",
+    "2fa": "Enable 2FA",
+    "change_password": "Change password",
+    "recovery_codes": "Recovery codes"
+  }
+}

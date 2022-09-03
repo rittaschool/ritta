@@ -4,12 +4,10 @@ import {
   MantineProvider,
 } from "@mantine/core";
 import { useColorScheme, useHotkeys, useLocalStorage } from "@mantine/hooks";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { theme } from "../theme";
 import "../styles/App.css";
 import Layout from "../components/AuthLayout";
-import useAuthentication from "../hooks/useAuthentication";
-import { useEffect } from "react";
 
 function App() {
   // Save colorScheme to localStorage and the default value is the preferred colorScheme
@@ -26,19 +24,6 @@ function App() {
     ["mod+J", () => toggleColorScheme()],
     ["mod+K", () => console.log("huut")],
   ]);
-
-  const { authenticated } = useAuthentication();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (authenticated) {
-      navigate("/");
-    }
-  }, []);
-
-  if (authenticated) {
-    return <></>;
-  }
 
   return (
     <ColorSchemeProvider

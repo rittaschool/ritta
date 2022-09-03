@@ -45,9 +45,7 @@ const useStyles = createStyles((theme) => ({
       theme.colorScheme === "dark"
         ? theme.colors.dark[0]
         : theme.colors.gray[7],
-    borderLeft: `1px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]
-    }`,
+    borderLeft: `1px solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]}`,
 
     "&:hover": {
       backgroundColor:
@@ -70,6 +68,7 @@ export interface LinksGroupProps {
   pathOpen?: boolean;
   link?: string;
   links?: { label: string; link: string; icon?: TablerIcon }[];
+  requiresAdmin?: boolean,
 }
 
 export function LinksGroup({
@@ -79,7 +78,8 @@ export function LinksGroup({
   pathOpen,
   links,
   link,
-}: LinksGroupProps) {
+  isInAdminNavbar
+}: (LinksGroupProps & { isInAdminNavbar: boolean })) {
   const { classes, theme } = useStyles();
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
@@ -110,7 +110,7 @@ export function LinksGroup({
         <UnstyledButton component={Link} to={link} className={classes.control}>
           <Group position="apart" spacing={0}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <ThemeIcon size={30} color="teal">
+              <ThemeIcon size={30} color={isInAdminNavbar ? "red" : "teal"} variant={isInAdminNavbar ? "light" : "filled"}>
                 <Icon size={18} />
               </ThemeIcon>
               <Box ml="md">{label}</Box>
@@ -141,7 +141,7 @@ export function LinksGroup({
       >
         <Group position="apart" spacing={0}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <ThemeIcon size={30} color="teal">
+            <ThemeIcon size={30} color={isInAdminNavbar ? "red" : "teal"} variant={isInAdminNavbar ? "light" : "light"}>
               <Icon size={18} />
             </ThemeIcon>
             <Box ml="md">{label}</Box>

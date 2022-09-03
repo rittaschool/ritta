@@ -18,24 +18,21 @@ export class UserGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     // Get the token, switch because its diffrent for graphql and rest (possibly websockets)
-    let token: string;
     let request: any;
-    let rid: string;
 
     switch (context.getType() as any) {
       case 'http':
         request = context.switchToHttp().getRequest();
-        token = request.cookies.rif;
-        rid = request.rid;
         break;
       case 'graphql':
         request = context.getArgByIndex(2).request;
-        token = request.cookies.rif;
-        rid = request.rid;
         break;
       default:
         return false;
     }
+
+    const rid = request.rid;
+    const token = getToken(request);
 
     // Return true because we want this to be always run
     if (!token) return true;
@@ -65,3 +62,14 @@ export class UserGuard implements CanActivate {
     return true;
   }
 }
+
+const getToken = (request: any) => {
+  if (!request || !request.headers || !request.headers.authorization)
+    return null;
+
+  const [bearer, token] = request.headers.authorization.split(' ');
+
+  if (bearer !== 'Bearer') return null;
+
+  return token || null;
+};

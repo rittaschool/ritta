@@ -1,0 +1,26 @@
+{
+  "home": "Koti",
+  "messages": {
+    "messages": "Viestit",
+    "inbox": "Saapuneet",
+    "sent": "Lähetetyt",
+    "drafts": "Luonnokset",
+    "archive": "Arkisto"
+  },
+  "schedule": "Lukujärjestys",
+  "user_button": {
+    "aria_label": "Valitse käyttäjä, tällä hetkellä valittuna {{name}} roolilla {{role}} oppilaitoksessa {{school}}"
+  },
+  "aria_logo": "Siirry kotisivulle",
+  "aria_open_navigation": "Avaa navigaatio",
+  "aria_close_navigation": "Sulje navigaatio",
+  "settings": "Asetukset",
+  "analytics": "Tilastot",
+  "contracts": "Sopimukset",
+  "security": {
+    "title": "Tietoturva",
+    "2fa": "Kaksivaiheinen tunnistautuminen",
+    "change_password": "Vaihda salasana",
+    "recovery_codes": "Palautuskoodit"
+  }
+}

@@ -26,7 +26,7 @@ export class AuthController {
         userId,
       );
     } catch (e) {
-      throw new RpcException('User was not found');
+      throw new RpcException(e.message);
     }
   }
 

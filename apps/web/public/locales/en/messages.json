@@ -1,0 +1,16 @@
+{
+  "title": "Messages",
+  "inbox": "Inbox",
+  "sent": "Sent",
+  "drafts": "Drafts",
+  "archive": "Archive",
+  "new_messages_one": "{{count}} new message",
+  "new_messages_other": "{{count}} new messages",
+  "reply": "Reply to thread",
+  "send_reply": "Send reply",
+  "search_message": "Search a message by its subject or sender",
+  "message_subject": "Subject",
+  "message_author": "Author",
+  "message_time": "Sent",
+  "no_results": "Nothing found"
+}

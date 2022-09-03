@@ -2,7 +2,6 @@ import { Group } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { UseFormReturnType } from "@mantine/form";
 import { useState } from "react";
-import useAuthentication from "../../../hooks/useAuthentication";
 import Form from "../../Form";
 import ThemeToggle from "../../ThemeToggle";
 import EmailStep, { EmailStepValues } from "./EmailStep";
@@ -19,7 +18,7 @@ function LoginForm({}: Props) {
   const [currentStep, setCurrentStep] = useState<LoginSteps>("email");
   const [error, setError] = useState<string>();
   const [user, setUser] = useState(null);
-  const { startLoginProcess } = useAuthentication();
+  //const { startLoginProcess } = useAuthentication();
 
   const formsList = [
     useForm<EmailStepValues>({
@@ -69,7 +68,7 @@ function LoginForm({}: Props) {
     switch (currentStep) {
       case "email":
         const { email } = values as EmailStepValues;
-        const res = await startLoginProcess(email);
+      /*const res = await startLoginProcess(email);
 
         if (res.errors) {
           console.log(res.errors);
@@ -80,7 +79,7 @@ function LoginForm({}: Props) {
           setUser(res.user as any);
         }
 
-        setCurrentStep(res.nextScreen as LoginSteps);
+        setCurrentStep(res.nextScreen as LoginSteps);*/
     }
   };
 
