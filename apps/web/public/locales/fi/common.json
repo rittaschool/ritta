@@ -1,5 +1,10 @@
 {
   "test": "Testi :)",
+<<<<<<< HEAD
+=======
+  "minutes_one": "{{count}} minuutti",
+  "minutes_other": "{{count}} minuuttia",
+>>>>>>> 0c0319102984c8f5b3f4f64c87395aa00e17d3f0
   "privacy_policy": "Tietosuojaseloste",
   "terms_of_service": "Käyttöehdot",
   "accessibility_statement": "Saavutettavuusseloste",

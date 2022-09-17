@@ -21,7 +21,11 @@ import CreateMessage from "./pages/CreateMessage";
 import Home from "./pages/Home";
 import MessagesList, { MailBox } from "./pages/MessagesList";
 import ThreadView from "./pages/ThreadView";
+<<<<<<< HEAD
 import PageWithTitle from "./components/PageWithTitle";
+=======
+import SchedulePage from "./pages/SchedulePage";
+>>>>>>> 0c0319102984c8f5b3f4f64c87395aa00e17d3f0
 import SettingsPage from "./pages/SettingsPage";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -57,11 +61,15 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="schedule">
               <Route
                 index
+<<<<<<< HEAD
                 element={
                   <PageWithTitle title="Lukujärjestys">
                     <h2>Schedule placeholder</h2>
                   </PageWithTitle>
                 }
+=======
+                element={<SchedulePage />}
+>>>>>>> 0c0319102984c8f5b3f4f64c87395aa00e17d3f0
               />
             </Route>
           </Route>

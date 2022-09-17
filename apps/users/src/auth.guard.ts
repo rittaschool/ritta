@@ -44,11 +44,21 @@ export class PermissionsGuard implements CanActivate {
         }
       ).permissions;
 
+<<<<<<< HEAD
       if (userPerms > 0) {
         const doesUserHavePermission = Permissions.checkHasPermission(
           perms,
           userPerms,
         );
+=======
+    // Got from the request if client has provided a token
+    const userPerms = (
+      this.tokenizer.verify(request[0].token) as {
+        permissions: number;
+        uid: string;
+      }
+    ).permissions;
+>>>>>>> 0c0319102984c8f5b3f4f64c87395aa00e17d3f0
 
         if (!doesUserHavePermission) {
           throw new RittaError(
