@@ -1,0 +1,86 @@
+{
+  "version": "2.0.0",
+  "presentation": {
+    "echo": false,
+    "reveal": "always",
+    "focus": false,
+    "panel": "dedicated",
+    "showReuseMessage": true
+  },
+  "tasks": [
+    {
+      "label": "Create terminals",
+      "dependsOn": ["gateway", "core", "users", "auth", "messages"],
+      // Mark as the default build task so cmd/ctrl+shift+b will create them
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "gateway",
+      "type": "shell",
+      "command": "nvm use default && yarn start:dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "group": "ritta"
+      },
+      "options": {
+        "cwd": "apps/gateway"
+      }
+    },
+    {
+      "label": "core",
+      "type": "shell",
+      "command": "nvm use default && yarn start:dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "group": "ritta"
+      },
+      "options": {
+        "cwd": "apps/core"
+      }
+    },
+    {
+      "label": "users",
+      "type": "shell",
+      "command": "nvm use default && yarn start:dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "group": "ritta"
+      },
+      "options": {
+        "cwd": "apps/users"
+      }
+    },
+    {
+      "label": "auth",
+      "type": "shell",
+      "command": "nvm use default && yarn start:dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "group": "ritta"
+      },
+      "options": {
+        "cwd": "apps/auth"
+      }
+    },
+    {
+      "label": "messages",
+      "type": "shell",
+      "command": "nvm use default && yarn start:dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "group": "ritta"
+      },
+      "options": {
+        "cwd": "apps/messages"
+      }
+    }
+  ]
+}

@@ -42,7 +42,6 @@ export class MessagesService {
     getThreadsDto: GetThreadsDto,
   ): Promise<Thread[]> {
     const userId = await this.getUserId(token);
-    // TODO: do after auth and decorators have been finished.
     const allThreads = await this.threadsRepository.findAll();
     let threads: Thread[] = [];
     switch (getThreadsDto?.folder || IThreadFolders.INBOX) {

@@ -3,7 +3,6 @@ import { CoreController } from './core.controller';
 
 describe('UsersController', () => {
   let controller: CoreController;
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CoreController],
