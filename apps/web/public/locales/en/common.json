@@ -1,9 +1,6 @@
 {
-<<<<<<< HEAD
-=======
   "minutes_one": "{{count}} minute",
   "minutes_other": "{{count}} minutes",
->>>>>>> 0c0319102984c8f5b3f4f64c87395aa00e17d3f0
   "privacy_policy": "Privacy policy",
   "terms_of_service": "Terms of Service",
   "accessibility_statement": "Accessibility statement",

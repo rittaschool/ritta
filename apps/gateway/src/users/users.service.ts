@@ -62,11 +62,7 @@ export class UsersService {
     return this.client
       .send(IEventType.GET_USERS, {
         rid,
-<<<<<<< HEAD
-        token: await this.tokenizer.sign({
-=======
         token: this.tokenizer.sign({
->>>>>>> 0c0319102984c8f5b3f4f64c87395aa00e17d3f0
           permissions: user.permissions,
           uid: user.id,
         }),
