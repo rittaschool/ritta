@@ -10,7 +10,7 @@
   "tasks": [
     {
       "label": "Create terminals",
-      "dependsOn": ["gateway", "core", "users", "auth", "messages"],
+      "dependsOn": ["gateway", "core", "users", "auth", "messages", "deps"],
       // Mark as the default build task so cmd/ctrl+shift+b will create them
       "group": {
         "kind": "build",
@@ -18,9 +18,17 @@
       }
     },
     {
+      "label": "deps",
+      "dependsOn": ["shared", "framework"],
+      // Mark as the default build task so cmd/ctrl+shift+b will create them
+      "group": {
+        "kind": "build"
+      }
+    },
+    {
       "label": "gateway",
       "type": "shell",
-      "command": "nvm use default && yarn start:dev",
+      "command": "yarn start:dev",
       "isBackground": true,
       "problemMatcher": [],
       "presentation": {
@@ -33,7 +41,7 @@
     {
       "label": "core",
       "type": "shell",
-      "command": "nvm use default && yarn start:dev",
+      "command": "yarn start:dev",
       "isBackground": true,
       "problemMatcher": [],
       "presentation": {
@@ -46,7 +54,7 @@
     {
       "label": "users",
       "type": "shell",
-      "command": "nvm use default && yarn start:dev",
+      "command": "yarn start:dev",
       "isBackground": true,
       "problemMatcher": [],
       "presentation": {
@@ -59,7 +67,7 @@
     {
       "label": "auth",
       "type": "shell",
-      "command": "nvm use default && yarn start:dev",
+      "command": "yarn start:dev",
       "isBackground": true,
       "problemMatcher": [],
       "presentation": {
@@ -72,7 +80,7 @@
     {
       "label": "messages",
       "type": "shell",
-      "command": "nvm use default && yarn start:dev",
+      "command": "yarn start:dev",
       "isBackground": true,
       "problemMatcher": [],
       "presentation": {
@@ -80,6 +88,32 @@
       },
       "options": {
         "cwd": "apps/messages"
+      }
+    },
+    {
+      "label": "framework",
+      "type": "shell",
+      "command": "yarn build -w",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "group": "ritta-deps"
+      },
+      "options": {
+        "cwd": "packages/framework"
+      }
+    },
+    {
+      "label": "shared",
+      "type": "shell",
+      "command": "yarn build -w",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "group": "ritta-deps"
+      },
+      "options": {
+        "cwd": "packages/shared"
       }
     }
   ]
