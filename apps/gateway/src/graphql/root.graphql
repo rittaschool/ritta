@@ -2,3 +2,4 @@ scalar Date
 scalar EmailAddress
 scalar PhoneNumber
 scalar JSON
+scalar Timestamp

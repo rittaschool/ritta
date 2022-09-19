@@ -1,3 +1,4 @@
+import { Message } from "../classes";
 import { IRecipientType } from "../enums";
 
 export interface IMessage {
@@ -6,7 +7,6 @@ export interface IMessage {
   created: number;
   content: string;
   seenBy: string[]; // uid[]
-  removed: boolean;
 }
 
 export interface IThread {
@@ -25,7 +25,7 @@ export interface IThread {
     id: string;
     archived?: boolean; // This value are only available for the thread sender or if the recipient is the client.
   }[];
-  messages: IMessage[];
+  messages: (Message | string)[];
   created: number; // Timestamp
 }
 

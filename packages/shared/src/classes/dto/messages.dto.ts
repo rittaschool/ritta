@@ -1,22 +1,22 @@
 import { IRecipientType, IThreadFolders } from "../..";
 
 export class NewThreadDto {
-  title: string;
+  name: string;
   content: string;
   showNames: boolean;
   canReply: boolean;
   draft: boolean;
-  recipients: { type: IRecipientType; id: string; }[];
+  recipients: { type: IRecipientType; id: string }[];
 
   constructor(
-    title: string,
+    name: string,
     content: string,
     showNames: boolean,
     canReply: boolean,
     draft: boolean,
-    recipients: { type: IRecipientType; id: string; }[]
+    recipients: { type: IRecipientType; id: string }[]
   ) {
-    this.title = title;
+    this.name = name;
     this.content = content;
     this.showNames = showNames;
     this.canReply = canReply;
@@ -28,9 +28,7 @@ export class NewThreadDto {
 export class GetThreadsDto {
   folder?: IThreadFolders;
 
-  constructor(
-    folder?: IThreadFolders
-  ) {
+  constructor(folder?: IThreadFolders) {
     this.folder = folder;
   }
 }
@@ -38,13 +36,19 @@ export class GetThreadsDto {
 export class NewMessageDto {
   threadId: string;
   content: string;
+  senderId?: string;
+  seenBy?: string[];
 
   constructor(
     threadId: string,
     content: string,
+    senderId?: string,
+    seenBy?: string[]
   ) {
     this.threadId = threadId;
     this.content = content;
+    this.senderId = senderId;
+    this.seenBy = seenBy;
   }
 }
 
@@ -52,10 +56,7 @@ export class EditMessageDto {
   messageId: string;
   newContent: string;
 
-  constructor(
-    messageId: string,
-    newContent: string
-  ) {
+  constructor(messageId: string, newContent: string) {
     this.messageId = messageId;
     this.newContent = newContent;
   }
@@ -64,51 +65,16 @@ export class DeleteMessageDto {
   threadId: string;
   messageId: string;
 
-  constructor(
-    threadId: string,
-    messageId: string
-  ) {
+  constructor(threadId: string, messageId: string) {
     this.threadId = threadId;
     this.messageId = messageId;
   }
 }
 
-export class DeleteThreadDto {
+export class ThreadActionDto {
   threadId: string;
-  
-  constructor(
-    threadId: string
-  ) {
-    this.threadId = threadId;
-  }
-}
 
-export class ArchiveThreadDto {
-  threadId: string;
-  
-  constructor(
-    threadId: string
-  ) {
-    this.threadId = threadId;
-  }
-}
-
-export class MarkThreadAsReadDto {
-  threadId: string;
-  
-  constructor(
-    threadId: string
-  ) {
-    this.threadId = threadId;
-  }
-}
-
-export class MarkThreadAsUnreadDto {
-  threadId: string;
-  
-  constructor(
-    threadId: string
-  ) {
+  constructor(threadId: string) {
     this.threadId = threadId;
   }
 }

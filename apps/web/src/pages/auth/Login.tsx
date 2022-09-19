@@ -9,19 +9,19 @@ import {
   Text,
   TextInput,
   Title,
-} from '@mantine/core';
-import { Challenge } from '@rittaschool/shared';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import AuthenticateInput from '../../components/AuthenticateInput';
-import { submitChallenge, useLoginStart } from '../../data/authentication';
+} from "@mantine/core";
+import { Challenge } from "@rittaschool/shared";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import AuthenticateInput from "../../components/AuthenticateInput";
+import { submitChallenge, useLoginStart } from "../../data/authentication";
 
 const Login = () => {
   const loginStartMutation = useLoginStart();
   const challengeMutation = submitChallenge();
-  const [passwordInput, setPasswordInput] = useState('');
+  const [passwordInput, setPasswordInput] = useState("");
   const [active, setActive] = useState(0);
-  const [emailError, setEmailError] = useState('');
+  const [emailError, setEmailError] = useState("");
   const nextStep = async () => {
     if (active == 0) {
       // make request starting login
@@ -32,7 +32,7 @@ const Login = () => {
 
           if (!canContinue) return;
 
-          setEmailError('');
+          setEmailError("");
 
           const { userFirstName, userPhotoUri, challenge } =
             data.startLoginProcess;
@@ -47,7 +47,7 @@ const Login = () => {
         },
         onError: (error) => {
           // TODO: set email error based on the error code (not message)
-          if (error.message === 'Network request failed')
+          if (error.message === "Network request failed")
             return setEmailError(t("auth:error.network"));
           if (!error.response)
             return setEmailError(t("auth:error.not_graphql"));
@@ -66,7 +66,7 @@ const Login = () => {
         },
       });
     } else if (active == 1) {
-      if (!userInfo.challenge) return console.error('NO CHALLENGE');
+      if (!userInfo.challenge) return console.error("NO CHALLENGE");
 
       await challengeMutation.mutateAsync(
         {
@@ -81,13 +81,13 @@ const Login = () => {
           onSuccess: (data) => {
             const { access_token, refresh_token } = data.submitChallenge;
             if (access_token) {
-              sessionStorage.setItem('access_token', access_token);
+              sessionStorage.setItem("access_token", access_token);
             }
             if (refresh_token) {
-              sessionStorage.setItem('refresh_token', refresh_token);
+              sessionStorage.setItem("refresh_token", refresh_token);
             }
           },
-          onError: (err) => console.log('ERROR', err),
+          onError: (err) => console.log("ERROR", err),
         }
       );
     }
@@ -95,7 +95,7 @@ const Login = () => {
   const prevStep = () =>
     setActive((current) => (current > 0 ? current - 1 : current));
   const { t } = useTranslation();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [userInfo, setUserInfo] = useState<{
     firstName?: string;
     photo?: string;
@@ -105,10 +105,10 @@ const Login = () => {
   return (
     <Box
       sx={{
-        position: 'relative',
+        position: "relative",
         flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <LoadingOverlay visible={loginStartMutation.isLoading} />
@@ -119,11 +119,11 @@ const Login = () => {
         breakpoint="sm"
         styles={{
           steps: {
-            display: 'none',
+            display: "none",
           },
         }}
         sx={{
-          flex: '1',
+          flex: "1",
         }}
       >
         <Stepper.Step allowStepSelect={active > 0}>
@@ -132,11 +132,11 @@ const Login = () => {
           </Title>
           <TextInput
             required
-            label={t('auth:username')}
+            label={t("auth:username")}
             placeholder={t("auth:placeholder.username")}
             value={email}
             onChange={(event) => {
-              setEmailError('');
+              setEmailError("");
               setEmail(event.currentTarget.value);
             }}
             error={emailError}
@@ -152,7 +152,9 @@ const Login = () => {
                 borderRadius: 999,
               }}
             />
-            <Text size={23}>{t("auth:greeting", { firstName: userInfo.firstName })}</Text>
+            <Text size={23}>
+              {t("auth:greeting", { firstName: userInfo.firstName })}
+            </Text>
 
             <AuthenticateInput
               passwordInput={passwordInput}
@@ -161,9 +163,7 @@ const Login = () => {
             />
           </Stack>
         </Stepper.Step>
-        <Stepper.Completed>
-          {t("auth:login_success")}
-        </Stepper.Completed>
+        <Stepper.Completed>{t("auth:login_success")}</Stepper.Completed>
       </Stepper>
 
       <Group position="center" mt="xl">

@@ -8,6 +8,7 @@ import { Message } from '@rittaschool/shared';
 import { MessageSchema } from './entities/message.entity';
 import { ThreadSchema } from './entities/thread.entity';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Tokenizer } from 'src/tokenizer';
 
 @Module({
   controllers: [MessagesController],
@@ -19,6 +20,10 @@ import { MongooseModule } from '@nestjs/mongoose';
     ConfigModule,
   ],
   providers: [
+    {
+      provide: 'TOKENIZER',
+      useClass: Tokenizer,
+    },
     {
       provide: 'MESSAGES_SERVICE',
       useClass: MessagesService,

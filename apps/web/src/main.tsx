@@ -49,16 +49,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route index element={<MessagesList box={MailBox.INBOX} />} />
             </Route>
             <Route path="settings">
-              <Route
-                index
-                element={<SettingsPage />}
-              />
+              <Route index element={<SettingsPage />} />
             </Route>
             <Route path="schedule">
-              <Route
-                index
-                element={<SchedulePage />}
-              />
+              <Route index element={<SchedulePage />} />
             </Route>
           </Route>
           <Route path="/auth" element={<Auth />}>

@@ -16,28 +16,55 @@ export class MessagesRepository {
     private messageModel: Model<MessageDocument>,
   ) {}
 
-  async findAll(): Promise<Message[]> {
-    return this.messageModel.find().exec();
+  async findAll(dereference = true): Promise<Message[]> {
+    return (await this.messageModel.find().exec()).map((message) => {
+      if (dereference) {
+        message = message.toObject();
+        delete message._id;
+        delete message.__v;
+      }
+
+      return message as unknown as Message;
+    });
   }
 
-  async findOne(id: string): Promise<Message> {
-    return this.messageModel.findOne({ id }).exec();
+  async findOne(id: string, dereference = true): Promise<Message> {
+    let message = await this.messageModel.findOne({ id }).exec();
+    if (dereference) {
+      message = message.toObject();
+      delete message._id;
+      delete message.__v;
+    }
+    return message as unknown as Message;
   }
 
-  async create(newMessageDto: NewMessageDto): Promise<Message> {
+  async create(
+    newMessageDto: NewMessageDto,
+    dereference = true,
+  ): Promise<Message> {
     try {
       const createdMessage = new this.messageModel(newMessageDto);
-      return createdMessage.save();
+      let message = await createdMessage.save();
+      if (dereference) {
+        message = message.toObject();
+        delete message._id;
+        delete message.__v;
+      }
+      return message as unknown as Message;
     } catch (error) {
       throw new Error('Failed saving message to database: ' + error.message);
     }
   }
 
-  async update(editMessageDto: EditMessageDto): Promise<Message> {
-    const doc = await this.findOne(editMessageDto.messageId);
+  async update(
+    messageId: string,
+    editMessageDto: EditMessageDto,
+  ): Promise<Message> {
+    const doc = await this.findOne(messageId);
     const newDoc = {
       ...doc,
-      content: editMessageDto.newContent,
+      ...editMessageDto,
+      content: editMessageDto.newContent || doc.content,
     };
     const res = await this.messageModel.updateOne(doc, newDoc).exec();
     return {
@@ -50,7 +77,7 @@ export class MessagesRepository {
     const doc = await this.findOne(deleteMessageDto.messageId);
 
     if (!doc) {
-      throw new Error('User not found!');
+      throw new Error('Message not found!');
     }
 
     try {

@@ -1,7 +1,7 @@
 export enum IRecipientType {
   ACCOUNT = "single",
   CLASS = "class",
-  GROUP = "group"
+  GROUP = "group",
 }
 
 export enum IThreadFolders {
@@ -9,5 +9,4 @@ export enum IThreadFolders {
   OUTBOX = "outbox",
   ARCHIVE = "archive",
   DRAFTS = "drafts",
-  ALL = "all"
 }

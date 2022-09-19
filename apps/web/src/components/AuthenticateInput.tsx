@@ -1,8 +1,8 @@
-import { PasswordInput, Text } from '@mantine/core';
-import { Challenge, IChallengeType } from '@rittaschool/shared';
-import { Dispatch, SetStateAction } from 'react';
-import { useTranslation } from 'react-i18next';
-import { EyeCheck, EyeOff } from 'tabler-icons-react';
+import { PasswordInput, Text } from "@mantine/core";
+import { Challenge, IChallengeType } from "@rittaschool/shared";
+import { Dispatch, SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
+import { EyeCheck, EyeOff } from "tabler-icons-react";
 
 type Props = {
   challenge?: Challenge;
@@ -29,7 +29,7 @@ const AuthenticateInput = ({
             placeholder={t("auth:password")}
             value={passwordInput}
             onChange={(event) => setPasswordInput(event.target.value)}
-            sx={{ width: '300px' }}
+            sx={{ width: "300px" }}
             visibilityToggleIcon={({ reveal, size }) =>
               reveal ? <EyeOff size={size} /> : <EyeCheck size={size} />
             }

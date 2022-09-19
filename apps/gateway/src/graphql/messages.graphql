@@ -1,0 +1,73 @@
+type Thread {
+  id: ID!
+  name: String!
+  removed: Boolean!
+  showNames: Boolean!
+  canReply: Boolean!
+  draft: Boolean!
+  created: Timestamp!
+  recipients: [Recipient]!
+  messages: [Message!]!
+}
+
+type Message {
+  id: ID!
+  senderId: String!
+  created: Timestamp!
+  content: String
+  seenBy: [String!]!
+}
+
+enum RecipientType {
+  ACCOUNT
+  CLASS
+  GROUP
+}
+
+type Recipient {
+  type: RecipientType!
+  id: String!
+  archived: Boolean
+}
+
+type Success {
+  success: Boolean!
+}
+
+input RecipientInput {
+  type: RecipientType!
+  id: String!
+}
+
+input CreateThreadInput {
+  name: String!
+  content: String!
+  showNames: Boolean!
+  canReply: Boolean!
+  draft: Boolean!
+  recipients: [RecipientInput!]!
+}
+
+input CreateMessageInput {
+  threadId: String!
+  content: String!
+}
+
+input EditMessageInput {
+  messageId: String!
+  newContent: String!
+}
+
+type Query {
+  threads: [Thread!]!
+}
+
+type Mutation {
+  createThread(createThreadInput: CreateThreadInput!): Thread
+  markAsRead(threadId: String!): Success
+  markAsUnread(threadId: String!): Success
+  publishDraft(threadId: String!): Success
+  deleteThread(threadId: String!): Success
+  newMessage(createMessageInput: CreateMessageInput!): Message
+  editMessage(editMessageInput: EditMessageInput!): Success
+}

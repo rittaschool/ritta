@@ -19,6 +19,7 @@ import { RidGuard } from './guards/rid.guard';
 import { UserGuard } from './guards/user.guard';
 import { HealthController } from './health/health.controller';
 import { MicroserviceHealthIndicator } from './health/rmq.health';
+import { MessagesModule } from './messages/messages.module';
 import { UsersModule } from './users/users.module';
 import { validate } from './validation/env.validation';
 import { Tokenizer } from './validation/tokenizer';
@@ -42,6 +43,7 @@ import { Tokenizer } from './validation/tokenizer';
     }),
     UsersModule,
     AuthModule,
+    MessagesModule,
     ChallengeModule,
     TerminusModule,
     Fido2Module,

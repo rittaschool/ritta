@@ -12,6 +12,6 @@ export class UpdateThreadDto {
     id: string;
     archived?: boolean | undefined;
   }[];
-  messages?: Message[];
+  messages?: (Message | string)[];
   removed?: boolean;
 }

@@ -17,8 +17,11 @@ export class AuthResolver {
   // }
 
   @Query()
-  startLoginProcess(@Args('email') identifier: string, @RID() rid: string) {
-    return this.authService.startLoginProcess(identifier, rid);
+  async startLoginProcess(
+    @Args('email') identifier: string,
+    @RID() rid: string,
+  ) {
+    return await this.authService.startLoginProcess(identifier, rid);
   }
 
   @Query()

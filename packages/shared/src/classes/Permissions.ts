@@ -19,7 +19,7 @@ export namespace Permissions {
     permissions: number,
     throwErr: boolean = true
   ) {
-    if (permissions === 0 && throwErr)
+    if (permissions <= 0 && throwErr)
       throw new RittaError(
         "Too small permission number",
         IErrorType.INVALID_PERMISSION

@@ -7,32 +7,54 @@ export class Message implements IMessage {
   created: number;
   content: string;
   seenBy: string[];
-  removed: boolean;
-  
-  constructor(id: string, senderId: string, created: number, content: string, seenBy: string[], removed: boolean) {
+
+  constructor(
+    id: string,
+    senderId: string,
+    created: number,
+    content: string,
+    seenBy: string[]
+  ) {
     this.id = id;
     this.senderId = senderId;
     this.created = created;
     this.content = content;
     this.seenBy = seenBy;
-    this.removed = removed;
   }
 }
 
 export class Thread implements IThread {
   id: string;
   name: string;
-  sender: { id: string; archived: boolean; };
+  sender: { id: string; archived: boolean };
   removed: boolean;
   showNames: boolean;
   canReply: boolean;
   draft: boolean;
-  recipients: { type: IRecipientType, id: string; archived?: boolean | undefined; }[];
-  messages: Message[];
+  recipients: {
+    type: IRecipientType;
+    id: string;
+    archived?: boolean | undefined;
+  }[];
+  messages: (Message | string)[];
   created: number;
-  
 
-  constructor(id: string, name: string, sender: { id: string; archived: boolean; }, removed: boolean, showNames: boolean, canReply: boolean, draft: boolean, recipients: { type: IRecipientType, id: string, archived?: boolean | undefined; }[], messages: Message[], created: number) {
+  constructor(
+    id: string,
+    name: string,
+    sender: { id: string; archived: boolean },
+    removed: boolean,
+    showNames: boolean,
+    canReply: boolean,
+    draft: boolean,
+    recipients: {
+      type: IRecipientType;
+      id: string;
+      archived?: boolean | undefined;
+    }[],
+    messages: Message[],
+    created: number
+  ) {
     this.id = id;
     this.name = name;
     this.sender = sender;
@@ -44,5 +66,4 @@ export class Thread implements IThread {
     this.messages = messages;
     this.created = created;
   }
-  
 }

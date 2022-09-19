@@ -11,17 +11,18 @@ export enum IEventType {
   GET_THREADS = "get_threads",
   NEW_THREAD = "new_thread",
   NEW_MESSAGE = "new_message",
-  DELETE_MESSAGE = "delete_message",
   DELETE_THREAD = "delete_thread",
   EDIT_MESSAGE = "edit_message",
   MARK_THREAD_AS_READ = "mark_thread_as_read",
   MARK_THREAD_AS_UNREAD = "mark_thread_as_unread",
   ARCHIVE_THREAD = "archive_thread",
+  UNARCHIVE_THREAD = "unarchive_thread",
   GET_ANNOUNCEMENTS = "get_announcements",
   CREATE_ANNOUNCEMENT = "create_announcement",
   EDIT_ANNOUNCEMENT = "edit_announcement",
   ARCHIVE_ANNOUNCEMENT = "archive_announcements",
-  DELETE_ANNOUNCEMENT = "delete_announcement"
+  DELETE_ANNOUNCEMENT = "delete_announcement",
+  PUBLISH_DRAFT = "publish_draft",
 }
 
 export enum IErrorType {

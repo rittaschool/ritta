@@ -15,7 +15,7 @@ export class LoggingInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const path = context.getArgs()[1].args[2];
-    const { rid, ...payload } = context.switchToRpc().getData();
+    const { rid, token, ...payload } = context.switchToRpc().getData();
 
     const now = Date.now();
 
