@@ -9,7 +9,7 @@ export class SchoolsController {
     private readonly schoolsService: SchoolsService,
   ) {}
 
-  @MessagePattern('instance_info')
+  @MessagePattern(IEventType.INSTANCE_INFO)
   async info() {
     return {
       name: await this.schoolsService.getName(),

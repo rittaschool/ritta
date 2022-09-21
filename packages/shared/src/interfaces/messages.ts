@@ -42,3 +42,16 @@ export interface IAnnouncement {
   school?: string[]; // Restrict announcement for specific school ids
   created: number;
 }
+
+export interface IMessageRecipient {
+  id: string;
+  name: string;
+}
+
+export interface IMessageRecipientStaff extends IMessageRecipient {
+  role: string;
+}
+
+export interface IMessageRecipientTeacher extends IMessageRecipient {
+  subjects: string[];
+}

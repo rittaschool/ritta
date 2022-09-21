@@ -10,6 +10,8 @@ import { validate } from './validation/env.validation';
 import { Tokenizer } from './tokenizer';
 import { PermissionsGuard } from './auth.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { RecipientsModule } from './recipients/recipients.module';
+import { ServicesModule } from './services/services.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { APP_GUARD } from '@nestjs/core';
     CommonModule,
     MessagesModule,
     AnnouncementsModule,
+    ServicesModule,
+    RecipientsModule,
   ],
   providers: [
     {

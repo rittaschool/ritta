@@ -6,7 +6,7 @@ type Thread {
   canReply: Boolean!
   draft: Boolean!
   created: Timestamp!
-  recipients: [Recipient]!
+  recipients: [MessageRecipient!]!
   messages: [Message!]!
 }
 
@@ -24,10 +24,27 @@ enum RecipientType {
   GROUP
 }
 
-type Recipient {
+type MessageRecipient {
   type: RecipientType!
   id: String!
   archived: Boolean
+}
+
+type RecipientTeacher {
+  id: String!
+  name: String!
+  subjects: [String!]!
+}
+
+type RecipientStaff {
+  id: String!
+  name: String!
+  role: String!
+}
+
+type RecipientsResponse {
+  teachers: [RecipientTeacher!]!
+  staff: [RecipientStaff!]!
 }
 
 type Success {
@@ -60,6 +77,7 @@ input EditMessageInput {
 
 type Query {
   threads: [Thread!]!
+  recipients: RecipientsResponse!
 }
 
 type Mutation {

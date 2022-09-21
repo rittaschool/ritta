@@ -8,7 +8,7 @@ export class CoreController {
     @Inject('CORE_SERVICE') private readonly coreService: CoreService,
   ) {}
 
-  @MessagePattern('instance_info')
+  @MessagePattern(IEventType.INSTANCE_INFO)
   async info() {
     return {
       name: await this.coreService.getName(),

@@ -1,6 +1,6 @@
 import { Controller, Inject } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { AnnouncementsService } from './announcemnts.service';
+import { AnnouncementsService } from './announcements.service';
 import { IEventType } from '@rittaschool/shared';
 @Controller()
 export class AnnouncementsController {

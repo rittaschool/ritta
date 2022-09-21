@@ -23,6 +23,13 @@ export enum IEventType {
   ARCHIVE_ANNOUNCEMENT = "archive_announcements",
   DELETE_ANNOUNCEMENT = "delete_announcement",
   PUBLISH_DRAFT = "publish_draft",
+  INSTANCE_INFO = "instance_info",
+  USER_LOGIN_PASSWORD = "user_login_password",
+  USER_LOGIN_OTP = "user_login_otp",
+  FIDO2_REGISTRATION = "fido2_registration",
+  FIDO2_COMPLETE_REGISTRATION = "fido2_complete_registration",
+  SEARCH_RECIPIENTS = "search_recipients",
+  LIST_RECIPIENTS = "list_recipients",
 }
 
 export enum IErrorType {

@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
 import { UsersModule } from '../users/users.module';
 import { ChallengeModule } from '../challenge/challenge.module';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [UsersModule, ChallengeModule],
@@ -13,5 +14,6 @@ import { ChallengeModule } from '../challenge/challenge.module';
     },
     AuthResolver,
   ],
+  controllers: [AuthController],
 })
 export class AuthModule {}

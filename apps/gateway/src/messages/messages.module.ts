@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { Tokenizer } from '../validation/tokenizer';
-import { MessagesController } from './messages.controller';
 import { MessagesResolver } from './messages.resolver';
 import { MessagesService } from './messages.service';
+import { RecipientsService } from './recipients/recipients.service';
+import { RecipientsModule } from './recipients/recipients.module';
 
 @Module({
   providers: [
@@ -18,8 +19,9 @@ import { MessagesService } from './messages.service';
       provide: 'TOKENIZER',
       useClass: Tokenizer,
     },
+    RecipientsService,
   ],
-  controllers: [MessagesController],
   exports: ['MESSAGES_SERVICE'],
+  imports: [RecipientsModule],
 })
 export class MessagesModule {}

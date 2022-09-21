@@ -12,8 +12,12 @@ export class Fido2Service {
   ) {}
 
   async registration(username: string, displayName: string, id: string) {
-    let userId = (await this.usersService.findOne(id)).id;
-    let options = await this.fido2.registration(username, displayName, userId);
+    const userId = (await this.usersService.findOne(id)).id;
+    const options = await this.fido2.registration(
+      username,
+      displayName,
+      userId,
+    );
     return options;
   }
 
@@ -22,10 +26,10 @@ export class Fido2Service {
     //   Buffer.from(data.response.attestationObject, 'base64').toString(),
     // );
     console.log(data.response.attestationObject);
-    let buff = Buffer.from(data.response.attestationObject, 'base64');
+    const buff = Buffer.from(data.response.attestationObject, 'base64');
     console.log(buff);
     console.log(base64);
-    let attestation = undefined;
+    const attestation = undefined;
 
     if (!attestation)
       throw new RittaError('No Attestation found', IErrorType.UNKNOWN);
@@ -37,7 +41,7 @@ export class Fido2Service {
   }
 
   async validateAttestation(data: any) {
-    let resp = data;
+    const resp = data;
 
     resp.rawId = base64.toArrayBuffer(resp.rawId, true);
 
@@ -47,7 +51,7 @@ export class Fido2Service {
     );
 
     //TODO update to get the stored challenge from gateway, gateway should send it along with the response
-    let storedChallenge = resp.challenge;
+    const storedChallenge = resp.challenge;
 
     const result = await this.fido2.attestation(resp, origin, storedChallenge);
 

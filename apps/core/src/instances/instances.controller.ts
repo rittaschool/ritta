@@ -9,7 +9,7 @@ export class InstancesController {
     private readonly instancesService: InstancesService,
   ) {}
 
-  @MessagePattern('instance_info')
+  @MessagePattern(IEventType.INSTANCE_INFO)
   async info() {
     return {
       name: await this.instancesService.getName(),

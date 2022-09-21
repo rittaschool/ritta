@@ -16,7 +16,7 @@ export class AuthController {
   ) {}
 
   //@UsePipes(new JoiValidationPipe(LoginValidationSchema)) //TODO: make new schema
-  @MessagePattern('user_login_password') //TODO: use the one from IEventType when new shared release
+  @MessagePattern(IEventType.USER_LOGIN_PASSWORD)
   async loginWithPassword(@Payload() challenge: Challenge) {
     const { data, userId } = challenge;
 
@@ -31,7 +31,7 @@ export class AuthController {
   }
 
   // TODO: add validation schema
-  @MessagePattern('user_login_otp')
+  @MessagePattern(IEventType.USER_LOGIN_OTP)
   async submitOtpCode(@Payload() challenge: Challenge) {
     const { data, userId } = challenge;
     try {

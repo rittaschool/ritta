@@ -78,3 +78,11 @@ export class ThreadActionDto {
     this.threadId = threadId;
   }
 }
+
+export class SearchRecipientsDto {
+  query: string;
+
+  constructor(query: string) {
+    this.query = query;
+  }
+}

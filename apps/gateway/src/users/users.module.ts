@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { Tokenizer } from '../validation/tokenizer';
-import { UsersController } from './users.controller';
 import { UsersResolver } from './users.resolver';
 import { UsersService } from './users.service';
 
@@ -19,7 +18,6 @@ import { UsersService } from './users.service';
       useClass: Tokenizer,
     },
   ],
-  controllers: [UsersController],
   exports: ['USERS_SERVICE'],
 })
 export class UsersModule {}

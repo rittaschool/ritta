@@ -30,6 +30,10 @@ export class PermissionsGuard implements CanActivate {
       return true;
     }
 
+    if (request[0].server === true) {
+      return true;
+    }
+
     let perms = 0;
 
     if (requiredPermissions instanceof Array) {
