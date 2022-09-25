@@ -22,7 +22,6 @@ export interface IUser {
   isPasswordChangeRequired: boolean;
   createdAt: Date;
   updatedAt: Date;
-  permissions: number;
 }
 
 export type IAPIUser = Omit<IUser, "password">;
@@ -34,6 +33,17 @@ export interface ILocation {
   zip: string;
 }
 
+// TODO: add interfaces
+export interface ITeacherData {}
+
+export interface IStudentData {}
+
+export interface IParentData {
+  student: string | IStudentData; // id or data
+}
+
 export interface IAccount {
   type: IAccountType;
+  data?: ITeacherData | IStudentData | IParentData;
+  permissions: number;
 }

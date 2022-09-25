@@ -1,6 +1,6 @@
 export enum IAccountType {
   ADMIN = 0,
-  GUEST = 1,
+  GUEST = 1, // Can view announcements, and sees message about no role assigned.
   STUDENT = 2,
   PARENT = 3,
   TEACHER = 4,
