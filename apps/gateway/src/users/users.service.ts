@@ -7,6 +7,7 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import {
   CreateUserDto,
+  IAccount,
   IEventType,
   IUser,
   UpdateUserDto,
@@ -47,7 +48,11 @@ export class UsersService {
     }
   }
 
-  async getUsers(rid: string, user: IUser): Promise<IUser[]> {
+  async getUsers(
+    rid: string,
+    user: IUser,
+    account: IAccount,
+  ): Promise<IUser[]> {
     this.logger.log({
       rid,
       context: 'UsersService',
@@ -63,8 +68,9 @@ export class UsersService {
       .send(IEventType.GET_USERS, {
         rid,
         token: this.tokenizer.sign({
-          permissions: user.permissions,
+          permissions: account.permissions,
           uid: user.id,
+          aid: account.id,
         }),
       })
       .pipe(timeout(5000)) // timeout

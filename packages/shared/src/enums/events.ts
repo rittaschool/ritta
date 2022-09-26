@@ -47,4 +47,7 @@ export enum IErrorType {
   INVALID_PERMISSION = "invalid_permission",
   PERMISSION_IS_ALREADY_ADDED = "permission_is_already_added",
   PERMISSION_NOT_FOUND = "permission_not_found",
+  LOGIN_ERROR = "login_error",
+  AUTHORIZATION_ERROR = "authorization_error",
+  REQUEST_ACCOUNT_NOT_FOUND = "request_account_not_found",
 }

@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { User } from '@rittaschool/shared';
+import { Account, User } from '@rittaschool/shared';
 import { CommonModule } from 'framework';
+import { AccountSchema } from './entities/account.entity';
 import { UserSchema } from './entities/user.entity';
 import { UsersController } from './users.controller';
 import { UsersRepository } from './users.repository';
@@ -9,7 +10,10 @@ import { UsersService } from './users.service';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      { name: Account.name, schema: AccountSchema },
+    ]),
     CommonModule,
   ],
   controllers: [UsersController],

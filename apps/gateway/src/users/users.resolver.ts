@@ -1,6 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CreateUserDto, IUser } from '@rittaschool/shared';
+import { CreateUserDto, IAccount, IUser } from '@rittaschool/shared';
+import { Account } from 'src/account.param';
 import { RID } from '../rid.param';
 import { User } from '../user.param';
 import { UsersService } from './users.service';
@@ -14,8 +15,12 @@ export class UsersResolver {
     return user;
   }
   @Query()
-  async users(@RID() rid: string, @User() user: IUser) {
-    return this.usersService.getUsers(rid, user);
+  async users(
+    @RID() rid: string,
+    @User() user: IUser,
+    @Account() account: IAccount,
+  ) {
+    return this.usersService.getUsers(rid, user, account);
   }
 
   @Query()

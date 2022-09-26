@@ -106,7 +106,7 @@
     {
       "label": "shared",
       "type": "shell",
-      "command": "yarn build -w",
+      "command": "yarn build:watch",
       "isBackground": true,
       "problemMatcher": [],
       "presentation": {

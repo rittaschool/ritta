@@ -43,6 +43,7 @@ export interface IParentData {
 }
 
 export interface IAccount {
+  id: string;
   type: IAccountType;
   data?: ITeacherData | IStudentData | IParentData;
   permissions: number;

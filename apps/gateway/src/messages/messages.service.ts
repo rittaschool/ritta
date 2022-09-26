@@ -7,6 +7,7 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import {
   EditMessageDto,
+  IAccount,
   IEventType,
   IUser,
   NewMessageDto,
@@ -26,8 +27,9 @@ export class MessagesService {
 
   async createThread(
     createThreadDto: NewThreadDto,
-    rid: string,
     user: IUser,
+    account: IAccount,
+    rid: string,
   ): Promise<IUser> {
     this.logger.log({
       rid,
@@ -50,8 +52,9 @@ export class MessagesService {
       .send(IEventType.NEW_THREAD, {
         rid,
         token: await this.tokenizer.sign({
-          permissions: user.permissions,
+          permissions: account.permissions,
           uid: user.id,
+          aid: account.id,
         }),
         data: createThreadDto,
       })
@@ -71,7 +74,11 @@ export class MessagesService {
     }
   }
 
-  async getThreads(rid: string, user: IUser): Promise<IUser[]> {
+  async getThreads(
+    user: IUser,
+    account: IAccount,
+    rid: string,
+  ): Promise<IUser[]> {
     this.logger.log({
       rid,
       context: 'MessagesService',
@@ -87,8 +94,9 @@ export class MessagesService {
       .send(IEventType.GET_THREADS, {
         rid,
         token: await this.tokenizer.sign({
-          permissions: user.permissions,
+          permissions: account.permissions,
           uid: user.id,
+          aid: account.id,
         }),
       })
       .pipe(catchError((val) => of({ error: val.message })))
@@ -96,13 +104,19 @@ export class MessagesService {
       .toPromise();
   }
 
-  async markAsRead(threadActionDto: ThreadActionDto, user: IUser, rid: string) {
+  async markAsRead(
+    threadActionDto: ThreadActionDto,
+    user: IUser,
+    account: IAccount,
+    rid: string,
+  ) {
     const res = await this.client
       .send(IEventType.MARK_THREAD_AS_READ, {
         rid,
         token: await this.tokenizer.sign({
-          permissions: user.permissions,
+          permissions: account.permissions,
           uid: user.id,
+          aid: account.id,
         }),
         data: threadActionDto,
       })
@@ -125,14 +139,16 @@ export class MessagesService {
   async markAsUnread(
     threadActionDto: ThreadActionDto,
     user: IUser,
+    account: IAccount,
     rid: string,
   ) {
     const res = await this.client
       .send(IEventType.MARK_THREAD_AS_UNREAD, {
         rid,
         token: await this.tokenizer.sign({
-          permissions: user.permissions,
+          permissions: account.permissions,
           uid: user.id,
+          aid: account.id,
         }),
         data: threadActionDto,
       })
@@ -152,7 +168,12 @@ export class MessagesService {
     }
   }
 
-  async newMessage(newMessageDto: NewMessageDto, user: IUser, rid: string) {
+  async newMessage(
+    newMessageDto: NewMessageDto,
+    user: IUser,
+    account: IAccount,
+    rid: string,
+  ) {
     // Sanitize
     newMessageDto.content = sanitize(newMessageDto.content, {
       allowedTags: sanitize.defaults.allowedTags.concat(['img']),
@@ -165,8 +186,9 @@ export class MessagesService {
       .send(IEventType.NEW_MESSAGE, {
         rid,
         token: await this.tokenizer.sign({
-          permissions: user.permissions,
+          permissions: account.permissions,
           uid: user.id,
+          aid: account.id,
         }),
         data: newMessageDto,
       })
@@ -186,13 +208,19 @@ export class MessagesService {
     }
   }
 
-  async editMessage(editMessageDto: EditMessageDto, user: IUser, rid: string) {
+  async editMessage(
+    editMessageDto: EditMessageDto,
+    user: IUser,
+    account: IAccount,
+    rid: string,
+  ) {
     const res = await this.client
       .send(IEventType.EDIT_MESSAGE, {
         rid,
         token: await this.tokenizer.sign({
-          permissions: user.permissions,
+          permissions: account.permissions,
           uid: user.id,
+          aid: account.id,
         }),
         data: editMessageDto,
       })
@@ -215,14 +243,16 @@ export class MessagesService {
   async publishDraft(
     threadActionDto: ThreadActionDto,
     user: IUser,
+    account: IAccount,
     rid: string,
   ) {
     const res = await this.client
       .send(IEventType.PUBLISH_DRAFT, {
         rid,
         token: await this.tokenizer.sign({
-          permissions: user.permissions,
+          permissions: account.permissions,
           uid: user.id,
+          aid: account.id,
         }),
         data: threadActionDto,
       })
@@ -245,14 +275,16 @@ export class MessagesService {
   async deleteThread(
     threadActionDto: ThreadActionDto,
     user: IUser,
+    account: IAccount,
     rid: string,
   ) {
     const res = await this.client
       .send(IEventType.DELETE_THREAD, {
         rid,
         token: await this.tokenizer.sign({
-          permissions: user.permissions,
+          permissions: account.permissions,
           uid: user.id,
+          aid: account.id,
         }),
         data: threadActionDto,
       })

@@ -1,5 +1,6 @@
 import { IFidoOptions, ILocation, IMFAOptions, IUser } from "../interfaces";
 import { IOAuth2Identifiers } from "../types";
+import { Account } from "./Account";
 
 export class User implements Omit<IUser, "accounts"> {
   id: string;
@@ -14,8 +15,7 @@ export class User implements Omit<IUser, "accounts"> {
   mfa?: IMFAOptions;
   fido?: IFidoOptions;
   oauth2Identifiers?: IOAuth2Identifiers;
-  // string type because we are going to store the accounts in a different table. The string will be the id of the account
-  accounts: string[];
+  accounts: Account[];
   latestLogin?: Date;
   latestPasswordChange?: Date;
   isFirstLogin: boolean;
@@ -28,7 +28,7 @@ export class User implements Omit<IUser, "accounts"> {
     firstName: string,
     lastName: string,
     password: string,
-    accounts: string[],
+    accounts: Account[],
     isFirstLogin: boolean,
     isPasswordChangeRequired: boolean,
     home?: ILocation,

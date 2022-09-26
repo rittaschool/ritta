@@ -1,8 +1,8 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import {
+  IAccount,
   IErrorType,
-  IUser,
   Permissions,
   RittaError,
 } from '@rittaschool/shared';
@@ -34,12 +34,12 @@ export class PermissionsGuard implements CanActivate {
     }
 
     // Got from the request if client has provided a token
-    const userPerms = (request[0].user as IUser).permissions;
+    const accountPerms = (request[0].account as IAccount).permissions;
 
-    if (userPerms > 0) {
+    if (accountPerms > 0) {
       const doesUserHavePermission = Permissions.checkHasPermission(
         perms,
-        userPerms,
+        accountPerms,
       );
 
       if (!doesUserHavePermission) {

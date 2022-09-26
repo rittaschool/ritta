@@ -1,7 +1,7 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TerminusModule } from '@nestjs/terminus';
 import { AppController } from './app.controller';
@@ -18,6 +18,7 @@ import { UserGuard } from './guards/user.guard';
 import { HealthController } from './health/health.controller';
 import { MicroserviceHealthIndicator } from './health/rmq.health';
 import { MessagesModule } from './messages/messages.module';
+import { RittaErrorFilter } from './rittaerror.filter';
 import { UsersModule } from './users/users.module';
 import { validate } from './validation/env.validation';
 import { Tokenizer } from './validation/tokenizer';
@@ -68,6 +69,10 @@ import { Tokenizer } from './validation/tokenizer';
     {
       provide: APP_GUARD,
       useClass: PermissionsGuard,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: RittaErrorFilter,
     },
     MicroserviceHealthIndicator,
   ],

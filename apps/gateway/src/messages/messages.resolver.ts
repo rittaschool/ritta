@@ -2,12 +2,14 @@ import { Inject } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   EditMessageDto,
+  IAccount,
   IUser,
   NewMessageDto,
   NewThreadDto,
 } from '@rittaschool/shared';
 import { RID } from '../rid.param';
 import { User } from '../user.param';
+import { Account } from '../account.param';
 import { MessagesService } from './messages.service';
 
 @Resolver()
@@ -17,8 +19,12 @@ export class MessagesResolver {
   ) {}
 
   @Query()
-  async threads(@RID() rid: string, @User() user: IUser) {
-    const threads = await this.messagesService.getThreads(rid, user);
+  async threads(
+    @RID() rid: string,
+    @User() user: IUser,
+    @Account() account: IAccount,
+  ) {
+    const threads = await this.messagesService.getThreads(user, account, rid);
     return threads;
   }
 
@@ -28,11 +34,13 @@ export class MessagesResolver {
     @Args('createThreadInput') createThreadDto: NewThreadDto,
     @RID() rid: string,
     @User() user: IUser,
+    @Account() account: IAccount,
   ) {
     const data = await this.messagesService.createThread(
       createThreadDto,
-      rid,
       user,
+      account,
+      rid,
     );
     return data;
   }
@@ -43,10 +51,12 @@ export class MessagesResolver {
     @Args('createMessageInput') createMessageInput: NewMessageDto,
     @RID() rid: string,
     @User() user: IUser,
+    @Account() account: IAccount,
   ) {
     const data = await this.messagesService.newMessage(
       createMessageInput,
       user,
+      account,
       rid,
     );
     return data;
@@ -58,10 +68,12 @@ export class MessagesResolver {
     @Args('editMessageInput') editMessageDto: EditMessageDto,
     @RID() rid: string,
     @User() user: IUser,
+    @Account() account: IAccount,
   ) {
     const data = await this.messagesService.editMessage(
       editMessageDto,
       user,
+      account,
       rid,
     );
     return data;
@@ -73,8 +85,14 @@ export class MessagesResolver {
     @Args('threadId') threadId: string,
     @RID() rid: string,
     @User() user: IUser,
+    @Account() account: IAccount,
   ) {
-    const data = await this.messagesService.markAsRead({ threadId }, user, rid);
+    const data = await this.messagesService.markAsRead(
+      { threadId },
+      user,
+      account,
+      rid,
+    );
     return data;
   }
 
@@ -84,10 +102,12 @@ export class MessagesResolver {
     @Args('threadId') threadId: string,
     @RID() rid: string,
     @User() user: IUser,
+    @Account() account: IAccount,
   ) {
     const data = await this.messagesService.markAsUnread(
       { threadId },
       user,
+      account,
       rid,
     );
     return data;
@@ -99,10 +119,12 @@ export class MessagesResolver {
     @Args('threadId') threadId: string,
     @RID() rid: string,
     @User() user: IUser,
+    @Account() account: IAccount,
   ) {
     const data = await this.messagesService.publishDraft(
       { threadId },
       user,
+      account,
       rid,
     );
     return data;
@@ -114,10 +136,12 @@ export class MessagesResolver {
     @Args('threadId') threadId: string,
     @RID() rid: string,
     @User() user: IUser,
+    @Account() account: IAccount,
   ) {
     const data = await this.messagesService.deleteThread(
       { threadId },
       user,
+      account,
       rid,
     );
     return data;

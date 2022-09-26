@@ -1,6 +1,6 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { IEventType, IUser } from '@rittaschool/shared';
+import { IAccount, IEventType, IUser } from '@rittaschool/shared';
 import { catchError, of, timeout } from 'rxjs';
 import { Tokenizer } from 'src/validation/tokenizer';
 
@@ -12,7 +12,11 @@ export class RecipientsService {
     @Inject('TOKENIZER') private tokenizer: Tokenizer,
   ) {}
 
-  async listRecipients(rid: string, user: IUser): Promise<any> {
+  async listRecipients(
+    rid: string,
+    user: IUser,
+    account: IAccount,
+  ): Promise<any> {
     this.logger.log({
       rid,
       context: 'RecipientsService',
@@ -28,8 +32,9 @@ export class RecipientsService {
       .send(IEventType.LIST_RECIPIENTS, {
         rid,
         token: await this.tokenizer.sign({
-          permissions: user.permissions || 0,
+          permissions: account.permissions || 0,
           uid: user.id,
+          aid: account.id,
         }),
       })
       .pipe(catchError((val) => of({ error: val.message })))

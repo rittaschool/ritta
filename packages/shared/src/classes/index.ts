@@ -15,12 +15,12 @@ export { Location } from "./Location";
 export { MFAOptions } from "./MFAOptions";
 export { Oauth2Identifiers } from "./Oauth2Identifiers";
 export { User } from "./User";
+export { Account } from "./Account";
 export { FidoOptions } from "./FidoOptions";
 export * from "./dto";
-
 export { RittaError } from "./RittaError";
 export { Permissions } from "./Permissions";
 export * from "./Challenge";
 export { Thread, Message } from "./Messages";
-export { Announcement } from "./Announcement"; 
+export { Announcement } from "./Announcement";
 export * from "./Core";

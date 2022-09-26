@@ -10,12 +10,13 @@ export class UsersRepository {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async findAll(): Promise<User[]> {
-    return this.userModel.find().exec();
+    return this.userModel.find().populate('accounts').exec();
   }
 
   async findOne(id: string): Promise<User> {
     return this.userModel
       .findOne({ $or: [{ id }, { email: id }, { username: id }] })
+      .populate('accounts')
       .exec();
   }
 

@@ -17,7 +17,10 @@ export const UserSchema = new Schema({
   username: { type: String, unique: true, required: false },
   email: { type: String, required: false }, // not unique, because it could be null
   password: String,
-  accounts: [String], // String because it's the id of the account stored in the accounts service
+  accounts: {
+    type: [{ type: Schema.Types.ObjectId, ref: 'Account' }],
+    default: [],
+  },
   mfa: {
     type: MFASchema,
     default: {
@@ -33,6 +36,7 @@ export const UserSchema = new Schema({
   },
   oauth2Identifiers: Oauth2Schema,
   home: {
+    // TODO: move to account
     type: LocationSchema, // Not essential
     required: false,
   },
@@ -48,5 +52,4 @@ export const UserSchema = new Schema({
   isPasswordChangeRequired: { type: Boolean, default: true },
   createdAt: { type: Number, default: Math.floor(new Date().getTime() / 1000) },
   updatedAt: { type: Number, default: Math.floor(new Date().getTime() / 1000) },
-  permissions: { type: Number, default: 0 },
 });
