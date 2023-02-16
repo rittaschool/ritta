@@ -5801,9 +5801,9 @@ long@^4.0.0:
   integrity sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==
 
 long@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/long/-/long-5.2.0.tgz#2696dadf4b4da2ce3f6f6b89186085d94d52fd61"
-  integrity sha512-9RTUNjK60eJbx3uz+TEGF7fUr29ZDxR5QzXcyDpeSfeH28S9ycINflOgOlppit5U+4kNTe83KQnMEerw7GmE8w==
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/long/-/long-5.2.1.tgz#e27595d0083d103d2fa2c20c7699f8e0c92b897f"
+  integrity sha512-GKSNGeNAtw8IryjjkhZxuKB3JzlcLTwjtiQCHKvqQet81I93kXslhDQruGI/QsddO83mcDToBVy7GqGS/zYf/A==
 
 loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
@@ -6142,9 +6142,9 @@ node-int64@^0.4.0:
   integrity sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==
 
 node-jose@^2.1.0:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/node-jose/-/node-jose-2.1.1.tgz#7d82e8d9cef8d0a722d7fa385524babfa9e30614"
-  integrity sha512-19nyuUGShNmFmVTeqDfP6ZJCiikbcjI0Pw2kykBCH7rl8AZgSiDZK2Ww8EDaMrOSbRg6IlfIMhI5ZvCklmOhzg==
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/node-jose/-/node-jose-2.2.0.tgz#b64f3225ad6bec328509a420800de597ba2bf3ed"
+  integrity sha512-XPCvJRr94SjLrSIm4pbYHKLEaOsDvJCpyFw/6V/KK/IXmyZ6SFBzAUDO9HQf4DB/nTEFcRGH87mNciOP23kFjw==
   dependencies:
     base64url "^3.0.1"
     buffer "^6.0.3"
@@ -6154,7 +6154,7 @@ node-jose@^2.1.0:
     node-forge "^1.2.1"
     pako "^2.0.4"
     process "^0.11.10"
-    uuid "^8.3.2"
+    uuid "^9.0.0"
 
 node-releases@^2.0.6:
   version "2.0.6"
@@ -6366,9 +6366,9 @@ p-try@^2.0.0:
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
 
 pako@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/pako/-/pako-2.0.4.tgz#6cebc4bbb0b6c73b0d5b8d7e8476e2b2fbea576d"
-  integrity sha512-v8tweI900AUkZN6heMU/4Uy4cXRc2AYNRggVmTR+dEncawDJgCdLMximOVA2p4qO57WMynangsfGRb5WD6L1Bg==
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/pako/-/pako-2.1.0.tgz#266cc37f98c7d883545d11335c00fbd4062c9a86"
+  integrity sha512-w+eufiZ1WuJYgPXbV/PO3NCMEc3xqylkKHzp8bxp1uW4qaSNQUkwmLLEc3kKsfz8lpV1F8Ht3U1Cm+9Srog2ug==
 
 parchment@^1.1.2, parchment@^1.1.4:
   version "1.1.4"
@@ -7935,6 +7935,11 @@ uuid@8.3.2, uuid@^8.0.0, uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
+
+uuid@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.0.tgz#592f550650024a38ceb0c562f2f6aa435761efb5"
+  integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
 
 v8-compile-cache-lib@^3.0.1:
   version "3.0.1"
