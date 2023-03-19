@@ -1,3 +1,5 @@
+# ARCHIVED
+
 <div align="center">
   <img src="https://raw.githubusercontent.com/rittaschool/info/master/Ritta.png" height="100px" alt="ritta-server" />
   
