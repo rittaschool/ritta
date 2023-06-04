@@ -41,7 +41,7 @@
     "fastify": "3.29.1",
     "graphql": "^16.3.0",
     "graphql-scalars": "^1.17.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "nest-graphql-scalar-adapter": "^1.1.2",
     "nest-winston": "^1.6.2",
     "redis-om": "^0.2.1",
