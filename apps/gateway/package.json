@@ -38,7 +38,7 @@
     "apollo-server-fastify": "^3.6.7",
     "class-transformer": "0.5.1",
     "class-validator": "^0.13.2",
-    "fastify": "3.29.1",
+    "fastify": "3.29.4",
     "graphql": "^16.3.0",
     "graphql-scalars": "^1.17.0",
     "jsonwebtoken": "^8.5.1",
